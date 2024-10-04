@@ -3,9 +3,10 @@
 
 ## To Do List
 
+- [ ] Code pushen der nicht wie von einem Anfänger aussieht
 - [ ] Willkommen Tab 
 - [ ] Look & Feel Tab
-- [ ] Mitmachen
+- [ ] Mitmachen Tab
 - [ ] Light Mode Icons
 - [ ] Dark Mode Icons
 
