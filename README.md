@@ -1,5 +1,5 @@
 # Primo Di Tutto
-### Willkommens-Bildschirm und Config-Tool für pgOS
+### Willkommensbildschirm und Config-Tool für pgOS
 
 ## To Do List
 
