@@ -6,6 +6,7 @@
 - [ ] Code pushen der nicht wie von einem Anfänger aussieht
 - [ ] Willkommen Tab 
 - [ ] Look & Feel Tab
+- [ ] Software Tab
 - [ ] Mitmachen Tab
 - [ ] Light Mode Icons
 - [ ] Dark Mode Icons
