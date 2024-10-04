@@ -3,7 +3,7 @@
 
 ## To Do List
 
-- [ ] Code pushen der nicht wie von einem Anfänger aussieht
+- [x] Code pushen der nicht wie von einem Anfänger aussieht
 - [ ] Willkommen Tab 
 - [ ] Look & Feel Tab
 - [ ] Software Tab
