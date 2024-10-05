@@ -240,14 +240,14 @@ class PiAppsOneClicks:
 
 class Update_Tab_Buttons:
     up_button_dict = {
-        "Update": "Command for updating the package list.",
-        "Update & Upgrade": "Command for updating the package list and upgrading installed packages.",
-        "Show Upgradable": "Command for displaying upgradable packages.",
-        "Fix Missing": "Command for fixing missing dependencies.",
-        "Fix Broken": "Command for fixing broken packages.",
-        "Autoremove": "Command for removing automatically installed but no longer required packages.",
-        "dpkg --configure -a": "Command for configuring all unpacked but unconfigured packages.",
-        "Install Local .DEB": "Command for installing a local .DEB package.",
+        "Paketliste erneuern": "Liste der verfügbaren, aktuellen Pakete auf den neuesten Stand bringen.",
+        "Pakete erneuern": "Paketliste aktualisieren und alte Pakete durch aktuelle Pakete ersetzen",
+        "Aktualisierbarkeit": "Aktualisierbare Pakete auflisten",
+        "Vervollständigen": "Fehlende Abhängigkeiten/Pakete ergänzen",
+        "Reparieren": "Defekte Pakete reparieren",
+        "Aufräumen": "Automatisch installierte Pakete, die nicht mehr gebraucht werden, löschen",
+        "Konfigurieren": "Entpackte, aber nicht konfigurierte Pakete konfigurieren",
+        ".DEB installieren": "Ein Paket mit Hilfe einer lokalen Datei mit der Endung .deb installieren",
     }
 
 

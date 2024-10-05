@@ -73,12 +73,12 @@ class UpdateTab(ttk.Frame):
                 frame_height,
                 "pixels",
             )
-            if text == "Update":
+            if text == "Paketliste erneuern":
                 os.popen(
                     f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} apt update -y |lolcat && sleep 5 && exit ; exec bash"'
                     % wid
                 )
-            if text == "Update & Upgrade":
+            if text == "Pakete erneuern":
                 if pi_identify() == "pi_os":
                     os.popen(
                         f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} apt update -y |lolcat && {permit} apt upgrade -y |lolcat && sleep 5 && exit ; exec bash"'
@@ -91,12 +91,12 @@ class UpdateTab(ttk.Frame):
                         'sleep 5 && exit; exec bash"' % wid
                     )
                     os.popen(command)
-            if text == "Fix Missing":
+            if text == "Vervollständigen":
                 os.popen(
                     f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} apt install --fix-missing |lolcat && sleep 5 && exit; exec bash"'
                     % wid
                 )
-            if text == "Fix Broken":
+            if text == "Reparieren":
                 os.popen(
                     f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} apt --fix-broken install |lolcat && sleep 5 && exit; exec bash"'
                     % wid
@@ -106,12 +106,12 @@ class UpdateTab(ttk.Frame):
                     f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} apt dist-upgrade -y |lolcat && sleep 5 && exit; exec bash"'
                     % wid
                 )
-            if text == "Autoremove":
+            if text == "Aufräumen":
                 os.popen(
                     f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} apt autoremove -y |lolcat && sleep 5 && exit ; exec bash"'
                     % wid
                 )
-            if text == "Install Local .DEB":
+            if text == ".DEB installieren":
                 self.filename = filedialog.askopenfilename(
                     initialdir="~",
                     title="Select A File",
@@ -119,12 +119,12 @@ class UpdateTab(ttk.Frame):
                 )
                 os.popen(f"gdebi-gtk {self.filename}")
 
-            if text == "dpkg --configure -a":
+            if text == "Konfigurieren":
                 os.popen(
                     f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} dpkg --configure -a |lolcat && sleep 5 && exit; exec bash"'
                     % wid
                 )
-            if text == "Show Upgradable":
+            if text == "Aktualisierbarkeit":
                 if pi_identify() == "pi_os":
                     subprocess.run(
                         f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"{permit} apt list --upgradable |lolcat && read -p 'Press Enter to exit.' && exit ; exec bash\"",
@@ -162,7 +162,7 @@ class UpdateTab(ttk.Frame):
 
         self.btn_frame = ttk.LabelFrame(
             self.update_btn_frame,
-            text="APT Options",
+            text="APT Optionen",
             #font=font_16,
             #foreground=label_frame_color,
             #borderwidth=0,
@@ -205,28 +205,28 @@ class UpdateTab(ttk.Frame):
                 conf_row += 1
                 conf_column = 0
 
-            if up_button == "Update":
+            if up_button == "Paketliste erneuern":
                 self.up_button_x.config(image=self.up_icon)
                 self.up_button_x_ttp = CreateToolTip(self.up_button_x, description)
-            elif up_button == "Show Upgradable":
+            elif up_button == "Aktualisierbarkeit":
                 self.up_button_x.config(image=self.up_icon)
                 self.up_button_x_ttp = CreateToolTip(self.up_button_x, description)
-            elif up_button == "Fix Missing":
+            elif up_button == "Vervollständigen":
                 self.up_button_x.config(image=self.up_icon)
                 self.up_button_x_ttp = CreateToolTip(self.up_button_x, description)
-            elif up_button == "Fix Broken":
+            elif up_button == "Reparieren":
                 self.up_button_x.config(image=self.up_icon)
                 self.up_button_x_ttp = CreateToolTip(self.up_button_x, description)
-            elif up_button == "Update & Upgrade":
+            elif up_button == "Pakete erneuern":
                 self.up_button_x.config(image=self.gup_icon)
                 self.up_button_x_ttp = CreateToolTip(self.up_button_x, description)
-            elif up_button == "Autoremove":
+            elif up_button == "Aufräumen":
                 self.up_button_x.config(image=self.arm_icon)
                 self.up_button_x_ttp = CreateToolTip(self.up_button_x, description)
-            elif up_button == "Install Local .DEB":
+            elif up_button == ".DEB installieren":
                 self.up_button_x.config(image=self.inst_icon)
                 self.up_button_x_ttp = CreateToolTip(self.up_button_x, description)
-            elif up_button == "dpkg --configure -a":
+            elif up_button == "Konfigurieren":
                 self.up_button_x.config(image=self.confa_icon)
                 self.up_button_x_ttp = CreateToolTip(self.up_button_x, description)
 
