@@ -158,18 +158,10 @@ class UpdateTab(ttk.Frame):
 
         global wid
         wid = self.termf.winfo_id()
-        #self.termf["background"] = frame_color
 
         self.btn_frame = ttk.LabelFrame(
             self.update_btn_frame,
-            text="APT Optionen",
-            #font=font_16,
-            #foreground=label_frame_color,
-            #borderwidth=0,
-            #relief=GROOVE,
-            #highlightthickness=0,
-            #background=frame_color,
-            #pady=10,
+            text="APT-Optionen",
         )
         self.btn_frame.pack(anchor="n")
 
@@ -257,7 +249,7 @@ class UpdateTab(ttk.Frame):
 
         self.flatpak_frame = ttk.LabelFrame(
             self.update_btn_frame,
-            text="Flatpak Options",
+            text="Flatpak-Optionen",
             #font=font_16,
             #foreground=label_frame_color,
             #borderwidth=0,

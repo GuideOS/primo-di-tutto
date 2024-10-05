@@ -239,15 +239,16 @@ class PiAppsOneClicks:
 
 
 class Update_Tab_Buttons:
+    # Contrib by @staryvyr
     up_button_dict = {
         "Paketliste erneuern": "Liste der verfügbaren, aktuellen Pakete auf den neuesten Stand bringen.",
-        "Pakete erneuern": "Paketliste aktualisieren und alte Pakete durch aktuelle Pakete ersetzen",
-        "Aktualisierbarkeit": "Aktualisierbare Pakete auflisten",
-        "Vervollständigen": "Fehlende Abhängigkeiten/Pakete ergänzen",
-        "Reparieren": "Defekte Pakete reparieren",
-        "Aufräumen": "Automatisch installierte Pakete, die nicht mehr gebraucht werden, löschen",
-        "Konfigurieren": "Entpackte, aber nicht konfigurierte Pakete konfigurieren",
-        ".DEB installieren": "Ein Paket mit Hilfe einer lokalen Datei mit der Endung .deb installieren",
+        "Pakete erneuern": "Paketliste aktualisieren und alte Pakete durch aktuelle Pakete ersetzen.",
+        "Aktualisierbarkeit": "Aktualisierbare Pakete auflisten.",
+        "Vervollständigen": "Fehlende Abhängigkeiten/Pakete ergänzen.",
+        "Reparieren": "Defekte Pakete reparieren.",
+        "Aufräumen": "Automatisch installierte Pakete, die nicht mehr gebraucht werden, löschen.",
+        "Konfigurieren": "Entpackte, aber nicht konfigurierte Pakete konfigurieren.",
+        ".DEB installieren": "Ein Paket mit Hilfe einer lokalen Datei mit der Endung .deb installieren.",
     }
 
 
