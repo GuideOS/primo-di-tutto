@@ -67,14 +67,14 @@ class DashTab(ttk.Frame):
             print(
                 "The /proc/device-tree/model file does not exist. Are you running this on a Raspberry Pi?"
             )
-            pi_model = "DEV MODE"
+            pi_model = "Dein Computer"
         except Exception as e:
             print("An error occurred:", str(e))
 
         # Create a frame to hold the progress bars
         self.usage_frame = ttk.LabelFrame(
             self,
-            text="System Usage",
+            text="System Nutzung",
         )
         self.usage_frame.pack(fill=BOTH,pady=20,padx=60)
         #self.usage_frame.pack_propagate(0)
@@ -209,7 +209,7 @@ class DashTab(ttk.Frame):
         self.rp_label_frame.grid(column=0,row=0,sticky="nesw")#pack(anchor="n", fill=BOTH, expand=True)
 
         self.rp_info_list = [
-            "Arm Model:",
+            "Cpu Model:",
             "Cpu Freq Max.:",
             "Cpu Freq Current:",
             "Cpu Freq Min.:",
