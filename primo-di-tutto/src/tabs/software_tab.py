@@ -98,9 +98,13 @@ class SoftwareTab(ttk.Frame):
 
         office_frame = ttk.Frame(self.inst_notebook)
         edu_frame = ttk.Frame(self.inst_notebook)
+        gaming_frame = ttk.Frame(self.inst_notebook)
+
 
         office_frame.pack(fill="both", expand=True)
         edu_frame.pack(fill="both", expand=True)
+        gaming_frame.pack(fill="both", expand=True)
+
 
         # add frames to notebook
         self.inst_notebook.add(office_frame, compound=LEFT, text="Büro")
@@ -109,7 +113,9 @@ class SoftwareTab(ttk.Frame):
             edu_frame, compound=LEFT, text="Bildbearbeitung"
         )
 
-
+        self.inst_notebook.add(
+            gaming_frame, compound=LEFT, text="Gaming"
+        )
 
 
 
@@ -119,6 +125,9 @@ class SoftwareTab(ttk.Frame):
 
         edu_note_frame = EduPanel(edu_frame)
         edu_note_frame.pack(fill=tk.BOTH, expand=True)
+
+        gaming_note_frame = GamingPanel(gaming_frame)
+        gaming_note_frame.pack(fill=tk.BOTH, expand=True)
 
 
 class OfficePanel(tk.Frame):
@@ -151,8 +160,6 @@ class EduPanel(tk.Frame):
         super().__init__(master, **kwargs)
         self["background"] = maincolor
         self.no_img = PhotoImage(file=f"{application_path}/images/apps/no_image.png")
-
-
 
         def error_message_0():
             e_mass = Error_Mass(self)
@@ -187,6 +194,58 @@ class EduPanel(tk.Frame):
             )
 
             update_flatpak(Flat_remote_dict.keys())
+
+
+class GamingPanel(tk.Frame):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+
+        self.proton_icon = PhotoImage(
+            file=f"{application_path}/images/apps/proton_icon_36.png")
+        self.system_icon = PhotoImage(
+            file=f"{application_path}/images/apps/test.png"
+        )
+        self.heroic_icon = PhotoImage(
+            file=f"{application_path}/images/apps/heroic_icon_36.png")
+        self.steam_icon = PhotoImage(
+            file=f"{application_path}/images/apps/steam_icon_36.png")
+        self.lutris_icon = PhotoImage(
+            file=f"{application_path}/images/apps/lutris_logo_36.png")
+
+
+
+        game_lf = ttk.LabelFrame(self, text="Gaming Installer",padding=20)
+        game_lf.pack(pady=20,padx=20,fill="x")
+
+        label2 = ttk.Button(game_lf, text="Steam",compound=TOP, image=self.steam_icon)
+        label2.grid(row=0,column=0)
+
+        label2 = ttk.Button(game_lf, text="Lutris",image=self.lutris_icon,compound=TOP,)
+        label2.grid(row=0,column=1,padx=5)
+
+        label2 = ttk.Button(game_lf, text="Heroic",image=self.heroic_icon,compound=TOP,)
+        label2.grid(row=0,column=2)
+
+        label2 = ttk.Button(game_lf, text="ProtonUp-Qt",image=self.proton_icon,compound=TOP,)
+        label2.grid(row=0,column=3,padx=5)
+
+        game_tool_lf = ttk.LabelFrame(self, text="Gaming Installer",padding=20)
+        game_tool_lf.pack(pady=20,padx=20,fill="both",expand=True)
+
+        tool_name = ttk.Label(game_tool_lf, text="Name: Lutris",)
+        tool_name.pack(pady=5,padx=10,fill="x")
+
+        tool_format = ttk.Label(game_tool_lf, text="Paket: DEB",)
+        tool_format.pack(pady=5,padx=10,fill="x")
+
+        tool_descr = ttk.Label(game_tool_lf, text="Beschreinung:\n Dieser Installer stellt das Programm Lutris bereit und\ninstalliert alle nötigen Abhängikeiten z.B. Wine",)
+        tool_descr.pack(pady=5,padx=10,fill="x")
+
+        tool_descr = ttk.Button(game_tool_lf, text="Installieren",)
+        tool_descr.pack(pady=5,padx=10,fill="x")
+
+
+
 
  
 
