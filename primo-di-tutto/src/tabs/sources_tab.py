@@ -23,51 +23,7 @@ class SourcesTab(ttk.Frame):
         )
         self.rep_main_frame.pack(fill=BOTH, expand=True, pady=20, padx=20)
 
-        self.off_rep_frame = ttk.LabelFrame(
-            self.rep_main_frame,
-            text="Official Repository",
-            padding=20
-        )
 
-        self.off_rep_frame.pack(fill=BOTH, expand=True)
-
-        self.tu_info = ttk.Label(
-            self.off_rep_frame,
-            text="Info: Never edit the source lists unless you know exactly what you are doing.\n",
-
-        ).pack()
-
-        self.tree = ttk.Treeview(self.off_rep_frame)
-        self.tree.pack(expand=True, fill=BOTH)
-
-        # add columns to the treeview
-        self.tree["columns"] = ("one", "two", "three")
-        self.tree.column("#0", width=30, minwidth=30)
-        self.tree.column("one", width=10, minwidth=100)
-        self.tree.column("two", width=350, minwidth=100)
-        self.tree.column("three", width=350, minwidth=100)
-
-        # add column headings
-        self.tree.heading("#0", text="Nr.",)
-        self.tree.heading("one", text="Type")
-        self.tree.heading("two", text="Source URL")
-        self.tree.heading("three", text="Source Parameters")
-
-        try:
-            with open("/etc/apt/sources.list", "r") as f:
-                sources = f.readlines()
-
-            for i, source in enumerate(sources):
-                source_cols = source.strip().split(" ", 2)
-                self.tree.insert(
-                    parent="",
-                    index=i,
-                    iid=i,
-                    text=str(i + 1),
-                    values=(source_cols[0], source_cols[1], source_cols[2]),
-                )
-        except:
-            pass
 
         self.added_repositories = ttk.LabelFrame(
             self.rep_main_frame,
