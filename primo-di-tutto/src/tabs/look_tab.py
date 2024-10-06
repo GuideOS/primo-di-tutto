@@ -117,7 +117,7 @@ class LookTab(ttk.Frame):
 
         classico_button = ttk.Button(
             self.desktop_layout_set,
-            text="Classico\n(Standard)",
+            #text="Classico\n(Standard)",
             compound="center",
             image=self.classico_thumb,
             command=set_classico_panel,
@@ -128,7 +128,7 @@ class LookTab(ttk.Frame):
 
         upside_button = ttk.Button(
             self.desktop_layout_set,
-            text="upside down",
+            #text="upside down",
             compound="center",
             image=self.upside_thumb,
             command=set_upside_down_panel,
@@ -139,7 +139,7 @@ class LookTab(ttk.Frame):
 
         elfi_button = ttk.Button(
             self.desktop_layout_set,
-            text="elfi",
+            #text="elfi",
             compound="center",
             image=self.elfi_thumb,
             command=set_elfi_panel,
@@ -151,7 +151,7 @@ class LookTab(ttk.Frame):
 
         devil_button = ttk.Button(
             self.desktop_layout_set,
-            text=" the devil",
+            #text=" the devil",
             compound="center",
             image=self.devil_thumb,
             command=set_der_teufel_panel,
