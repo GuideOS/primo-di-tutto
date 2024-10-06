@@ -18,19 +18,16 @@ class SourcesTab(ttk.Frame):
         self.grid(row=0, column=0, sticky="nsew")
 
 
-        self.rep_main_frame = ttk.Frame(
-            self
-        )
-        self.rep_main_frame.pack(fill=BOTH, expand=True, pady=20, padx=20)
+
 
 
 
         self.added_repositories = ttk.LabelFrame(
-            self.rep_main_frame,
+            self,
             text="Added Repository",
             padding=20
         )
-        self.added_repositories.pack(fill="both", expand=True)
+        self.added_repositories.pack(fill="both", expand=True,padx=20,pady=20)
 
         self.added_tree_frame = tk.Frame(self.added_repositories)
         self.added_tree_frame.pack(fill="both", expand=True)
@@ -60,13 +57,13 @@ class SourcesTab(ttk.Frame):
                 )
 
         self.open_source_folder = ttk.Button(
-            self.rep_main_frame,
+            self.added_repositories,
             text="Open sources.list.d",
             command=open_source_f_d,
             style="Custom.TButton"
 
         )
-        self.open_source_folder.pack(padx=20, expand=True, fill="x")
+        self.open_source_folder.pack(pady=20, fill="x")
 
     def add_sources_to_treeview(self):
         sources_d1 = os.listdir("/etc/apt/sources.list.d")
