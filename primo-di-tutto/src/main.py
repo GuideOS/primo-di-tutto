@@ -24,7 +24,7 @@ class MainApplication(tk.Tk):
     def __init__(self):
         super().__init__(className="Primo")
         self.title("Primo Di Tutto")
-        self.tk.call("source", r"src/Azure-ttk-theme-2.1.0/azure.tcl")
+        self.tk.call("source", f"{application_path}/src/Azure-ttk-theme-2.1.0/azure.tcl")
 
         #self["background"] = maincolor
         app_width = 1200
@@ -36,7 +36,7 @@ class MainApplication(tk.Tk):
         y = (screen_height / 2) - (app_height / 2)
         # self.icon is still needed for some DEs
         self.icon = tk.PhotoImage(
-            file=f"/usr/share/icons/hicolor/256x256/apps/pigro-logo.png"
+            file=f"/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png"
         )
         self.tk.call("wm", "iconphoto", self._w, self.icon)
         self.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")

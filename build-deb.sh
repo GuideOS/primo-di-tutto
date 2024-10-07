@@ -3,41 +3,41 @@
 
 
 # Define the package name and version
-PACKAGE_NAME="pigro-jci"
-VERSION="24.04"
+PACKAGE_NAME="primo-di-tutto"
+VERSION="0.1"
 
 # Define the dependencies
 DEPENDENCIES="python3-dev, python3-psutil, python3-distro, python3-bs4, python3-requests, python3-pil, python3-pil.imagetk, xterm, mpg123, lolcat, wmctrl, gdebi, mousepad, appstream, pkexec | policykit-1"
 
 # Create the necessary directories
-mkdir -p ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/DEBIAN
-mkdir -p ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/opt/PiGro-JCI
-mkdir -p ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/bin
-mkdir -p ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share
-mkdir -p ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share/applications
-mkdir -p ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share/icons/hicolor/256x256/apps
-mkdir -p ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share/icons/hicolor/scalable/apps
-mkdir -p ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share/metainfo
-mkdir -p ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share/doc/pigro-jci/
+mkdir -p ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/DEBIAN
+mkdir -p ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/opt/primo-di-tutto
+mkdir -p ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/bin
+mkdir -p ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share
+mkdir -p ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/applications
+mkdir -p ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/icons/hicolor/256x256/apps
+mkdir -p ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/icons/hicolor/scalable/apps
+mkdir -p ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/metainfo
+mkdir -p ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/doc/primo-di-tutto/
 
 #Copy necessary files
-rsync -av --exclude='start.sh' --exclude='.vscode' --exclude='src/__pycache__' --exclude='src/tabs/__pycache__' ~/PiGro-Aid-/PiGro-JCI/* ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/opt/PiGro-JCI/
+rsync -av --exclude='start.sh' --exclude='.vscode' --exclude='src/__pycache__' --exclude='src/tabs/__pycache__' ~/primo-di-tutto/primo-di-tutto/* ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/opt/primo-di-tutto/
 
 
 
 
 # Copy files to location
-cp ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/icon/pigro-logo.png ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share/icons/hicolor/256x256/apps/pigro-logo.png
-cp ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/icon/pigro-logo.svg ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share/icons/hicolor/scalable/apps/pigro-logo.svg
-cp ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/io.github.actionschnitzel.PiGro-Aid-.appdata.xml ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share/metainfo/io.github.actionschnitzel.PiGro-JCI.appdata.xml
-cp ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/LICENSE ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share/doc/pigro-jci/LICENSE
+cp ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/icon/primo-di-tutto-logo.png ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png
+cp ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/icon/primo-di-tutto-logo.svg ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/icons/hicolor/scalable/apps/primo-di-tutto-logo.svg
+cp ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/io.github.actionschnitzel.primo-di-tutto.appdata.xml ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/metainfo/io.github.actionschnitzel.primo-di-tutto.appdata.xml
+cp ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/LICENSE ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/doc/primo-di-tutto/LICENSE
 
 
 # Create the copyright file
-cat > ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/copyright << EOF
+cat > ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/copyright << EOF
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: PiGro - Just Click It!
-Source: https://github.com/actionschnitzel/PiGro-JCI
+Upstream-Name: Primo Di Tutto
+Source: https://github.com/actionschnitzel/primo-di-tutto
 
 Files: *
 Copyright: 2023 Timo Westphal
@@ -60,7 +60,7 @@ EOF
 
 
 # Create the control file
-cat > ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/DEBIAN/control << EOF
+cat > ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/DEBIAN/control << EOF
 Package: $PACKAGE_NAME
 Version: $VERSION
 Architecture: all
@@ -79,7 +79,7 @@ Description: A system control tool for Raspberry Pi
 EOF
 
 # Create the preinst file
-cat > ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/DEBIAN/preinst << 'EOF'
+cat > ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/DEBIAN/preinst << 'EOF'
 #!/bin/bash
 
 # preinst script
@@ -92,7 +92,7 @@ echo "$default_terminal" > /tmp/default_terminal_path
 EOF
 
 # Create the postinst file
-cat > ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/DEBIAN/postinst << 'EOF'
+cat > ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/DEBIAN/postinst << 'EOF'
 #!/bin/bash
 
 # postinst script
@@ -109,52 +109,47 @@ fi
 # Clean up: Remove temporary file
 rm -f /tmp/default_terminal_path
 
-# Check if /opt/PiGro-Aid-/ exists and delete it
-if [ -d "/opt/PiGro-Aid-/" ]; then
-    echo "Deleting directory /opt/PiGro-Aid-/"
-    rm -rf "/opt/PiGro-Aid-/"
-fi
 EOF
 
 # Create the .desktop file
-cat > ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share/applications/pigro.desktop << EOL
+cat > ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/applications/primo-di-tutto.desktop << EOL
 [Desktop Entry]
 Version=2.1
-Exec=pigro-jci
-Name=PiGro
-GenericName=PiGro
+Exec=primo-di-tutto
+Name=Primo Di Tutto
+GenericName=Primo
 Encoding=UTF-8
 Terminal=false
-StartupWMClass=PiGro
+StartupWMClass=Primo
 Type=Application
 Categories=System
-Icon=pigro-logo
-Path=/opt/PiGro-JCI/
+Icon=primo-di-tutto-logo
+Path=/opt/primo-di-tutto/
 EOL
 
-chmod +x ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/opt/PiGro-JCI/src/main.py
+chmod +x ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/opt/primo-di-tutto/src/main.py
 
-chmod +x ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/DEBIAN/preinst
+chmod +x ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/DEBIAN/preinst
 
-find ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/opt/PiGro-JCI/scripts/ -type f -iname "*.sh" -exec chmod +x {} \;
+find ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/opt/primo-di-tutto/scripts/ -type f -iname "*.sh" -exec chmod +x {} \;
 
-# Create the /bin/pigro-jci file
-echo "#!/bin/bash" > ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/bin/pigro-jci
-echo '/opt/PiGro-JCI/src/main.py "$@"' >>  ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/bin/pigro-jci
-chmod +x ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/bin/pigro-jci
+# Create the /bin/primo-di-tutto file
+echo "#!/bin/bash" > ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/bin/primo-di-tutto
+echo '/opt/primo-di-tutto/src/main.py "$@"' >>  ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/bin/primo-di-tutto
+chmod +x ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/bin/primo-di-tutto
 
 
 # Build the package
-cd ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/
+cd ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/
 chmod -R 755 debian
-chmod 644 ~/PiGro-Aid-/PIGRO-DEBIAN-BUILD-BOX/debian/usr/share/applications/pigro.desktop
+chmod 644 ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/applications/primo-di-tutto.desktop
 sudo chown -R root:root debian
 
 dpkg-deb --build -Zxz debian
 
 
 # Move the package to the current directory
-mv debian.deb ~/PiGro-Aid-/$PACKAGE_NAME-$VERSION.deb
+mv debian.deb ~/primo-di-tutto/$PACKAGE_NAME-$VERSION.deb
 
 # Clean up the temporary files
 sudo rm -rf debian
