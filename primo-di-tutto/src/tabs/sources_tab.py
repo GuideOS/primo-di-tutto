@@ -48,13 +48,10 @@ class SourcesTab(ttk.Frame):
         self.add_sources_to_treeview()
 
         def open_source_f_d():
-            if pi_identify() == "pi_os":
-                popen(f"sudo pcmanfm /etc/apt/sources.list.d")
-                print("[Info] With great power comes great responsibility")
-            else:
-                popen(
-                    f"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xdg-open /etc/apt/sources.list.d"
-                )
+
+            popen(
+                f"pkexec nemo /etc/apt/sources.list.d"
+            )
 
         self.open_source_folder = ttk.Button(
             self.added_repositories,
