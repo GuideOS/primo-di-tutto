@@ -21,41 +21,82 @@ class LookTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
 
+        if "dark" in theme_name:
+            self.folder_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/folder_s.png"
+            )
+            self.icon_folder_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/start_here_s.png"
+            )
+            self.cursor_folder_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/cursor_s.png"
+            )
+            self.theme_folder_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/theme_s.png"
+            )
+            self.refresh_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/fresh_s.png"
+            )
 
-        self.folder_icon = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/folder_s_light.png"
-        )
-        self.icon_folder_icon = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/start_here_s_light.png"
-        )
-        self.cursor_folder_icon = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/cursor_s_light.png"
-        )
-        self.theme_folder_icon = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/theme_s_light.png"
-        )
-        self.refresh_icon = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/fresh_s_light.png"
-        )
+            self.classico_thumb = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/classico_thumb.png"
+            )
 
-        self.classico_thumb = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/classico_thumb.png"
-        )
+            self.upside_thumb = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/upside_thumb.png"
+            )
 
-        self.upside_thumb = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/upside_thumb.png"
-        )
-
-        self.elfi_thumb = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/elfi_thumb.png"
-        )
+            self.elfi_thumb = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/elfi_thumb.png"
+            )
 
 
-        self.devil_thumb = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/devil_thumb.png"
-        )
+            self.devil_thumb = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/devil_thumb.png"
+            )
+
+
+
+        else:
+
+            self.folder_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/folder_s_light.png"
+            )
+            self.icon_folder_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/start_here_s_light.png"
+            )
+            self.cursor_folder_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/cursor_s_light.png"
+            )
+            self.theme_folder_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/theme_s_light.png"
+            )
+            self.refresh_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/fresh_s_light.png"
+            )
+
+            self.classico_thumb = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/classico_thumb_light.png"
+            )
+
+            self.upside_thumb = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/upside_thumb_light.png"
+            )
+
+            self.elfi_thumb = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/elfi_thumb_light.png"
+            )
+
+
+            self.devil_thumb = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/devil_thumb_light.png"
+            )
 
         def set_elfi_panel():
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', ""
+            ])
+
             # Erster Befehl: Setze das Panel unten
             subprocess.run([
                 'gsettings', 'set', 'org.cinnamon', 'panels-enabled', "['1:0:bottom']"
@@ -68,6 +109,10 @@ class LookTab(ttk.Frame):
             ])
 
         def set_classico_panel():
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', ""
+            ])
+
             # Erster Befehl: Setze das Panel unten
             subprocess.run([
                 'gsettings', 'set', 'org.cinnamon', 'panels-enabled', "['1:0:bottom']"
@@ -79,34 +124,31 @@ class LookTab(ttk.Frame):
                 "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:separator@cinnamon.org:1', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:0:systray@cinnamon.org:3', 'panel1:right:1:xapp-status@cinnamon.org:4', 'panel1:right:2:notifications@cinnamon.org:5', 'panel1:right:3:printers@cinnamon.org:6', 'panel1:right:4:removable-drives@cinnamon.org:7', 'panel1:right:5:keyboard@cinnamon.org:8', 'panel1:right:6:favorites@cinnamon.org:9', 'panel1:right:7:network@cinnamon.org:10', 'panel1:right:8:sound@cinnamon.org:11', 'panel1:right:9:power@cinnamon.org:12', 'panel1:right:10:calendar@cinnamon.org:13', 'panel1:right:11:cornerbar@cinnamon.org:14']"
             ])
 
-        def set_der_teufel_panel():
-            # Erster Befehl: Setze das Panel oben und links
-            subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'panels-enabled', "['1:0:top', '2:0:left']"
-            ])
+          
 
+        def set_der_teufel_panel():
             subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'panels-height', "['1:32', '2:50']"
-            ])
+                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "[]"
+            ])            
+            # Erster Befehl: Setze das Panel oben und links
+            config_path = os.path.expanduser("~/.config/cinnamon/spices/transparent-panels@germanfr/transparent-panels@germanfr.json")
+
+            # Konfigurationsdatei lesen
+            with open(config_path, 'r') as file:
+                config = json.load(file)
+
+            # Werte aktualisieren
+            config["transparency-type"]["value"] = "panel-semi-transparent"
+            config["panel-left"]["value"] = False
+
+            # Konfigurationsdatei speichern
+            with open(config_path, 'w') as file:
+                json.dump(config, file, indent=4)
+
 
             subprocess.run([
                 'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "['transparent-panels@germanfr']"
             ])
-
-            subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'panel-zone-icon-sizes', """[{"panelId":1,"left":0,"center":0,"right":24},{"left":32,"center":0,"right":32,"panelId":2}]"""
-            ])
-
-
-            # Zweiter Befehl: Setze die aktivierten Applets
-            subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'enabled-applets',
-                "['panel2:right:0:menu@cinnamon.org:0', 'panel1:left:1:separator@cinnamon.org:1', 'panel2:left:0:grouped-window-list@cinnamon.org:2', 'panel1:right:0:systray@cinnamon.org:3', 'panel1:right:1:xapp-status@cinnamon.org:4', 'panel1:right:2:notifications@cinnamon.org:5', 'panel1:right:3:printers@cinnamon.org:6', 'panel1:right:4:removable-drives@cinnamon.org:7', 'panel1:right:5:keyboard@cinnamon.org:8', 'panel1:right:6:favorites@cinnamon.org:9', 'panel1:right:7:network@cinnamon.org:10', 'panel1:right:8:sound@cinnamon.org:11', 'panel1:right:9:power@cinnamon.org:12', 'panel1:center:0:calendar@cinnamon.org:13', 'panel1:right:11:cornerbar@cinnamon.org:14']"
-            ])
-
-            config_path = os.path.expanduser("~/.config/cinnamon/spices/transparent-panels@germanfr/transparent-panels@germanfr.json")
-
-            # Konfigurationsdatei lesen
             with open(config_path, 'r') as file:
                 config = json.load(file)
 
@@ -118,15 +160,41 @@ class LookTab(ttk.Frame):
             with open(config_path, 'w') as file:
                 json.dump(config, file, indent=4)
 
+
+
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'panels-enabled', "['1:0:top', '2:0:left']"
+            ])
+
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'panels-height', "['1:32', '2:50']"
+            ])
+
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'panel-zone-icon-sizes', """[{"panelId":1,"left":0,"center":0,"right":24},{"left":32,"center":0,"right":32,"panelId":2}]"""
+            ])
+
+            # Zweiter Befehl: Setze die aktivierten Applets
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'enabled-applets',
+                "['panel2:right:0:menu@cinnamon.org:0', 'panel1:left:1:separator@cinnamon.org:1', 'panel2:left:0:grouped-window-list@cinnamon.org:2', 'panel1:right:0:systray@cinnamon.org:3', 'panel1:right:1:xapp-status@cinnamon.org:4', 'panel1:right:2:notifications@cinnamon.org:5', 'panel1:right:3:printers@cinnamon.org:6', 'panel1:right:4:removable-drives@cinnamon.org:7', 'panel1:right:5:keyboard@cinnamon.org:8', 'panel1:right:6:favorites@cinnamon.org:9', 'panel1:right:7:network@cinnamon.org:10', 'panel1:right:8:sound@cinnamon.org:11', 'panel1:right:9:power@cinnamon.org:12', 'panel1:center:0:calendar@cinnamon.org:13', 'panel1:right:11:cornerbar@cinnamon.org:14']"
+            ])
+
+            
+
             #subprocess.run([
             #    'cinnamon', '--replace']
             #)
 
 
 
+
             print("Konfiguration erfolgreich aktualisiert.")
 
         def set_upside_down_panel():
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', ""
+            ])
             # Erster Befehl: Setze das Panel oben
             subprocess.run([
                 'gsettings', 'set', 'org.cinnamon', 'panels-enabled', "['1:0:top']"
