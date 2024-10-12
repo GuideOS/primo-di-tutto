@@ -37,28 +37,19 @@ class LookTab(ttk.Frame):
             self.refresh_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/fresh_s.png"
             )
-
             self.classico_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/classico_thumb.png"
             )
-
             self.upside_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/upside_thumb.png"
             )
-
             self.elfi_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/elfi_thumb.png"
             )
-
-
             self.devil_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/devil_thumb.png"
             )
-
-
-
         else:
-
             self.folder_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/folder_s_light.png"
             )
@@ -74,23 +65,23 @@ class LookTab(ttk.Frame):
             self.refresh_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/fresh_s_light.png"
             )
-
             self.classico_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/classico_thumb_light.png"
             )
-
             self.upside_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/upside_thumb_light.png"
             )
-
             self.elfi_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/elfi_thumb_light.png"
             )
-
-
             self.devil_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/devil_thumb_light.png"
             )
+
+
+
+
+
 
         def set_elfi_panel():
             subprocess.run([
@@ -110,22 +101,83 @@ class LookTab(ttk.Frame):
 
         def set_classico_panel():
             subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', ""
-            ])
+                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "[]"
+            ])            
+            # Transparent Panel
+            config_path = os.path.expanduser("~/.config/cinnamon/spices/transparent-panels@germanfr/transparent-panels@germanfr.json")
 
-            # Erster Befehl: Setze das Panel unten
+            with open(config_path, 'r') as file:
+                config = json.load(file)
+
+            config["transparency-type"]["value"] = "panel-semi-transparent"
+            config["panel-top"]["value"] = False
+
+            with open(config_path, 'w') as file:
+                json.dump(config, file, indent=4)
+
             subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'panels-enabled', "['1:0:bottom']"
+                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "['opacify@anish.org', 'transparent-panels@germanfr']"
             ])
 
-            # Zweiter Befehl: Setze die aktivierten Applets
+            with open(config_path, 'r') as file:
+                config = json.load(file)
+
+            # Werte aktualisieren
+            config["transparency-type"]["value"] = "panel-semi-transparent"
+            config["panel-top"]["value"] = True
+
+            # Konfigurationsdatei speichern
+            with open(config_path, 'w') as file:
+                json.dump(config, file, indent=4)
+
+            # Opacity
+            opacify_config_path = os.path.expanduser("~/.config/cinnamon/spices/opacify@anish.org/opacify@anish.org.json")
+
+            with open(opacify_config_path, 'r') as opacify_file:
+                opacify_config = json.load(opacify_file)
+
+            opacify_config["opacity"]["value"] = "240"
+            
+            with open(opacify_config_path, 'w') as opacify_file:
+                json.dump(opacify_config, opacify_file, indent=4)
+
+
             subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'enabled-applets',
-                "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:separator@cinnamon.org:1', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:0:systray@cinnamon.org:3', 'panel1:right:1:xapp-status@cinnamon.org:4', 'panel1:right:2:notifications@cinnamon.org:5', 'panel1:right:3:printers@cinnamon.org:6', 'panel1:right:4:removable-drives@cinnamon.org:7', 'panel1:right:5:keyboard@cinnamon.org:8', 'panel1:right:6:favorites@cinnamon.org:9', 'panel1:right:7:network@cinnamon.org:10', 'panel1:right:8:sound@cinnamon.org:11', 'panel1:right:9:power@cinnamon.org:12', 'panel1:right:10:calendar@cinnamon.org:13', 'panel1:right:11:cornerbar@cinnamon.org:14']"
+                'gsettings', 'set', 'org.cinnamon', 'enabled-applets', "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:2:systray@cinnamon.org:3', 'panel1:right:3:xapp-status@cinnamon.org:4', 'panel1:right:4:notifications@cinnamon.org:5', 'panel1:right:5:printers@cinnamon.org:6', 'panel1:right:6:removable-drives@cinnamon.org:7', 'panel1:right:7:keyboard@cinnamon.org:8', 'panel1:right:8:favorites@cinnamon.org:9', 'panel1:right:9:network@cinnamon.org:10', 'panel1:right:10:sound@cinnamon.org:11', 'panel1:right:11:power@cinnamon.org:12', 'panel2:center:0:calendar@cinnamon.org:13', 'panel1:right:1:trash@cinnamon.org:15', 'panel2:right:1:temperature@fevimu:16', 'panel1:left:1:placesCenter@scollins:17', 'panel1:right:13:sessionManager@scollins:18', 'panel2:center:1:weather@mockturtl:19', 'panel1:right:12:calendar@cinnamon.org:20', 'panel1:right:0:expo@cinnamon.org:22']"
+            ])
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'enabled-desklets', "[]"
+            ])
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "['opacify@anish.org', 'transparent-panels@germanfr']"
+            ])
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'panels-autohide', "['1:false', '2:intel']"
+            ])
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'panels-enabled', "['1:0:bottom', '2:0:top']"
+            ])
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'panels-height', "['1:38', '2:21']"
+            ])
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'panels-hide-delay', "['1:0', '2:0']"
+            ])
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'panels-show-delay', "['1:0', '2:0']"
+            ])
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'panel-zone-icon-sizes', """[{"panelId": 1, "left": 0, "center": 0, "right": 22}, {"left": 0, "center": 0, "right": 0, "panelId": 2}]"""
+            ])
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'panel-zone-symbolic-icon-sizes', """[{"panelId": 1, "left": 22, "center": 28, "right": 18}, {"left": 28, "center": 17, "right": 28, "panelId": 2}]"""
+            ])
+            subprocess.run([
+                'gsettings', 'set', 'org.cinnamon', 'panel-zone-text-sizes', """[{"panelId":1,"left":0,"center":0,"right":0},{"left":0,"center":0,"right":0,"panelId":2}]"""
             ])
 
-          
 
+    
         def set_der_teufel_panel():
             subprocess.run([
                 'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "[]"
