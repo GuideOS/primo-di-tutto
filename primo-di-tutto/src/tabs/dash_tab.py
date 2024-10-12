@@ -168,6 +168,12 @@ class DashTab(ttk.Frame):
         self.useage_container.grid_rowconfigure(0, weight=0)
         self.useage_container.grid_rowconfigure(1, weight=0)
 
+        self.system_icon = ImageTk.PhotoImage(
+            Image.open(f"{application_path}/images/icons/pigro_icons/test.png")
+        )
+
+        label1 = ttk.Label(self, image=self.system_icon)
+        label1.pack(pady=20)
 
 
         self.os_info_frame = ttk.LabelFrame(
@@ -202,7 +208,7 @@ class DashTab(ttk.Frame):
 
         self.rp_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Raspberry Pi"
+            text="CPU"
             
 
         )
@@ -225,7 +231,7 @@ class DashTab(ttk.Frame):
 
         self.os_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Operating System",
+            text="Betriebssystem",
 
         )
         self.os_label_frame.grid(column=0,row=1,rowspan=2,sticky="nesw")#pack(anchor="n", fill=BOTH, expand=True)
@@ -261,7 +267,7 @@ class DashTab(ttk.Frame):
 
         self.mem_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Memory",
+            text="Arbeitsspeicher",
 
         )
         self.mem_label_frame.grid(column=1,row=2,sticky="nesw",padx=5)#.pack(anchor="n", fill=BOTH, expand=True)
@@ -284,7 +290,7 @@ class DashTab(ttk.Frame):
 
         self.net_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Network",
+            text="Netzwerk",
 
         )
         self.net_label_frame.grid(column=1,row=0,sticky="nesw",padx=5)#.pack(anchor="n", fill=BOTH, expand=True)
@@ -307,7 +313,7 @@ class DashTab(ttk.Frame):
 
         self.disk_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Disk",
+            text="Festplatte",
 
         )
         self.disk_label_frame.grid(column=1,row=1,sticky="nesw",padx=5)#.pack(anchor="n", fill=BOTH, expand=True)
@@ -327,7 +333,7 @@ class DashTab(ttk.Frame):
 
         self.pakage_count_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Packages Installed",
+            text="Pakete",
 
         )
         self.pakage_count_label_frame.grid(column=2,columnspan=2,row=0,sticky="nesw")#.pack(anchor="n", fill=BOTH, expand=True)

@@ -18,6 +18,9 @@ from tabs.software_tab import *
 from tabs.deb_recovery_tab import DebRecoverTab
 from tabs.links_tab import LinksTab
 from tabs.about_tab import AboutTab
+from tabs.contrib_tab import ContribTab
+
+
 
 
 class MainApplication(tk.Tk):
@@ -143,7 +146,12 @@ class MainApplication(tk.Tk):
                 file=f"{application_path}/images/icons/nav_bar/sources_light_16x16.png"
             )
 
-
+        def on_tab_change(event):
+            notebook = event.widget
+            
+            # Überprüfen, ob der spezifische Tab (z.B. der dritte Tab) ausgewählt wurde
+            if selected_tab == 8:
+                os.popen("xdg-open https:\\www.giga.de")
 
 
 
@@ -155,10 +163,11 @@ class MainApplication(tk.Tk):
         self.dash_tab = DashTab(self.notebook)
         self.update_tab = UpdateTab(self.notebook)
         self.sources_tab = SourcesTab(self.notebook)
-        #self.system_tab = SystemTab(self.notebook)
+        self.system_tab = SystemTab(self.notebook)
         self.look_tab = LookTab(self.notebook)
         #self.autostart_tab = AutostartsTab(self.notebook)
         self.software_tab = SoftwareTab(self.notebook)
+        self.contrib_tab = ContribTab(self.notebook)
         #self.deb_recovery_tab = DebRecoverTab(self.notebook)
         #self.links_tab = LinksTab(self.notebook)
         #self.about_tab = AboutTab(self.notebook)
@@ -174,13 +183,13 @@ class MainApplication(tk.Tk):
             self.update_tab, compound=LEFT, text="Update"
         )
         self.notebook.add(
-            self.sources_tab, compound=LEFT, text="Source List"
+            self.sources_tab, compound=LEFT, text="Quellen"
         )
-        #self.notebook.add(
-        #    self.system_tab, compound=LEFT, text="System", image=self.system_icon
-        #)
         self.notebook.add(
-            self.look_tab, compound=LEFT, text="Look & Feel"
+            self.system_tab, compound=LEFT, text="Werkzeuge"
+        )
+        self.notebook.add(
+            self.look_tab, compound=LEFT, text="Erscheinungsbild"
         )
         #self.notebook.add(
         #    self.autostart_tab, compound=LEFT, text="Autostart", image=self.auto_start
@@ -188,6 +197,10 @@ class MainApplication(tk.Tk):
         self.notebook.add(
             self.software_tab, compound=LEFT, text="Software"
         )
+        self.notebook.add(
+            self.contrib_tab, compound=LEFT, text="Mitmachen"
+        )
+
         #self.notebook.add(
         #    self.deb_recovery_tab, compound=LEFT, text="Backup", image=self.deb_pack
         #)
@@ -197,6 +210,7 @@ class MainApplication(tk.Tk):
         #self.notebook.add(
         #    self.about_tab, compound=LEFT, text="About", image=self.support_icon
         #)
+
 
         # Notebook Theming
         global noteStyler

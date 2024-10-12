@@ -223,68 +223,48 @@ class SystemTab(ttk.Frame):
             if text == "Raspi Appearance\nSettings":
                 popen("pipanel")
 
-        self.pi_set = LabelFrame(
+        self.pi_set = ttk.LabelFrame(
             self,
-            text="Raspberry Pi Settings",
-            font=font_16,
-            #foreground=label_frame_color,
-            borderwidth=0,
-            highlightthickness=0,
-            highlightcolor="white",
-            relief=GROOVE,
-            pady=10,
-            padx=10,
+            text="Wichtige Werkzeuge auf einen Blick",
+            
         )
-        self.pi_set.pack(pady=20, padx=40, fill="both")
+        self.pi_set.pack(pady=20, padx=20, fill="both",expand=True)
         #self.pi_set["background"] = frame_color
+
+
+
 
         pi_settings_btn_list = [
             "Bash History",
             "Cron Job",
-            "DeskpiPro Control",
             "dmesg --follow",
             "dmesg",
-            "Edit Config.txt",
             "FM God Mode",
-            "Gnome Extensions",
-            "Gnome Settings",
-            "Gnome Software\nUpdates",
-            "Gnome Tweaks",
-            "Gnome Update\nSettings",
+            "Gnome Updates",
+            "Update Einstellungen",
             "Gparted",
-            "Menu Settings\nAlacart",
-            "NeoFetch",
-            "Raspi Appearance\nSettings",
-            "Raspi Bookshelf",
-            "Raspi-Config CLI",
-            "Raspi-Config GUI",
-            "Raspi Diagnostics",
-            "Raspi Mouse & Keyboard",
-            "Raspi Printer Settings",
-            "Raspi Screen Settings",
-            "Raspi SD Card Copier",
-            "Raspi Recommended\nSoftware",
+            "Menu Optionen",
             "Reconfigure Keyboard",
             "Reconfigure Locales",
             "Update-Alternatives",
-            "Xfce Settings",
         ]
         pi_settings_btn_list1 = []
         conf_row = 0
         conf_column = 0
         for pi_settings_btn in pi_settings_btn_list:
-            self.pi_button_x = Button(
+            self.pi_button_x = ttk.Button(
                 self.pi_set,
-                width=140,
-                height=110,
+                #width=140,
+                #height=110,
                 text=pi_settings_btn,
                 command=lambda text=pi_settings_btn: pi_settings(text),
-                highlightthickness=0,
-                borderwidth=0,
+                #highlightthickness=0,
+                #borderwidth=0,
                 #background=frame_color,
-                foreground=main_font,
+                #foreground=main_font,
                 compound=TOP,
-                activebackground=ext_btn,
+                #activebackground=ext_btn,
+                style="Custom.TButton"
             )
             self.pi_button_x.grid(
                 row=conf_row, column=conf_column, padx=5, pady=5, sticky="nesw"
@@ -294,6 +274,7 @@ class SystemTab(ttk.Frame):
             if conf_column == 5:
                 conf_row = conf_row + 1
                 conf_column = 0
+
 
             if pi_settings_btn == "Raspi Bookshelf":
                 self.pi_button_x.config(image=self.bookshelf_icon)
@@ -391,7 +372,7 @@ class SystemTab(ttk.Frame):
             if pi_settings_btn == "Cron Job":
                 self.pi_button_x.config(image=self.cron_job_icon)
 
-            if pi_settings_btn == "Menu Settings\nAlacart":
+            if pi_settings_btn == "Menu Optionen":
                 self.pi_button_x.config(image=self.alacard_icon)
                 if check_alacarte() == False:
                     self.pi_button_x.configure(state=DISABLED)
@@ -411,12 +392,12 @@ class SystemTab(ttk.Frame):
                 else:
                     self.pi_button_x.configure(state=DISABLED)
 
-            if pi_settings_btn == "Gnome Software\nUpdates":
+            if pi_settings_btn == "Gnome Updates":
                 self.pi_button_x.config(image=self.update_icon)
                 if check_update_manager() == False:
                     self.pi_button_x.configure(state=DISABLED)
 
-            if pi_settings_btn == "Gnome Update\nSettings":
+            if pi_settings_btn == "Update Einstellungen":
                 self.pi_button_x.config(image=self.update_icon)
                 if check_software_properties_gtk() == False:
                     self.pi_button_x.configure(state=DISABLED)
@@ -425,3 +406,4 @@ class SystemTab(ttk.Frame):
                 self.pi_button_x.config(image=self.source_settings_icon)
                 if check_gnome_control_center() == False:
                     self.pi_button_x.configure(state=DISABLED)
+

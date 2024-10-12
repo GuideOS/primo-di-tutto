@@ -28,7 +28,7 @@ from subprocess import Popen, PIPE
 from threading import Thread
 from tool_tipps import CreateToolTip
 from tabs.text_dict_lib import OneClicks, PiAppsOneClicks, FlatpakOneClicks
-
+from tkinter import messagebox
 
 def resize(img):
     basewidth = 500
@@ -212,43 +212,138 @@ class GamingPanel(tk.Frame):
         self.lutris_icon = PhotoImage(
             file=f"{application_path}/images/apps/lutris_logo_36.png")
 
+        def install_game_1():
+
+            def install_lutris():
+                frame_width = termf.winfo_width()
+                frame_height = termf.winfo_height()
+                #print("TEEEEEEST!!!!!")
+                subprocess.run(
+                    f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"pkexec apt list --upgradable && read -p 'Press Enter to exit.' && exit ; exec bash\"",
+                    shell=True,
+                )
+
+            gaming_name.configure(text="Lutris")
+            gaming_pak.configure(text="Debian-Paket")
+            gaming_desc.configure(text="Bundle das Wine und Lutris installiert")
+            gaming_inst_btn.configure(command=install_lutris)
+
+        recommended_gaming = {
+            "game_0": {
+                "Name": "Steam",
+                "Package": "DEB",
+                "Description": "Ein Tool zum Zocken",
+                "Icon": self.steam_icon,  # Pfad zum Icon
+                "Install": "print('test0')"
+            },
+            "game_1": {
+                "Name": "Lutris",
+                "Package": "DEB",
+                "Description": "Ein Tool zum Zocken",
+                "Icon": self.lutris_icon,  # Pfad zum Icon
+                "Install": install_game_1
+            },
+            "game_2": {
+                "Name": "Heroic",
+                "Package": "DEB",
+                "Description": "Ein Tool zum Zocken",
+                "Icon": self.heroic_icon,  # Pfad zum Icon
+                "Install": "print('test1')"
+            },
+
+        }
 
 
-        game_lf = ttk.LabelFrame(self, text="Gaming Installer",padding=20)
-        game_lf.pack(pady=20,padx=20,fill="x")
-
-        label2 = ttk.Button(game_lf, text="Steam",compound=TOP, image=self.steam_icon)
-        label2.grid(row=0,column=0)
-
-        label2 = ttk.Button(game_lf, text="Lutris",image=self.lutris_icon,compound=TOP,)
-        label2.grid(row=0,column=1,padx=5)
-
-        label2 = ttk.Button(game_lf, text="Heroic",image=self.heroic_icon,compound=TOP,)
-        label2.grid(row=0,column=2)
-
-        label2 = ttk.Button(game_lf, text="ProtonUp-Qt",image=self.proton_icon,compound=TOP,)
-        label2.grid(row=0,column=3,padx=5)
-
-        game_tool_lf = ttk.LabelFrame(self, text="Gaming Installer",padding=20)
-        game_tool_lf.pack(pady=20,padx=20,fill="both",expand=True)
-
-        tool_name = ttk.Label(game_tool_lf, text="Name: Lutris",)
-        tool_name.pack(pady=5,padx=10,fill="x")
-
-        tool_format = ttk.Label(game_tool_lf, text="Paket: DEB",)
-        tool_format.pack(pady=5,padx=10,fill="x")
-
-        tool_descr = ttk.Label(game_tool_lf, text="Beschreinung:\n Dieser Installer stellt das Programm Lutris bereit und\ninstalliert alle nötigen Abhängikeiten z.B. Wine",)
-        tool_descr.pack(pady=5,padx=10,fill="x")
-
-        tool_descr = ttk.Button(game_tool_lf, text="Installieren",)
-        tool_descr.pack(pady=5,padx=10,fill="x")
 
 
+        games_btn_frame = ttk.LabelFrame(self, text="Gaming Installer",padding=20)
+        games_btn_frame.pack(pady=20,padx=20,fill="x")
+
+        game0_btn = ttk.Button(
+            games_btn_frame,
+            text=recommended_gaming["game_0"]["Name"],
+            image=recommended_gaming["game_0"]["Icon"],
+            #command=recommended_gaming["game_0"]["Install"],
+            compound=TOP,
+            style="Custom.TButton"
+
+        )
+        game0_btn.grid(
+            row=0, column=0, padx=5, pady=5, sticky="nesw"
+        )
+
+        game1_btn = ttk.Button(
+            games_btn_frame,
+            text=recommended_gaming["game_1"]["Name"],
+            image=recommended_gaming["game_1"]["Icon"],
+            command=recommended_gaming["game_1"]["Install"],
+            compound=TOP,
+            style="Custom.TButton"
+        )
+        game1_btn.grid(
+            row=0, column=1, padx=5, pady=5, sticky="nesw"
+        )
+
+        game2_btn = ttk.Button(
+            games_btn_frame,
+            text=recommended_gaming["game_2"]["Name"],
+            image=recommended_gaming["game_2"]["Icon"],
+            #command=recommended_gaming["game_2"]["Install"],
+            compound=TOP,
+            style="Custom.TButton"
+        )
+        game2_btn.grid(
+            row=0, column=2, padx=5, pady=5, sticky="nesw"
+        )
+
+        game3_btn = ttk.Button(
+            games_btn_frame,
+            text="test",
+            #command=,
+            compound=TOP,
+            style="Custom.TButton"
+        )
+        game3_btn.grid(
+            row=0, column=3, padx=5, pady=5, sticky="nesw"
+        )
+
+        game4_btn = ttk.Button(
+            games_btn_frame,
+            text="test",
+            #command=,
+            compound=TOP,
+            style="Custom.TButton"
+        )
+        game4_btn.grid(
+            row=0, column=4, padx=5, pady=5, sticky="nesw"
+        )
 
 
- 
+        gams_detail_frame = ttk.LabelFrame(self, text="Details",padding=20)
+        gams_detail_frame.pack(pady=20,padx=20,fill="both",expand=True)
 
+        gaming_name = Label(gams_detail_frame, text="TEST")
+        gaming_name.pack()
+
+        gaming_pak = Label(gams_detail_frame, text="TEST")
+        gaming_pak.pack()
+
+        gaming_desc = Label(gams_detail_frame, text="TEST")
+        gaming_desc.pack()
+
+        gaming_inst_btn = ttk.Button(gams_detail_frame, text="Install")
+        gaming_inst_btn.pack()
+
+        termf = Frame(
+            gams_detail_frame,
+            highlightthickness=0,
+            borderwidth=0,
+        )
+
+        termf.pack(fill=BOTH, expand=True, pady=50, padx=30)
+        #termf["background"] = "black"
+        global wid
+        wid = termf.winfo_id()
 
 class Custom_Installer(tk.Toplevel):
     """child window that makes the the install process graphicle"""

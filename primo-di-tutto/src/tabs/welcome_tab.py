@@ -29,8 +29,7 @@ class WelcomeTab(ttk.Frame):
         label1 = ttk.Label(self, image=self.system_icon)
         label1.pack(pady=20)
 
-        willko = """Schön das du dich für Project Guide OS entschieden hast. 
-Wir wollen mit dieser Distribution .... ???? Bratwurst braten!"""
+        willko = """Hier könnte dein Einleituns-Text stehen!"""
 
         button1 = ttk.Label(self, text=willko)
         button1.pack(pady=10)
