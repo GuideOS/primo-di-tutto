@@ -215,11 +215,12 @@ class GamingPanel(tk.Frame):
         def install_game_1():
 
             def install_lutris():
+                script_path = f"{application_path}/scripts/install_lutris"
                 frame_width = termf.winfo_width()
                 frame_height = termf.winfo_height()
                 #print("TEEEEEEST!!!!!")
                 subprocess.run(
-                    f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"pkexec apt list --upgradable && read -p 'Press Enter to exit.' && exit ; exec bash\"",
+                    f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"{script_path} && read -p 'Press Enter to exit.' && exit ; exec bash\"",
                     shell=True,
                 )
 
