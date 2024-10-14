@@ -461,141 +461,70 @@ class LookTab(ttk.Frame):
             selected_theme = theme_combobox.get()
 
             if selected_theme != "Press Refresh":
-                if get_desktop_environment() == "xfce":
-                    subprocess.run(
-                        [
-                            "xfconf-query",
-                            "-c",
-                            "xsettings",
-                            "-p",
-                            "/Net/ThemeName",
-                            "-s",
-                            selected_theme,
-                        ]
-                    )
-                    subprocess.run(
-                        [
-                            "xfconf-query",
-                            "-c",
-                            "xfwm4",
-                            "-p",
-                            "/general/theme",
-                            "-s",
-                            selected_theme,
-                        ]
-                    )
-                if get_desktop_environment() == "mate":
-                    subprocess.run(
-                        [
-                            "gsettings",
-                            "set",
-                            "org.mate.interface",
-                            "gtk-theme",
-                            selected_theme,
-                        ]
-                    )
-                if get_desktop_environment() == "lxde":
-                    update_lxde_theme_config(selected_theme)
 
-                else:
+                # Liste der GSettings-Schlüssel und deren Pfade
+                settings_keys = [
+                    ("org.gnome.desktop.interface", "gtk-theme"),
+                    ("org.cinnamon.desktop.wm.preferences", "theme"),
+                    ("org.gnome.desktop.wm.preferences", "theme"),
+                    ("org.cinnamon.desktop.interface", "gtk-theme"),
+                    ("org.cinnamon.theme", "name"),
+                ]
+                # Funktion zum Setzen eines GSettings-Werts
+                def set_gsettings_value(schema, key, value):
                     subprocess.run(
-                        [
-                            "gsettings",
-                            "set",
-                            "org.gnome.desktop.interface",
-                            "gtk-theme",
-                            selected_theme,
-                        ]
+                        ["gsettings", "set", schema, key, value],
+                        check=True
                     )
-                    subprocess.run(
-                        [
-                            "gsettings",
-                            "set",
-                            "org.gnome.desktop.wm.preferences",
-                            "theme",
-                            selected_theme,
-                        ]
-                    )
+
+                # Für jeden Schlüssel den Wert setzen
+                for schema, key in settings_keys:
+                    set_gsettings_value(schema, key, selected_theme)
+                    print(f"{schema}.{key} wurde auf {selected_theme} gesetzt.")
                 done_message_0()
 
         def set_icon():
             selected_icon = icon_combobox.get()
 
             if selected_icon != "Press Refresh":
-                if get_desktop_environment() == "xfce":
-                    subprocess.run(
-                        [
-                            "xfconf-query",
-                            "-c",
-                            "xsettings",
-                            "-p",
-                            "/Net/IconThemeName",
-                            "-s",
-                            selected_icon,
-                        ]
-                    )
-                if get_desktop_environment() == "lxde":
-                    update_lxde_icons_config(selected_icon)
-                else:
-                    subprocess.run(
-                        [
-                            "gsettings",
-                            "set",
-                            "org.gnome.desktop.interface",
-                            "icon-theme",
-                            selected_icon,
-                        ]
-                    )
+
+                subprocess.run(
+                    [
+                        "gsettings",
+                        "set",
+                        "org.cinnamon.desktop.interface",
+                        "icon-theme",
+                        selected_icon,
+                    ]
+                )
             done_message_0()
 
         def set_cursor():
             selected_cursor = cursor_combobox.get()
 
             if selected_cursor != "Press Refresh":
-                if get_desktop_environment() == "xfce":
-                    subprocess.run(
-                        [
-                            "xfconf-query",
-                            "-c",
-                            "xsettings",
-                            "-p",
-                            "/Gtk/CursorThemeName",
-                            "-s",
-                            selected_cursor,
-                        ]
-                    )
-                if get_desktop_environment() == "lxde":
-                    update_lxde_cursor_config(selected_cursor)
-                else:
-                    subprocess.run(
-                        [
-                            "gsettings",
-                            "set",
-                            "org.gnome.desktop.interface",
-                            "cursor-theme",
-                            selected_cursor,
-                        ]
-                    )
+                subprocess.run(
+                    [
+                        "gsettings",
+                        "set",
+                        "org.cinnamon.desktop.interface",
+                        "cursor-theme",
+                        selected_cursor,
+                    ]
+                )
             done_message_0()
 
         def open_theme_folder():
-            if check_pcmanfm() == True:
-                popen("sudo pcmanfm /usr/share/themes")
-            else:
-                popen(
-                    f"{permit} env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xdg-open /usr/share/themes"
-                )
+            popen(
+                "pkexec nemo /usr/share/themes"
+            )
 
         def open_icon_folder():
-            if check_pcmanfm() == True:
-                popen("sudo pcmanfm /usr/share/icons")
-            else:
-                popen(
-                    f"{permit} env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xdg-open /usr/share/icons"
-                )
+            popen(
+                "pkexec nemo /usr/share/icons"
+            )
 
-        def open_lxappearance():
-            popen("lxappearance")
+
 
         theme_combobox = ttk.Combobox(self.pixel_set, state="readonly")
         theme_combobox.grid(
@@ -661,15 +590,6 @@ class LookTab(ttk.Frame):
             row=4, column=0, columnspan=3, padx=10, pady=5, sticky="ew"
         )
 
-        theme_legacy_button = ttk.Button(
-            self.pixel_set,
-            text="Legacy Theme Bullseye",
-            command=open_lxappearance,
-            style="Custom.TButton",
-            state=DISABLED,
-            width=20
-        )
-        theme_legacy_button.grid(row=4, column=3, padx=10, pady=5, sticky="ewns")
 
         theme_folder_button = ttk.Button(
             self.pixel_set,
@@ -701,59 +621,4 @@ class LookTab(ttk.Frame):
         )
         cursor_folder_button.grid(row=3, column=4, padx=10, pady=5, sticky="ew")
 
-
-
-        info_button = tk.Button(
-            self.pixel_set,
-            text="Why is everthing DISABLED?",
-            borderwidth=0,
-            highlightthickness=0,
-            background=ext_btn,
-            foreground=ext_btn_font,
-            command=why_message_0,
-        )
-
-        def install_papirus():
-            # Add the functionality to be executed when the "Install Papirus + Folders" button is clicked
-            print("Installing Papirus + Folders...")
-            popen(
-                "x-terminal-emulator -e 'bash -c \"wget -qO- https://git.io/papirus-icon-theme-install | sh && wget -qO- https://git.io/papirus-folders-install | sh; exec bash\"'"
-            )
-            self.install_button.config(state=DISABLED)
-
-        def set_icon_theme():
-            selected_theme = self.papirus_theme_combobox.get()
-            selected_ver = self.papirus_version_combobox.get()
-            if selected_theme != "Select a Color":
-                print(f"Setting icon theme to: {selected_theme}")
-                os.system(
-                    f"{permit} papirus-folders -C {selected_theme} --theme {selected_ver}"
-                )
-                if get_desktop_environment() == "xfce":
-                    subprocess.run(
-                        [
-                            "xfconf-query",
-                            "-c",
-                            "xsettings",
-                            "-p",
-                            "/Net/IconThemeName",
-                            "-s",
-                            selected_ver,
-                        ]
-                    )
-                elif get_desktop_environment() == "lxde-pi" or "lxde":
-                    update_lxde_icons_config(selected_ver)
-                else:
-                    subprocess.run(
-                        [
-                            "gsettings",
-                            "set",
-                            "org.gnome.desktop.interface",
-                            "icon-theme",
-                            selected_ver,
-                        ]
-                    )
-            else:
-                print("Please select a valid icon theme.")
-            done_message_0()
 
