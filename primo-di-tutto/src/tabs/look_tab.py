@@ -333,7 +333,7 @@ class LookTab(ttk.Frame):
 
         self.pixel_set = ttk.LabelFrame(
             self,
-            text="Theme Your Desktop",
+            text="Farben und Formen",
             padding=10
         )
         self.pixel_set.pack(pady=20, padx=40, fill="x", anchor="n")
