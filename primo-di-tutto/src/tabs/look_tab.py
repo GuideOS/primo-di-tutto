@@ -85,7 +85,7 @@ class LookTab(ttk.Frame):
 
         def set_elfi_panel():
             subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', ""
+                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "[]"
             ])
 
             # Erster Befehl: Setze das Panel unten
@@ -99,6 +99,10 @@ class LookTab(ttk.Frame):
                 "['panel1:center:0:menu@cinnamon.org:0', 'panel1:left:1:separator@cinnamon.org:1', 'panel1:center:1:grouped-window-list@cinnamon.org:2', 'panel1:right:0:systray@cinnamon.org:3', 'panel1:right:1:xapp-status@cinnamon.org:4', 'panel1:right:2:notifications@cinnamon.org:5', 'panel1:right:3:printers@cinnamon.org:6', 'panel1:right:4:removable-drives@cinnamon.org:7', 'panel1:right:5:keyboard@cinnamon.org:8', 'panel1:right:6:favorites@cinnamon.org:9', 'panel1:right:7:network@cinnamon.org:10', 'panel1:right:8:sound@cinnamon.org:11', 'panel1:right:9:power@cinnamon.org:12', 'panel1:right:10:calendar@cinnamon.org:13', 'panel1:right:11:cornerbar@cinnamon.org:14']"
             ])
 
+
+
+
+
         def set_classico_panel():
             subprocess.run([
                 'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "[]"
@@ -110,25 +114,22 @@ class LookTab(ttk.Frame):
                 config = json.load(file)
 
             config["transparency-type"]["value"] = "panel-semi-transparent"
-            config["panel-top"]["value"] = False
+            config["transparency-type"]["value"] = "panel-semi-transparent"
+            config["panel-top"]["value"] = True
+            config["panel-bottom"]["value"] = False
+            config["panel-left"]["value"] = False
+            config["panel-right"]["value"] = False
 
             with open(config_path, 'w') as file:
                 json.dump(config, file, indent=4)
+     
 
-            subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "['opacify@anish.org', 'transparent-panels@germanfr']"
-            ])
+            #subprocess.run([
+            #    'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "['opacify@anish.org', 'transparent-panels@germanfr']"
+            #])
 
             with open(config_path, 'r') as file:
                 config = json.load(file)
-
-            # Werte aktualisieren
-            config["transparency-type"]["value"] = "panel-semi-transparent"
-            config["panel-top"]["value"] = True
-
-            # Konfigurationsdatei speichern
-            with open(config_path, 'w') as file:
-                json.dump(config, file, indent=4)
 
             # Opacity
             opacify_config_path = os.path.expanduser("~/.config/cinnamon/spices/opacify@anish.org/opacify@anish.org.json")
@@ -142,23 +143,105 @@ class LookTab(ttk.Frame):
                 json.dump(opacify_config, opacify_file, indent=4)
 
 
+
+            # Dictionary mit den GSettings-Konfigurationen
+            gsettings_config = {
+                'enabled-applets': [
+                    'panel1:left:0:menu@cinnamon.org:0', 'panel1:left:2:grouped-window-list@cinnamon.org:2',
+                    'panel1:right:2:systray@cinnamon.org:3', 'panel1:right:3:xapp-status@cinnamon.org:4',
+                    'panel1:right:4:notifications@cinnamon.org:5', 'panel1:right:5:printers@cinnamon.org:6',
+                    'panel1:right:6:removable-drives@cinnamon.org:7', 'panel1:right:7:keyboard@cinnamon.org:8',
+                    'panel1:right:8:favorites@cinnamon.org:9', 'panel1:right:9:network@cinnamon.org:10',
+                    'panel1:right:10:sound@cinnamon.org:11', 'panel1:right:11:power@cinnamon.org:12',
+                    'panel2:center:0:calendar@cinnamon.org:13', 'panel1:right:1:trash@cinnamon.org:15',
+                    'panel2:right:1:temperature@fevimu:16', 'panel1:left:1:placesCenter@scollins:17',
+                    'panel1:right:13:sessionManager@scollins:18', 'panel2:center:1:weather@mockturtl:19',
+                    'panel1:right:12:calendar@cinnamon.org:20', 'panel1:right:0:expo@cinnamon.org:22'
+                ],
+                'enabled-desklets': [],
+                'enabled-extensions': ['opacify@anish.org', 'transparent-panels@germanfr'],
+                'panels-autohide': ['1:false', '2:intel'],
+                'panels-enabled': ['1:0:bottom', '2:0:top'],
+                'panels-height': ['1:38', '2:21'],
+                'panels-hide-delay': ['1:0', '2:0'],
+                'panels-show-delay': ['1:0', '2:0'],
+                'panel-zone-icon-sizes': [
+                    {"panelId": 1, "left": 0, "center": 0, "right": 22},
+                    {"panelId": 2, "left": 0, "center": 0, "right": 0}
+                ],
+                'panel-zone-symbolic-icon-sizes': [
+                    {"panelId": 1, "left": 22, "center": 28, "right": 18},
+                    {"panelId": 2, "left": 28, "center": 17, "right": 28}
+                ],
+                'panel-zone-text-sizes': [
+                    {"panelId": 1, "left": 0, "center": 0, "right": 0},
+                    {"panelId": 2, "left": 0, "center": 0, "right": 0}
+                ]
+            }
+
+            # Schleife durch jedes Schlüssel-Wert-Paar im Dictionary
+            for key, value in gsettings_config.items():
+                # Wenn der Wert eine Liste oder ein Dictionary ist, in eine Zeichenkette umwandeln
+                if isinstance(value, (list, dict)):
+                    value = str(value).replace("'", '"')  # Ersetze einfache Anführungszeichen mit doppelten
+                # Führe den gsettings-Befehl aus
+                subprocess.run([
+                    'gsettings', 'set', 'org.cinnamon', key, f"{value}"
+                ])
+
+
+
+    
+        def set_der_teufel_panel():
+           
+            # Transparent Panel
+            config_path = os.path.expanduser("~/.config/cinnamon/spices/transparent-panels@germanfr/transparent-panels@germanfr.json")
+
+            with open(config_path, 'r') as file:
+                config = json.load(file)
+
+            config["transparency-type"]["value"] = "panel-semi-transparent"
+            config["panel-top"]["value"] = False
+            config["panel-bottom"]["value"] = False
+            config["panel-left"]["value"] = False
+            config["panel-right"]["value"] = False
+
+            with open(config_path, 'w') as file:
+                json.dump(config, file, indent=4)
+
+
+
+            with open(config_path, 'r') as file:
+                config = json.load(file)
+
+            # Werte aktualisieren
+            config["transparency-type"]["value"] = "panel-semi-transparent"
+            config["panel-top"]["value"] = False
+            config["panel-bottom"]["value"] = False
+            config["panel-left"]["value"] = True
+            config["panel-right"]["value"] = False
+
+            # Konfigurationsdatei speichern
+            with open(config_path, 'w') as file:
+                json.dump(config, file, indent=4)
+
             subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'enabled-applets', "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:2:systray@cinnamon.org:3', 'panel1:right:3:xapp-status@cinnamon.org:4', 'panel1:right:4:notifications@cinnamon.org:5', 'panel1:right:5:printers@cinnamon.org:6', 'panel1:right:6:removable-drives@cinnamon.org:7', 'panel1:right:7:keyboard@cinnamon.org:8', 'panel1:right:8:favorites@cinnamon.org:9', 'panel1:right:9:network@cinnamon.org:10', 'panel1:right:10:sound@cinnamon.org:11', 'panel1:right:11:power@cinnamon.org:12', 'panel2:center:0:calendar@cinnamon.org:13', 'panel1:right:1:trash@cinnamon.org:15', 'panel2:right:1:temperature@fevimu:16', 'panel1:left:1:placesCenter@scollins:17', 'panel1:right:13:sessionManager@scollins:18', 'panel2:center:1:weather@mockturtl:19', 'panel1:right:12:calendar@cinnamon.org:20', 'panel1:right:0:expo@cinnamon.org:22']"
+                'gsettings', 'set', 'org.cinnamon', "enabled-applets", "['panel2:left:0:grouped-window-list@cinnamon.org:2', 'panel1:right:2:systray@cinnamon.org:3', 'panel1:right:3:xapp-status@cinnamon.org:4', 'panel1:right:4:notifications@cinnamon.org:5', 'panel1:right:5:printers@cinnamon.org:6', 'panel1:right:6:removable-drives@cinnamon.org:7', 'panel1:right:7:keyboard@cinnamon.org:8', 'panel1:right:8:favorites@cinnamon.org:9', 'panel1:right:9:network@cinnamon.org:10', 'panel1:right:10:sound@cinnamon.org:11', 'panel1:right:11:power@cinnamon.org:12', 'panel1:right:0:trash@cinnamon.org:15', 'panel1:right:12:sessionManager@scollins:18', 'panel1:center:1:weather@mockturtl:19', 'panel1:center:0:calendar@cinnamon.org:20', 'panel1:left:0:expo@cinnamon.org:22', 'panel2:right:0:panel-launchers@cinnamon.org:17']"
             ])
             subprocess.run([
                 'gsettings', 'set', 'org.cinnamon', 'enabled-desklets', "[]"
             ])
             subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "['opacify@anish.org', 'transparent-panels@germanfr']"
+                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "['transparent-panels@germanfr']"
             ])
             subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'panels-autohide', "['1:false', '2:intel']"
+                'gsettings', 'set', 'org.cinnamon', 'panels-autohide', "['1:false', '2:false']"
             ])
             subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'panels-enabled', "['1:0:bottom', '2:0:top']"
+                'gsettings', 'set', 'org.cinnamon', 'panels-enabled', "['1:0:top', '2:0:left']"
             ])
             subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'panels-height', "['1:38', '2:21']"
+                'gsettings', 'set', 'org.cinnamon', 'panels-height', "['1:28', '2:50']"
             ])
             subprocess.run([
                 'gsettings', 'set', 'org.cinnamon', 'panels-hide-delay', "['1:0', '2:0']"
@@ -176,76 +259,9 @@ class LookTab(ttk.Frame):
                 'gsettings', 'set', 'org.cinnamon', 'panel-zone-text-sizes', """[{"panelId":1,"left":0,"center":0,"right":0},{"left":0,"center":0,"right":0,"panelId":2}]"""
             ])
 
-
-    
-        def set_der_teufel_panel():
-            subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "[]"
-            ])            
-            # Erster Befehl: Setze das Panel oben und links
-            config_path = os.path.expanduser("~/.config/cinnamon/spices/transparent-panels@germanfr/transparent-panels@germanfr.json")
-
-            # Konfigurationsdatei lesen
-            with open(config_path, 'r') as file:
-                config = json.load(file)
-
-            # Werte aktualisieren
-            config["transparency-type"]["value"] = "panel-semi-transparent"
-            config["panel-left"]["value"] = False
-
-            # Konfigurationsdatei speichern
-            with open(config_path, 'w') as file:
-                json.dump(config, file, indent=4)
-
-
-            subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "['transparent-panels@germanfr']"
-            ])
-            with open(config_path, 'r') as file:
-                config = json.load(file)
-
-            # Werte aktualisieren
-            config["transparency-type"]["value"] = "panel-semi-transparent"
-            config["panel-left"]["value"] = True
-
-            # Konfigurationsdatei speichern
-            with open(config_path, 'w') as file:
-                json.dump(config, file, indent=4)
-
-
-
-            subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'panels-enabled', "['1:0:top', '2:0:left']"
-            ])
-
-            subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'panels-height', "['1:32', '2:50']"
-            ])
-
-            subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'panel-zone-icon-sizes', """[{"panelId":1,"left":0,"center":0,"right":24},{"left":32,"center":0,"right":32,"panelId":2}]"""
-            ])
-
-            # Zweiter Befehl: Setze die aktivierten Applets
-            subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'enabled-applets',
-                "['panel2:right:0:menu@cinnamon.org:0', 'panel2:left:0:grouped-window-list@cinnamon.org:2', 'panel1:right:3:systray@cinnamon.org:3', 'panel1:right:4:xapp-status@cinnamon.org:4', 'panel1:right:5:notifications@cinnamon.org:5', 'panel1:right:6:printers@cinnamon.org:6', 'panel1:right:7:removable-drives@cinnamon.org:7', 'panel1:right:8:keyboard@cinnamon.org:8', 'panel1:right:9:favorites@cinnamon.org:9', 'panel1:right:10:network@cinnamon.org:10', 'panel1:right:11:sound@cinnamon.org:11', 'panel1:right:12:power@cinnamon.org:12', 'panel1:center:0:calendar@cinnamon.org:13', 'panel1:right:14:cornerbar@cinnamon.org:14', 'panel1:left:1:expo@cinnamon.org:17']"
-            ])
-
-            
-
-            #subprocess.run([
-            #    'cinnamon', '--replace']
-            #)
-
-
-
-
-            print("Konfiguration erfolgreich aktualisiert.")
-
         def set_upside_down_panel():
             subprocess.run([
-                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', ""
+                'gsettings', 'set', 'org.cinnamon', 'enabled-extensions', "[]"
             ])
             # Erster Befehl: Setze das Panel oben
             subprocess.run([
