@@ -76,7 +76,7 @@ class DashTab(ttk.Frame):
             self,
             text="System Nutzung",
         )
-        self.usage_frame.pack(fill=BOTH,pady=20,padx=60)
+        self.usage_frame.pack(fill="x",expand=True,pady=20,padx=60)
         #self.usage_frame.pack_propagate(0)
 
 
@@ -86,7 +86,7 @@ class DashTab(ttk.Frame):
 
         )
 
-        self.useage_container.pack(fill=BOTH,expand=True)
+        self.useage_container.pack(fill="x")
 
 
 
@@ -108,21 +108,21 @@ class DashTab(ttk.Frame):
         self.cpu_percent.grid(row=0, column=0, sticky="nsew")
 
         # Create a label and progress bar for CPU usage
-        cpu_temp_label = tk.Label(
-            self.useage_container,
-            text="CPU Temp",
-            font=font_12,
+        #cpu_temp_label = tk.Label(
+        #    self.useage_container,
+        #    text="CPU Temp",
+        #    font=font_12,
+#
+        #)
+        #cpu_temp_label.grid(row=1, column=1, sticky="nsew")
 
-        )
-        cpu_temp_label.grid(row=1, column=1, sticky="nsew")
+        #self.cpu_temp_percent = tk.Label(
+        #    self.useage_container,
+        #    text="0%",
+        #    font=font_20,
 
-        self.cpu_temp_percent = tk.Label(
-            self.useage_container,
-            text="0%",
-            font=font_20,
-
-        )
-        self.cpu_temp_percent.grid(row=0, column=1, sticky="nsew")
+        #)
+        #self.cpu_temp_percent.grid(row=0, column=1, sticky="nsew")
 
         # Create a label and progress bar for RAM usage
         ram_label = tk.Label(
@@ -131,7 +131,7 @@ class DashTab(ttk.Frame):
             font=font_12,
 
         )
-        ram_label.grid(row=1, column=2, sticky="nsew")
+        ram_label.grid(row=1, column=1, sticky="nsew")
 
         self.ram_percent = Label(
             self.useage_container,
@@ -139,7 +139,7 @@ class DashTab(ttk.Frame):
             font=font_20,
 
         )
-        self.ram_percent.grid(row=0, column=2, sticky="nsew")
+        self.ram_percent.grid(row=0, column=1, sticky="nsew")
 
         # Create a label and progress bar for HDD usage
         hdd_label = tk.Label(
@@ -148,7 +148,7 @@ class DashTab(ttk.Frame):
             font=font_12,
 
         )
-        hdd_label.grid(row=1, column=3, sticky="nsew")
+        hdd_label.grid(row=1, column=2, sticky="nsew")
 
         self.hdd_percent = tk.Label(
             self.useage_container,
@@ -156,13 +156,12 @@ class DashTab(ttk.Frame):
             font=font_20,
 
         )
-        self.hdd_percent.grid(row=0, column=3, sticky="nsew")
+        self.hdd_percent.grid(row=0, column=2, sticky="nsew")
 
         # Konfiguriere jede Spalte so, dass sie expandiert
         self.useage_container.grid_columnconfigure(0, weight=1)
         self.useage_container.grid_columnconfigure(1, weight=1)
         self.useage_container.grid_columnconfigure(2, weight=1)
-        self.useage_container.grid_columnconfigure(3, weight=1)
 
         # Keine Gewichtung für die Zeilen, sodass sie nicht expandieren
         self.useage_container.grid_rowconfigure(0, weight=0)
@@ -380,11 +379,11 @@ class DashTab(ttk.Frame):
         swap = psutil.swap_memory()
         get_shell = os.environ["SHELL"]
         get_xdg_session = os.environ["XDG_SESSION_TYPE"]
-        try:
-            cpu_temp = psutil.sensors_temperatures()
-            cpu_temp = round(cpu_temp["cpu_thermal"][0][1])
-        except:
-            cpu_temp = "N/A"
+        #try:
+        #    cpu_temp = psutil.sensors_temperatures()
+        #    cpu_temp = round(cpu_temp["cpu_thermal"][0][1])
+        #except:
+        #    cpu_temp = "N/A"
 
         cpu_usage = psutil.cpu_percent()
         ram_usage = psutil.virtual_memory().percent
@@ -393,7 +392,7 @@ class DashTab(ttk.Frame):
         svmem = psutil.virtual_memory()
 
         self.cpu_percent["text"] = f"{cpu_usage}%"
-        self.cpu_temp_percent["text"] = f"{cpu_temp}°C"
+        #self.cpu_temp_percent["text"] = f"{cpu_temp}°C"
         self.ram_percent["text"] = f"{ram_usage}%"
         self.hdd_percent["text"] = f"{hdd_usage}%"
 

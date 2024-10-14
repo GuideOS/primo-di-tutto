@@ -25,9 +25,9 @@ ping_github()
 user = os.environ["USER"]
 
 
-current_version = "25.01"
+current_version = "0.3"
 
-print(f"[Info] You are using PiGro {current_version}")
+print(f"[Info] You are using Primo Di Tutto {current_version}")
 
 
 home = os.path.expanduser("~")
