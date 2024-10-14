@@ -587,7 +587,7 @@ class LookTab(ttk.Frame):
             style="Custom.TButton"
         )
         theme_refresh_button.grid(
-            row=4, column=0, columnspan=3, padx=10, pady=5, sticky="ew"
+            row=4, column=0, columnspan=5, padx=10, pady=5, sticky="ew"
         )
 
 
