@@ -26,7 +26,7 @@ from tabs.contrib_tab import ContribTab
 class MainApplication(tk.Tk):
     def __init__(self):
         super().__init__(className="Primo")
-        self.title("Primo Di Tutto")
+        self.title("Piazza - Primo Di Tutto")
         self.tk.call("source", f"{application_path}/src/Azure-ttk-theme-2.1.0/azure.tcl")
 
         #self["background"] = maincolor
