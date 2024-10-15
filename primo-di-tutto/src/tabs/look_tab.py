@@ -297,6 +297,9 @@ class LookTab(ttk.Frame):
         )
         classico_button.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
 
+        classico_label = ttk.Label(self.desktop_layout_set,text="Standard",anchor="center")
+        classico_label.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
+
         upside_button = ttk.Button(
             self.desktop_layout_set,
             #text="upside down",
@@ -307,6 +310,9 @@ class LookTab(ttk.Frame):
 
         )
         upside_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
+
+        upside_label = ttk.Label(self.desktop_layout_set,text="Spiegel",anchor="center")
+        upside_label.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
 
         elfi_button = ttk.Button(
             self.desktop_layout_set,
@@ -319,6 +325,8 @@ class LookTab(ttk.Frame):
         )
         elfi_button.grid(row=0, column=2, padx=5, pady=5, sticky="nesw")
 
+        elfi_label = ttk.Label(self.desktop_layout_set,text="11",anchor="center")
+        elfi_label.grid(row=1, column=2, padx=5, pady=5, sticky="nsew")
 
         devil_button = ttk.Button(
             self.desktop_layout_set,
@@ -330,6 +338,9 @@ class LookTab(ttk.Frame):
 
         )
         devil_button.grid(row=0, column=3, padx=5, pady=5, sticky="nesw")        
+
+        devil_label = ttk.Label(self.desktop_layout_set,text="Ubuntu-Like",anchor="center")
+        devil_label.grid(row=1, column=3, padx=5, pady=5, sticky="nsew")
 
         self.pixel_set = ttk.LabelFrame(
             self,
