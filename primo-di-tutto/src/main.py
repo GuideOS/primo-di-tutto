@@ -13,9 +13,7 @@ from tabs.update_tab import UpdateTab
 from tabs.sources_tab import SourcesTab
 from tabs.system_tab import SystemTab
 from tabs.look_tab import LookTab
-from tabs.autostart_tab import AutostartsTab
 from tabs.software_tab import *
-from tabs.deb_recovery_tab import DebRecoverTab
 from tabs.links_tab import LinksTab
 from tabs.about_tab import AboutTab
 from tabs.contrib_tab import ContribTab
@@ -46,7 +44,7 @@ class MainApplication(tk.Tk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         # Notebook Icons
-        if "dark" in theme_name:
+        if "dark" or "Dark" in theme_name:
             self.tk.call("set_theme", "dark")
 
             self.status_icon = PhotoImage(

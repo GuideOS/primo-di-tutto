@@ -21,7 +21,7 @@ class LookTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
 
-        if "dark" in theme_name:
+        if "dark" or "Dark" in theme_name:
             self.folder_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/folder_s.png"
             )

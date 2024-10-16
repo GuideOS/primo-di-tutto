@@ -177,17 +177,9 @@ def get_theme():
                 return kde_theme.split('=')[-1].strip().strip("'")
         return "KDE theme not found."
 
-    # Cinnamon
     elif "CINNAMON" in de:
         theme = run_command("gsettings get org.cinnamon.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
-
-    # GNOME/Unity/Budgie
-    #elif any(d in de for d in ["GNOME", "UNITY", "BUDGIE"]):
-    #    theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
-    #    return theme.strip("'") if theme else "Theme not found."
-
-    # Mate
     elif "UNITY" in de:
         theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
@@ -203,25 +195,18 @@ def get_theme():
     elif "PI-WAYFIRE" in de:
         theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
-
-    # Mate
     elif "MATE" in de:
         theme = run_command("gsettings get org.mate.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
-
-    # Xfce
     elif "XFCE" in de:
         theme = run_command("xfconf-query -c xsettings -p /Net/ThemeName")
         return theme.strip("'") if theme else "Theme not found."
-
-    # LXDE
     elif "LXDE" in de or "LXDE-PI" in de:
         return get_lxde_theme_name()
 
     # Fallback for unknown DE
     return "Unsupported Desktop Environment."
 
-# Example usage:
 theme_name = get_theme()
 #print(f"Current theme: {theme_name}")
 

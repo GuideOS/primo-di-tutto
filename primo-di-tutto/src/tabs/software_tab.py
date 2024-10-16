@@ -14,78 +14,14 @@ import xml.etree.ElementTree as ET
 import apt
 from bs4 import BeautifulSoup
 from resorcess import *
-from apt_manage import *
 import subprocess
-from piapps_manage import *
-from flatpak_manage import flatpak_path
-from flatpak_manage import Flat_remote_dict
-from flatpak_manage import refresh_flatpak_installs
-from flatpak_alias_list import *
 from tabs.pop_ups import *
 import re
 import webbrowser
 from subprocess import Popen, PIPE
 from threading import Thread
 from tool_tipps import CreateToolTip
-from tabs.text_dict_lib import OneClicks, PiAppsOneClicks, FlatpakOneClicks
 from tkinter import messagebox
-
-def resize(img):
-    basewidth = 500
-    wpercent = basewidth / float(img.size[0])
-    hsize = int((float(img.size[1]) * float(wpercent)))
-    return img.resize((basewidth, hsize))
-
-
-def resize2(img):
-    basewidth = 96
-    wpercent = basewidth / float(img.size[0])
-    hsize = int((float(img.size[1]) * float(wpercent)))
-    return img.resize((basewidth, hsize))
-
-
-def get_app_summary(appstream_id):
-    command = f"appstreamcli dump {appstream_id} | grep -m 1 -oP '<summary>\\K[^<]*'"
-    try:
-        result = subprocess.run(
-            command, shell=True, check=True, capture_output=True, text=True
-        )
-        return result.stdout.strip()
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing the command: {e.stderr}")
-        return ""
-
-
-def extract_default_screenshot_url(application_id):
-    output = subprocess.check_output(
-        ["appstreamcli", "dump", application_id], text=True
-    )
-
-    start_index = output.find("<screenshots>")
-    end_index = output.find("</screenshots>") + len("</screenshots>")
-
-    xml_part = output[start_index:end_index]
-
-    root = ET.fromstring(xml_part)
-
-    for screenshot in root.findall(
-        ".//screenshot[@type='default']/image[@type='source']"
-    ):
-        return screenshot.text
-
-    return None
-
-
-def build_screenshot_url():
-    app_id = Flat_remote_dict[flatpak_entry.get()]
-
-    screenshot_url = extract_default_screenshot_url(app_id)
-    if screenshot_url:
-        print("Standard-Screenshot-URL für {}:".format(app_id))
-        print(screenshot_url)
-
-    else:
-        print("Kein Standard-Screenshot gefunden für {}.".format(app_id))
 
 
 class SoftwareTab(ttk.Frame):
@@ -129,7 +65,6 @@ class SoftwareTab(ttk.Frame):
         gaming_note_frame = GamingPanel(gaming_frame)
         gaming_note_frame.pack(fill=tk.BOTH, expand=True)
 
-
 class OfficePanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
@@ -157,30 +92,26 @@ class EduPanel(tk.Frame):
             e_mass.grab_set()
 
 
-import tkinter as tk
-from tkinter import ttk, PhotoImage, Label, Frame
 
 class GameTabContent:
 
     @staticmethod
-    def install_game_1(termf):
-        def install_lutris():
-            script_path = f"{application_path}/scripts/install_lutris"
-            frame_width = termf.winfo_width()  # Use termf passed as an argument
+    def install_game(termf, script_name=None, flatpak_command=None):
+        def run_installation():
+            frame_width = termf.winfo_width()  # Größe des Frames holen
             frame_height = termf.winfo_height()
-            subprocess.run(
-                f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"{script_path} && read -p 'Press Enter to exit.' && exit ; exec bash\"",
-                shell=True,
-            )
 
-        # Return details of the game, including the Icon path
-        return {
-            "Name": "Lutris",
-            "Package": "Debian-Paket",
-            "Description": "Bundle das Wine und Lutris installiert",
-            "Icon": f"{application_path}/images/apps/lutris_logo_36.png",  # Add the Icon key here
-            "Install": install_lutris,
-        }
+            if script_name:
+                # Falls ein Skript angegeben wurde (für Lutris)
+                script_path = f"{application_path}/scripts/{script_name}"
+                command = f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"{script_path} && read -p 'Press Enter to exit.' && exit ; exec bash\""
+            elif flatpak_command:
+                # Falls ein Flatpak-Befehl angegeben wurde (für Heroic)
+                command = f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"{flatpak_command} && read -p 'Press Enter to exit.' && exit ; exec bash\""
+
+            subprocess.run(command, shell=True)
+
+        return run_installation  # Funktion zurückgeben, die die Installation durchführt
 
     @staticmethod
     def get_recommended_gaming(termf):
@@ -190,17 +121,31 @@ class GameTabContent:
                 "Package": "DEB",
                 "Description": "Ein Tool zum Zocken",
                 "Icon": f"{application_path}/images/apps/steam_icon_36.png",
-                "Install": lambda: print("Installing Steam...")
+                "Install": GameTabContent.install_game(termf, "install_steam"),  # Steam Installationsskript
             },
-            "game_1": GameTabContent.install_game_1(termf),  # Call with termf
+            "game_1": {
+                "Name": "Lutris",
+                "Package": "Debian-Paket",
+                "Description": "Bundle das Wine und Lutris installiert",
+                "Icon": f"{application_path}/images/apps/lutris_logo_36.png",
+                "Install": GameTabContent.install_game(termf, script_name="install_lutris"),  # Lutris Installationsskript
+            },
             "game_2": {
                 "Name": "Heroic",
-                "Package": "DEB",
+                "Package": "Flatpak",
                 "Description": "Ein Tool zum Zocken",
                 "Icon": f"{application_path}/images/apps/heroic_icon_36.png",
-                "Install": lambda: print("Installing Heroic...")
+                "Install": GameTabContent.install_game(termf, flatpak_command="flatpak install flathub com.heroicgameslauncher.hgl -y"),  # Heroic mit Flatpak installieren
+            },
+            "game_3": {
+                "Name": "ProtonUp-Qt",
+                "Package": "Flatpak",
+                "Description": "Ein Tool zum Zocken",
+                "Icon": f"{application_path}/images/apps/proton_icon_36.png",
+                "Install": GameTabContent.install_game(termf, flatpak_command="flatpak install flathub net.davidotek.pupgui2 -y"),  # Heroic mit Flatpak installieren
             },
         }
+
 
 
 class GamingPanel(tk.Frame):
@@ -216,16 +161,16 @@ class GamingPanel(tk.Frame):
         gams_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
         self.gaming_name = Label(gams_detail_frame, text="TEST")
-        self.gaming_name.pack()
+        self.gaming_name.pack(anchor="w")
 
         self.gaming_pak = Label(gams_detail_frame, text="TEST")
-        self.gaming_pak.pack()
+        self.gaming_pak.pack(anchor="w")
 
         self.gaming_desc = Label(gams_detail_frame, text="TEST")
-        self.gaming_desc.pack()
+        self.gaming_desc.pack(anchor="w")
 
-        self.gaming_inst_btn = ttk.Button(gams_detail_frame, text="Install")
-        self.gaming_inst_btn.pack()
+        self.gaming_inst_btn = ttk.Button(gams_detail_frame, text="Install",style="Custom.TButton")
+        self.gaming_inst_btn.pack(anchor="w")
 
         # Initialize termf and pack it below the install button
         self.termf = Frame(gams_detail_frame, highlightthickness=0, borderwidth=0)
@@ -241,11 +186,13 @@ class GamingPanel(tk.Frame):
         self.game0_icon = PhotoImage(file=self.recommended_gaming["game_0"]["Icon"])
         self.game1_icon = PhotoImage(file=self.recommended_gaming["game_1"]["Icon"])
         self.game2_icon = PhotoImage(file=self.recommended_gaming["game_2"]["Icon"])
+        self.game3_icon = PhotoImage(file=self.recommended_gaming["game_3"]["Icon"])
 
         # Create game buttons
         self.create_game_button(games_btn_frame, "game_0", 0)
         self.create_game_button(games_btn_frame, "game_1", 1)
         self.create_game_button(games_btn_frame, "game_2", 2)
+        self.create_game_button(games_btn_frame, "game_3", 3)
 
     def create_game_button(self, frame, game_key, column):
         game_data = self.recommended_gaming[game_key]
@@ -266,6 +213,8 @@ class GamingPanel(tk.Frame):
             return self.game1_icon
         elif game_key == "game_2":
             return self.game2_icon
+        elif game_key == "game_3":
+            return self.game3_icon
 
     def update_game_details(self, game_data):
         self.gaming_name.configure(text=game_data["Name"])
