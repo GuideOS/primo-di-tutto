@@ -22,7 +22,11 @@ from subprocess import Popen, PIPE
 from threading import Thread
 from tool_tipps import CreateToolTip
 from tkinter import messagebox
-
+from tabs.text_dict_lib import SoftwareGame
+from apt_manage import *
+from flatpak_manage import flatpak_path
+from flatpak_manage import Flat_remote_dict
+from flatpak_manage import refresh_flatpak_installs
 
 class SoftwareTab(ttk.Frame):
     def __init__(self, master):
@@ -93,58 +97,11 @@ class EduPanel(tk.Frame):
 
 
 
-class GameTabContent:
 
-    @staticmethod
-    def install_game(termf, script_name=None, flatpak_command=None):
-        def run_installation():
-            frame_width = termf.winfo_width()  # Größe des Frames holen
-            frame_height = termf.winfo_height()
 
-            if script_name:
-                # Falls ein Skript angegeben wurde (für Lutris)
-                script_path = f"{application_path}/scripts/{script_name}"
-                command = f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"{script_path} && read -p 'Press Enter to exit.' && exit ; exec bash\""
-            elif flatpak_command:
-                # Falls ein Flatpak-Befehl angegeben wurde (für Heroic)
-                command = f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"{flatpak_command} && read -p 'Press Enter to exit.' && exit ; exec bash\""
 
-            subprocess.run(command, shell=True)
 
-        return run_installation  # Funktion zurückgeben, die die Installation durchführt
 
-    @staticmethod
-    def get_recommended_gaming(termf):
-        return {
-            "game_0": {
-                "Name": "Steam",
-                "Package": "DEB",
-                "Description": "Ein Tool zum Zocken",
-                "Icon": f"{application_path}/images/apps/steam_icon_36.png",
-                "Install": GameTabContent.install_game(termf, "install_steam"),  # Steam Installationsskript
-            },
-            "game_1": {
-                "Name": "Lutris",
-                "Package": "Debian-Paket",
-                "Description": "Bundle das Wine und Lutris installiert",
-                "Icon": f"{application_path}/images/apps/lutris_logo_36.png",
-                "Install": GameTabContent.install_game(termf, script_name="install_lutris"),  # Lutris Installationsskript
-            },
-            "game_2": {
-                "Name": "Heroic",
-                "Package": "Flatpak",
-                "Description": "Ein Tool zum Zocken",
-                "Icon": f"{application_path}/images/apps/heroic_icon_36.png",
-                "Install": GameTabContent.install_game(termf, flatpak_command="flatpak install flathub com.heroicgameslauncher.hgl -y"),  # Heroic mit Flatpak installieren
-            },
-            "game_3": {
-                "Name": "ProtonUp-Qt",
-                "Package": "Flatpak",
-                "Description": "Ein Tool zum Zocken",
-                "Icon": f"{application_path}/images/apps/proton_icon_36.png",
-                "Install": GameTabContent.install_game(termf, flatpak_command="flatpak install flathub net.davidotek.pupgui2 -y"),  # Heroic mit Flatpak installieren
-            },
-        }
 
 
 
@@ -152,75 +109,188 @@ class GamingPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
 
+        refresh_flatpak_installs()
+
+        self.games_btn0_icon = PhotoImage(
+            file=SoftwareGame.game_dict["game_0"]["Icon"]
+        )
+
+        self.games_btn1_icon = PhotoImage(
+            file=SoftwareGame.game_dict["game_1"]["Icon"]
+        )
+
+        self.games_btn2_icon = PhotoImage(
+            file=SoftwareGame.game_dict["game_2"]["Icon"]
+        )
+
+        self.games_btn3_icon = PhotoImage(
+            file=SoftwareGame.game_dict["game_3"]["Icon"]
+        )
+
+        self.games_btn4_icon = PhotoImage(
+            file=SoftwareGame.game_dict["game_4"]["Icon"]
+        )
+
         # Create the button frame first
         games_btn_frame = ttk.LabelFrame(self, text="Gaming Installer", padding=20)
         games_btn_frame.pack(pady=20, padx=20, fill="x")
+
+        games_btn_frame.grid_columnconfigure(0, weight=1)
+        games_btn_frame.grid_columnconfigure(1, weight=1)
+        games_btn_frame.grid_columnconfigure(2, weight=1)
+        games_btn_frame.grid_columnconfigure(3, weight=1)
+        games_btn_frame.grid_columnconfigure(4, weight=1)
+
+        def run_installation(game_key):
+            frame_width = self.termf.winfo_width()  # Größe des Frames holen
+            frame_height = self.termf.winfo_height()
+
+            # Falls ein Skript angegeben wurde (für Lutris)
+            script_path = SoftwareGame.game_dict[game_key]["Install"]
+            command = f"xterm -into {game_wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"{script_path} && sleep 3 && exit ; exec bash\""
+            
+            # Subprozess ausführen und Ergebnis prüfen
+            result = subprocess.run(command, shell=True)
+            
+            if result.returncode == 0:
+                # Erfolgreich abgeschlossen
+                messagebox.showinfo("Erfolg", "Installation erfolgreich abgeschlossen!")
+            else:
+                # Fehlgeschlagen
+                messagebox.showerror("Fehler", "Installation fehlgeschlagen.")
+
+            # Button Text ändern
+            self.gaming_inst_btn.config(text="Deinstallieren")
+            refresh_flatpak_installs()
+
+        def run_uninstall(game_key):
+            frame_width = self.termf.winfo_width()  # Größe des Frames holen
+            frame_height = self.termf.winfo_height()
+
+            # Falls ein Skript angegeben wurde (für Lutris)
+            script_path = SoftwareGame.game_dict[game_key]["Uninstall"]
+            command = f"xterm -into {game_wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"{script_path} && sleep 3 && exit ; exec bash\""
+            
+            # Subprozess ausführen und Ergebnis prüfen
+            result = subprocess.run(command, shell=True)
+            
+            if result.returncode == 0:
+                # Erfolgreich abgeschlossen
+                messagebox.showinfo("Erfolg", "Installation erfolgreich abgeschlossen!")
+            else:
+                # Fehlgeschlagen
+                messagebox.showerror("Fehler", "Installation fehlgeschlagen.")
+
+            # Button Text ändern
+            self.gaming_inst_btn.config(text="Installieren")
+            refresh_flatpak_installs()
+
+        def open_website(game_key):
+            path = SoftwareGame.game_dict[game_key]["Path"]
+            # Quotes added around the path
+            subprocess.run(f'xdg-open "{path}"', shell=True)
+
+
+        def game_btn_action(game_key):
+            # Den Namen des Spiels aus der SoftwareGame-Klasse holen
+            game_name = SoftwareGame.game_dict[game_key]["Name"]
+            game_pakage = SoftwareGame.game_dict[game_key]["Package"]
+            game_disc = SoftwareGame.game_dict[game_key]["Description"]
+            game_path = SoftwareGame.game_dict[game_key]["Path"]
+
+            self.gaming_name.config(text=f"Name: {game_name}")
+            self.gaming_pak.config(text=f"Paket: {game_pakage}")
+            self.gaming_desc.config(text=f"Beschreibung: {game_disc}")
+            
+            self.gaming_inst_btn.pack(anchor="w")
+            self.termf.pack(fill=tk.BOTH, expand=True, pady=50, padx=30)
+
+            if game_path in get_installed_apt_pkgs() or refresh_flatpak_installs():
+                print(refresh_flatpak_installs())
+                print(f"{game_name} is installed")
+                self.gaming_inst_btn.config(text="Deinstallieren",command=lambda:run_uninstall(game_key))
+            else:
+                print(f"{game_name} is not installed")
+                self.gaming_inst_btn.config(text="Installieren",command=lambda:run_installation(game_key))
+
+        game0_button = ttk.Button(
+            games_btn_frame,
+            text=SoftwareGame.game_dict["game_0"]["Name"],
+            image=self.games_btn0_icon,
+            command=lambda: game_btn_action("game_0"),
+            compound=tk.TOP,
+            style="Custom.TButton"
+        )
+        game0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
+
+        game1_button = ttk.Button(
+            games_btn_frame,
+            text=SoftwareGame.game_dict["game_1"]["Name"],
+            image=self.games_btn1_icon,
+            command=lambda: game_btn_action("game_1"),
+            compound=tk.TOP,
+            style="Custom.TButton"
+        )
+        game1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
+
+        game2_button = ttk.Button(
+            games_btn_frame,
+            text=SoftwareGame.game_dict["game_2"]["Name"],
+            image=self.games_btn2_icon,
+            command=lambda: game_btn_action("game_2"),
+            compound=tk.TOP,
+            style="Custom.TButton"
+        )
+        game2_button.grid(row=0, column=2, padx=5, pady=5, sticky="nesw")
+
+        game3_button = ttk.Button(
+            games_btn_frame,
+            text=SoftwareGame.game_dict["game_3"]["Name"],
+            image=self.games_btn3_icon,
+            command=lambda: game_btn_action("game_3"),
+            compound=tk.TOP,
+            style="Custom.TButton"
+        )
+        game3_button.grid(row=0, column=3, padx=5, pady=5, sticky="nesw")
+
+        game4_button = ttk.Button(
+            games_btn_frame,
+            text=SoftwareGame.game_dict["game_4"]["Name"],
+            image=self.games_btn4_icon,
+            command=lambda: open_website("game_4"),
+            compound=tk.TOP,
+            style="Custom.TButton"
+        )
+        game4_button.grid(row=0, column=4, padx=5, pady=5, sticky="nesw")
+        #print(SoftwareGame.game_dict)
 
         # Create the detail frame
         gams_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
         gams_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-        self.gaming_name = Label(gams_detail_frame, text="TEST")
+
+        self.gaming_name = Label(gams_detail_frame, text="")
         self.gaming_name.pack(anchor="w")
 
-        self.gaming_pak = Label(gams_detail_frame, text="TEST")
+        self.gaming_pak = Label(gams_detail_frame, text="")
         self.gaming_pak.pack(anchor="w")
 
-        self.gaming_desc = Label(gams_detail_frame, text="TEST")
+        self.gaming_desc = Label(gams_detail_frame, text="")
         self.gaming_desc.pack(anchor="w")
 
-        self.gaming_inst_btn = ttk.Button(gams_detail_frame, text="Install",style="Custom.TButton")
-        self.gaming_inst_btn.pack(anchor="w")
+        self.gaming_inst_btn = ttk.Button(gams_detail_frame, text="Install", style="Custom.TButton")
+        
 
         # Initialize termf and pack it below the install button
         self.termf = Frame(gams_detail_frame, highlightthickness=0, borderwidth=0)
-        self.termf.pack(fill=tk.BOTH, expand=True, pady=50, padx=30)
+        
+        global game_wid
+        game_wid = self.termf.winfo_id()
 
-        global wid
-        wid = self.termf.winfo_id()
 
-        # Get recommended gaming list
-        self.recommended_gaming = GameTabContent.get_recommended_gaming(self.termf)
 
-        # Load game icons
-        self.game0_icon = PhotoImage(file=self.recommended_gaming["game_0"]["Icon"])
-        self.game1_icon = PhotoImage(file=self.recommended_gaming["game_1"]["Icon"])
-        self.game2_icon = PhotoImage(file=self.recommended_gaming["game_2"]["Icon"])
-        self.game3_icon = PhotoImage(file=self.recommended_gaming["game_3"]["Icon"])
 
-        # Create game buttons
-        self.create_game_button(games_btn_frame, "game_0", 0)
-        self.create_game_button(games_btn_frame, "game_1", 1)
-        self.create_game_button(games_btn_frame, "game_2", 2)
-        self.create_game_button(games_btn_frame, "game_3", 3)
 
-    def create_game_button(self, frame, game_key, column):
-        game_data = self.recommended_gaming[game_key]
-        game_button = ttk.Button(
-            frame,
-            text=game_data["Name"],
-            image=self.get_game_icon(game_key),
-            command=lambda: self.update_game_details(game_data),
-            compound=tk.TOP,
-            style="Custom.TButton"
-        )
-        game_button.grid(row=0, column=column, padx=5, pady=5, sticky="nesw")
-
-    def get_game_icon(self, game_key):
-        if game_key == "game_0":
-            return self.game0_icon
-        elif game_key == "game_1":
-            return self.game1_icon
-        elif game_key == "game_2":
-            return self.game2_icon
-        elif game_key == "game_3":
-            return self.game3_icon
-
-    def update_game_details(self, game_data):
-        self.gaming_name.configure(text=game_data["Name"])
-        self.gaming_pak.configure(text=game_data["Package"])
-        self.gaming_desc.configure(text=game_data["Description"])
-        self.gaming_inst_btn.configure(command=game_data["Install"])
 
 
 

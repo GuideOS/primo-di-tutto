@@ -1,0 +1,34 @@
+[
+    {
+        "Name": "Steam",
+        "Package": "Debian-Paket",
+        "Description": "Ein Tool zum Zocken",
+        "Icon": "f{application_path}/images/apps/steam_icon_36.png}",
+        "Install": "",
+        "Path": "steam"
+    },
+    {
+        "Name": "Lutris",
+        "Package": "Debian-Paket",
+        "Description": "Bundle das Wine und Lutris installiert",
+        "Icon": "f{application_path}/images/apps/lutris_logo_36.png}",
+        "Install": "",
+        "Path": "lutris"
+    },
+    {
+        "Name": "Heroic",
+        "Package": "Flatpak",
+        "Description": "Ein Tool zum Zocken",
+        "Icon": "f{application_path}/images/apps/heroic_icon_36.png}",
+        "Install": "",
+        "Path": "com.heroicgameslauncher.hgl"
+    },
+    {
+        "Name": "ProtonUp-Qt",
+        "Package": "Flatpak",
+        "Description": "Ein Tool zum Zocken",
+        "Icon": "f{application_path}/images/apps/proton_icon_36.png}",
+        "Install": "",
+        "Path": "net.davidotek.pupgui2.desktop"
+    }
+]

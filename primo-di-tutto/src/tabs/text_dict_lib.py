@@ -1,241 +1,56 @@
-class OneClicks:
-    apt_one_click_dict = {
-        "Audacity": {
-            "Package": "audacity",
-            "Description": "Free, open-source, cross-platform audio software.",
-        },
-        "Bleach Bit": {
-            "Package": "bleachbit",
-            "Description": "Disk space cleaner, privacy manager, and system optimizer.",
-        },
-        "BPYTop": {
-            "Package": "bpytop",
-            "Description": "A Python-based resource monitor for Linux.",
-        },
-        "Gimp": {"Package": "gimp", "Description": "GNU Image Manipulation Program."},
-        "Gnome-Pie": {
-            "Package": "gnome-pie",
-            "Description": "A circular application launcher for Linux.",
-        },
-        "GParted": {
-            "Package": "gparted",
-            "Description": "GNOME Partition Editor for creating, reorganizing, and deleting disk partitions.",
-        },
-        "Guake": {
-            "Package": "guake",
-            "Description": "A dropdown terminal for GNOME desktop environment.",
-        },
-        "Kapman": {"Package": "kapman", "Description": "A Pac-Man clone for KDE."},
-        "Kodi": {
-            "Package": "kodi",
-            "Description": "An open-source media center and home theater software.",
-        },
-        "Libre Office": {
-            "Package": "libreoffice",
-            "Description": "A powerful office suite.",
-        },
-        "Nala": {
-            "Package": "nala",
-            "Description": "Nala is a front-end for libapt-pkg. Specifically we interface using the python-apt api.",
-        },
-        "Neofetch": {
-            "Package": "neofetch",
-            "Description": "A command-line system information tool.",
-        },
-        "MediathekView": {
-            "Package": "mediathekview",
-            "Description": "Stream-Betrachter für deutsche öffentliche Fernsehsender.Diese Anwendung durchsucht die verschiedenen Mediatheken des deutschsprachigen Fernsehens (ARD, ZDF, Arte, 3Sat, MDR, ORF, SRF und viele weitere). Sie können Sendungen anschauen, herunterladen und sogar abonnieren.",
-        },
-        "Pi Imager": {
-            "Package": "rpi-imager",
-            "Description": "Raspberry Pi Imaging utility.",
-        },
-        "Plank": {
-            "Package": "plank",
-            "Description": "A simple dock for Linux desktops.",
-        },
-        "Rhythmbox": {
-            "Package": "rhythmbox",
-            "Description": "An easy-to-use audio player and music management program.",
-        },
-        "Supertux": {
-            "Package": "supertux",
-            "Description": "A classic 2D jump'n run sidescroller game.",
-        },
-        "Supertuxkart": {
-            "Package": "supertuxkart",
-            "Description": "A kart racing game featuring Tux and friends.",
-        },
-        "Synaptic": {
-            "Package": "synaptic",
-            "Description": "Graphical package management program for apt-based systems.",
-        },
-        "Thunderbird": {
-            "Package": "thunderbird",
-            "Description": "A free and open-source email client.",
-        },
-        "Tilix": {
-            "Package": "tilix",
-            "Description": "A tiling terminal emulator for Linux.",
-        },
-        "Transmission": {
-            "Package": "transmission",
-            "Description": "A fast, easy, and free BitTorrent client.",
-        },
-        "Visual Studio Code": {
-            "Package": "code",
-            "Description": "A free source-code editor made by Microsoft for Windows, Linux, and macOS.",
-        },
-        "Xfce4 Screenshooter": {
-            "Package": "xfce4-screenshooter",
-            "Description": "A simple and lightweight screenshot tool for Xfce.",
-        },
-        "Gnome Software": {
-            "Package": "gnome-software",
-            "Description": "The default software manager for the GNOME desktop.",
-        },
+from resorcess import *
+
+class SoftwareGame:
+    game_dict = {
+            "game_0": {
+                "Name": "Steam",
+                "Package": "DEB",
+                "Description": "Ein Tool zum Zocken",
+                "Icon": f"{application_path}/images/apps/steam_icon_36.png",
+                "Install": "pkexec apt install steam -y",
+                "Uninnstall":  "pkexec apt remove steam -y",
+                "Path": "steam"
+            },
+            "game_1": {
+                "Name": "Lutris",
+                "Package": "Debian-Paket",
+                "Description": "Bundle das Wine und Lutris installiert",
+                "Icon": f"{application_path}/images/apps/lutris_logo_36.png",
+                "Install":  f"{application_path}/scripts/install_lutris",
+                "Uninnstall":  "pkexec apt remove lutris",
+                "Path": "lutris"
+            },
+            "game_2": {
+                "Name": "Heroic",
+                "Package": "Flatpak",
+                "Description": "Ein Tool zum Zocken",
+                "Icon": f"{application_path}/images/apps/heroic_icon_36.png",
+                "Install": "flatpak install flathub com.heroicgameslauncher.hgl -y",
+                "Uninstall": "flatpak remove com.heroicgameslauncher.hgl -y",
+                "Path": "com.heroicgameslauncher.hgl"
+            },
+            "game_3": {
+                "Name": "ProtonUp-Qt",
+                "Package": "Flatpak",
+                "Description": "Ein Tool zum Zocken",
+                "Icon": f"{application_path}/images/apps/proton_icon_36.png",
+                "Install": "flatpak install flathub net.davidotek.pupgui2 -y",
+                "Uninstall": "flatpak remove net.davidotek.pupgui2 -y",
+                "Path": "ProtonUp-Qt"
+            },
+            "game_4": {
+                "Name": "ProtonDB",
+                "Package": "Website",
+                "Description": "Ein Tool zum Zocken",
+                "Icon": f"{application_path}/images/apps/protondb_icon_36.png",
+                "Install":  "",
+                "Path": "https://www.protondb.com/"
+            },
     }
 
 
-class FlatpakOneClicks:
-    flatpak_one_click_dict = {
-        "Doom Runner": {
-            "Package": "io.github.Youda008.DoomRunner",
-            "Description": "Doom source port launcher and organizer.",
-        },
-        "EDuke32": {
-            "Package": "com.eduke32.EDuke32",
-            "Description": "Enhanced Duke Nukem 3D engine.",
-        },
-        "Ferdium": {
-            "Package": "org.ferdium.Ferdium",
-            "Description": "Privacy-focused web browser based on Chromium.",
-        },
-        "Flatseal": {
-            "Package": "com.github.tchx84.Flatseal",
-            "Description": "Tool to manage Flatpak app permissions.",
-        },
-        "Flatsweep": {
-            "Package": "io.github.giantpinkrobots.flatsweep",
-            "Description": "Sweep tool for cleaning up unused Flatpak runtimes and extensions.",
-        },
-        "FreeTube": {
-            "Package": "io.freetubeapp.FreeTube",
-            "Description": "Privacy-focused YouTube player.",
-        },
-        "GZDoom": {
-            "Package": "org.zdoom.GZDoom",
-            "Description": "Advanced source port of Doom.",
-        },
-        "NewsFlash": {
-            "Package": "io.gitlab.news_flash.NewsFlash",
-            "Description": "A modern feed reader.",
-        },
-        "Nextcloud Desktop": {
-            "Package": "com.nextcloud.desktopclient.nextcloud",
-            "Description": "Desktop sync client for Nextcloud.",
-        },
-        "Parabolic": {
-            "Package": "org.nickvision.tubeconverter",
-            "Description": "Graph drawing and plotting software.",
-        },
-        "ShortWave": {
-            "Package": "de.haeckerfelix.Shortwave",
-            "Description": "Internet radio player.",
-        },
-        "Space Cadet Pinball": {
-            "Package": "com.github.k4zmu2a.spacecadetpinball",
-            "Description": "Classic Space Cadet Pinball game.",
-        },
-        "Sublime Merge": {
-            "Package": "com.sublimemerge.App",
-            "Description": "Git client with a focus on speed and efficiency.",
-        },
-        "Telegram Desktop": {
-            "Package": "org.telegram.desktop",
-            "Description": "Official Telegram Desktop app.",
-        },
-        "Warpinator": {
-            "Package": "org.x.Warpinator",
-            "Description": "File transfer tool for local network.",
-        },
-        "WhatsApp": {
-            "Package": "com.github.eneshecan.WhatsAppForLinux",
-            "Description": "WhatsApp desktop client for Linux.",
-        },
-    }
 
 
-class PiAppsOneClicks:
-    piapps_one_click_dict = {
-        "Angry IP Scanner": {
-            "Package": "Angry IP scanner",
-            "Description": "Network scanning tool.",
-        },
-        "AnyDesk": {"Package": "AnyDesk", "Description": "Remote desktop software."},
-        "Audacious": {
-            "Package": "Audacious",
-            "Description": "Lightweight and feature-rich audio player.",
-        },
-        "BalenaEtcher": {
-            "Package": "BalenaEtcher",
-            "Description": "Open-source SD card burner.",
-        },
-        "Brave Browser": {
-            "Package": "Brave",
-            "Description": "Privacy-focused web browser.",
-        },
-        "Filezilla": {
-            "Package": "Filezilla",
-            "Description": "FTP client for file transfer.",
-        },
-        "Flameshot": {
-            "Package": "Flameshot",
-            "Description": "Powerful screenshot tool.",
-        },
-        "FreeTube": {
-            "Package": "FreeTube",
-            "Description": "Privacy-focused YouTube player.",
-        },
-        "Fritzing": {
-            "Package": "Fritzing",
-            "Description": "Electronic design automation software.",
-        },
-        "Lightpad": {"Package": "Lightpad", "Description": "Lightweight text editor."},
-        "Nemo": {
-            "Package": "Nemo",
-            "Description": "File manager for Cinnamon desktop.",
-        },
-        "Pi Power Tools": {
-            "Package": "Pi Power Tools",
-            "Description": "Set of tools for managing Raspberry Pi.",
-        },
-        "Steam": {
-            "Package": "Steam",
-            "Description": "Digital distribution platform for video games.",
-        },
-        "Ulauncher": {
-            "Package": "Ulauncher",
-            "Description": "Application launcher for Linux.",
-        },
-        "Web Apps": {
-            "Package": "Web Apps",
-            "Description": "Tool to manage web applications.",
-        },
-        "YouTubuddy": {
-            "Package": "YouTubuddy",
-            "Description": "YouTube video downloader.",
-        },
-        "Webcord": {"Package": "Webcord", "Description": "Discord client for the web."},
-        "PPSSPP": {
-            "Package": "PPSSPP (PSP emulator)",
-            "Description": "PSP emulator for multiple platforms.",
-        },
-        "More RAM": {
-            "Package": "More RAM",
-            "Description": "Tool to optimize and manage RAM usage.",
-        },
-    }
 
 
 class Update_Tab_Buttons:
