@@ -95,9 +95,6 @@ class EduPanel(tk.Frame):
             e_mass = Error_Mass(self)
             e_mass.grab_set()
 
-
-
-
 class GamingPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
@@ -133,7 +130,6 @@ class GamingPanel(tk.Frame):
         games_btn_frame.grid_columnconfigure(2, weight=1)
         games_btn_frame.grid_columnconfigure(3, weight=1)
         games_btn_frame.grid_columnconfigure(4, weight=1)
-###########################################################################
 
         def run_installation(game_key):
             #hide_apt_frame()
@@ -144,8 +140,9 @@ class GamingPanel(tk.Frame):
             custom_installer.do_task(
                 pigro_skript_task, pigro_skript_task_app, pigro_skript
             )
-            self.gaming_inst_btn.config(text="Deinstallieren")
             self.master.wait_window(custom_installer)
+            self.gaming_inst_btn.config(text="Deinstallieren")
+            
             refresh_status(game_key)
 
         def run_uninstall(game_key):
@@ -158,10 +155,11 @@ class GamingPanel(tk.Frame):
             custom_installer.do_task(
                 pigro_skript_task, pigro_skript_task_app, pigro_skript
             )
-            self.gaming_inst_btn.config(text="Installieren")
             self.master.wait_window(custom_installer)
+            self.gaming_inst_btn.config(text="Installieren")
+            
             refresh_status(game_key)
-###########################################################################
+
         def open_website(game_key):
             path = SoftwareGame.game_dict[game_key]["Path"]
             # Quotes added around the path
@@ -178,14 +176,14 @@ class GamingPanel(tk.Frame):
             # Flatpak-Installationen abrufen und prüfen, ob der `game_path` in den Werten vorhanden ist
             flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
             installed_flatpak = game_path in flatpak_installs.values()
-
+            #self.master.wait_window(custom_installer)
             # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
             if installed_apt or installed_flatpak:
                 print(f"{game_name} is installed")
-                self.gaming_inst_btn.config(text="Deinstallieren", command=lambda: run_uninstall(game_key))
+                self.gaming_inst_btn.config(text="Deinstallieren", command=lambda: run_uninstall(game_key),style='Red.TButton')
             else:
                 print(f"{game_name} is not installed")
-                self.gaming_inst_btn.config(text="Installieren", command=lambda: run_installation(game_key))
+                self.gaming_inst_btn.config(text="Installieren", command=lambda: run_installation(game_key),style='Green.TButton')
 
 
         def game_btn_action(game_key):
@@ -289,23 +287,13 @@ class GamingPanel(tk.Frame):
         global game_wid
         game_wid = self.termf.winfo_id()
 
-
-
-
-
-
-
-
-
-
-
 class Custom_Installer(tk.Toplevel):
     """child window that makes the the install process graphicle"""
 
     def __init__(self, parent):
         super().__init__(parent)
-        self["background"] = maincolor
-        self.icon = tk.PhotoImage(file=f"{application_path}/images/icons/logo.png")
+        #self["background"] = maincolor
+        self.icon = tk.PhotoImage(file="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png")
         self.tk.call("wm", "iconphoto", self._w, self.icon)
         self.resizable(0, 0)
         cust_app_width = 700
@@ -316,9 +304,9 @@ class Custom_Installer(tk.Toplevel):
         y = (screen_height / 2) - (cust_app_height / 2)
         self.geometry(f"{cust_app_width}x{cust_app_height}+{int(x)}+{int(y)}")
         self.title("Software Manager")
-        self.configure(bg=maincolor)
+        #self.configure(bg=maincolor)
 
-        self.installer_main_frame = Frame(self, background=maincolor)
+        self.installer_main_frame = Frame(self,)
         self.installer_main_frame.pack(padx=20, pady=20, fill="both", expand=True)
         self.installer_main_frame.columnconfigure(1, weight=1)
         self.installer_main_frame.rowconfigure(0, weight=0)
@@ -334,7 +322,7 @@ class Custom_Installer(tk.Toplevel):
         )
 
         self.icon_label = tk.Label(
-            self.installer_main_frame, image=self.boot_log_icon, bg=maincolor
+            self.installer_main_frame, image=self.boot_log_icon, #bg=maincolor
         )
 
         self.icon_label.grid(row=0, rowspan=3, column=0, sticky="w", padx=10, pady=10)
@@ -342,8 +330,8 @@ class Custom_Installer(tk.Toplevel):
             self.installer_main_frame,
             text="",
             font=("Helvetica", 16),
-            bg=maincolor,
-            fg=label_frame_color,
+            #bg=maincolor,
+            #fg=label_frame_color,
             justify="left",
             anchor="w",
         )
@@ -352,33 +340,34 @@ class Custom_Installer(tk.Toplevel):
             self.installer_main_frame,
             text="",
             font=("Helvetica", 16),
-            bg=maincolor,
-            fg=main_font,
+            #bg=maincolor,
+            #fg=main_font,
             justify="left",
             anchor="w",
         )
         self.done_label2.grid(row=1, column=1, sticky="nw")
         self.text = tk.Text(
             self.installer_main_frame,
-            bg=maincolor,
-            fg=main_font,
+            #bg=maincolor,
+            #fg=main_font,
             height=1,
             borderwidth=0,
             highlightthickness=0,
-            highlightcolor=main_font,
+            #highlightcolor=main_font,
         )
 
         self.text.grid(row=2, column=1, columnspan=3, sticky="ew")
 
-        self.install_button = tk.Button(
+        self.install_button = ttk.Button(
             self.installer_main_frame,
             text="Close",
             command=self.close_btn_command,
-            borderwidth=0,
-            highlightthickness=0,
-            background=ext_btn,
-            foreground=ext_btn_font,
+            #borderwidth=0,
+            #highlightthickness=0,
+            #background=ext_btn,
+            #foreground=ext_btn_font,
             state=DISABLED,
+            style='Accent.TButton'
         )
         self.install_button.grid(row=3, column=2, sticky="e", pady=10)
         self.grab_set()
