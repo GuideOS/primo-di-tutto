@@ -98,18 +98,11 @@ class EduPanel(tk.Frame):
 
 
 
-
-
-
-
-
-
-
 class GamingPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
-
-        refresh_flatpak_installs()
+        self.update_interval = 1000
+        #refresh_flatpak_installs()
 
         self.games_btn0_icon = PhotoImage(
             file=SoftwareGame.game_dict["game_0"]["Icon"]
@@ -140,55 +133,59 @@ class GamingPanel(tk.Frame):
         games_btn_frame.grid_columnconfigure(2, weight=1)
         games_btn_frame.grid_columnconfigure(3, weight=1)
         games_btn_frame.grid_columnconfigure(4, weight=1)
+###########################################################################
 
         def run_installation(game_key):
-            frame_width = self.termf.winfo_width()  # Größe des Frames holen
-            frame_height = self.termf.winfo_height()
-
-            # Falls ein Skript angegeben wurde (für Lutris)
-            script_path = SoftwareGame.game_dict[game_key]["Install"]
-            command = f"xterm -into {game_wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"{script_path} && sleep 3 && exit ; exec bash\""
-            
-            # Subprozess ausführen und Ergebnis prüfen
-            result = subprocess.run(command, shell=True)
-            
-            if result.returncode == 0:
-                # Erfolgreich abgeschlossen
-                messagebox.showinfo("Erfolg", "Installation erfolgreich abgeschlossen!")
-            else:
-                # Fehlgeschlagen
-                messagebox.showerror("Fehler", "Installation fehlgeschlagen.")
-
-            # Button Text ändern
+            #hide_apt_frame()
+            pigro_skript_task = "Installing ..."
+            pigro_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
+            pigro_skript = SoftwareGame.game_dict[game_key]["Install"]
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                pigro_skript_task, pigro_skript_task_app, pigro_skript
+            )
             self.gaming_inst_btn.config(text="Deinstallieren")
-            refresh_flatpak_installs()
+            self.master.wait_window(custom_installer)
+            refresh_status(game_key)
 
         def run_uninstall(game_key):
-            frame_width = self.termf.winfo_width()  # Größe des Frames holen
-            frame_height = self.termf.winfo_height()
+            #hide_apt_frame()
+            pigro_skript_task = "Removing From System"
+            pigro_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
+            pigro_skript = SoftwareGame.game_dict[game_key]["Uninstall"]
 
-            # Falls ein Skript angegeben wurde (für Lutris)
-            script_path = SoftwareGame.game_dict[game_key]["Uninstall"]
-            command = f"xterm -into {game_wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e \"{script_path} && sleep 3 && exit ; exec bash\""
-            
-            # Subprozess ausführen und Ergebnis prüfen
-            result = subprocess.run(command, shell=True)
-            
-            if result.returncode == 0:
-                # Erfolgreich abgeschlossen
-                messagebox.showinfo("Erfolg", "Installation erfolgreich abgeschlossen!")
-            else:
-                # Fehlgeschlagen
-                messagebox.showerror("Fehler", "Installation fehlgeschlagen.")
-
-            # Button Text ändern
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                pigro_skript_task, pigro_skript_task_app, pigro_skript
+            )
             self.gaming_inst_btn.config(text="Installieren")
-            refresh_flatpak_installs()
-
+            self.master.wait_window(custom_installer)
+            refresh_status(game_key)
+###########################################################################
         def open_website(game_key):
             path = SoftwareGame.game_dict[game_key]["Path"]
             # Quotes added around the path
             subprocess.run(f'xdg-open "{path}"', shell=True)
+
+        def refresh_status(game_key):
+            game_name = SoftwareGame.game_dict[game_key]["Name"]
+            game_pakage = SoftwareGame.game_dict[game_key]["Package"]
+            game_disc = SoftwareGame.game_dict[game_key]["Description"]
+            game_path = SoftwareGame.game_dict[game_key]["Path"]
+            # APT-Pakete und Flatpak-Installationen überprüfen
+            installed_apt = game_path in get_installed_apt_pkgs()
+
+            # Flatpak-Installationen abrufen und prüfen, ob der `game_path` in den Werten vorhanden ist
+            flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
+            installed_flatpak = game_path in flatpak_installs.values()
+
+            # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
+            if installed_apt or installed_flatpak:
+                print(f"{game_name} is installed")
+                self.gaming_inst_btn.config(text="Deinstallieren", command=lambda: run_uninstall(game_key))
+            else:
+                print(f"{game_name} is not installed")
+                self.gaming_inst_btn.config(text="Installieren", command=lambda: run_installation(game_key))
 
 
         def game_btn_action(game_key):
@@ -197,21 +194,23 @@ class GamingPanel(tk.Frame):
             game_pakage = SoftwareGame.game_dict[game_key]["Package"]
             game_disc = SoftwareGame.game_dict[game_key]["Description"]
             game_path = SoftwareGame.game_dict[game_key]["Path"]
+            game_thumb = SoftwareGame.game_dict[game_key]["Thumbnail"]
+
+            self.games_thumb = PhotoImage(file=game_thumb)
 
             self.gaming_name.config(text=f"Name: {game_name}")
             self.gaming_pak.config(text=f"Paket: {game_pakage}")
             self.gaming_desc.config(text=f"Beschreibung: {game_disc}")
             
-            self.gaming_inst_btn.pack(anchor="w")
-            self.termf.pack(fill=tk.BOTH, expand=True, pady=50, padx=30)
+            self.gaming_inst_btn.grid(column=1,row=0,rowspan=2,sticky="e")
+            self.termf.grid(column=0,columnspan=2,row=3)
+            self.thumb_lbl.configure(image=self.games_thumb)
+            self.thumb_lbl.pack()
 
-            if game_path in get_installed_apt_pkgs() or refresh_flatpak_installs():
-                print(refresh_flatpak_installs())
-                print(f"{game_name} is installed")
-                self.gaming_inst_btn.config(text="Deinstallieren",command=lambda:run_uninstall(game_key))
-            else:
-                print(f"{game_name} is not installed")
-                self.gaming_inst_btn.config(text="Installieren",command=lambda:run_installation(game_key))
+            #print(get_installed_apt_pkgs())
+            refresh_status(game_key)
+
+
 
         game0_button = ttk.Button(
             games_btn_frame,
@@ -268,25 +267,27 @@ class GamingPanel(tk.Frame):
         gams_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
         gams_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
+        gams_detail_frame.grid_columnconfigure(0, weight=1)
+        gams_detail_frame.grid_columnconfigure(1, weight=1)
+        gams_detail_frame.grid_rowconfigure(3, weight=1)
 
-        self.gaming_name = Label(gams_detail_frame, text="")
-        self.gaming_name.pack(anchor="w")
+        self.gaming_name = Label(gams_detail_frame, text="",justify="left",anchor="w")
+        self.gaming_name.grid(column=0,row=0,sticky="ew")
 
-        self.gaming_pak = Label(gams_detail_frame, text="")
-        self.gaming_pak.pack(anchor="w")
-
-        self.gaming_desc = Label(gams_detail_frame, text="")
-        self.gaming_desc.pack(anchor="w")
+        self.gaming_pak = Label(gams_detail_frame, text="",justify="left",anchor="w")
+        self.gaming_pak.grid(column=0,row=1,sticky="ew")
+        self.gaming_desc = Label(gams_detail_frame, text="",justify="left",anchor="w",wraplength=600)
+        self.gaming_desc.grid(column=0,row=2,sticky="ew")
 
         self.gaming_inst_btn = ttk.Button(gams_detail_frame, text="Install", style="Custom.TButton")
         
 
         # Initialize termf and pack it below the install button
-        self.termf = Frame(gams_detail_frame, highlightthickness=0, borderwidth=0)
+        self.termf = Frame(gams_detail_frame,)
+        self.thumb_lbl = Label(self.termf)
         
         global game_wid
         game_wid = self.termf.winfo_id()
-
 
 
 
@@ -386,8 +387,7 @@ class Custom_Installer(tk.Toplevel):
     def do_task(self, task_label, task_app_label, task_script):
         self.done_label.config(text=task_label)
         self.done_label2.config(text=task_app_label)
-        process = Popen(task_script, stdout=PIPE, stderr=PIPE, text=True)
-
+        process = Popen(task_script.split(), stdout=PIPE, stderr=PIPE, text=True)
         self.thread = Thread(target=self.run_update_output, args=(process, task_label))
         self.thread.start()
 
@@ -414,6 +414,8 @@ class Custom_Installer(tk.Toplevel):
 
     def close_btn_command(self):
         Custom_Installer.destroy(self)
+
+
 
     def on_thread_finished(self):
         print("Thread beendet")

@@ -5,19 +5,21 @@ class SoftwareGame:
             "game_0": {
                 "Name": "Steam",
                 "Package": "DEB",
-                "Description": "Ein Tool zum Zocken",
+                "Description": "Steam ist ein Programm zum herunterladen, kaufen und spielen von Games unter Linux ",
                 "Icon": f"{application_path}/images/apps/steam_icon_36.png",
-                "Install": "pkexec apt install steam -y",
-                "Uninnstall":  "pkexec apt remove steam -y",
-                "Path": "steam"
+                "Thumbnail": f"{application_path}/images/apps/soft-steam-thumb.png",
+                "Install": "pkexec apt install neofetch -y",
+                "Uninstall":  "pkexec apt remove neofetch -y",
+                "Path": "neofetch"
             },
             "game_1": {
                 "Name": "Lutris",
                 "Package": "Debian-Paket",
                 "Description": "Bundle das Wine und Lutris installiert",
                 "Icon": f"{application_path}/images/apps/lutris_logo_36.png",
+                "Thumbnail": f"{application_path}/images/apps/soft-lutris-thumb.png",
                 "Install":  f"{application_path}/scripts/install_lutris",
-                "Uninnstall":  "pkexec apt remove lutris",
+                "Uninstall":  "pkexec apt remove lutris",
                 "Path": "lutris"
             },
             "game_2": {
@@ -26,6 +28,7 @@ class SoftwareGame:
                 "Description": "Ein Tool zum Zocken",
                 "Icon": f"{application_path}/images/apps/heroic_icon_36.png",
                 "Install": "flatpak install flathub com.heroicgameslauncher.hgl -y",
+                "Thumbnail": f"{application_path}/images/apps/soft-steam-thumb.png",
                 "Uninstall": "flatpak remove com.heroicgameslauncher.hgl -y",
                 "Path": "com.heroicgameslauncher.hgl"
             },
@@ -34,6 +37,7 @@ class SoftwareGame:
                 "Package": "Flatpak",
                 "Description": "Ein Tool zum Zocken",
                 "Icon": f"{application_path}/images/apps/proton_icon_36.png",
+                "Thumbnail": f"{application_path}/images/apps/soft-protonqt-thumb.png",
                 "Install": "flatpak install flathub net.davidotek.pupgui2 -y",
                 "Uninstall": "flatpak remove net.davidotek.pupgui2 -y",
                 "Path": "ProtonUp-Qt"
