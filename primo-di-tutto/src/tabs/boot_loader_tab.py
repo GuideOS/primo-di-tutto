@@ -53,7 +53,7 @@ class BootLoaderTab(ttk.Frame):
                     return int(timeout_value)
                 elif timeout_style == 'menu':
                     print("GRUB_TIMEOUT_STYLE ist auf 'menu' gesetzt. Verwende den Timeout-Wert dennoch.")
-                    return 11  # Verwende den GRUB_TIMEOUT-Wert aus der Datei, wenn das Menü aktiv ist
+                    return 11  
                 else:
                     print("GRUB_TIMEOUT_STYLE oder GRUB_TIMEOUT fehlen oder sind ungültig.")
                 
@@ -62,7 +62,7 @@ class BootLoaderTab(ttk.Frame):
             except Exception as e:
                 print(f"Ein Fehler ist aufgetreten: {e}")
 
-            return 6  # Standardwert, falls kein Timeout gefunden wird
+            return 6  
 
         def get_grub_timeout_style():
             grub_config_path = '/etc/default/grub'
@@ -77,7 +77,7 @@ class BootLoaderTab(ttk.Frame):
             except Exception as e:
                 print(f"Ein Fehler ist aufgetreten: {e}")
             
-            return 'menu'  # Standardwert, falls keine Einstellung gefunden wird
+            return 'menu'  
 
         def set_grub_timeout(timeout):
             grub_config_path = '/etc/default/grub'
@@ -86,10 +86,10 @@ class BootLoaderTab(ttk.Frame):
             try:
                 result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 print(f"GRUB-Timeout erfolgreich auf {timeout} gesetzt.")
-                print(result.stdout.decode('utf-8'))  # Ausgabe anzeigen
+                print(result.stdout.decode('utf-8'))  
             except subprocess.CalledProcessError as e:
                 print(f"Fehler beim Setzen des GRUB-Timeout: {e}")
-                print(e.stderr.decode('utf-8'))  # Fehlerausgabe anzeigen
+                print(e.stderr.decode('utf-8'))  
 
         def set_grub_timeout_style(style):
             grub_config_path = '/etc/default/grub'
@@ -98,14 +98,14 @@ class BootLoaderTab(ttk.Frame):
             try:
                 result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 print(f"GRUB_TIMEOUT_STYLE erfolgreich auf {style} gesetzt.")
-                print(result.stdout.decode('utf-8'))  # Ausgabe anzeigen
+                print(result.stdout.decode('utf-8'))  
             except subprocess.CalledProcessError as e:
                 print(f"Fehler beim Setzen des GRUB_TIMEOUT_STYLE: {e}")
-                print(e.stderr.decode('utf-8'))  # Fehlerausgabe anzeigen
+                print(e.stderr.decode('utf-8'))  
 
         def update_grub_timeout():
             try:
-                timeout = int(spinbox.get())
+                timeout = int(grub_timeout_spinbox.get())
                 if timeout < 0:
                     raise ValueError("Das Timeout darf nicht negativ sein.")
                 set_grub_timeout(timeout)
@@ -113,7 +113,7 @@ class BootLoaderTab(ttk.Frame):
                 print(f"Ungültige Eingabe: {ve}")
 
         def update_grub_menu():
-            if toggle_var.get() == 1:
+            if grub_state_toggle_var.get() == 1:
                 set_grub_timeout_style("menu")
             else:
                 set_grub_timeout_style("hidden")
@@ -151,41 +151,35 @@ class BootLoaderTab(ttk.Frame):
         self.recover_frame.rowconfigure(0, weight=1)
 
 
-        label = ttk.Label(self.recover_frame, text="Boot-Menü aktivieren",)
-        label.grid(row=0,column=0,sticky="ew")
+        grub_state_label = ttk.Label(self.recover_frame, text="Boot-Menü aktivieren",)
+        grub_state_label.grid(row=0,column=0,sticky="ew")
 
-        # Toggle-Schalter für Boot-Menü
-        toggle_var = tk.IntVar()
+        grub_state_toggle_var = tk.IntVar()
         current_style = get_grub_timeout_style()
         if current_style == "menu":
-            toggle_var.set(1)
+            grub_state_toggle_var.set(1)
         else:
-            toggle_var.set(0)
+            grub_state_toggle_var.set(0)
 
-        toggle = ttk.Checkbutton(self.recover_frame, style='Switch.TCheckbutton',  variable=toggle_var, command=update_grub_menu)
-        toggle.grid(row=0,column=2)
+        grub_state_toggle = ttk.Checkbutton(self.recover_frame, style='Switch.TCheckbutton',  variable=grub_state_toggle_var, command=update_grub_menu)
+        grub_state_toggle.grid(row=0,column=2)
 
 
-        # Label erstellen
-        label = ttk.Label(self.recover_frame, text="GRUB Timeout setzen")
-        label.grid(row=1,column=0,sticky="ew")
+        grub_timeout_label = ttk.Label(self.recover_frame, text="GRUB Timeout setzen")
+        grub_timeout_label.grid(row=1,column=0,sticky="ew")
 
-        # Timeout auslesen
         default_timeout = get_grub_timeout()
 
-        # Spinbox erstellen
-        spinbox = ttk.Spinbox(self.recover_frame, from_=6, to=60, increment=1)
-        spinbox.set(default_timeout)
-        spinbox.grid(row=1,column=1,padx=5,pady=5, sticky="ew")
+        grub_timeout_spinbox = ttk.Spinbox(self.recover_frame, from_=6, to=60, increment=1)
+        grub_timeout_spinbox.set(default_timeout)
+        grub_timeout_spinbox.grid(row=1,column=1,padx=5,pady=5, sticky="ew")
 
-        # Button zum Aktualisieren des GRUB-Timeouts
-        button = ttk.Button(self.recover_frame, text="Auswählen", command=update_grub_timeout)
-        button.grid(row=1,column=2)
+        grub_timeout_button = ttk.Button(self.recover_frame, text="Auswählen", command=update_grub_timeout)
+        grub_timeout_button.grid(row=1,column=2)
 
 
 
 
-        # Funktion, um den aktuellen GRUB_GFXMODE-Wert auszulesen
         def get_grub_gfxmode():
             grub_config_path = '/etc/default/grub'
             gfxmode = None
@@ -201,11 +195,11 @@ class BootLoaderTab(ttk.Frame):
                             gfxmode = line.split('=')[1].strip().strip('"')
 
                 if gfxmode:
-                    return gfxmode  # Aktiver Wert wird zurückgegeben
+                    return gfxmode  
                 elif gfxmode_commented:
-                    return "Standardwert"  # Auskommentierter Wert wird als "Standardwert" behandelt
+                    return "Standardwert"  
                 else:
-                    return "Standardwert"  # Falls nicht vorhanden, Standardwert zurückgeben
+                    return "Standardwert"  
             
             except FileNotFoundError:
                 print("Die GRUB-Konfigurationsdatei wurde nicht gefunden.")
@@ -214,48 +208,39 @@ class BootLoaderTab(ttk.Frame):
             
             return "Standardwert"
 
-        # Funktion, um GRUB_GFXMODE zu setzen
         def set_grub_gfxmode(resolution):
             grub_config_path = '/etc/default/grub'
             
             if resolution == "Standardwert":
-                # Wenn "Standardwert" ausgewählt ist, kommentiere GRUB_GFXMODE aus
                 command = f"pkexec bash -c 'sed -i \"s/^GRUB_GFXMODE=.*/#GRUB_GFXMODE=640x480/\" {grub_config_path} && update-grub'"
             else:
-                # Setze die ausgewählte Auflösung als GRUB_GFXMODE
                 command = f"pkexec bash -c 'sed -i \"s/^#\\?GRUB_GFXMODE=.*/GRUB_GFXMODE={resolution}/\" {grub_config_path} && update-grub'"
 
             try:
                 result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 print(f"GRUB GFXMODE erfolgreich auf {resolution} gesetzt.")
-                print(result.stdout.decode('utf-8'))  # Ausgabe anzeigen
+                print(result.stdout.decode('utf-8'))  
             except subprocess.CalledProcessError as e:
                 print(f"Fehler beim Setzen des GRUB GFXMODE: {e}")
-                print(e.stderr.decode('utf-8'))  # Fehlerausgabe anzeigen
+                print(e.stderr.decode('utf-8'))  
 
-        # Funktion, um die aktuelle Auflösung zu speichern
         def update_gfxmode():
-            resolution = combobox.get()
+            resolution = grub_res_combobox.get()
             set_grub_gfxmode(resolution)
 
 
-        # Label für die Auflösung
-        label = ttk.Label(self.recover_frame, text="GRUB Auflösung setzen")
-        label.grid(row=2,column=0,sticky="ew")
+        grub_res_label = ttk.Label(self.recover_frame, text="GRUB Auflösung setzen")
+        grub_res_label.grid(row=2,column=0,sticky="ew")
 
-        # Gängige Bildschirmauflösungen für GRUB
         resolutions = ["640x480", "800x600", "1024x768", "1280x1024", "1600x1200", "1920x1080", "2560x1440", "Standardwert"]
 
-        # Combobox erstellen
-        combobox = ttk.Combobox(self.recover_frame, values=resolutions, state="readonly")
+        grub_res_combobox = ttk.Combobox(self.recover_frame, values=resolutions, state="readonly")
 
-        # Aktuellen GRUB_GFXMODE auslesen und in die Combobox setzen
         current_gfxmode = get_grub_gfxmode()
-        combobox.set(current_gfxmode)
-        combobox.grid(row=2,column=1,sticky="ew",padx=5,pady=5)
+        grub_res_combobox.set(current_gfxmode)
+        grub_res_combobox.grid(row=2,column=1,sticky="ew",padx=5,pady=5)
 
-        # Button zum Anwenden der Auflösung
-        button = ttk.Button(self.recover_frame, text="Auswählen", command=update_gfxmode)
-        button.grid(row=2,column=2,sticky="ew")
+        grub_res_button = ttk.Button(self.recover_frame, text="Auswählen", command=update_gfxmode)
+        grub_res_button.grid(row=2,column=2,sticky="ew")
 
 
