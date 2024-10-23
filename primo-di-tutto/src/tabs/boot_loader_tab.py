@@ -167,19 +167,95 @@ class BootLoaderTab(ttk.Frame):
 
 
         # Label erstellen
-        label = ttk.Label(self.recover_frame, text="GRUB Timeout:")
+        label = ttk.Label(self.recover_frame, text="GRUB Timeout setzen")
         label.grid(row=1,column=0,sticky="ew")
 
         # Timeout auslesen
         default_timeout = get_grub_timeout()
 
         # Spinbox erstellen
-        spinbox = ttk.Spinbox(self.recover_frame, from_=6, to=60, increment=1, width=5)
+        spinbox = ttk.Spinbox(self.recover_frame, from_=6, to=60, increment=1)
         spinbox.set(default_timeout)
-        spinbox.grid(row=1,column=1,padx=5,pady=10)
+        spinbox.grid(row=1,column=1,padx=5,pady=5, sticky="ew")
 
         # Button zum Aktualisieren des GRUB-Timeouts
-        button = ttk.Button(self.recover_frame, text="Timeout setzen", command=update_grub_timeout)
+        button = ttk.Button(self.recover_frame, text="Auswählen", command=update_grub_timeout)
         button.grid(row=1,column=2)
+
+
+
+
+        # Funktion, um den aktuellen GRUB_GFXMODE-Wert auszulesen
+        def get_grub_gfxmode():
+            grub_config_path = '/etc/default/grub'
+            gfxmode = None
+            gfxmode_commented = None
+            
+            try:
+                with open(grub_config_path, 'r') as file:
+                    for line in file:
+                        line = line.strip()
+                        if line.startswith('#GRUB_GFXMODE'):
+                            gfxmode_commented = line.split('=')[1].strip().strip('"')
+                        elif line.startswith('GRUB_GFXMODE'):
+                            gfxmode = line.split('=')[1].strip().strip('"')
+
+                if gfxmode:
+                    return gfxmode  # Aktiver Wert wird zurückgegeben
+                elif gfxmode_commented:
+                    return "Standardwert"  # Auskommentierter Wert wird als "Standardwert" behandelt
+                else:
+                    return "Standardwert"  # Falls nicht vorhanden, Standardwert zurückgeben
+            
+            except FileNotFoundError:
+                print("Die GRUB-Konfigurationsdatei wurde nicht gefunden.")
+            except Exception as e:
+                print(f"Ein Fehler ist aufgetreten: {e}")
+            
+            return "Standardwert"
+
+        # Funktion, um GRUB_GFXMODE zu setzen
+        def set_grub_gfxmode(resolution):
+            grub_config_path = '/etc/default/grub'
+            
+            if resolution == "Standardwert":
+                # Wenn "Standardwert" ausgewählt ist, kommentiere GRUB_GFXMODE aus
+                command = f"pkexec bash -c 'sed -i \"s/^GRUB_GFXMODE=.*/#GRUB_GFXMODE=640x480/\" {grub_config_path} && update-grub'"
+            else:
+                # Setze die ausgewählte Auflösung als GRUB_GFXMODE
+                command = f"pkexec bash -c 'sed -i \"s/^#\\?GRUB_GFXMODE=.*/GRUB_GFXMODE={resolution}/\" {grub_config_path} && update-grub'"
+
+            try:
+                result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                print(f"GRUB GFXMODE erfolgreich auf {resolution} gesetzt.")
+                print(result.stdout.decode('utf-8'))  # Ausgabe anzeigen
+            except subprocess.CalledProcessError as e:
+                print(f"Fehler beim Setzen des GRUB GFXMODE: {e}")
+                print(e.stderr.decode('utf-8'))  # Fehlerausgabe anzeigen
+
+        # Funktion, um die aktuelle Auflösung zu speichern
+        def update_gfxmode():
+            resolution = combobox.get()
+            set_grub_gfxmode(resolution)
+
+
+        # Label für die Auflösung
+        label = ttk.Label(self.recover_frame, text="GRUB Auflösung setzen")
+        label.grid(row=2,column=0,sticky="ew")
+
+        # Gängige Bildschirmauflösungen für GRUB
+        resolutions = ["640x480", "800x600", "1024x768", "1280x1024", "1600x1200", "1920x1080", "2560x1440", "Standardwert"]
+
+        # Combobox erstellen
+        combobox = ttk.Combobox(self.recover_frame, values=resolutions, state="readonly")
+
+        # Aktuellen GRUB_GFXMODE auslesen und in die Combobox setzen
+        current_gfxmode = get_grub_gfxmode()
+        combobox.set(current_gfxmode)
+        combobox.grid(row=2,column=1,sticky="ew",padx=5,pady=5)
+
+        # Button zum Anwenden der Auflösung
+        button = ttk.Button(self.recover_frame, text="Auswählen", command=update_gfxmode)
+        button.grid(row=2,column=2,sticky="ew")
 
 
