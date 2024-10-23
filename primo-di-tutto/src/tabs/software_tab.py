@@ -36,11 +36,12 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook = ttk.Notebook(self)
         self.inst_notebook.pack(fill=BOTH, expand=True)
 
+        browser_frame = ttk.Frame(self.inst_notebook)
         office_frame = ttk.Frame(self.inst_notebook)
         edu_frame = ttk.Frame(self.inst_notebook)
         gaming_frame = ttk.Frame(self.inst_notebook)
 
-
+        browser_frame.pack(fill="both", expand=True)
         office_frame.pack(fill="both", expand=True)
         edu_frame.pack(fill="both", expand=True)
         gaming_frame.pack(fill="both", expand=True)
@@ -52,12 +53,15 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook.add(
             edu_frame, compound=LEFT, text="Bildbearbeitung"
         )
-
+        self.inst_notebook.add(
+            browser_frame, compound=LEFT, text="Browser"
+        )
         self.inst_notebook.add(
             gaming_frame, compound=LEFT, text="Gaming"
         )
 
-
+        browser_note_frame = BrowserPanel(browser_frame)
+        browser_note_frame.pack(fill=tk.BOTH, expand=True)        
 
         office_note_frame = OfficePanel(office_frame)
         office_note_frame.pack(fill=tk.BOTH, expand=True)
@@ -133,12 +137,12 @@ class GamingPanel(tk.Frame):
 
         def run_installation(game_key):
             #hide_apt_frame()
-            pigro_skript_task = "Installing ..."
-            pigro_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
-            pigro_skript = SoftwareGame.game_dict[game_key]["Install"]
+            primo_skript_task = "Installing ..."
+            primo_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
+            primo_skript = SoftwareGame.game_dict[game_key]["Install"]
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                pigro_skript_task, pigro_skript_task_app, pigro_skript
+                primo_skript_task, primo_skript_task_app, primo_skript
             )
             self.master.wait_window(custom_installer)
             self.gaming_inst_btn.config(text="Deinstallieren")
@@ -147,13 +151,13 @@ class GamingPanel(tk.Frame):
 
         def run_uninstall(game_key):
             #hide_apt_frame()
-            pigro_skript_task = "Removing From System"
-            pigro_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
-            pigro_skript = SoftwareGame.game_dict[game_key]["Uninstall"]
+            primo_skript_task = "Removing From System"
+            primo_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
+            primo_skript = SoftwareGame.game_dict[game_key]["Uninstall"]
 
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                pigro_skript_task, pigro_skript_task_app, pigro_skript
+                primo_skript_task, primo_skript_task_app, primo_skript
             )
             self.master.wait_window(custom_installer)
             self.gaming_inst_btn.config(text="Installieren")
@@ -262,26 +266,26 @@ class GamingPanel(tk.Frame):
         #print(SoftwareGame.game_dict)
 
         # Create the detail frame
-        gams_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
-        gams_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
+        game_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
+        game_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-        gams_detail_frame.grid_columnconfigure(0, weight=1)
-        gams_detail_frame.grid_columnconfigure(1, weight=1)
-        gams_detail_frame.grid_rowconfigure(3, weight=1)
+        game_detail_frame.grid_columnconfigure(0, weight=1)
+        game_detail_frame.grid_columnconfigure(1, weight=1)
+        game_detail_frame.grid_rowconfigure(3, weight=1)
 
-        self.gaming_name = Label(gams_detail_frame, text="",justify="left",anchor="w")
+        self.gaming_name = Label(game_detail_frame, text="",justify="left",anchor="w")
         self.gaming_name.grid(column=0,row=0,sticky="ew")
 
-        self.gaming_pak = Label(gams_detail_frame, text="",justify="left",anchor="w")
+        self.gaming_pak = Label(game_detail_frame, text="",justify="left",anchor="w")
         self.gaming_pak.grid(column=0,row=1,sticky="ew")
-        self.gaming_desc = Label(gams_detail_frame, text="",justify="left",anchor="w",wraplength=600)
+        self.gaming_desc = Label(game_detail_frame, text="",justify="left",anchor="w",wraplength=600)
         self.gaming_desc.grid(column=0,row=2,sticky="ew")
 
-        self.gaming_inst_btn = ttk.Button(gams_detail_frame, text="Install", style="Custom.TButton")
+        self.gaming_inst_btn = ttk.Button(game_detail_frame, text="Install", style="Custom.TButton")
         
 
         # Initialize termf and pack it below the install button
-        self.termf = Frame(gams_detail_frame,)
+        self.termf = Frame(game_detail_frame,)
         self.thumb_lbl = Label(self.termf)
         
         global game_wid
