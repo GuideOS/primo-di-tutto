@@ -137,6 +137,9 @@ class UpdateTab(ttk.Frame):
                         % wid
                     )
 
+
+
+
         self.update_btn_frame = ttk.Frame(
             self,
         )
@@ -158,6 +161,80 @@ class UpdateTab(ttk.Frame):
 
         global wid
         wid = self.termf.winfo_id()
+
+        def all_up_action(text):
+            """Passes commands for auto-generated buttons"""
+            frame_width = self.termf.winfo_width()
+            frame_height = self.termf.winfo_height()
+            print(
+                "The width & height of the label is:",
+                frame_width,
+                frame_height,
+                "pixels",
+            )
+
+            if text == "Update":
+	            command = (
+	                f"xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "
+	                "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'apt update -y && apt upgrade -y && apt autoremove -y && flatpak update -y && flatpak uninstall --unused -y && snap refresh' | lolcat && "
+	                'sleep 5 && exit; exec bash"' % wid
+	            )
+	            os.popen(command)
+
+        self.all_up_frame = ttk.Frame(
+            self.update_btn_frame,
+            #text="all_up Options",
+            #font=font_16,
+            #foreground=label_frame_color,
+            #borderwidth=0,
+            #relief=GROOVE,
+            #highlightthickness=0,
+            #background=frame_color,
+            #pady=10,
+        )
+        self.all_up_frame.pack(pady=20, fill="x", expand=True)
+
+        self.all_up_frame.columnconfigure(0, weight=1)
+        self.all_up_frame.rowconfigure(0, weight=1)
+
+        all_up_button_dict = {
+            "Update": {
+                "image": self.up_icon,
+                
+            },
+        }
+
+        all_up_button_list1 = []
+        conf_row = 0
+        conf_column = 0
+
+        for all_up_button, config in all_up_button_dict.items():
+            self.all_up_button_x = ttk.Button(
+                self.all_up_frame,
+                #justify="left",
+                #compound="left",
+                #anchor="w",
+                text="Up All",
+                command=lambda btn=all_up_button: all_up_action(btn),
+                #borderwidth=0,
+                #highlightthickness=0,
+                #background=ext_btn,
+                #foreground=ext_btn_font,
+                #state=config.get("state", NORMAL),
+                width=20,
+                style="Accent.TButton"
+            )
+            self.all_up_button_x.grid(
+                row=conf_row, column=conf_column, padx=5, pady=5, sticky="ew"
+            )
+            all_up_button_list1.append(self.all_up_button_x)
+            conf_column += 1
+
+            if conf_column == 1:
+                conf_row += 1
+                conf_column = 0
+
+            #self.all_up_button_x.config(image=config["image"])
 
         self.btn_frame = ttk.LabelFrame(
             self.update_btn_frame,
@@ -222,7 +299,8 @@ class UpdateTab(ttk.Frame):
                 self.up_button_x.config(image=self.confa_icon)
                 self.up_button_x_ttp = CreateToolTip(self.up_button_x, description)
 
-
+        frame_width = self.termf.winfo_width()
+        frame_height = self.termf.winfo_height()
 
 
         def flatpak_action(text):
@@ -380,3 +458,4 @@ class UpdateTab(ttk.Frame):
                 conf_column = 0
 
             self.snap_button_x.config(image=config["image"], state=config["state"])
+

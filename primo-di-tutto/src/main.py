@@ -17,6 +17,7 @@ from tabs.software_tab import *
 from tabs.links_tab import LinksTab
 from tabs.about_tab import AboutTab
 from tabs.contrib_tab import ContribTab
+from tabs.boot_loader_tab import BootLoaderTab
 
 
 
@@ -165,8 +166,9 @@ class MainApplication(tk.Tk):
         self.look_tab = LookTab(self.notebook)
         #self.autostart_tab = AutostartsTab(self.notebook)
         self.software_tab = SoftwareTab(self.notebook)
+        self.boot_loader_tab = BootLoaderTab(self.notebook)
         self.contrib_tab = ContribTab(self.notebook)
-        #self.deb_recovery_tab = DebRecoverTab(self.notebook)
+        
         #self.links_tab = LinksTab(self.notebook)
         #self.about_tab = AboutTab(self.notebook)
 
@@ -196,12 +198,13 @@ class MainApplication(tk.Tk):
             self.software_tab, compound=LEFT, text="Software"
         )
         self.notebook.add(
+            self.boot_loader_tab, compound=LEFT, text="Bootloader"
+        )
+        self.notebook.add(
             self.contrib_tab, compound=LEFT, text="Mitmachen"
         )
 
-        #self.notebook.add(
-        #    self.deb_recovery_tab, compound=LEFT, text="Backup", image=self.deb_pack
-        #)
+
         #self.notebook.add(
         #    self.links_tab, compound=LEFT, text="Links", image=self.links_icon
         #)

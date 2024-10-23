@@ -226,12 +226,17 @@ class SystemTab(ttk.Frame):
         self.pi_set = ttk.LabelFrame(
             self,
             text="Wichtige Werkzeuge auf einen Blick",
+            padding=20
             
         )
         self.pi_set.pack(pady=20, padx=20, fill="both",expand=True)
         #self.pi_set["background"] = frame_color
-
-
+        #self.pi_set.columnconfigure(1,wei)
+        self.pi_set.grid_columnconfigure(0, weight=1)
+        self.pi_set.grid_columnconfigure(1, weight=1)
+        self.pi_set.grid_columnconfigure(2, weight=2)
+        self.pi_set.grid_columnconfigure(3, weight=2)
+        self.pi_set.grid_columnconfigure(4, weight=1)
 
 
         pi_settings_btn_list = [
@@ -267,7 +272,7 @@ class SystemTab(ttk.Frame):
                 style="Custom.TButton"
             )
             self.pi_button_x.grid(
-                row=conf_row, column=conf_column, padx=5, pady=5, sticky="nesw"
+                row=conf_row, column=conf_column, padx=5, pady=5, sticky="ew"
             )
             pi_settings_btn_list1.append(self.pi_button_x)
             conf_column = conf_column + 1

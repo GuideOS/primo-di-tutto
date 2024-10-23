@@ -1,12 +1,12 @@
 from resorcess import *
 
 class SoftwareGame:
+    # Descriptions by @evilware666
     game_dict = {
             "game_0": {
                 "Name": "Steam",
                 "Package": "DEB",
-                "Description": "Steam ist ein Programm zum herunterladen, kaufen und spielen von Games unter Linux ",
-                "Icon": f"{application_path}/images/apps/steam_icon_36.png",
+                "Description": "Steam ist eine Plattform zum Herunterladen, Kaufen und Spielen von Spielen.",                "Icon": f"{application_path}/images/apps/steam_icon_36.png",
                 "Thumbnail": f"{application_path}/images/apps/soft-steam-thumb.png",
                 "Install": "pkexec apt install neofetch -y",
                 "Uninstall":  "pkexec apt remove neofetch -y",
@@ -15,7 +15,7 @@ class SoftwareGame:
             "game_1": {
                 "Name": "Lutris",
                 "Package": "Debian-Paket",
-                "Description": "Bundle das Wine und Lutris installiert",
+                "Description": "Lutris ist ein Programm, mit dem man Spiele aus verschiedenen Quellen verwalten und starten kann. Das geht auch (teilweise) mit Windows-Games.",
                 "Icon": f"{application_path}/images/apps/lutris_logo_36.png",
                 "Thumbnail": f"{application_path}/images/apps/soft-lutris-thumb.png",
                 "Install":  f"{application_path}/scripts/install_lutris",
@@ -25,7 +25,7 @@ class SoftwareGame:
             "game_2": {
                 "Name": "Heroic",
                 "Package": "Flatpak",
-                "Description": "Ein Tool zum Zocken",
+                "Description": "Der Heroic-Game-Launcher ist ein Programm zum Starten, Verwalten und Spielen von Epic- und GOG-Games.",
                 "Icon": f"{application_path}/images/apps/heroic_icon_36.png",
                 "Install": "flatpak install flathub com.heroicgameslauncher.hgl -y",
                 "Thumbnail": f"{application_path}/images/apps/soft-steam-thumb.png",
@@ -35,7 +35,7 @@ class SoftwareGame:
             "game_3": {
                 "Name": "ProtonUp-Qt",
                 "Package": "Flatpak",
-                "Description": "Ein Tool zum Zocken",
+                "Description": "ProtonUp-Qt ist ein Programm für Proton-Versionen und andere Kompatibilitätsschichten wie Wine-GE für Steam und Lutris.",
                 "Icon": f"{application_path}/images/apps/proton_icon_36.png",
                 "Thumbnail": f"{application_path}/images/apps/soft-protonqt-thumb.png",
                 "Install": "flatpak install flathub net.davidotek.pupgui2 -y",
@@ -45,7 +45,7 @@ class SoftwareGame:
             "game_4": {
                 "Name": "ProtonDB",
                 "Package": "Website",
-                "Description": "Ein Tool zum Zocken",
+                "Description": "ProtonDB ist eine Community-Datenbank, in der Tipps und Empfehlungen zur Konfiguration von Windows-Spielen unter Linux gesammelt werden.",
                 "Icon": f"{application_path}/images/apps/protondb_icon_36.png",
                 "Install":  "",
                 "Path": "https://www.protondb.com/"
