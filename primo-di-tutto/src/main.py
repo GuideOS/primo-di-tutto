@@ -45,7 +45,8 @@ class MainApplication(tk.Tk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         # Notebook Icons
-        if "dark" or "Dark" in theme_name:
+        print(theme_name)
+        if "dark" in theme_name or "Dark" in theme_name:
             self.tk.call("set_theme", "dark")
 
             self.status_icon = PhotoImage(
@@ -93,8 +94,6 @@ class MainApplication(tk.Tk):
             )
             self.source_lists = PhotoImage(
                 file=f"{application_path}/images/icons/nav_bar/sources_dark_16x16.png")
-
-
         else:
             self.tk.call("set_theme", "light")
 

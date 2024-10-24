@@ -2,7 +2,7 @@
 
 # Define the package name and version
 PACKAGE_NAME="primo-di-tutto"
-VERSION="0.4"
+VERSION="0.4.5"
 
 # Define the dependencies
 DEPENDENCIES="python3-dev, python3-psutil, python3-distro, python3-bs4, python3-requests, python3-pil, python3-pil.imagetk, xterm, mpg123, lolcat, wmctrl, gdebi, mousepad, appstream, pkexec | policykit-1"
