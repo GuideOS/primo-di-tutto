@@ -45,7 +45,7 @@ def refresh_flatpak_installs():
             elif line.strip():
                 print(f"Warnung: Unerwartetes Format in Zeile '{line}'")
 
-    json_file_path = f"{home}/.pigro/flatpak_installed.json"
+    json_file_path = f"{home}/.primo/flatpak_installed.json"
     expanded_json_file_path = os.path.expanduser(json_file_path)
 
     with open(expanded_json_file_path, "w") as json_file:
@@ -67,7 +67,7 @@ if flatpak_path:
     print("[Info] Flatpak is installed. List will be added")
 
     home = os.path.expanduser("~")
-    json_file_path = f"{home}/.pigro/flat_remote_data.json"
+    json_file_path = f"{home}/.primo/flat_remote_data.json"
     expanded_json_file_path = os.path.expanduser(json_file_path)
 
     if is_internet_available():

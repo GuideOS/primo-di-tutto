@@ -47,14 +47,14 @@ else:
     print(f"[Info] {autostart_dir_path} already exists")
 
 
-pigro_config_dir = f"{home}/.pigro"
-pigro_config_file = f"{pigro_config_dir}/pigro.conf"
+primo_config_dir = f"{home}/.primo"
+primo_config_file = f"{primo_config_dir}/primo.conf"
 
-if not os.path.exists(pigro_config_dir):
-    os.mkdir(pigro_config_dir)
+if not os.path.exists(primo_config_dir):
+    os.mkdir(primo_config_dir)
 
-    with open(pigro_config_file, "w") as f:
-        f.write("[PiGro - Just Click It! Configs]\n\n")
+    with open(primo_config_file, "w") as f:
+        f.write("[Primo Di Tutto Configs]\n\n")
 
 distro_get = distro.id()
 
