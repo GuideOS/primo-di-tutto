@@ -7,7 +7,7 @@ import distro
 import subprocess
 from tabs.system_tab_check import check_pipanel
 import requests
-
+import platform
 
 def ping_github():
     try:
@@ -61,40 +61,15 @@ distro_get = distro.id()
 nice_name = popen("egrep '^(PRETTY_NAME)=' /etc/os-release")
 nice_name = nice_name.read()
 
-arch_bash = """#determine if host system is 64 bit arm64 or 32 bit armhf
-if [ "$(od -An -t x1 -j 4 -N 1 "$(readlink -f /sbin/init)")" = ' 02' ];then
-arch=64
-printf "arm64"
-elif [ "$(od -An -t x1 -j 4 -N 1 "$(readlink -f /sbin/init)")" = ' 01' ];then
-arch=32
-printf "armhf"
-else
-error "Failed to detect OS CPU architecture! Something is very wrong."
-fi"""
+machiene_arch = platform.machine()
+print(platform.machine())
+architecture_arch = platform.architecture()[0]
+print(platform.architecture()[0])
 
-os_arch = popen(arch_bash)
-os_arch_output = os_arch.read()
-
-
-def get_lsb_codename():
-    try:
-        output = subprocess.check_output(['lsb_release', '-a']).decode('utf-8')
-        
-        lines = output.split('\n')
-        
-        for line in lines:
-            if 'Codename:' in line:
-                return line.split(':')[1].strip()
-        
-        return None
-    
-    except subprocess.CalledProcessError:
-        return None
-
-#odename = get_lsb_codename()
-
-
-
+if machiene_arch == "x86_64" and  architecture_arch == "64bit":
+    os_arch_output = "amd64"
+if machiene_arch ==  "aarch64" and architecture_arch ==  "64bit":
+    os_arch_output = "arm64"
 
 def run_command(command):
     """Helper function to run shell commands and capture output."""

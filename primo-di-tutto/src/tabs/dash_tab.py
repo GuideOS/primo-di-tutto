@@ -369,6 +369,8 @@ class DashTab(ttk.Frame):
 
         self.update_labels()
 
+
+
     def update_labels(self):
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
@@ -384,6 +386,8 @@ class DashTab(ttk.Frame):
         #    cpu_temp = round(cpu_temp["cpu_thermal"][0][1])
         #except:
         #    cpu_temp = "N/A"
+
+
 
         cpu_usage = psutil.cpu_percent()
         ram_usage = psutil.virtual_memory().percent
