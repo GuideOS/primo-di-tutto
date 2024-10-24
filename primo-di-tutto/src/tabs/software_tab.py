@@ -22,8 +22,9 @@ from subprocess import Popen, PIPE
 from threading import Thread
 from tool_tipps import CreateToolTip
 from tkinter import messagebox
-from tabs.text_dict_lib import SoftwareGame
+from tabs.text_dict_lib import SoftwareGame, SoftwareBrowser
 from apt_manage import *
+from snap_manage import *
 from flatpak_manage import flatpak_path
 from flatpak_manage import Flat_remote_dict
 from flatpak_manage import refresh_flatpak_installs
@@ -77,27 +78,11 @@ class OfficePanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
 
-        def error_message_0():
-            e_mass = Error_Mass(self)
-            e_mass.grab_set()
-
-        def error_message_1():
-            e_mass = Error_Mass(self)
-            e_mass.grab_set()
-
 class EduPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self["background"] = maincolor
         self.no_img = PhotoImage(file=f"{application_path}/images/apps/no_image.png")
-
-        def error_message_0():
-            e_mass = Error_Mass(self)
-            e_mass.grab_set()
-
-        def error_message_1():
-            e_mass = Error_Mass(self)
-            e_mass.grab_set()
 
 class GamingPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
@@ -290,6 +275,201 @@ class GamingPanel(tk.Frame):
         
         global game_wid
         game_wid = self.termf.winfo_id()
+
+class BrowserPanel(tk.Frame):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+        self.update_interval = 1000
+        #refresh_flatpak_installs()
+
+        self.browser_btn0_icon = PhotoImage(
+            file=SoftwareBrowser.browser_dict["browser_0"]["Icon"]
+        )
+
+        #self.browser_btn1_icon = PhotoImage(
+        #    file=SoftwareBrowser.browser_dict["browser_1"]["Icon"]
+        #)
+
+        #self.browser_btn2_icon = PhotoImage(
+        #    file=SoftwareBrowser.browser_dict["browser_2"]["Icon"]
+        #)
+
+        #elf.browser_btn3_icon = PhotoImage(
+        #    file=SoftwareBrowser.browser_dict["browser_3"]["Icon"]
+        #)
+
+        #self.browser_btn4_icon = PhotoImage(
+        #    file=SoftwareBrowser.browser_dict["browser_4"]["Icon"]
+        #)
+
+        # Create the button frame first
+        browser_btn_frame = ttk.LabelFrame(self, text="Browser-Auswahl", padding=20)
+        browser_btn_frame.pack(pady=20, padx=20, fill="x")
+
+        browser_btn_frame.grid_columnconfigure(0, weight=1)
+        browser_btn_frame.grid_columnconfigure(1, weight=1)
+        browser_btn_frame.grid_columnconfigure(2, weight=1)
+        browser_btn_frame.grid_columnconfigure(3, weight=1)
+        browser_btn_frame.grid_columnconfigure(4, weight=1)
+
+        def run_installation(browser_key):
+            #hide_apt_frame()
+            primo_skript_task = "Installing ..."
+            primo_skript_task_app = SoftwareBrowser.browser_dict[browser_key]["Name"]
+            primo_skript = SoftwareBrowser.browser_dict[browser_key]["Install"]
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                primo_skript_task, primo_skript_task_app, primo_skript
+            )
+            self.master.wait_window(custom_installer)
+            self.browser_inst_btn.config(text="Deinstallieren")
+            
+            refresh_status(browser_key)
+
+        def run_uninstall(browser_key):
+            #hide_apt_frame()
+            primo_skript_task = "Removing From System"
+            primo_skript_task_app = SoftwareBrowser.browser_dict[browser_key]["Name"]
+            primo_skript = SoftwareBrowser.browser_dict[browser_key]["Uninstall"]
+
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                primo_skript_task, primo_skript_task_app, primo_skript
+            )
+            self.master.wait_window(custom_installer)
+            self.browser_inst_btn.config(text="Installieren")
+            
+            refresh_status(browser_key)
+
+
+        def refresh_status(browser_key):
+            browser_name = SoftwareBrowser.browser_dict[browser_key]["Name"]
+            browser_pakage = SoftwareBrowser.browser_dict[browser_key]["Package"]
+            browser_disc = SoftwareBrowser.browser_dict[browser_key]["Description"]
+            browser_path = SoftwareBrowser.browser_dict[browser_key]["Path"]
+            # APT-Pakete und Flatpak-Installationen überprüfen
+            installed_apt = browser_path in get_installed_apt_pkgs()
+
+            
+            # Flatpak-Installationen abrufen und prüfen, ob der `browser_path` in den Werten vorhanden ist
+            flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
+            installed_flatpak = browser_path in flatpak_installs.values()
+            installed_snap = browser_path in get_installed_snaps()
+            #self.master.wait_window(custom_installer)
+            # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
+            if not installed_snap or installed_apt or installed_flatpak :
+                print(f"{browser_name} is not installed")
+                self.browser_inst_btn.config(text="Installieren", command=lambda: run_installation(browser_key),style='Green.TButton')
+            elif installed_snap or installed_apt or installed_flatpak :
+                print(f"{browser_name} is installed")
+                self.browser_inst_btn.config(text="Deinstallieren", command=lambda: run_uninstall(browser_key),style='Red.TButton')
+            else:
+                print(f"{browser_name} is not installed")
+                self.browser_inst_btn.config(text="Installieren", command=lambda: run_installation(browser_key),style='Green.TButton')
+
+
+        def browser_btn_action(browser_key):
+            # Den Namen des Spiels aus der SoftwareBrowser-Klasse holen
+            browser_name = SoftwareBrowser.browser_dict[browser_key]["Name"]
+            browser_pakage = SoftwareBrowser.browser_dict[browser_key]["Package"]
+            browser_disc = SoftwareBrowser.browser_dict[browser_key]["Description"]
+            browser_path = SoftwareBrowser.browser_dict[browser_key]["Path"]
+            browser_thumb = SoftwareBrowser.browser_dict[browser_key]["Thumbnail"]
+
+            self.browser_thumb = PhotoImage(file=browser_thumb)
+
+            self.browser_name.config(text=f"Name: {browser_name}")
+            self.browser_pak.config(text=f"Paket: {browser_pakage}")
+            self.browser_desc.config(text=f"Beschreibung: {browser_disc}")
+            
+            self.browser_inst_btn.grid(column=1,row=0,rowspan=2,sticky="e")
+            self.termf.grid(column=0,columnspan=2,row=3)
+            self.thumb_lbl.configure(image=self.browser_thumb)
+            self.thumb_lbl.pack()
+
+            print(get_installed_snaps())
+            refresh_status(browser_key)
+
+
+
+        browser0_button = ttk.Button(
+            browser_btn_frame,
+            text=SoftwareBrowser.browser_dict["browser_0"]["Name"],
+            image=self.browser_btn0_icon,
+            command=lambda: browser_btn_action("browser_0"),
+            compound=tk.TOP,
+            style="Custom.TButton"
+        )
+        browser0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
+
+        # browser1_button = ttk.Button(
+        #     browser_btn_frame,
+        #     text=SoftwareBrowser.browser_dict["browser_1"]["Name"],
+        #     image=self.browser_btn1_icon,
+        #     command=lambda: browser_btn_action("browser_1"),
+        #     compound=tk.TOP,
+        #     style="Custom.TButton"
+        # )
+        # browser1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
+
+        # browser2_button = ttk.Button(
+        #     browser_btn_frame,
+        #     text=SoftwareBrowser.browser_dict["browser_2"]["Name"],
+        #     image=self.browser_btn2_icon,
+        #     command=lambda: browser_btn_action("browser_2"),
+        #     compound=tk.TOP,
+        #     style="Custom.TButton"
+        # )
+        # browser2_button.grid(row=0, column=2, padx=5, pady=5, sticky="nesw")
+
+        # browser3_button = ttk.Button(
+        #     browser_btn_frame,
+        #     text=SoftwareBrowser.browser_dict["browser_3"]["Name"],
+        #     image=self.browser_btn3_icon,
+        #     command=lambda: browser_btn_action("browser_3"),
+        #     compound=tk.TOP,
+        #     style="Custom.TButton"
+        # )
+        # browser3_button.grid(row=0, column=3, padx=5, pady=5, sticky="nesw")
+
+        # browser4_button = ttk.Button(
+        #     browser_btn_frame,
+        #     text=SoftwareBrowser.browser_dict["browser_4"]["Name"],
+        #     image=self.browser_btn4_icon,
+        #     command=lambda: open_website("browser_4"),
+        #     compound=tk.TOP,
+        #     style="Custom.TButton"
+        # )
+        # browser4_button.grid(row=0, column=4, padx=5, pady=5, sticky="nesw")
+        #print(SoftwareBrowser.browser_dict)
+
+        # Create the detail frame
+        browser_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
+        browser_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
+
+        browser_detail_frame.grid_columnconfigure(0, weight=1)
+        browser_detail_frame.grid_columnconfigure(1, weight=1)
+        browser_detail_frame.grid_rowconfigure(3, weight=1)
+
+        self.browser_name = Label(browser_detail_frame, text="",justify="left",anchor="w")
+        self.browser_name.grid(column=0,row=0,sticky="ew")
+
+        self.browser_pak = Label(browser_detail_frame, text="",justify="left",anchor="w")
+        self.browser_pak.grid(column=0,row=1,sticky="ew")
+        self.browser_desc = Label(browser_detail_frame, text="",justify="left",anchor="w",wraplength=600)
+        self.browser_desc.grid(column=0,row=2,sticky="ew")
+
+        self.browser_inst_btn = ttk.Button(browser_detail_frame, text="Install", style="Custom.TButton")
+        
+
+        # Initialize termf and pack it below the install button
+        self.termf = Frame(browser_detail_frame,)
+        self.thumb_lbl = Label(self.termf)
+        
+        global browser_wid
+        browser_wid = self.termf.winfo_id()
+
+
 
 class Custom_Installer(tk.Toplevel):
     """child window that makes the the install process graphicle"""

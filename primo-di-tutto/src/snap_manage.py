@@ -48,4 +48,4 @@ def get_installed_snaps():
     #print(snap_names)
     return snap_names
 
-#get_installed_snaps()
+get_installed_snaps()

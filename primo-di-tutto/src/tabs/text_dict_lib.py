@@ -52,7 +52,60 @@ class SoftwareGame:
             },
     }
 
-
+class SoftwareBrowser:
+    # Descriptions by ????????????
+    browser_dict = {
+            "browser_0": {
+                "Name": "Firefox", # Name
+                "Package": "Snap", # Paketformat
+                "Description": "Ein Browser oder so", # Beschreibung in 3 Sätzen               
+                "Icon": f"{application_path}/images/apps/firefox_icon_36.png", # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
+                "Thumbnail": f"{application_path}/images/apps/soft-firefox-thumb.png", # Miniaturbild / Maximiert / Max. 742x389
+                "Install": "pkexec snap install firefox", # Exakter Befehl
+                "Uninstall": "pkexec snap remove firefox", # Exakter Befehl
+                "Path": "firefox" # Name im Verwaltungs-Index
+            },
+            "browser_1": {
+                "Name": "",
+                "Package": "",
+                "Description": "",
+                "Icon": f"{application_path}/images/apps/?_logo_36.png",
+                "Thumbnail": f"{application_path}/images/apps/soft-?-thumb.png",
+                "Install": "pkexec -y",
+                "Uninstall": "pkexec pkexec -y",
+                "Path": ""
+            },
+            "browser_2": {
+                "Name": "",
+                "Package": "",
+                "Description": "",
+                "Icon": f"{application_path}/images/apps/?_logo_36.png",
+                "Thumbnail": f"{application_path}/images/apps/soft-?-thumb.png",
+                "Install": "pkexec -y",
+                "Uninstall": "pkexec pkexec -y",
+                "Path": ""
+            },
+            "browser_3": {
+                "Name": "",
+                "Package": "",
+                "Description": "",
+                "Icon": f"{application_path}/images/apps/?_logo_36.png",
+                "Thumbnail": f"{application_path}/images/apps/soft-?-thumb.png",
+                "Install": "pkexec -y",
+                "Uninstall": "pkexec pkexec -y",
+                "Path": ""
+            },
+            "browser_4": {
+                "Name": "",
+                "Package": "",
+                "Description": "",
+                "Icon": f"{application_path}/images/apps/?_logo_36.png",
+                "Thumbnail": f"{application_path}/images/apps/soft-?-thumb.png",
+                "Install": "pkexec -y",
+                "Uninstall": "pkexec pkexec -y",
+                "Path": ""
+            },
+    }
 
 
 
