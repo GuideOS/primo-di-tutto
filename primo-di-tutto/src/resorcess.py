@@ -91,12 +91,8 @@ def get_lsb_codename():
     except subprocess.CalledProcessError:
         return None
 
-codename = get_lsb_codename()
+#odename = get_lsb_codename()
 
-if codename == "bullseye":
-    config_path = "/boot/config.txt"
-else:
-    config_path = "/boot/firmware/config.txt"    
 
 
 
