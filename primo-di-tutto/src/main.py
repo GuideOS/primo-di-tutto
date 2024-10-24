@@ -145,14 +145,6 @@ class MainApplication(tk.Tk):
                 file=f"{application_path}/images/icons/nav_bar/sources_light_16x16.png"
             )
 
-        def on_tab_change(event):
-            notebook = event.widget
-            
-            # Überprüfen, ob der spezifische Tab (z.B. der dritte Tab) ausgewählt wurde
-            if selected_tab == 8:
-                os.popen("xdg-open https:\\www.giga.de")
-
-
 
 
         self.notebook = ttk.Notebook(self, width=app_width, height=app_height)
@@ -168,13 +160,12 @@ class MainApplication(tk.Tk):
         self.software_tab = SoftwareTab(self.notebook)
         self.boot_loader_tab = BootLoaderTab(self.notebook)
         self.contrib_tab = ContribTab(self.notebook)
-        
         #self.links_tab = LinksTab(self.notebook)
         #self.about_tab = AboutTab(self.notebook)
-
-        self.notebook.add(
-            self.willkommen_tab, compound=LEFT, text="Willkommen"
-        )
+        if get_first_run() == "yes":
+            self.notebook.add(
+                self.willkommen_tab, compound=LEFT, text="Willkommen"
+            )
 
         self.notebook.add(
             self.dash_tab, compound=LEFT, text="Dashboard"

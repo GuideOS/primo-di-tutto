@@ -54,7 +54,23 @@ if not os.path.exists(primo_config_dir):
     os.mkdir(primo_config_dir)
 
     with open(primo_config_file, "w") as f:
-        f.write("[Primo Di Tutto Configs]\n\n")
+        f.write("[Primo Di Tutto Configs]\n\nfirstrun=yes")
+
+
+
+def get_first_run():
+    # Pfad zur Konfigurationsdatei
+    primo_config_file = os.path.expanduser("~/.primo/primo.conf")
+
+    # Die Datei Zeile für Zeile durchgehen
+    with open(primo_config_file, 'r') as file:
+        for line in file:
+            if line.startswith('firstrun='):
+                # Den Wert nach dem Gleichheitszeichen extrahieren
+                firstrun_value = line.split('=')[1].strip()
+                print(f"[Info] firstrun: {firstrun_value}")
+
+    return firstrun_value
 
 distro_get = distro.id()
 
