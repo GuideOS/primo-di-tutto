@@ -286,9 +286,9 @@ class BrowserPanel(tk.Frame):
             file=SoftwareBrowser.browser_dict["browser_0"]["Icon"]
         )
 
-        #self.browser_btn1_icon = PhotoImage(
-        #    file=SoftwareBrowser.browser_dict["browser_1"]["Icon"]
-        #)
+        self.browser_btn1_icon = PhotoImage(
+           file=SoftwareBrowser.browser_dict["browser_1"]["Icon"]
+        )
 
         #self.browser_btn2_icon = PhotoImage(
         #    file=SoftwareBrowser.browser_dict["browser_2"]["Icon"]
@@ -360,7 +360,7 @@ class BrowserPanel(tk.Frame):
             if not installed_snap or installed_apt or installed_flatpak :
                 print(f"{browser_name} is not installed")
                 self.browser_inst_btn.config(text="Installieren", command=lambda: run_installation(browser_key),style='Green.TButton')
-            elif installed_snap or installed_apt or installed_flatpak :
+            if installed_snap or installed_apt or installed_flatpak :
                 print(f"{browser_name} is installed")
                 self.browser_inst_btn.config(text="Deinstallieren", command=lambda: run_uninstall(browser_key),style='Red.TButton')
             else:
@@ -402,15 +402,15 @@ class BrowserPanel(tk.Frame):
         )
         browser0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
 
-        # browser1_button = ttk.Button(
-        #     browser_btn_frame,
-        #     text=SoftwareBrowser.browser_dict["browser_1"]["Name"],
-        #     image=self.browser_btn1_icon,
-        #     command=lambda: browser_btn_action("browser_1"),
-        #     compound=tk.TOP,
-        #     style="Custom.TButton"
-        # )
-        # browser1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
+        browser1_button = ttk.Button(
+            browser_btn_frame,
+            text=SoftwareBrowser.browser_dict["browser_1"]["Name"],
+            image=self.browser_btn1_icon,
+            command=lambda: browser_btn_action("browser_1"),
+            compound=tk.TOP,
+            style="Custom.TButton"
+        )
+        browser1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
 
         # browser2_button = ttk.Button(
         #     browser_btn_frame,

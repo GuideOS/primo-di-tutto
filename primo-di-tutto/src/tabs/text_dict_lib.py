@@ -66,14 +66,14 @@ class SoftwareBrowser:
                 "Path": "firefox" # Name im Verwaltungs-Index
             },
             "browser_1": {
-                "Name": "",
-                "Package": "",
-                "Description": "",
-                "Icon": f"{application_path}/images/apps/?_logo_36.png",
-                "Thumbnail": f"{application_path}/images/apps/soft-?-thumb.png",
-                "Install": "pkexec -y",
-                "Uninstall": "pkexec pkexec -y",
-                "Path": ""
+                "Name": "Brave Browser",
+                "Package": "Debian-Paket",
+                "Description": "Browser",
+                "Icon": f"{application_path}/images/apps/brave_icon_36.png",
+                "Thumbnail": f"{application_path}/images/apps/soft-brave-thumb.png",
+                "Install": f"pkexec {application_path}/scripts/install_brave",
+                "Uninstall": "pkexec apt remove brave-browser -y",
+                "Path": "brave-browser"
             },
             "browser_2": {
                 "Name": "",
@@ -106,7 +106,6 @@ class SoftwareBrowser:
                 "Path": ""
             },
     }
-
 
 
 
