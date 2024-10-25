@@ -5,7 +5,7 @@ import subprocess
 def is_snap_installed():
     return os.path.exists("/bin/snap")
 
- 
+
 def count_installed_snap_packages():
     try:
         output = subprocess.check_output(["snap", "list"]).decode("utf-8")
@@ -31,6 +31,7 @@ else:
 
 import subprocess
 
+
 def get_installed_snaps():
     command = "snap list"
     output = subprocess.check_output(command, shell=True, text=True)
@@ -45,7 +46,8 @@ def get_installed_snaps():
         snap_name = line.split()[0]
         snap_names.append(snap_name)
 
-    #print(snap_names)
+    # print(snap_names)
     return snap_names
+
 
 get_installed_snaps()

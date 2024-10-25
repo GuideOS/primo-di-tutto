@@ -17,17 +17,10 @@ class SourcesTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
 
-
-
-
-
-
         self.added_repositories = ttk.LabelFrame(
-            self,
-            text="Added Repository",
-            padding=20
+            self, text="Added Repository", padding=20
         )
-        self.added_repositories.pack(fill="both", expand=True,padx=20,pady=20)
+        self.added_repositories.pack(fill="both", expand=True, padx=20, pady=20)
 
         self.added_tree_frame = tk.Frame(self.added_repositories)
         self.added_tree_frame.pack(fill="both", expand=True)
@@ -49,16 +42,13 @@ class SourcesTab(ttk.Frame):
 
         def open_source_f_d():
 
-            popen(
-                f"pkexec nemo /etc/apt/sources.list.d"
-            )
+            popen(f"pkexec nemo /etc/apt/sources.list.d")
 
         self.open_source_folder = ttk.Button(
             self.added_repositories,
             text="Open sources.list.d",
             command=open_source_f_d,
-            style="Custom.TButton"
-
+            style="Custom.TButton",
         )
         self.open_source_folder.pack(pady=20, fill="x")
 

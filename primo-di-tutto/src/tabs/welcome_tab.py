@@ -50,10 +50,12 @@ class WelcomeTab(ttk.Frame):
         # Beschreibung für Autostart hinzufügen (nimmt die erste Spalte ein)
         self.autostart_description = ttk.Label(
             self.autostart_frame,
-            text=("Hier kannst du den Autostart dieses Programms deaktivieren. "
-                  "Nach dem nächsten Start wird der Willkommensbildschirm entfernt "
-                  "und Piazza wird zu einem System-Tool."),
-            wraplength=600
+            text=(
+                "Hier kannst du den Autostart dieses Programms deaktivieren. "
+                "Nach dem nächsten Start wird der Willkommensbildschirm entfernt "
+                "und Piazza wird zu einem System-Tool."
+            ),
+            wraplength=600,
         )
         self.autostart_description.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
@@ -65,7 +67,7 @@ class WelcomeTab(ttk.Frame):
             self.autostart_frame,
             variable=self.autostart_enabled,
             command=self.toggle_autostart,
-            style='Switch.TCheckbutton'
+            style="Switch.TCheckbutton",
         )
         self.autostart_checkbutton.grid(row=0, column=1, padx=10, pady=10, sticky="e")
 
@@ -74,11 +76,13 @@ class WelcomeTab(ttk.Frame):
 
     def check_autostart_status(self):
         """Überprüft den aktuellen Autostart-Status anhand der .desktop-Datei."""
-        autostart_file = Path(os.path.expanduser("~/.config/autostart/primo-di-tutto-autostart.desktop"))
+        autostart_file = Path(
+            os.path.expanduser("~/.config/autostart/primo-di-tutto-autostart.desktop")
+        )
 
         # Setzt den Checkbutton-Status basierend auf der .desktop-Datei
         if autostart_file.exists():
-            with open(autostart_file, 'r') as file:
+            with open(autostart_file, "r") as file:
                 for line in file:
                     if line.startswith("X-GNOME-Autostart-enabled="):
                         self.autostart_enabled.set(line.strip().endswith("true"))
@@ -90,7 +94,9 @@ class WelcomeTab(ttk.Frame):
         """Aktualisiert sowohl die Konfigurationsdatei als auch die Autostart-Desktop-Datei."""
         # Pfad zur Konfigurationsdatei
         config_file_path = Path(os.path.expanduser("~/.primo/primo.conf"))
-        autostart_file_path = Path(os.path.expanduser("~/.config/autostart/primo-di-tutto-autostart.desktop"))
+        autostart_file_path = Path(
+            os.path.expanduser("~/.config/autostart/primo-di-tutto-autostart.desktop")
+        )
 
         # 1. Konfigurationsdatei bearbeiten (firstrun auf 'no' setzen)
         self.update_config_file(config_file_path)
@@ -101,12 +107,12 @@ class WelcomeTab(ttk.Frame):
     def update_config_file(self, config_file_path):
         """Aktualisiert die Konfigurationsdatei, um den Autostart zu deaktivieren."""
         if config_file_path.exists():
-            with open(config_file_path, 'r') as config_file:
+            with open(config_file_path, "r") as config_file:
                 config_lines = config_file.readlines()
         else:
             config_lines = []
 
-        with open(config_file_path, 'w') as config_file:
+        with open(config_file_path, "w") as config_file:
             firstrun_set = False
             for line in config_lines:
                 if line.startswith("firstrun="):
@@ -125,20 +131,23 @@ class WelcomeTab(ttk.Frame):
 
         # Datei lesen, wenn sie existiert
         if autostart_file_path.exists():
-            with open(autostart_file_path, 'r') as file:
+            with open(autostart_file_path, "r") as file:
                 lines = file.readlines()
 
             # Autostart-Eintrag aktualisieren
-            with open(autostart_file_path, 'w') as file:
+            with open(autostart_file_path, "w") as file:
                 for line in lines:
                     if line.startswith("X-GNOME-Autostart-enabled="):
-                        file.write(f"X-GNOME-Autostart-enabled={'true' if autostart_enabled else 'false'}\n")
+                        file.write(
+                            f"X-GNOME-Autostart-enabled={'true' if autostart_enabled else 'false'}\n"
+                        )
                     else:
                         file.write(line)
         else:
             # Wenn die Datei nicht existiert, wird sie neu erstellt
-            with open(autostart_file_path, 'w') as file:
-                file.write(f"""[Desktop Entry]
+            with open(autostart_file_path, "w") as file:
+                file.write(
+                    f"""[Desktop Entry]
 Version=2.1
 Exec=primo-di-tutto
 Name=Primo Di Tutto
@@ -151,6 +160,5 @@ Categories=System
 Icon=primo-di-tutto-logo
 Path=/opt/primo-di-tutto/
 X-GNOME-Autostart-enabled={'true' if autostart_enabled else 'false'}
-""")
-
-
+"""
+                )

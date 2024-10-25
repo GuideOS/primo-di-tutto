@@ -1,112 +1,114 @@
 from resorcess import *
 
+
 class SoftwareGame:
     # Descriptions by @evilware666
     game_dict = {
-            "game_0": {
-                "Name": "Steam",
-                "Package": "DEB",
-                "Description": "Steam ist eine Plattform zum Herunterladen, Kaufen und Spielen von Spielen.",                "Icon": f"{application_path}/images/apps/steam_icon_36.png",
-                "Thumbnail": f"{application_path}/images/apps/soft-steam-thumb.png",
-                "Install": "pkexec apt install neofetch -y",
-                "Uninstall":  "pkexec apt remove neofetch -y",
-                "Path": "neofetch"
-            },
-            "game_1": {
-                "Name": "Lutris",
-                "Package": "Debian-Paket",
-                "Description": "Lutris ist ein Programm, mit dem man Spiele aus verschiedenen Quellen verwalten und starten kann. Das geht auch (teilweise) mit Windows-Games.",
-                "Icon": f"{application_path}/images/apps/lutris_logo_36.png",
-                "Thumbnail": f"{application_path}/images/apps/soft-lutris-thumb.png",
-                "Install":  f"{application_path}/scripts/install_lutris",
-                "Uninstall":  "pkexec apt remove lutris",
-                "Path": "lutris"
-            },
-            "game_2": {
-                "Name": "Heroic",
-                "Package": "Flatpak",
-                "Description": "Der Heroic-Game-Launcher ist ein Programm zum Starten, Verwalten und Spielen von Epic- und GOG-Games.",
-                "Icon": f"{application_path}/images/apps/heroic_icon_36.png",
-                "Install": "flatpak install flathub com.heroicgameslauncher.hgl -y",
-                "Thumbnail": f"{application_path}/images/apps/soft-steam-thumb.png",
-                "Uninstall": "flatpak remove com.heroicgameslauncher.hgl -y",
-                "Path": "com.heroicgameslauncher.hgl"
-            },
-            "game_3": {
-                "Name": "ProtonUp-Qt",
-                "Package": "Flatpak",
-                "Description": "ProtonUp-Qt ist ein Programm für Proton-Versionen und andere Kompatibilitätsschichten wie Wine-GE für Steam und Lutris.",
-                "Icon": f"{application_path}/images/apps/proton_icon_36.png",
-                "Thumbnail": f"{application_path}/images/apps/soft-protonqt-thumb.png",
-                "Install": "flatpak install flathub net.davidotek.pupgui2 -y",
-                "Uninstall": "flatpak remove net.davidotek.pupgui2 -y",
-                "Path": "ProtonUp-Qt"
-            },
-            "game_4": {
-                "Name": "ProtonDB",
-                "Package": "Website",
-                "Description": "ProtonDB ist eine Community-Datenbank, in der Tipps und Empfehlungen zur Konfiguration von Windows-Spielen unter Linux gesammelt werden.",
-                "Icon": f"{application_path}/images/apps/protondb_icon_36.png",
-                "Install":  "",
-                "Path": "https://www.protondb.com/"
-            },
+        "game_0": {
+            "Name": "Steam",
+            "Package": "DEB",
+            "Description": "Steam ist eine Plattform zum Herunterladen, Kaufen und Spielen von Spielen.",
+            "Icon": f"{application_path}/images/apps/steam_icon_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-steam-thumb.png",
+            "Install": "pkexec apt install neofetch -y",
+            "Uninstall": "pkexec apt remove neofetch -y",
+            "Path": "neofetch",
+        },
+        "game_1": {
+            "Name": "Lutris",
+            "Package": "Debian-Paket",
+            "Description": "Lutris ist ein Programm, mit dem man Spiele aus verschiedenen Quellen verwalten und starten kann. Das geht auch (teilweise) mit Windows-Games.",
+            "Icon": f"{application_path}/images/apps/lutris_logo_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-lutris-thumb.png",
+            "Install": f"{application_path}/scripts/install_lutris",
+            "Uninstall": "pkexec apt remove lutris",
+            "Path": "lutris",
+        },
+        "game_2": {
+            "Name": "Heroic",
+            "Package": "Flatpak",
+            "Description": "Der Heroic-Game-Launcher ist ein Programm zum Starten, Verwalten und Spielen von Epic- und GOG-Games.",
+            "Icon": f"{application_path}/images/apps/heroic_icon_36.png",
+            "Install": "flatpak install flathub com.heroicgameslauncher.hgl -y",
+            "Thumbnail": f"{application_path}/images/apps/soft-steam-thumb.png",
+            "Uninstall": "flatpak remove com.heroicgameslauncher.hgl -y",
+            "Path": "com.heroicgameslauncher.hgl",
+        },
+        "game_3": {
+            "Name": "ProtonUp-Qt",
+            "Package": "Flatpak",
+            "Description": "ProtonUp-Qt ist ein Programm für Proton-Versionen und andere Kompatibilitätsschichten wie Wine-GE für Steam und Lutris.",
+            "Icon": f"{application_path}/images/apps/proton_icon_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-protonqt-thumb.png",
+            "Install": "flatpak install flathub net.davidotek.pupgui2 -y",
+            "Uninstall": "flatpak remove net.davidotek.pupgui2 -y",
+            "Path": "ProtonUp-Qt",
+        },
+        "game_4": {
+            "Name": "ProtonDB",
+            "Package": "Website",
+            "Description": "ProtonDB ist eine Community-Datenbank, in der Tipps und Empfehlungen zur Konfiguration von Windows-Spielen unter Linux gesammelt werden.",
+            "Icon": f"{application_path}/images/apps/protondb_icon_36.png",
+            "Install": "",
+            "Path": "https://www.protondb.com/",
+        },
     }
+
 
 class SoftwareBrowser:
     # Descriptions by ????????????
     browser_dict = {
-            "browser_0": {
-                "Name": "Firefox", # Name
-                "Package": "Snap", # Paketformat
-                "Description": "Ein Browser oder so", # Beschreibung in 3 Sätzen               
-                "Icon": f"{application_path}/images/apps/firefox_icon_36.png", # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
-                "Thumbnail": f"{application_path}/images/apps/soft-firefox-thumb.png", # Miniaturbild / Maximiert / Max. 742x389
-                "Install": "pkexec snap install firefox", # Exakter Befehl
-                "Uninstall": "pkexec snap remove firefox", # Exakter Befehl
-                "Path": "firefox" # Name im Verwaltungs-Index
-            },
-            "browser_1": {
-                "Name": "Brave Browser",
-                "Package": "Debian-Paket",
-                "Description": "Browser",
-                "Icon": f"{application_path}/images/apps/brave_icon_36.png",
-                "Thumbnail": f"{application_path}/images/apps/soft-brave-thumb.png",
-                "Install": f"pkexec {application_path}/scripts/install_brave",
-                "Uninstall": "pkexec apt remove brave-browser -y",
-                "Path": "brave-browser"
-            },
-            "browser_2": {
-                "Name": "",
-                "Package": "",
-                "Description": "",
-                "Icon": f"{application_path}/images/apps/?_logo_36.png",
-                "Thumbnail": f"{application_path}/images/apps/soft-?-thumb.png",
-                "Install": "pkexec -y",
-                "Uninstall": "pkexec pkexec -y",
-                "Path": ""
-            },
-            "browser_3": {
-                "Name": "",
-                "Package": "",
-                "Description": "",
-                "Icon": f"{application_path}/images/apps/?_logo_36.png",
-                "Thumbnail": f"{application_path}/images/apps/soft-?-thumb.png",
-                "Install": "pkexec -y",
-                "Uninstall": "pkexec pkexec -y",
-                "Path": ""
-            },
-            "browser_4": {
-                "Name": "",
-                "Package": "",
-                "Description": "",
-                "Icon": f"{application_path}/images/apps/?_logo_36.png",
-                "Thumbnail": f"{application_path}/images/apps/soft-?-thumb.png",
-                "Install": "pkexec -y",
-                "Uninstall": "pkexec pkexec -y",
-                "Path": ""
-            },
+        "browser_0": {
+            "Name": "Firefox",  # Name
+            "Package": "Snap",  # Paketformat
+            "Description": "Ein Browser oder so",  # Beschreibung in 3 Sätzen
+            "Icon": f"{application_path}/images/apps/firefox_icon_36.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
+            "Thumbnail": f"{application_path}/images/apps/soft-firefox-thumb.png",  # Miniaturbild / Maximiert / Max. 742x389
+            "Install": "pkexec snap install firefox",  # Exakter Befehl
+            "Uninstall": "pkexec snap remove firefox",  # Exakter Befehl
+            "Path": "firefox",  # Name im Verwaltungs-Index
+        },
+        "browser_1": {
+            "Name": "Brave Browser",
+            "Package": "Debian-Paket",
+            "Description": "Browser",
+            "Icon": f"{application_path}/images/apps/brave_icon_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-brave-thumb.png",
+            "Install": f"pkexec {application_path}/scripts/install_brave",
+            "Uninstall": "pkexec apt remove brave-browser -y",
+            "Path": "brave-browser",
+        },
+        "browser_2": {
+            "Name": "",
+            "Package": "",
+            "Description": "",
+            "Icon": f"{application_path}/images/apps/?_logo_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-?-thumb.png",
+            "Install": "pkexec -y",
+            "Uninstall": "pkexec pkexec -y",
+            "Path": "",
+        },
+        "browser_3": {
+            "Name": "",
+            "Package": "",
+            "Description": "",
+            "Icon": f"{application_path}/images/apps/?_logo_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-?-thumb.png",
+            "Install": "pkexec -y",
+            "Uninstall": "pkexec pkexec -y",
+            "Path": "",
+        },
+        "browser_4": {
+            "Name": "",
+            "Package": "",
+            "Description": "",
+            "Icon": f"{application_path}/images/apps/?_logo_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-?-thumb.png",
+            "Install": "pkexec -y",
+            "Uninstall": "pkexec pkexec -y",
+            "Path": "",
+        },
     }
-
 
 
 class Update_Tab_Buttons:

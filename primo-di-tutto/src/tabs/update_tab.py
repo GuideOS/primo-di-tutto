@@ -22,7 +22,6 @@ class UpdateTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
 
-
         self.folder_icon = PhotoImage(
             file=f"{application_path}/images/icons/pigro_icons/folder_s_light.png"
         )
@@ -60,7 +59,7 @@ class UpdateTab(ttk.Frame):
         self.term_logo = PhotoImage(
             file=f"{application_path}/images/icons/papirus/goterminal.png"
         )
-        #self.background = maincolor
+        # self.background = maincolor
 
         def up_action(text):
             """Passes commands du auto generated buttons"""
@@ -137,23 +136,17 @@ class UpdateTab(ttk.Frame):
                         % wid
                     )
 
-
-
-
         self.update_btn_frame = ttk.Frame(
             self,
         )
         self.update_btn_frame.pack(padx=20, pady=20, anchor="n", fill="x", side="left")
-        #self.update_btn_frame["background"] = frame_color
+        # self.update_btn_frame["background"] = frame_color
 
-        self.termf = ttk.LabelFrame(
-            self,
-            text="Progress"
-
-        )
+        self.termf = ttk.LabelFrame(self, text="Progress")
 
         self.term_logo_label = Label(
-            self.termf, image=self.term_logo, #background=frame_color
+            self.termf,
+            image=self.term_logo,  # background=frame_color
         )
         self.term_logo_label.pack(fill=BOTH, expand=True)
 
@@ -174,23 +167,23 @@ class UpdateTab(ttk.Frame):
             )
 
             if text == "Update":
-	            command = (
-	                f"xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "
-	                "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'apt update -y && apt upgrade -y && apt autoremove -y && flatpak update -y && flatpak uninstall --unused -y && snap refresh' | lolcat && "
-	                'sleep 5 && exit; exec bash"' % wid
-	            )
-	            os.popen(command)
+                command = (
+                    f"xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "
+                    "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'apt update -y && apt upgrade -y && apt autoremove -y && flatpak update -y && flatpak uninstall --unused -y && snap refresh' | lolcat && "
+                    'sleep 5 && exit; exec bash"' % wid
+                )
+                os.popen(command)
 
         self.all_up_frame = ttk.Frame(
             self.update_btn_frame,
-            #text="all_up Options",
-            #font=font_16,
-            #foreground=label_frame_color,
-            #borderwidth=0,
-            #relief=GROOVE,
-            #highlightthickness=0,
-            #background=frame_color,
-            #pady=10,
+            # text="all_up Options",
+            # font=font_16,
+            # foreground=label_frame_color,
+            # borderwidth=0,
+            # relief=GROOVE,
+            # highlightthickness=0,
+            # background=frame_color,
+            # pady=10,
         )
         self.all_up_frame.pack(pady=20, fill="x", expand=True)
 
@@ -200,7 +193,6 @@ class UpdateTab(ttk.Frame):
         all_up_button_dict = {
             "Update": {
                 "image": self.up_icon,
-                
             },
         }
 
@@ -211,18 +203,18 @@ class UpdateTab(ttk.Frame):
         for all_up_button, config in all_up_button_dict.items():
             self.all_up_button_x = ttk.Button(
                 self.all_up_frame,
-                #justify="left",
-                #compound="left",
-                #anchor="w",
+                # justify="left",
+                # compound="left",
+                # anchor="w",
                 text="Up All",
                 command=lambda btn=all_up_button: all_up_action(btn),
-                #borderwidth=0,
-                #highlightthickness=0,
-                #background=ext_btn,
-                #foreground=ext_btn_font,
-                #state=config.get("state", NORMAL),
+                # borderwidth=0,
+                # highlightthickness=0,
+                # background=ext_btn,
+                # foreground=ext_btn_font,
+                # state=config.get("state", NORMAL),
                 width=20,
-                style="Accent.TButton"
+                style="Accent.TButton",
             )
             self.all_up_button_x.grid(
                 row=conf_row, column=conf_column, padx=5, pady=5, sticky="ew"
@@ -234,7 +226,7 @@ class UpdateTab(ttk.Frame):
                 conf_row += 1
                 conf_column = 0
 
-            #self.all_up_button_x.config(image=config["image"])
+            # self.all_up_button_x.config(image=config["image"])
 
         self.btn_frame = ttk.LabelFrame(
             self.update_btn_frame,
@@ -251,17 +243,16 @@ class UpdateTab(ttk.Frame):
         for up_button, description in up_button_dict.items():
             self.up_button_x = ttk.Button(
                 self.btn_frame,
-                #justify="left",
+                # justify="left",
                 compound="left",
-                #anchor="w",
+                # anchor="w",
                 text=up_button,
                 command=lambda text=up_button: up_action(text),
-                #borderwidth=0,
-                #highlightthickness=0,
-                #background=ext_btn,
-                #foreground=ext_btn_font,
+                # borderwidth=0,
+                # highlightthickness=0,
+                # background=ext_btn,
+                # foreground=ext_btn_font,
                 width=20,
-                
             )
 
             self.up_button_x.grid(
@@ -302,7 +293,6 @@ class UpdateTab(ttk.Frame):
         frame_width = self.termf.winfo_width()
         frame_height = self.termf.winfo_height()
 
-
         def flatpak_action(text):
             """Passes commands for auto-generated buttons"""
             frame_width = self.termf.winfo_width()
@@ -328,13 +318,13 @@ class UpdateTab(ttk.Frame):
         self.flatpak_frame = ttk.LabelFrame(
             self.update_btn_frame,
             text="Flatpak-Optionen",
-            #font=font_16,
-            #foreground=label_frame_color,
-            #borderwidth=0,
-            #relief=GROOVE,
-            #highlightthickness=0,
-            #background=frame_color,
-            #pady=10,
+            # font=font_16,
+            # foreground=label_frame_color,
+            # borderwidth=0,
+            # relief=GROOVE,
+            # highlightthickness=0,
+            # background=frame_color,
+            # pady=10,
         )
         self.flatpak_frame.pack(anchor="n", fill="x")
 
@@ -361,17 +351,17 @@ class UpdateTab(ttk.Frame):
         for flatpak_button, config in flatpak_button_dict.items():
             self.flatpak_button_x = ttk.Button(
                 self.flatpak_frame,
-                #justify="left",
+                # justify="left",
                 compound="left",
-                #anchor="w",
+                # anchor="w",
                 text=flatpak_button,
                 command=lambda btn=flatpak_button: flatpak_action(btn),
-                #borderwidth=0,
-                #highlightthickness=0,
-                #background=ext_btn,
-                #foreground=ext_btn_font,
+                # borderwidth=0,
+                # highlightthickness=0,
+                # background=ext_btn,
+                # foreground=ext_btn_font,
                 state=config.get("state", NORMAL),
-                width=20
+                width=20,
             )
             self.flatpak_button_x.grid(
                 row=conf_row, column=conf_column, padx=5, pady=5, sticky="ew"
@@ -408,13 +398,13 @@ class UpdateTab(ttk.Frame):
         self.snap_frame = ttk.LabelFrame(
             self.update_btn_frame,
             text="Snap Options",
-            #font=font_16,
-            #foreground=label_frame_color,
-            #borderwidth=0,
-            #relief=GROOVE,
-            #highlightthickness=0,
-            #background=frame_color,
-            #pady=10,
+            # font=font_16,
+            # foreground=label_frame_color,
+            # borderwidth=0,
+            # relief=GROOVE,
+            # highlightthickness=0,
+            # background=frame_color,
+            # pady=10,
         )
         self.snap_frame.pack(anchor="n", fill="x", expand=True)
 
@@ -435,17 +425,17 @@ class UpdateTab(ttk.Frame):
         for snap_button, config in snap_button_dict.items():
             self.snap_button_x = ttk.Button(
                 self.snap_frame,
-                #justify="left",
+                # justify="left",
                 compound="left",
-                #anchor="w",
+                # anchor="w",
                 text=snap_button,
                 command=lambda btn=snap_button: snap_action(btn),
-                #borderwidth=0,
-                #highlightthickness=0,
-                #background=ext_btn,
-                #foreground=ext_btn_font,
+                # borderwidth=0,
+                # highlightthickness=0,
+                # background=ext_btn,
+                # foreground=ext_btn_font,
                 state=config.get("state", NORMAL),
-                width=20
+                width=20,
             )
             self.snap_button_x.grid(
                 row=conf_row, column=conf_column, padx=5, pady=5, sticky="ew"
@@ -458,4 +448,3 @@ class UpdateTab(ttk.Frame):
                 conf_column = 0
 
             self.snap_button_x.config(image=config["image"], state=config["state"])
-

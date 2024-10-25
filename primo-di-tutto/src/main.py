@@ -20,15 +20,15 @@ from tabs.contrib_tab import ContribTab
 from tabs.boot_loader_tab import BootLoaderTab
 
 
-
-
 class MainApplication(tk.Tk):
     def __init__(self):
         super().__init__(className="Primo")
         self.title("Piazza - Primo Di Tutto")
-        self.tk.call("source", f"{application_path}/src/Azure-ttk-theme-2.1.0/azure.tcl")
+        self.tk.call(
+            "source", f"{application_path}/src/Azure-ttk-theme-2.1.0/azure.tcl"
+        )
 
-        #self["background"] = maincolor
+        # self["background"] = maincolor
         app_width = 1200
         app_height = 900
         # Define Screen
@@ -93,7 +93,8 @@ class MainApplication(tk.Tk):
                 file=f"{application_path}/images/icons/nav_bar/backup_dark_24x24.png"
             )
             self.source_lists = PhotoImage(
-                file=f"{application_path}/images/icons/nav_bar/sources_dark_16x16.png")
+                file=f"{application_path}/images/icons/nav_bar/sources_dark_16x16.png"
+            )
         else:
             self.tk.call("set_theme", "light")
 
@@ -144,8 +145,6 @@ class MainApplication(tk.Tk):
                 file=f"{application_path}/images/icons/nav_bar/sources_light_16x16.png"
             )
 
-
-
         self.notebook = ttk.Notebook(self, width=app_width, height=app_height)
         self.notebook.grid(row=0, column=0, sticky="nsew")
 
@@ -155,59 +154,39 @@ class MainApplication(tk.Tk):
         self.sources_tab = SourcesTab(self.notebook)
         self.system_tab = SystemTab(self.notebook)
         self.look_tab = LookTab(self.notebook)
-        #self.autostart_tab = AutostartsTab(self.notebook)
+        # self.autostart_tab = AutostartsTab(self.notebook)
         self.software_tab = SoftwareTab(self.notebook)
         self.boot_loader_tab = BootLoaderTab(self.notebook)
         self.contrib_tab = ContribTab(self.notebook)
-        #self.links_tab = LinksTab(self.notebook)
-        #self.about_tab = AboutTab(self.notebook)
+        # self.links_tab = LinksTab(self.notebook)
+        # self.about_tab = AboutTab(self.notebook)
         if get_first_run() == "yes":
-            self.notebook.add(
-                self.willkommen_tab, compound=LEFT, text="Willkommen"
-            )
+            self.notebook.add(self.willkommen_tab, compound=LEFT, text="Willkommen")
 
-        self.notebook.add(
-            self.dash_tab, compound=LEFT, text="Dashboard"
-        )
-        self.notebook.add(
-            self.update_tab, compound=LEFT, text="Aktualisierung"
-        )
+        self.notebook.add(self.dash_tab, compound=LEFT, text="Dashboard")
+        self.notebook.add(self.update_tab, compound=LEFT, text="Aktualisierung")
 
-        self.notebook.add(
-            self.system_tab, compound=LEFT, text="Werkzeuge"
-        )
-        self.notebook.add(
-            self.look_tab, compound=LEFT, text="Erscheinungsbild"
-        )
-        #self.notebook.add(
+        self.notebook.add(self.system_tab, compound=LEFT, text="Werkzeuge")
+        self.notebook.add(self.look_tab, compound=LEFT, text="Erscheinungsbild")
+        # self.notebook.add(
         #    self.autostart_tab, compound=LEFT, text="Autostart", image=self.auto_start
-        #)
-        self.notebook.add(
-            self.software_tab, compound=LEFT, text="Software"
-        )
-        self.notebook.add(
-            self.sources_tab, compound=LEFT, text="Quellen"
-        )
-        self.notebook.add(
-            self.boot_loader_tab, compound=LEFT, text="Bootloader"
-        )
-        self.notebook.add(
-            self.contrib_tab, compound=LEFT, text="Mitmachen"
-        )
+        # )
+        self.notebook.add(self.software_tab, compound=LEFT, text="Software")
+        self.notebook.add(self.sources_tab, compound=LEFT, text="Quellen")
+        self.notebook.add(self.boot_loader_tab, compound=LEFT, text="Bootloader")
+        self.notebook.add(self.contrib_tab, compound=LEFT, text="Mitmachen")
 
-
-        #self.notebook.add(
+        # self.notebook.add(
         #    self.links_tab, compound=LEFT, text="Links", image=self.links_icon
-        #)
-        #self.notebook.add(
+        # )
+        # self.notebook.add(
         #    self.about_tab, compound=LEFT, text="About", image=self.support_icon
-        #)
-
+        # )
 
         # Notebook Theming
         global noteStyler
         noteStyler = ttk.Style(self)
-        #noteStyler.theme_use('yaru')
+        # noteStyler.theme_use('yaru')
         noteStyler.configure(
             "TNotebook",
             borderwidth=0,
@@ -222,18 +201,9 @@ class MainApplication(tk.Tk):
             highlightthickness=0,
         )
 
+        noteStyler.configure("TButton", justify="left", anchor="w")
 
-        noteStyler.configure(
-            "TButton",
-            justify="left",
-            anchor="w"
-        )
-
-        noteStyler.configure(
-            "Custom.TButton",
-            justify="center",
-            anchor="center"
-        )
+        noteStyler.configure("Custom.TButton", justify="center", anchor="center")
 
 
 if __name__ == "__main__":

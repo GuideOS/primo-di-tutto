@@ -9,6 +9,7 @@ from tabs.system_tab_check import check_pipanel
 import requests
 import platform
 
+
 def ping_github():
     try:
         response = requests.get("https://api.github.com", timeout=5)
@@ -57,20 +58,20 @@ if not os.path.exists(primo_config_dir):
         f.write("[Primo Di Tutto Configs]\n\nfirstrun=yes")
 
 
-
 def get_first_run():
     # Pfad zur Konfigurationsdatei
     primo_config_file = os.path.expanduser("~/.primo/primo.conf")
 
     # Die Datei Zeile für Zeile durchgehen
-    with open(primo_config_file, 'r') as file:
+    with open(primo_config_file, "r") as file:
         for line in file:
-            if line.startswith('firstrun='):
+            if line.startswith("firstrun="):
                 # Den Wert nach dem Gleichheitszeichen extrahieren
-                firstrun_value = line.split('=')[1].strip()
+                firstrun_value = line.split("=")[1].strip()
                 print(f"[Info] firstrun: {firstrun_value}")
 
     return firstrun_value
+
 
 distro_get = distro.id()
 
@@ -82,22 +83,31 @@ print(platform.machine())
 architecture_arch = platform.architecture()[0]
 print(platform.architecture()[0])
 
-if machiene_arch == "x86_64" and  architecture_arch == "64bit":
+if machiene_arch == "x86_64" and architecture_arch == "64bit":
     os_arch_output = "amd64"
-if machiene_arch ==  "aarch64" and architecture_arch ==  "64bit":
+if machiene_arch == "aarch64" and architecture_arch == "64bit":
     os_arch_output = "arm64"
+
 
 def run_command(command):
     """Helper function to run shell commands and capture output."""
     try:
-        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        result = subprocess.run(
+            command,
+            shell=True,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
         return result.stdout.strip()
     except subprocess.CalledProcessError:
         return None
 
+
 def get_desktop_environment():
     xdg_current_desktop = os.environ.get("XDG_CURRENT_DESKTOP").lower()
-    #print(xdg_current_desktop)
+    # print(xdg_current_desktop)
     # Check for specific desktop environments
     if xdg_current_desktop == "x-cinnamon" or xdg_current_desktop == "cinnamon":
         return "CINNAMON"
@@ -121,7 +131,6 @@ def get_desktop_environment():
         return "Unknown"
 
 
-
 def get_lxde_theme_name():
     """Retrieve the current theme for LXDE from the desktop.conf file."""
     directory_path = os.path.expanduser("~/.config/lxsession/LXDE-pi/")
@@ -131,14 +140,16 @@ def get_lxde_theme_name():
     if not os.path.exists(directory_path):
         print("Directory does not exist. Creating", directory_path)
         os.makedirs(directory_path)
-        with open(config_file_path, 'w') as f:
-            f.write("""[GTK]
+        with open(config_file_path, "w") as f:
+            f.write(
+                """[GTK]
 sNet/ThemeName=PiXflat
 sGtk/ColorScheme=selected_bg_color:#87919B\nselected_fg_color:#F0F0F0\nbar_bg_color:#EDECEB\nbar_fg_color:#000000\n
 sGtk/FontName=PibotoLt 12
 iGtk/ToolbarIconSize=3
 sGtk/IconSizes=gtk-large-toolbar=24,24
-iGtk/CursorThemeSize=24""")
+iGtk/CursorThemeSize=24"""
+            )
         return "PiXflat"
     else:
         with open(config_file_path, "r") as file:
@@ -147,6 +158,7 @@ iGtk/CursorThemeSize=24""")
                     theme_name = line.split("=")[1].strip()
                     return theme_name
         return "Theme not found."
+
 
 def get_theme():
     """Get the current GTK or KDE theme based on the desktop environment."""
@@ -161,7 +173,7 @@ def get_theme():
         if os.path.exists(kde_config_file):
             kde_theme = run_command(f"grep 'Name=' {kde_config_file}")
             if kde_theme:
-                return kde_theme.split('=')[-1].strip().strip("'")
+                return kde_theme.split("=")[-1].strip().strip("'")
         return "KDE theme not found."
 
     elif "CINNAMON" in de:
@@ -194,9 +206,9 @@ def get_theme():
     # Fallback for unknown DE
     return "Unsupported Desktop Environment."
 
-theme_name = get_theme()
-#print(f"Current theme: {theme_name}")
 
+theme_name = get_theme()
+# print(f"Current theme: {theme_name}")
 
 
 # Define Permission Method
@@ -215,7 +227,7 @@ else:
 
 theme = get_theme().lower()
 
-#if "dark" in theme or "noir" in theme:
+# if "dark" in theme or "noir" in theme:
 maincolor = "#1e1e1e"
 nav_color = "#242424"
 nav2_color = "#131313"
@@ -225,16 +237,16 @@ info_color = "yellow"
 ext_btn = "#007acc"
 ext_btn_font = "white"
 label_frame_color = "#cf274e"
-#else:
-#maincolor = "#f5f5f5"
-#nav_color = "#d3d3d3"
-#nav2_color = "#383838"
-#frame_color = "#f5f5f5"
-#main_font = "#454545"
-#info_color = "#0075b7"
-#ext_btn = "#d3d3d3"
-#ext_btn_font = "#454545"
-#label_frame_color = "#454545"
+# else:
+# maincolor = "#f5f5f5"
+# nav_color = "#d3d3d3"
+# nav2_color = "#383838"
+# frame_color = "#f5f5f5"
+# main_font = "#454545"
+# info_color = "#0075b7"
+# ext_btn = "#d3d3d3"
+# ext_btn_font = "#454545"
+# label_frame_color = "#454545"
 
 
 # Font Definition Vars

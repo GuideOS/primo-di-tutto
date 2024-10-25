@@ -224,20 +224,16 @@ class SystemTab(ttk.Frame):
                 popen("pipanel")
 
         self.pi_set = ttk.LabelFrame(
-            self,
-            text="Wichtige Werkzeuge auf einen Blick",
-            padding=20
-            
+            self, text="Wichtige Werkzeuge auf einen Blick", padding=20
         )
-        self.pi_set.pack(pady=20, padx=20, fill="both",expand=True)
-        #self.pi_set["background"] = frame_color
-        #self.pi_set.columnconfigure(1,wei)
+        self.pi_set.pack(pady=20, padx=20, fill="both", expand=True)
+        # self.pi_set["background"] = frame_color
+        # self.pi_set.columnconfigure(1,wei)
         self.pi_set.grid_columnconfigure(0, weight=1)
         self.pi_set.grid_columnconfigure(1, weight=1)
         self.pi_set.grid_columnconfigure(2, weight=2)
         self.pi_set.grid_columnconfigure(3, weight=2)
         self.pi_set.grid_columnconfigure(4, weight=1)
-
 
         pi_settings_btn_list = [
             "Bash History",
@@ -259,17 +255,17 @@ class SystemTab(ttk.Frame):
         for pi_settings_btn in pi_settings_btn_list:
             self.pi_button_x = ttk.Button(
                 self.pi_set,
-                #width=140,
-                #height=110,
+                # width=140,
+                # height=110,
                 text=pi_settings_btn,
                 command=lambda text=pi_settings_btn: pi_settings(text),
-                #highlightthickness=0,
-                #borderwidth=0,
-                #background=frame_color,
-                #foreground=main_font,
+                # highlightthickness=0,
+                # borderwidth=0,
+                # background=frame_color,
+                # foreground=main_font,
                 compound=TOP,
-                #activebackground=ext_btn,
-                style="Custom.TButton"
+                # activebackground=ext_btn,
+                style="Custom.TButton",
             )
             self.pi_button_x.grid(
                 row=conf_row, column=conf_column, padx=5, pady=5, sticky="ew"
@@ -279,7 +275,6 @@ class SystemTab(ttk.Frame):
             if conf_column == 5:
                 conf_row = conf_row + 1
                 conf_column = 0
-
 
             if pi_settings_btn == "Raspi Bookshelf":
                 self.pi_button_x.config(image=self.bookshelf_icon)
@@ -411,4 +406,3 @@ class SystemTab(ttk.Frame):
                 self.pi_button_x.config(image=self.source_settings_icon)
                 if check_gnome_control_center() == False:
                     self.pi_button_x.configure(state=DISABLED)
-

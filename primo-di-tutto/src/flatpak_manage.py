@@ -53,10 +53,9 @@ def refresh_flatpak_installs():
 
     with open(expanded_json_file_path, "r") as json_file:
         flat_uninstalled_dict = json.load(json_file)
-    
+
     print(flat_uninstalled_dict)
     return flat_uninstalled_dict
-
 
 
 # Check ob Flatpak installiert ist
