@@ -170,11 +170,9 @@ class MainApplication(tk.Tk):
             self.dash_tab, compound=LEFT, text="Dashboard"
         )
         self.notebook.add(
-            self.update_tab, compound=LEFT, text="Update"
+            self.update_tab, compound=LEFT, text="Aktualisierung"
         )
-        self.notebook.add(
-            self.sources_tab, compound=LEFT, text="Quellen"
-        )
+
         self.notebook.add(
             self.system_tab, compound=LEFT, text="Werkzeuge"
         )
@@ -186,6 +184,9 @@ class MainApplication(tk.Tk):
         #)
         self.notebook.add(
             self.software_tab, compound=LEFT, text="Software"
+        )
+        self.notebook.add(
+            self.sources_tab, compound=LEFT, text="Quellen"
         )
         self.notebook.add(
             self.boot_loader_tab, compound=LEFT, text="Bootloader"
