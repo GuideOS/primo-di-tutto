@@ -142,7 +142,10 @@ class UpdateTab(ttk.Frame):
         self.update_btn_frame.pack(padx=20, pady=20, anchor="n", fill="x", side="left")
         # self.update_btn_frame["background"] = frame_color
 
-        self.termf = ttk.LabelFrame(self, text="Progress")
+        self.progess_frame = ttk.LabelFrame(self, text="Ausgabe")
+        self.progess_frame.pack(fill=BOTH, expand=True, pady=20, padx=20)
+
+        self.termf = ttk.Frame(self.progess_frame)
 
         self.term_logo_label = Label(
             self.termf,
@@ -150,7 +153,7 @@ class UpdateTab(ttk.Frame):
         )
         self.term_logo_label.pack(fill=BOTH, expand=True)
 
-        self.termf.pack(fill=BOTH, expand=True, pady=20, padx=20)
+        self.termf.pack(fill=BOTH, expand=True,padx=10,pady=5)
 
         global wid
         wid = self.termf.winfo_id()
@@ -176,14 +179,6 @@ class UpdateTab(ttk.Frame):
 
         self.all_up_frame = ttk.Frame(
             self.update_btn_frame,
-            # text="all_up Options",
-            # font=font_16,
-            # foreground=label_frame_color,
-            # borderwidth=0,
-            # relief=GROOVE,
-            # highlightthickness=0,
-            # background=frame_color,
-            # pady=10,
         )
         self.all_up_frame.pack(pady=20, fill="x", expand=True)
 
@@ -203,28 +198,16 @@ class UpdateTab(ttk.Frame):
         for all_up_button, config in all_up_button_dict.items():
             self.all_up_button_x = ttk.Button(
                 self.all_up_frame,
-                # justify="left",
-                # compound="left",
-                # anchor="w",
+
                 text="Up All",
                 command=lambda btn=all_up_button: all_up_action(btn),
-                # borderwidth=0,
-                # highlightthickness=0,
-                # background=ext_btn,
-                # foreground=ext_btn_font,
-                # state=config.get("state", NORMAL),
                 width=20,
                 style="Accent.TButton",
             )
             self.all_up_button_x.grid(
-                row=conf_row, column=conf_column, padx=5, pady=5, sticky="ew"
+                row=0, column=0,rowspan=2, padx=5, pady=5, sticky="nesw"
             )
             all_up_button_list1.append(self.all_up_button_x)
-            conf_column += 1
-
-            if conf_column == 1:
-                conf_row += 1
-                conf_column = 0
 
             # self.all_up_button_x.config(image=config["image"])
 
@@ -304,12 +287,12 @@ class UpdateTab(ttk.Frame):
                 "pixels",
             )
 
-            if text == "Update":
+            if text == "Aktualisieren":
                 os.popen(
                     f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "flatpak update -y && sleep 5 && exit ; exec bash"'
                     % wid
                 )
-            elif text == "Tidy Up Unused":
+            elif text == "Aufräumen":
                 os.popen(
                     f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "flatpak uninstall --unused -y && sleep 5 && exit; exec bash"'
                     % wid
@@ -332,12 +315,12 @@ class UpdateTab(ttk.Frame):
         self.flatpak_frame.rowconfigure(0, weight=1)
 
         flatpak_button_dict = {
-            "Update": {
+            "Aktualisieren": {
                 "image": self.up_icon,
                 "state": NORMAL if flatpak_path else DISABLED,
                 "tooltip": TipsText.ttip_flatpak_update,
             },
-            "Tidy Up Unused": {
+            "Aufräumen": {
                 "image": self.up_icon,
                 "state": NORMAL if flatpak_path else DISABLED,
                 "tooltip": TipsText.ttip_flatpak_unused,
@@ -389,7 +372,7 @@ class UpdateTab(ttk.Frame):
                 "pixels",
             )
 
-            if text == "Update":
+            if text == "Aktualisieren":
                 os.popen(
                     f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} snap refresh && sleep 5 && exit ; exec bash"'
                     % wid
@@ -412,7 +395,7 @@ class UpdateTab(ttk.Frame):
         self.snap_frame.rowconfigure(0, weight=1)
 
         snap_button_dict = {
-            "Update": {
+            "Aktualisieren": {
                 "image": self.up_icon,
                 "state": NORMAL if is_snap_installed() else DISABLED,
             },
