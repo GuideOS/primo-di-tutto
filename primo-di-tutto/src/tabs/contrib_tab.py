@@ -1,11 +1,11 @@
 from os import popen
 from tkinter import *
 from tkinter import ttk
-import tkinter as tk
+#import tkinter as tk
 import webbrowser
 from resorcess import *
-from apt_manage import *
-from flatpak_alias_list import *
+#from apt_manage import *
+#from flatpak_alias_list import *
 from tabs.pop_ups import *
 
 
@@ -14,17 +14,20 @@ class ContribTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
 
-        self.take_part_frame = ttk.LabelFrame(self,text="Mach mit!",padding=20)
+        self.take_part_frame = ttk.LabelFrame(self,text="Mach mit !",padding=20)
         self.take_part_frame.pack(padx=20,pady=20,fill="both",expand=True)
 
-        take_part_message = ttk.Label(self.take_part_frame,text="Hier steht ein super kluger Text!")
-        take_part_message.grid(row=0,column=0,columnspan=3)
+        take_part_message = ttk.Label(self.take_part_frame,wraplength=600,text="Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! ")
+        take_part_message.pack()
 
-        go_board = ttk.Button(self.take_part_frame,text="Werder Teil der Community")
-        go_board.grid(row=1,column=0,columnspan=2)
+        go_home = ttk.Button(self.take_part_frame,text="pgOS Website",style="Custom.TButton")
+        go_home.pack(fill="x",expand=True,pady=5)
 
-        go_board = ttk.Button(self.take_part_frame,text="pgOS aufGithub")
-        go_board.grid(row=1,column=3)
+        go_board = ttk.Button(self.take_part_frame,text="Werde Teil der Community!",style="Custom.TButton")
+        go_board.pack(fill="x",expand=True,pady=5)
+
+        go_git = ttk.Button(self.take_part_frame,text="pgOS auf GitLab",style="Custom.TButton")
+        go_git.pack(fill="x",expand=True,pady=5)
 
         self.thx_frame = ttk.LabelFrame(self,text="Ewiger Dank geht raus an die Community-Mitglieder ...",padding=20)
         self.thx_frame.pack(padx=20,pady=20,fill="both",expand=True)
@@ -41,7 +44,7 @@ class ContribTab(ttk.Frame):
         text_box.config(yscrollcommand=scrollbar.set)
 
         # Text in die Textbox einfügen
-        text_box.insert(tk.END, "Adelheid\nWolfgang\nGertrud\nAlbrecht\nDorothea\nOtto\nUlrich\nMargarethe\nErwin\nBrunhilde\nEberhard\nElfriede\nGunther\nRoswitha\nHartmut\nWalburga\nRudolf\nGisela\nAdalbert\nKunigunde\nHermann\nEdith\nHeinrich\nHildegard\nDietrich\nWilhelmine\nSigmund\nBertha\nLudwig\nIrmgard\nErika\nTheodora\nBaldwin\nFriedrich\nGudrun\nBertram\nHedwig\nGiselher\nBrunhilde\nAlmut\nEckhardt"
+        text_box.insert(tk.END, "@Toadie @StephanR @stryvyr @maik3531"
 )
 
         # Textbox für Eingaben sperren (read-only)
