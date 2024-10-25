@@ -22,7 +22,7 @@ from subprocess import Popen, PIPE
 from threading import Thread
 from tool_tipps import CreateToolTip
 from tkinter import messagebox
-from tabs.text_dict_lib import SoftwareGame, SoftwareBrowser
+from tabs.text_dict_lib import SoftwareGame, SoftwareBrowser, SoftwareOffice
 from apt_manage import *
 from snap_manage import *
 from flatpak_manage import flatpak_path
@@ -49,7 +49,7 @@ class SoftwareTab(ttk.Frame):
         gaming_frame.pack(fill="both", expand=True)
 
         # add frames to notebook
-        self.inst_notebook.add(office_frame, compound=LEFT, text="Büro")
+        self.inst_notebook.add(office_frame, compound=LEFT, text="Textverarbeitung")
 
         self.inst_notebook.add(edu_frame, compound=LEFT, text="Bildbearbeitung")
         self.inst_notebook.add(browser_frame, compound=LEFT, text="Browser")
@@ -71,7 +71,199 @@ class SoftwareTab(ttk.Frame):
 class OfficePanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
+        self.update_interval = 1000
+        # refresh_flatpak_installs()
 
+        self.office_btn0_icon = PhotoImage(
+            file=SoftwareOffice.office_dict["office_0"]["Icon"]
+        )
+
+
+        # self.office_btn2_icon = PhotoImage(
+        #    file=SoftwareOffice.office_dict["office_2"]["Icon"]
+        # )
+
+        # elf.office_btn3_icon = PhotoImage(
+        #    file=SoftwareOffice.office_dict["office_3"]["Icon"]
+        # )
+
+        # self.office_btn4_icon = PhotoImage(
+        #    file=SoftwareOffice.office_dict["office_4"]["Icon"]
+        # )
+
+        # Create the button frame first
+        office_btn_frame = ttk.LabelFrame(self, text="Office-Auswahl", padding=20)
+        office_btn_frame.pack(pady=20, padx=20, fill="x")
+
+        office_btn_frame.grid_columnconfigure(0, weight=1)
+        office_btn_frame.grid_columnconfigure(1, weight=1)
+        office_btn_frame.grid_columnconfigure(2, weight=1)
+        office_btn_frame.grid_columnconfigure(3, weight=1)
+        office_btn_frame.grid_columnconfigure(4, weight=1)
+
+        def run_installation(office_key):
+            # hide_apt_frame()
+            primo_skript_task = "Installation ..."
+            primo_skript_task_app = SoftwareOffice.office_dict[office_key]["Name"]
+            primo_skript = SoftwareOffice.office_dict[office_key]["Install"]
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                primo_skript_task, primo_skript_task_app, primo_skript
+            )
+            self.master.wait_window(custom_installer)
+            self.office_inst_btn.config(text="Deinstallieren")
+
+            refresh_status(office_key)
+
+        def run_uninstall(office_key):
+            # hide_apt_frame()
+            primo_skript_task = "Deinstallation ..."
+            primo_skript_task_app = SoftwareOffice.office_dict[office_key]["Name"]
+            primo_skript = SoftwareOffice.office_dict[office_key]["Uninstall"]
+
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                primo_skript_task, primo_skript_task_app, primo_skript
+            )
+            self.master.wait_window(custom_installer)
+            self.office_inst_btn.config(text="Installieren")
+
+            refresh_status(office_key)
+
+        def refresh_status(office_key):
+            office_name = SoftwareOffice.office_dict[office_key]["Name"]
+            office_pakage = SoftwareOffice.office_dict[office_key]["Package"]
+            office_disc = SoftwareOffice.office_dict[office_key]["Description"]
+            office_path = SoftwareOffice.office_dict[office_key]["Path"]
+            # APT-Pakete und Flatpak-Installationen überprüfen
+            installed_apt = office_path in get_installed_apt_pkgs()
+
+            # Flatpak-Installationen abrufen und prüfen, ob der `office_path` in den Werten vorhanden ist
+            flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
+            installed_flatpak = office_path in flatpak_installs.values()
+            installed_snap = office_path in get_installed_snaps()
+            # self.master.wait_window(custom_installer)
+            # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
+            if not installed_snap or installed_apt or installed_flatpak:
+                print(f"{office_name} is not installed")
+                self.office_inst_btn.config(
+                    text="Installieren",
+                    command=lambda: run_installation(office_key),
+                    style="Green.TButton",
+                )
+            if installed_snap or installed_apt or installed_flatpak:
+                print(f"{office_name} is installed")
+                self.office_inst_btn.config(
+                    text="Deinstallieren",
+                    command=lambda: run_uninstall(office_key),
+                    style="Red.TButton",
+                )
+            else:
+                print(f"{office_name} is not installed")
+                self.office_inst_btn.config(
+                    text="Installieren",
+                    command=lambda: run_installation(office_key),
+                    style="Green.TButton",
+                )
+
+        def office_btn_action(office_key):
+            # Den Namen des Spiels aus der SoftwareOffice-Klasse holen
+            office_name = SoftwareOffice.office_dict[office_key]["Name"]
+            office_pakage = SoftwareOffice.office_dict[office_key]["Package"]
+            office_disc = SoftwareOffice.office_dict[office_key]["Description"]
+            office_path = SoftwareOffice.office_dict[office_key]["Path"]
+            office_thumb = SoftwareOffice.office_dict[office_key]["Thumbnail"]
+
+            self.office_thumb = PhotoImage(file=office_thumb)
+
+            self.office_name.config(text=f"Name: {office_name}")
+            self.office_pak.config(text=f"Paket: {office_pakage}")
+            self.office_desc.config(text=f"Beschreibung: {office_disc}")
+
+            self.office_inst_btn.grid(column=1, row=0, rowspan=2, sticky="e")
+            self.termf.grid(column=0, columnspan=2, row=3)
+            self.thumb_lbl.configure(image=self.office_thumb)
+            self.thumb_lbl.pack()
+
+            print(get_installed_snaps())
+            refresh_status(office_key)
+
+        office0_button = ttk.Button(
+            office_btn_frame,
+            text=SoftwareOffice.office_dict["office_0"]["Name"],
+            image=self.office_btn0_icon,
+            command=lambda: office_btn_action("office_0"),
+            compound=tk.TOP,
+            style="Custom.TButton",
+        )
+        office0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
+
+
+        # office2_button = ttk.Button(
+        #     office_btn_frame,
+        #     text=SoftwareOffice.office_dict["office_2"]["Name"],
+        #     image=self.office_btn2_icon,
+        #     command=lambda: office_btn_action("office_2"),
+        #     compound=tk.TOP,
+        #     style="Custom.TButton"
+        # )
+        # office2_button.grid(row=0, column=2, padx=5, pady=5, sticky="nesw")
+
+        # office3_button = ttk.Button(
+        #     office_btn_frame,
+        #     text=SoftwareOffice.office_dict["office_3"]["Name"],
+        #     image=self.office_btn3_icon,
+        #     command=lambda: office_btn_action("office_3"),
+        #     compound=tk.TOP,
+        #     style="Custom.TButton"
+        # )
+        # office3_button.grid(row=0, column=3, padx=5, pady=5, sticky="nesw")
+
+        # office4_button = ttk.Button(
+        #     office_btn_frame,
+        #     text=SoftwareOffice.office_dict["office_4"]["Name"],
+        #     image=self.office_btn4_icon,
+        #     command=lambda: open_website("office_4"),
+        #     compound=tk.TOP,
+        #     style="Custom.TButton"
+        # )
+        # office4_button.grid(row=0, column=4, padx=5, pady=5, sticky="nesw")
+        # print(SoftwareOffice.office_dict)
+
+        # Create the detail frame
+        office_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
+        office_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
+
+        office_detail_frame.grid_columnconfigure(0, weight=1)
+        office_detail_frame.grid_columnconfigure(1, weight=1)
+        office_detail_frame.grid_rowconfigure(3, weight=1)
+
+        self.office_name = Label(
+            office_detail_frame, text="", justify="left", anchor="w"
+        )
+        self.office_name.grid(column=0, row=0, sticky="ew")
+
+        self.office_pak = Label(
+            office_detail_frame, text="", justify="left", anchor="w"
+        )
+        self.office_pak.grid(column=0, row=1, sticky="ew")
+        self.office_desc = Label(
+            office_detail_frame, text="", justify="left", anchor="w", wraplength=600
+        )
+        self.office_desc.grid(column=0, row=2, sticky="ew")
+
+        self.office_inst_btn = ttk.Button(
+            office_detail_frame, text="Install", style="Custom.TButton"
+        )
+
+        # Initialize termf and pack it below the install button
+        self.termf = Frame(
+            office_detail_frame,
+        )
+        self.thumb_lbl = Label(self.termf)
+
+        global office_wid
+        office_wid = self.termf.winfo_id()
 
 class EduPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
@@ -310,7 +502,7 @@ class BrowserPanel(tk.Frame):
 
         def run_installation(browser_key):
             # hide_apt_frame()
-            primo_skript_task = "Installtion ..."
+            primo_skript_task = "Installation ..."
             primo_skript_task_app = SoftwareBrowser.browser_dict[browser_key]["Name"]
             primo_skript = SoftwareBrowser.browser_dict[browser_key]["Install"]
             custom_installer = Custom_Installer(master)
@@ -324,7 +516,7 @@ class BrowserPanel(tk.Frame):
 
         def run_uninstall(browser_key):
             # hide_apt_frame()
-            primo_skript_task = "Deinstalltion ..."
+            primo_skript_task = "Deinstallation ..."
             primo_skript_task_app = SoftwareBrowser.browser_dict[browser_key]["Name"]
             primo_skript = SoftwareBrowser.browser_dict[browser_key]["Uninstall"]
 

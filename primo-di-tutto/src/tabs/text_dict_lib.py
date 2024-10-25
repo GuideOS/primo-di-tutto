@@ -1,5 +1,19 @@
 from resorcess import *
 
+class SoftwareOffice:
+    # Descriptions by ????????????
+    office_dict = {
+        "office_0": {
+            "Name": "LibreOffice",  # Name
+            "Package": "Debian-Paket",  # Paketformat
+            "Description": "Ein Office oder so",  # Beschreibung in 3 Sätzen
+            "Icon": f"{application_path}/images/apps/libreoffice_icon_36.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
+            "Thumbnail": f"{application_path}/images/apps/soft-libreoffice-thumb.png",  # Miniaturbild / Maximiert / Max. 742x389
+            "Install": "pkexec apt install -y libreoffice-base-core libreoffice-calc libreoffice-common libreoffice-core libreoffice-draw libreoffice-gnome libreoffice-gtk3 libreoffice-help-common libreoffice-help-de libreoffice-help-en-gb libreoffice-help-en-us libreoffice-impress libreoffice-l10n-de libreoffice-l10n-en-gb libreoffice-l10n-en-za libreoffice-math libreoffice-style-colibre libreoffice-style-elementary libreoffice-style-yaru libreoffice-uiconfig-calc libreoffice-uiconfig-common libreoffice-uiconfig-draw libreoffice-uiconfig-impress libreoffice-uiconfig-math libreoffice-uiconfig-writer libreoffice-writer",
+            "Uninstall": "pkexec apt autoremove --purge libreoffice* -y",  # Exakter Befehl
+            "Path": "libreoffice-core",  # Name im Verwaltungs-Index
+        },
+    }
 
 class SoftwareGame:
     # Descriptions by @evilware666
