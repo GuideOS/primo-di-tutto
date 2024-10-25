@@ -76,8 +76,7 @@ class OfficePanel(tk.Frame):
 class EduPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
-        self["background"] = maincolor
-        self.no_img = PhotoImage(file=f"{application_path}/images/apps/no_image.png")
+
 
 
 class GamingPanel(tk.Frame):
@@ -108,7 +107,7 @@ class GamingPanel(tk.Frame):
 
         def run_installation(game_key):
             # hide_apt_frame()
-            primo_skript_task = "Installing ..."
+            primo_skript_task = "Installation ..."
             primo_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
             primo_skript = SoftwareGame.game_dict[game_key]["Install"]
             custom_installer = Custom_Installer(master)
@@ -122,7 +121,7 @@ class GamingPanel(tk.Frame):
 
         def run_uninstall(game_key):
             # hide_apt_frame()
-            primo_skript_task = "Removing From System"
+            primo_skript_task = "Deinstallation ..."
             primo_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
             primo_skript = SoftwareGame.game_dict[game_key]["Uninstall"]
 
@@ -311,7 +310,7 @@ class BrowserPanel(tk.Frame):
 
         def run_installation(browser_key):
             # hide_apt_frame()
-            primo_skript_task = "Installing ..."
+            primo_skript_task = "Installtion ..."
             primo_skript_task_app = SoftwareBrowser.browser_dict[browser_key]["Name"]
             primo_skript = SoftwareBrowser.browser_dict[browser_key]["Install"]
             custom_installer = Custom_Installer(master)
@@ -325,7 +324,7 @@ class BrowserPanel(tk.Frame):
 
         def run_uninstall(browser_key):
             # hide_apt_frame()
-            primo_skript_task = "Removing From System"
+            primo_skript_task = "Deinstalltion ..."
             primo_skript_task_app = SoftwareBrowser.browser_dict[browser_key]["Name"]
             primo_skript = SoftwareBrowser.browser_dict[browser_key]["Uninstall"]
 
@@ -595,7 +594,7 @@ class Custom_Installer(tk.Toplevel):
         self.text.delete(1.0, tk.END)
         exit_code = process.returncode
         if exit_code == 0:
-            self.done_label.config(text=f"{task_label} Done!")
+            self.done_label.config(text=f"{task_label} Erledigt !")
             self.icon_label.config(image=self.install_ok_icon)
         else:
             self.done_label.config(text=f"Error! (Exit-Code: {exit_code})")
