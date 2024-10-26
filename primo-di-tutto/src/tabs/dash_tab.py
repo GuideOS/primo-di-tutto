@@ -356,7 +356,7 @@ class DashTab(ttk.Frame):
         obj_Disk = psutil.disk_usage("/")
         cpufreq = psutil.cpu_freq()
         swap = psutil.swap_memory()
-        get_shell = os.environ["SHELL"]
+        get_shell = os.environ["SHELL"].split('/')[-1].capitalize()
         get_xdg_session = os.environ["XDG_SESSION_TYPE"]
         # try:
         #    cpu_temp = psutil.sensors_temperatures()
