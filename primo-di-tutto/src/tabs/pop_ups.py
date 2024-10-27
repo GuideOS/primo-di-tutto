@@ -360,7 +360,7 @@ class Done_(tk.Toplevel):
 
     def __init__(self, parent):
         super().__init__(parent)
-        self["background"] = maincolor
+        #self["background"] = maincolor
         self.title("Done!")
         self.icon = tk.PhotoImage(file=f"{application_path}/images/icons/logo.png")
         self.tk.call("wm", "iconphoto", self._w, self.icon)
@@ -373,25 +373,16 @@ class Done_(tk.Toplevel):
         y = (screen_height / 2) - (app_height / 2)
         self.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
 
-        cont_btn = tk.Button(self)
-        cont_btn["bg"] = "#efefef"
-        cont_btn["font"] = font_10
-        cont_btn["fg"] = ext_btn_font
-        cont_btn["bg"] = ext_btn
-        cont_btn["justify"] = "center"
-        cont_btn["highlightthickness"] = 0
-        cont_btn["borderwidth"] = 0
-        cont_btn["text"] = "Ok"
-        cont_btn.pack(fill="x", expand=True, pady=20, padx=20)
-        cont_btn["command"] = self.destroy
 
+
+        cont_btn = ttk.Button(self, text="Ok", command=self.destroy,style="Accent.TButton")
+        cont_btn.pack(fill="x", expand=True, pady=20, padx=20)
 
 class Done_Reboot(tk.Toplevel):
     """a custom massagebox"""
 
     def __init__(self, parent):
         super().__init__(parent)
-        self["background"] = maincolor
         self.title("Done! Reboot?")
         self.icon = tk.PhotoImage(file=f"{application_path}/images/icons/logo.png")
         self.tk.call("wm", "iconphoto", self._w, self.icon)

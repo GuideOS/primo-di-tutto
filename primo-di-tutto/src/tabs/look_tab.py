@@ -295,7 +295,12 @@ class LookTab(ttk.Frame):
                 "date-format": "%a, %h %d %Y%l:%M %p",
                 "demands-attention-ignored-wm-classes": [],
                 "demands-attention-passthru-wm-classes": [
-                    "gnome-screenshot", "lxterminal", "xfce4-terminal", "firefox", "libreoffice", "soffice"
+                    "gnome-screenshot",
+                    "lxterminal",
+                    "xfce4-terminal",
+                    "firefox",
+                    "libreoffice",
+                    "soffice",
                 ],
                 "desklet-cache-updated": 0,
                 "desklet-decorations": 1,
@@ -322,25 +327,45 @@ class LookTab(ttk.Frame):
                 "enable-indicators": False,
                 "enable-vfade": True,
                 "enabled-applets": [
-                    "panel1:left:2:grouped-window-list@cinnamon.org:2", "panel1:right:2:systray@cinnamon.org:3",
-                    "panel1:right:3:xapp-status@cinnamon.org:4", "panel2:right:1:notifications@cinnamon.org:5",
-                    "panel2:right:5:printers@cinnamon.org:6", "panel2:right:3:removable-drives@cinnamon.org:7",
-                    "panel2:right:2:keyboard@cinnamon.org:8", "panel2:right:4:favorites@cinnamon.org:9",
-                    "panel2:right:6:network@cinnamon.org:10", "panel2:right:7:sound@cinnamon.org:11",
-                    "panel2:right:8:power@cinnamon.org:12", "panel2:center:0:calendar@cinnamon.org:13",
-                    "panel2:right:0:temperature@fevimu:16", "panel2:right:9:sessionManager@scollins:18",
-                    "panel2:center:2:weather@mockturtl:19", "panel2:center:1:calendar@cinnamon.org:20",
-                    "panel2:left:0:expo@cinnamon.org:22", "panel1:right:0:panel-launchers@cinnamon.org:23"
+                    "panel1:left:2:grouped-window-list@cinnamon.org:2",
+                    "panel1:right:2:systray@cinnamon.org:3",
+                    "panel1:right:3:xapp-status@cinnamon.org:4",
+                    "panel2:right:1:notifications@cinnamon.org:5",
+                    "panel2:right:5:printers@cinnamon.org:6",
+                    "panel2:right:3:removable-drives@cinnamon.org:7",
+                    "panel2:right:2:keyboard@cinnamon.org:8",
+                    "panel2:right:4:favorites@cinnamon.org:9",
+                    "panel2:right:6:network@cinnamon.org:10",
+                    "panel2:right:7:sound@cinnamon.org:11",
+                    "panel2:right:8:power@cinnamon.org:12",
+                    "panel2:center:0:calendar@cinnamon.org:13",
+                    "panel2:right:0:temperature@fevimu:16",
+                    "panel2:right:9:sessionManager@scollins:18",
+                    "panel2:center:2:weather@mockturtl:19",
+                    "panel2:center:1:calendar@cinnamon.org:20",
+                    "panel2:left:0:expo@cinnamon.org:22",
+                    "panel1:right:0:panel-launchers@cinnamon.org:23",
                 ],
                 "enabled-desklets": [],
-                "enabled-extensions": ["opacify@anish.org", "transparent-panels@germanfr"],
+                "enabled-extensions": [
+                    "opacify@anish.org",
+                    "transparent-panels@germanfr",
+                ],
                 "enabled-search-providers": [],
                 "extension-cache-updated": 0,
                 "favorite-apps": [
-                    "cinnamon-settings.desktop", "nemo.desktop", "org.gnome.Software.desktop",
-                    "system-config-printer.desktop", "org.gnome.DejaDup.desktop"
+                    "cinnamon-settings.desktop",
+                    "nemo.desktop",
+                    "org.gnome.Software.desktop",
+                    "system-config-printer.desktop",
+                    "org.gnome.DejaDup.desktop",
                 ],
-                "hotcorner-layout": ["expo:false:0", "scale:false:0", "scale:false:0", "desktop:false:0"],
+                "hotcorner-layout": [
+                    "expo:false:0",
+                    "scale:false:0",
+                    "scale:false:0",
+                    "desktop:false:0",
+                ],
                 "hoverclick-action": "single",
                 "hoverclick-layout": "vertical::both",
                 "hoverclick-position": "",
@@ -377,7 +402,7 @@ class LookTab(ttk.Frame):
                 "window-effect-speed": 1,
                 "workspace-expo-view-as-grid": False,
                 "workspace-name-overrides": ["DEPRECATED"],
-                "workspace-osd-visible": True
+                "workspace-osd-visible": True,
             }
 
             # Schleife durch jedes Schlüssel-Wert-Paar im Dictionary
@@ -389,7 +414,6 @@ class LookTab(ttk.Frame):
                     )  # Ersetze einfache Anführungszeichen mit doppelten
                 # Führe den gsettings-Befehl aus
                 subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
-
 
         def set_upside_down_panel():
             subprocess.run(
