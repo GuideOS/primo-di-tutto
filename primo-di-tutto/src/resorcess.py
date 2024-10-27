@@ -88,6 +88,13 @@ if machiene_arch == "x86_64" and architecture_arch == "64bit":
 if machiene_arch == "aarch64" and architecture_arch == "64bit":
     os_arch_output = "arm64"
 
+def send_notification(title, message, icon_path=None, urgency="normal"):
+    command = ["notify-send", title, message, "-u", urgency]
+    if icon_path:
+        command.extend(["-i", icon_path])
+    subprocess.run(command)
+
+
 
 def run_command(command):
     """Helper function to run shell commands and capture output."""
@@ -203,7 +210,6 @@ def get_theme():
     elif "LXDE" in de or "LXDE-PI" in de:
         return get_lxde_theme_name()
 
-    # Fallback for unknown DE
     return "Unsupported Desktop Environment."
 
 
@@ -228,15 +234,6 @@ else:
 theme = get_theme().lower()
 
 # if "dark" in theme or "noir" in theme:
-maincolor = "#1e1e1e"
-nav_color = "#242424"
-nav2_color = "#131313"
-frame_color = "#1e1e1e"
-main_font = "white"
-info_color = "yellow"
-ext_btn = "#007acc"
-ext_btn_font = "white"
-label_frame_color = "#cf274e"
 # else:
 # maincolor = "#f5f5f5"
 # nav_color = "#d3d3d3"

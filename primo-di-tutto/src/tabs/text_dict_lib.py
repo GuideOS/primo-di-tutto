@@ -66,6 +66,60 @@ class SoftwareGame:
             "Install": "",
             "Path": "https://www.protondb.com/",
         },
+        "game_5": {
+            "Name": "GZDoom",
+            "Package": "Flatpak",
+            "Description": "GZDoom ist ein moderner Source-Port, der aktuelle Hardware und Betriebssysteme unterstützt und eine Vielzahl an Einstellungsmöglichkeiten bietet. Neben Doom unterstützt GZDoom auch Heretic, Hexen, Strife, Chex Quest und von Fans erstellte Spiele wie Harmony und Hacx.",
+            "Icon": f"{application_path}/images/apps/gzdoom_icon_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-gzdoom-thumb.png",
+            "Install": "flatpak install flathub org.zdoom.GZDoom -y",
+            "Uninstall": "flatpak remove flathub org.zdoom.GZDoom -y",
+            "Path": "GZDoom",
+        },
+        "game_6": {
+            "Name": "OpenRA",
+            "Package": "Flatpak",
+            "Description": "OpenRA ist ein Projekt, das die klassischen Command-&-Conquer-Echtzeit-Strategiespiele neu erschafft und modernisiert.",
+            "Icon": f"{application_path}/images/apps/openra_icon_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-openra-thumb.png",
+            "Install": "flatpak install flathub net.openra.OpenRA",
+            "Uninstall": "flatpak remove flathub net.openra.OpenRA -y",
+            "Path": "net.openra.OpenRA",
+        },
+
+        "game_7": {
+            "Name": "Xonotic",
+            "Package": "Flatpak",
+            "Description": "Xonotic ist ein kostenloser und rasantes First-Person-Shooter, der süchtig machendes Arena-Gameplay mit schneller Bewegung und einer großen Auswahl an Waffen kombiniert.",
+            "Icon": f"{application_path}/images/apps/xonotic_icon_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-xonotic-thumb.png",
+            "Install": "flatpak install flathub org.xonotic.Xonotic -y",
+            "Uninstall": "flatpak remove flathub org.xonotic.Xonotic -y",
+            "Path": "org.xonotic.Xonotic",
+        },
+
+        "game_8": {
+            "Name": "Frogatto & Friends",
+            "Package": "Flatpak",
+            "Description": "Ein Old-School-2D-Plattformspiel mit einem gewissen eigenwilligen Frosch in der Hauptrolle. *Frogatto* bietet wunderschöne, hochwertige Pixelgrafik, mitreißende Arcade-Soundtracks und das ganze Spielgefühl eines klassischen Konsolentitels. Renne und springe über Abgründe und Gegner. Greife Feinde mit deiner Zunge, verschlucke sie und spucke sie dann als Projektile auf andere Gegner!",
+            "Icon": f"{application_path}/images/apps/frogatto_icon_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-frogatto-thumb.png",
+            "Install": "flatpak install flathub com.frogatto.Frogatto -y",
+            "Uninstall": "flatpak remove flathub com.frogatto.Frogatto -y",
+            "Path": "com.frogatto.Frogatto",
+        },
+
+        "game_9": {
+            "Name": "Bombermaaan",
+            "Package": "Flatpak",
+            "Description": "Ein klassisches *Bomberman*-Spiel mit Mehrspielerunterstützung, inspiriert von den originalen SNES-Spielen.",
+            "Icon": f"{application_path}/images/apps/bombermaaan_icon_36.png",
+            "Thumbnail": f"{application_path}/images/apps/soft-bombermaaan-thumb.png",
+            "Install": "flatpak install flathub com.github.bjaraujo.Bombermaaan -y",
+            "Uninstall": "flatpak remove flathub com.github.bjaraujo.Bombermaaan -y",
+            "Path": "com.github.bjaraujo.Bombermaaan",
+        },
+
     }
 
 

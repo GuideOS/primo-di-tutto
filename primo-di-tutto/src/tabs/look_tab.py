@@ -274,98 +274,122 @@ class LookTab(ttk.Frame):
                 json.dump(config, file, indent=4)
 
             subprocess.run(
-                [
-                    "gsettings",
-                    "set",
-                    "org.cinnamon",
-                    "enabled-applets",
-                    "['panel2:left:0:grouped-window-list@cinnamon.org:2', 'panel1:right:2:systray@cinnamon.org:3', 'panel1:right:3:xapp-status@cinnamon.org:4', 'panel1:right:4:notifications@cinnamon.org:5', 'panel1:right:5:printers@cinnamon.org:6', 'panel1:right:6:removable-drives@cinnamon.org:7', 'panel1:right:7:keyboard@cinnamon.org:8', 'panel1:right:8:favorites@cinnamon.org:9', 'panel1:right:9:network@cinnamon.org:10', 'panel1:right:10:sound@cinnamon.org:11', 'panel1:right:11:power@cinnamon.org:12', 'panel1:right:0:trash@cinnamon.org:15', 'panel1:right:12:sessionManager@scollins:18', 'panel1:center:1:weather@mockturtl:19', 'panel1:center:0:calendar@cinnamon.org:20', 'panel1:left:0:expo@cinnamon.org:22', 'panel2:right:0:panel-launchers@cinnamon.org:17']",
-                ]
-            )
-            subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-desklets", "[]"]
             )
-            subprocess.run(
-                [
-                    "gsettings",
-                    "set",
-                    "org.cinnamon",
-                    "enabled-extensions",
-                    "['transparent-panels@germanfr']",
-                ]
-            )
-            subprocess.run(
-                [
-                    "gsettings",
-                    "set",
-                    "org.cinnamon",
-                    "panels-autohide",
-                    "['1:false', '2:false']",
-                ]
-            )
-            subprocess.run(
-                [
-                    "gsettings",
-                    "set",
-                    "org.cinnamon",
-                    "panels-enabled",
-                    "['1:0:top', '2:0:left']",
-                ]
-            )
-            subprocess.run(
-                [
-                    "gsettings",
-                    "set",
-                    "org.cinnamon",
-                    "panels-height",
-                    "['1:28', '2:50']",
-                ]
-            )
-            subprocess.run(
-                [
-                    "gsettings",
-                    "set",
-                    "org.cinnamon",
-                    "panels-hide-delay",
-                    "['1:0', '2:0']",
-                ]
-            )
-            subprocess.run(
-                [
-                    "gsettings",
-                    "set",
-                    "org.cinnamon",
-                    "panels-show-delay",
-                    "['1:0', '2:0']",
-                ]
-            )
-            subprocess.run(
-                [
-                    "gsettings",
-                    "set",
-                    "org.cinnamon",
-                    "panel-zone-icon-sizes",
-                    """[{"panelId": 1, "left": 0, "center": 0, "right": 22}, {"left": 0, "center": 0, "right": 0, "panelId": 2}]""",
-                ]
-            )
-            subprocess.run(
-                [
-                    "gsettings",
-                    "set",
-                    "org.cinnamon",
-                    "panel-zone-symbolic-icon-sizes",
-                    """[{"panelId": 1, "left": 22, "center": 28, "right": 18}, {"left": 28, "center": 17, "right": 28, "panelId": 2}]""",
-                ]
-            )
-            subprocess.run(
-                [
-                    "gsettings",
-                    "set",
-                    "org.cinnamon",
-                    "panel-zone-text-sizes",
-                    """[{"panelId":1,"left":0,"center":0,"right":0},{"left":0,"center":0,"right":0,"panelId":2}]""",
-                ]
-            )
+
+            gsettings_config = {
+                "allow-other-notification-handlers": False,
+                "alttab-minimized-aware": False,
+                "alttab-switcher-delay": 100,
+                "alttab-switcher-enforce-primary-monitor": False,
+                "alttab-switcher-show-all-workspaces": False,
+                "alttab-switcher-style": "icons+thumbnails",
+                "alttab-switcher-warp-mouse-pointer": False,
+                "app-menu-icon-name": "ubuntucinnamon-symbolic",
+                "app-menu-label": "Menu",
+                "applet-cache-updated": 0,
+                "bring-windows-to-current-workspace": False,
+                "center-warped-pointer": True,
+                "cinnamon-settings-advanced": False,
+                "command-history": [],
+                "date-format": "%a, %h %d %Y%l:%M %p",
+                "demands-attention-ignored-wm-classes": [],
+                "demands-attention-passthru-wm-classes": [
+                    "gnome-screenshot", "lxterminal", "xfce4-terminal", "firefox", "libreoffice", "soffice"
+                ],
+                "desklet-cache-updated": 0,
+                "desklet-decorations": 1,
+                "desklet-snap": True,
+                "desklet-snap-interval": 25,
+                "desktop-effects": True,
+                "desktop-effects-change-size": True,
+                "desktop-effects-close": "traditional",
+                "desktop-effects-map": "traditional",
+                "desktop-effects-minimize": "traditional",
+                "desktop-effects-on-dialogs": True,
+                "desktop-effects-on-menus": True,
+                "desktop-effects-sizechange-effect": "scale",
+                "desktop-effects-sizechange-time": 100,
+                "desktop-effects-sizechange-transition": "easeInQuad",
+                "desktop-effects-workspace": True,
+                "desktop-layout": "",
+                "development-tools": True,
+                "device-aliases": [],
+                "disabled-open-search-providers": [],
+                "edge-flip-delay": 1000,
+                "enable-app-monitoring": True,
+                "enable-edge-flip": False,
+                "enable-indicators": False,
+                "enable-vfade": True,
+                "enabled-applets": [
+                    "panel1:left:2:grouped-window-list@cinnamon.org:2", "panel1:right:2:systray@cinnamon.org:3",
+                    "panel1:right:3:xapp-status@cinnamon.org:4", "panel2:right:1:notifications@cinnamon.org:5",
+                    "panel2:right:5:printers@cinnamon.org:6", "panel2:right:3:removable-drives@cinnamon.org:7",
+                    "panel2:right:2:keyboard@cinnamon.org:8", "panel2:right:4:favorites@cinnamon.org:9",
+                    "panel2:right:6:network@cinnamon.org:10", "panel2:right:7:sound@cinnamon.org:11",
+                    "panel2:right:8:power@cinnamon.org:12", "panel2:center:0:calendar@cinnamon.org:13",
+                    "panel2:right:0:temperature@fevimu:16", "panel2:right:9:sessionManager@scollins:18",
+                    "panel2:center:2:weather@mockturtl:19", "panel2:center:1:calendar@cinnamon.org:20",
+                    "panel2:left:0:expo@cinnamon.org:22", "panel1:right:0:panel-launchers@cinnamon.org:23"
+                ],
+                "enabled-desklets": [],
+                "enabled-extensions": ["opacify@anish.org", "transparent-panels@germanfr"],
+                "enabled-search-providers": [],
+                "extension-cache-updated": 0,
+                "favorite-apps": [
+                    "cinnamon-settings.desktop", "nemo.desktop", "org.gnome.Software.desktop",
+                    "system-config-printer.desktop", "org.gnome.DejaDup.desktop"
+                ],
+                "hotcorner-layout": ["expo:false:0", "scale:false:0", "scale:false:0", "desktop:false:0"],
+                "hoverclick-action": "single",
+                "hoverclick-layout": "vertical::both",
+                "hoverclick-position": "",
+                "lock-desklets": False,
+                "looking-glass-history": [],
+                "next-applet-id": 24,
+                "next-desklet-id": 0,
+                "no-adjacent-panel-barriers": False,
+                "number-workspaces": 0,
+                "overview-corner": ["DEPRECATED"],
+                "panel-edit-mode": False,
+                "panel-launchers": ["DEPRECATED"],
+                "panel-launchers-draggable": True,
+                "panel-scale-text-icons": False,
+                "panel-zone-icon-sizes": '[{"panelId": 1, "left": 0, "center": 0, "right": 0}, {"left": 0, "center": 0, "right": 0, "panelId": 2}]',
+                "panel-zone-symbolic-icon-sizes": '[{"panelId": 1, "left": 28, "center": 28, "right": 18}, {"left": 28, "center": 17, "right": 28, "panelId": 2}]',
+                "panel-zone-text-sizes": '[{"panelId":1,"left":0,"center":0,"right":0},{"left":0,"center":0,"right":0,"panelId":2}]',
+                "panels-autohide": ["1:false", "2:false"],
+                "panels-enabled": ["1:0:left", "2:0:top"],
+                "panels-height": ["1:47", "2:22"],
+                "panels-hide-delay": ["1:0", "2:0"],
+                "panels-show-delay": ["1:0", "2:0"],
+                "prevent-focus-stealing": False,
+                "run-dialog-aliases": ["<Super>r"],
+                "run-dialog-show-completions": True,
+                "saved-im-presence": 1,
+                "saved-session-presence": 0,
+                "show-media-keys-osd": "medium",
+                "show-snap-osd": True,
+                "show-tile-hud": True,
+                "startup-animation": True,
+                "startup-icon-name": "",
+                "system-icon": "",
+                "window-effect-speed": 1,
+                "workspace-expo-view-as-grid": False,
+                "workspace-name-overrides": ["DEPRECATED"],
+                "workspace-osd-visible": True
+            }
+
+            # Schleife durch jedes Schlüssel-Wert-Paar im Dictionary
+            for key, value in gsettings_config.items():
+                # Wenn der Wert eine Liste oder ein Dictionary ist, in eine Zeichenkette umwandeln
+                if isinstance(value, (list, dict)):
+                    value = str(value).replace(
+                        "'", '"'
+                    )  # Ersetze einfache Anführungszeichen mit doppelten
+                # Führe den gsettings-Befehl aus
+                subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
+
 
         def set_upside_down_panel():
             subprocess.run(

@@ -171,11 +171,21 @@ class UpdateTab(ttk.Frame):
 
             if text == "Update":
                 command = (
-                    f"xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "
+                    f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e "
                     "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'apt update -y && apt upgrade -y && apt autoremove -y && flatpak update -y && flatpak uninstall --unused -y && snap refresh' | lolcat && "
-                    'sleep 5 && exit; exec bash"' % wid
+                    "sleep 5 && exit; exec bash\""
                 )
-                os.popen(command)
+                
+                # Ausführung des Befehls und Statusüberprüfung
+                try:
+                    result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    print("Update erfolgreich ausgeführt!")
+                    send_notification("Primo Di Tutto", "Update erfolgreich ausgeführt!", icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png", urgency="critical")
+                except subprocess.CalledProcessError as e:
+                    send_notification("Primo Di Tutto", "Update war nichterfolgreich !", icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png", urgency="critical")
+                    print(f"Fehlermeldung: {e.stderr.decode()}")
+                # Beispielaufruf mit Icon und hoher Dringlichkeit
+                
 
         self.all_up_frame = ttk.Frame(
             self.update_btn_frame,

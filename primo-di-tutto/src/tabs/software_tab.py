@@ -287,15 +287,26 @@ class GamingPanel(tk.Frame):
 
         self.games_btn4_icon = PhotoImage(file=SoftwareGame.game_dict["game_4"]["Icon"])
 
+        self.games_btn5_icon = PhotoImage(file=SoftwareGame.game_dict["game_5"]["Icon"])
+
+        self.games_btn6_icon = PhotoImage(file=SoftwareGame.game_dict["game_6"]["Icon"])
+
+        self.games_btn7_icon = PhotoImage(file=SoftwareGame.game_dict["game_7"]["Icon"])
+
+        self.games_btn8_icon = PhotoImage(file=SoftwareGame.game_dict["game_8"]["Icon"])
+
+        self.games_btn9_icon = PhotoImage(file=SoftwareGame.game_dict["game_9"]["Icon"])
+
+
         # Create the button frame first
         games_btn_frame = ttk.LabelFrame(self, text="Gaming Installer", padding=20)
         games_btn_frame.pack(pady=20, padx=20, fill="x")
 
-        games_btn_frame.grid_columnconfigure(0, weight=1)
-        games_btn_frame.grid_columnconfigure(1, weight=1)
-        games_btn_frame.grid_columnconfigure(2, weight=1)
+        games_btn_frame.grid_columnconfigure(0, weight=2)
+        games_btn_frame.grid_columnconfigure(1, weight=2)
+        games_btn_frame.grid_columnconfigure(2, weight=2)
         games_btn_frame.grid_columnconfigure(3, weight=1)
-        games_btn_frame.grid_columnconfigure(4, weight=1)
+        games_btn_frame.grid_columnconfigure(4, weight=2)
 
         def run_installation(game_key):
             # hide_apt_frame()
@@ -430,7 +441,57 @@ class GamingPanel(tk.Frame):
             style="Custom.TButton",
         )
         game4_button.grid(row=0, column=4, padx=5, pady=5, sticky="nesw")
+
+        game5_button = ttk.Button(
+            games_btn_frame,
+            text=SoftwareGame.game_dict["game_5"]["Name"],
+            image=self.games_btn5_icon,
+            command=lambda: game_btn_action("game_5"),
+            compound=tk.TOP,
+            style="Custom.TButton",
+        )
+        game5_button.grid(row=1, column=0, padx=5, pady=5, sticky="nesw")
+
+        game6_button = ttk.Button(
+            games_btn_frame,
+            text=SoftwareGame.game_dict["game_6"]["Name"],
+            image=self.games_btn6_icon,
+            command=lambda: game_btn_action("game_6"),
+            compound=tk.TOP,
+            style="Custom.TButton",
+        )
+        game6_button.grid(row=1, column=1, padx=5, pady=5, sticky="nesw")
+
+        game7_button = ttk.Button(
+            games_btn_frame,
+            text=SoftwareGame.game_dict["game_7"]["Name"],
+            image=self.games_btn7_icon,
+            command=lambda: game_btn_action("game_7"),
+            compound=tk.TOP,
+            style="Custom.TButton",
+        )
+        game7_button.grid(row=1, column=2, padx=5, pady=5, sticky="nesw")
         # print(SoftwareGame.game_dict)
+        game8_button = ttk.Button(
+            games_btn_frame,
+            text=SoftwareGame.game_dict["game_8"]["Name"],
+            image=self.games_btn8_icon,
+            command=lambda: game_btn_action("game_8"),
+            compound=tk.TOP,
+            style="Custom.TButton",
+        )
+        game8_button.grid(row=1, column=3, padx=5, pady=5, sticky="nesw")
+
+        game9_button = ttk.Button(
+            games_btn_frame,
+            text=SoftwareGame.game_dict["game_9"]["Name"],
+            image=self.games_btn9_icon,
+            command=lambda: game_btn_action("game_9"),
+            compound=tk.TOP,
+            style="Custom.TButton",
+        )
+        game9_button.grid(row=1, column=4, padx=5, pady=5, sticky="nesw")
+
 
         # Create the detail frame
         game_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
@@ -446,9 +507,9 @@ class GamingPanel(tk.Frame):
         self.gaming_pak = Label(game_detail_frame, text="", justify="left", anchor="w")
         self.gaming_pak.grid(column=0, row=1, sticky="ew")
         self.gaming_desc = Label(
-            game_detail_frame, text="", justify="left", anchor="w", wraplength=600
+            game_detail_frame, text="", justify="left", anchor="w", wraplength=750
         )
-        self.gaming_desc.grid(column=0, row=2, sticky="ew")
+        self.gaming_desc.grid(column=0, row=2,columnspan=2, sticky="ew")
 
         self.gaming_inst_btn = ttk.Button(
             game_detail_frame, text="Install", style="Custom.TButton"
