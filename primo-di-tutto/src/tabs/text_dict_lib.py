@@ -73,7 +73,7 @@ class SoftwareGame:
             "Icon": f"{application_path}/images/apps/gzdoom_icon_36.png",
             "Thumbnail": f"{application_path}/images/apps/soft-gzdoom-thumb.png",
             "Install": "flatpak install flathub org.zdoom.GZDoom -y",
-            "Uninstall": "flatpak remove flathub org.zdoom.GZDoom -y",
+            "Uninstall": "flatpak remove org.zdoom.GZDoom -y",
             "Path": "GZDoom",
         },
         "game_6": {
@@ -83,7 +83,7 @@ class SoftwareGame:
             "Icon": f"{application_path}/images/apps/openra_icon_36.png",
             "Thumbnail": f"{application_path}/images/apps/soft-openra-thumb.png",
             "Install": "flatpak install flathub net.openra.OpenRA",
-            "Uninstall": "flatpak remove flathub net.openra.OpenRA -y",
+            "Uninstall": "flatpak remove net.openra.OpenRA -y",
             "Path": "net.openra.OpenRA",
         },
 
@@ -94,7 +94,7 @@ class SoftwareGame:
             "Icon": f"{application_path}/images/apps/xonotic_icon_36.png",
             "Thumbnail": f"{application_path}/images/apps/soft-xonotic-thumb.png",
             "Install": "flatpak install flathub org.xonotic.Xonotic -y",
-            "Uninstall": "flatpak remove flathub org.xonotic.Xonotic -y",
+            "Uninstall": "flatpak remove org.xonotic.Xonotic -y",
             "Path": "org.xonotic.Xonotic",
         },
 
@@ -105,7 +105,7 @@ class SoftwareGame:
             "Icon": f"{application_path}/images/apps/frogatto_icon_36.png",
             "Thumbnail": f"{application_path}/images/apps/soft-frogatto-thumb.png",
             "Install": "flatpak install flathub com.frogatto.Frogatto -y",
-            "Uninstall": "flatpak remove flathub com.frogatto.Frogatto -y",
+            "Uninstall": "flatpak remove com.frogatto.Frogatto -y",
             "Path": "com.frogatto.Frogatto",
         },
 
@@ -116,7 +116,7 @@ class SoftwareGame:
             "Icon": f"{application_path}/images/apps/bombermaaan_icon_36.png",
             "Thumbnail": f"{application_path}/images/apps/soft-bombermaaan-thumb.png",
             "Install": "flatpak install flathub com.github.bjaraujo.Bombermaaan -y",
-            "Uninstall": "flatpak remove flathub com.github.bjaraujo.Bombermaaan -y",
+            "Uninstall": "flatpak remove com.github.bjaraujo.Bombermaaan -y",
             "Path": "com.github.bjaraujo.Bombermaaan",
         },
 

@@ -233,18 +233,6 @@ else:
 
 theme = get_theme().lower()
 
-# if "dark" in theme or "noir" in theme:
-# else:
-# maincolor = "#f5f5f5"
-# nav_color = "#d3d3d3"
-# nav2_color = "#383838"
-# frame_color = "#f5f5f5"
-# main_font = "#454545"
-# info_color = "#0075b7"
-# ext_btn = "#d3d3d3"
-# ext_btn_font = "#454545"
-# label_frame_color = "#454545"
-
 
 # Font Definition Vars
 font_20 = ("Sans", 20)

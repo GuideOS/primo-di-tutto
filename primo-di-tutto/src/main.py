@@ -154,12 +154,10 @@ class MainApplication(tk.Tk):
         self.sources_tab = SourcesTab(self.notebook)
         self.system_tab = SystemTab(self.notebook)
         self.look_tab = LookTab(self.notebook)
-        # self.autostart_tab = AutostartsTab(self.notebook)
         self.software_tab = SoftwareTab(self.notebook)
         self.boot_loader_tab = BootLoaderTab(self.notebook)
         self.contrib_tab = ContribTab(self.notebook)
-        # self.links_tab = LinksTab(self.notebook)
-        # self.about_tab = AboutTab(self.notebook)
+
         if get_first_run() == "yes":
             self.notebook.add(self.willkommen_tab, compound=LEFT, text="Willkommen")
 
@@ -168,20 +166,13 @@ class MainApplication(tk.Tk):
 
         self.notebook.add(self.system_tab, compound=LEFT, text="Werkzeuge")
         self.notebook.add(self.look_tab, compound=LEFT, text="Erscheinungsbild")
-        # self.notebook.add(
-        #    self.autostart_tab, compound=LEFT, text="Autostart", image=self.auto_start
-        # )
+
         self.notebook.add(self.software_tab, compound=LEFT, text="Software")
         self.notebook.add(self.sources_tab, compound=LEFT, text="Quellen")
         self.notebook.add(self.boot_loader_tab, compound=LEFT, text="Bootloader")
         self.notebook.add(self.contrib_tab, compound=LEFT, text="Mitmachen")
 
-        # self.notebook.add(
-        #    self.links_tab, compound=LEFT, text="Links", image=self.links_icon
-        # )
-        # self.notebook.add(
-        #    self.about_tab, compound=LEFT, text="About", image=self.support_icon
-        # )
+
 
         # Notebook Theming
         global noteStyler
