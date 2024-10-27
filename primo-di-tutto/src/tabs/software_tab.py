@@ -78,7 +78,6 @@ class OfficePanel(tk.Frame):
             file=SoftwareOffice.office_dict["office_0"]["Icon"]
         )
 
-
         # self.office_btn2_icon = PhotoImage(
         #    file=SoftwareOffice.office_dict["office_2"]["Icon"]
         # )
@@ -198,7 +197,6 @@ class OfficePanel(tk.Frame):
         )
         office0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
 
-
         # office2_button = ttk.Button(
         #     office_btn_frame,
         #     text=SoftwareOffice.office_dict["office_2"]["Name"],
@@ -265,10 +263,10 @@ class OfficePanel(tk.Frame):
         global office_wid
         office_wid = self.termf.winfo_id()
 
+
 class EduPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
-
 
 
 class GamingPanel(tk.Frame):
@@ -296,7 +294,6 @@ class GamingPanel(tk.Frame):
         self.games_btn8_icon = PhotoImage(file=SoftwareGame.game_dict["game_8"]["Icon"])
 
         self.games_btn9_icon = PhotoImage(file=SoftwareGame.game_dict["game_9"]["Icon"])
-
 
         # Create the button frame first
         games_btn_frame = ttk.LabelFrame(self, text="Gaming Installer", padding=20)
@@ -492,7 +489,6 @@ class GamingPanel(tk.Frame):
         )
         game9_button.grid(row=1, column=4, padx=5, pady=5, sticky="nesw")
 
-
         # Create the detail frame
         game_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
         game_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
@@ -509,7 +505,7 @@ class GamingPanel(tk.Frame):
         self.gaming_desc = Label(
             game_detail_frame, text="", justify="left", anchor="w", wraplength=750
         )
-        self.gaming_desc.grid(column=0, row=2,columnspan=2, sticky="ew")
+        self.gaming_desc.grid(column=0, row=2, columnspan=2, sticky="ew")
 
         self.gaming_inst_btn = ttk.Button(
             game_detail_frame, text="Install", style="Custom.TButton"
