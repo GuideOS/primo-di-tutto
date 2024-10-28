@@ -22,7 +22,7 @@ from subprocess import Popen, PIPE
 from threading import Thread
 from tool_tipps import CreateToolTip
 from tkinter import messagebox
-from tabs.text_dict_lib import SoftwareGame, SoftwareBrowser, SoftwareOffice
+from tabs.text_dict_lib import SoftwareGame, SoftwareBrowser, SoftwareOffice, SoftwareStore
 from apt_manage import *
 from snap_manage import *
 from flatpak_manage import flatpak_path
@@ -38,22 +38,27 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook = ttk.Notebook(self)
         self.inst_notebook.pack(fill=BOTH, expand=True)
 
+        store_frame = ttk.Frame(self.inst_notebook)
         browser_frame = ttk.Frame(self.inst_notebook)
         office_frame = ttk.Frame(self.inst_notebook)
         edu_frame = ttk.Frame(self.inst_notebook)
         gaming_frame = ttk.Frame(self.inst_notebook)
 
+        store_frame.pack(fill="both", expand=True)
         browser_frame.pack(fill="both", expand=True)
         office_frame.pack(fill="both", expand=True)
         edu_frame.pack(fill="both", expand=True)
         gaming_frame.pack(fill="both", expand=True)
 
         # add frames to notebook
+        self.inst_notebook.add(store_frame, compound=LEFT, text="Start")
         self.inst_notebook.add(office_frame, compound=LEFT, text="Textverarbeitung")
-
         self.inst_notebook.add(edu_frame, compound=LEFT, text="Bildbearbeitung")
         self.inst_notebook.add(browser_frame, compound=LEFT, text="Browser")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Gaming")
+
+        store_note_frame = StorePanel(store_frame)
+        store_note_frame.pack(fill=tk.BOTH, expand=True)
 
         browser_note_frame = BrowserPanel(browser_frame)
         browser_note_frame.pack(fill=tk.BOTH, expand=True)
@@ -66,6 +71,65 @@ class SoftwareTab(ttk.Frame):
 
         gaming_note_frame = GamingPanel(gaming_frame)
         gaming_note_frame.pack(fill=tk.BOTH, expand=True)
+
+class StorePanel(tk.Frame):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+
+        self.store_btn0_icon = PhotoImage(file=SoftwareStore.store_dict["store_0"]["Icon"])
+
+        self.store_btn1_icon = PhotoImage(file=SoftwareStore.store_dict["store_1"]["Icon"])
+
+        # Create the button frame first
+        store_btn_frame = ttk.LabelFrame(self, text="Softwareverwaltung", padding=20)
+        store_btn_frame.pack(pady=20, padx=20, fill="x")
+
+        store_btn_frame.grid_columnconfigure(0, weight=1)
+        store_btn_frame.grid_columnconfigure(1, weight=1)
+
+
+        store0_button = ttk.Button(
+            store_btn_frame,
+            text=SoftwareStore.store_dict["store_0"]["Name"],
+            image=self.store_btn0_icon,
+            command=lambda: store_btn_action("store_0"),
+            compound=tk.TOP,
+            style="Custom.TButton",
+        )
+        store0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
+
+        store1_button = ttk.Button(
+            store_btn_frame,
+            text=SoftwareStore.store_dict["store_1"]["Name"],
+            image=self.store_btn1_icon,
+            command=lambda: store_btn_action("store_1"),
+            compound=tk.TOP,
+            style="Custom.TButton",
+        )
+        store1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
+
+        self.store_info_frame = ttk.LabelFrame(self, text="Info", padding=20)
+        self.store_info_frame.pack(pady=20, padx=20, fill=BOTH)
+
+        self.store_info_frame.columnconfigure(0, weight=1)
+        self.store_info_frame.rowconfigure(0, weight=1)
+
+        info_text = """Gnome Software ist eine moderne Softwareverwaltung, die vor allem dafür genutzt werden kann, grafische Desktop-Programme zu installieren. In GuideOS wird das volle Potenzial ausgenutzt: Es können sowohl Debian-Pakete, Flatpaks als auch Snaps installiert werden. Das stellt sicher, dass die größtmögliche Softwareauswahl verfügbar ist.
+
+
+Synaptic ist eine grafische Oberfläche zur Verwaltung von Debian-Systempaketen. Im Gegensatz zu Gnome Software findet man hier alle Systempakete des Repositorys, unter anderem auch Treiber und einzelne Bibliotheken. Vor allem für fortgeschrittene Nutzer bietet Synaptic eine Vielzahl von Informationen über einzelne Pakete.
+
+
+In den weiteren Kategorien befindet sich eine Softwareauswahl der Community, die darauf abgestimmt ist, den PC disziplinübergreifend zu nutzen.
+"""
+
+        self.store_info_discription = ttk.Label(
+            self.store_info_frame,
+            text=info_text,
+            justify="left",
+            wraplength=750,
+            anchor="w",
+        ).grid(row=0, column=0, columnspan=2, sticky="nesw")
 
 
 class OfficePanel(tk.Frame):

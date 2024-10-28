@@ -21,10 +21,10 @@ class ContribTab(ttk.Frame):
 
         take_part_message = ttk.Label(
             self.take_part_frame,
-            wraplength=600,
+            wraplength=900,
             text="Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! ",
         )
-        take_part_message.pack()
+        take_part_message.pack(fill="x")
 
         go_home = ttk.Button(
             self.take_part_frame, text="pgOS Website", style="Custom.TButton"
