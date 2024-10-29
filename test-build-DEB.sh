@@ -2,10 +2,10 @@
 
 # Define the package name and version
 PACKAGE_NAME="primo-di-tutto"
-VERSION="0.4.6"
+VERSION="0.4.7"
 
 # Define the dependencies
-DEPENDENCIES="python3-dev, python3-psutil, python3-distro, python3-bs4, python3-requests, python3-pil, python3-pil.imagetk, xterm, mpg123, lolcat, wmctrl, gdebi, mousepad, appstream,libnotify-bin, pkexec | policykit-1"
+DEPENDENCIES="python3-dev, python3-psutil, python3-distro, python3-bs4, python3-requests, python3-pil, python3-pil.imagetk, xterm, mpg123, lolcat, wmctrl, gdebi, mousepad, appstream, libnotify-bin, pkexec | policykit-1"
 
 # Create the necessary directories
 mkdir -p ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/DEBIAN
@@ -114,6 +114,22 @@ Icon=primo-di-tutto-logo
 Path=/opt/primo-di-tutto/
 EOL
 
+# Create the .desktop file for desktop shortcut
+cat > ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/applications/gos-menu.desktop << EOL
+[Desktop Entry]
+Name=GOS Menu
+GenericName=Application Launcher
+Comment=Lightweight, look nice and powerful application launcher
+Categories=GNOME;GTK;Utility;
+Exec=com.github.libredeb.lightpad
+Icon=guide-os-logo-symbolic-dark
+Terminal=false
+Type=Application
+NoDisplay=true
+StartupNotify=false
+EOL
+
+
 # Create the Autostart .desktop file
 cat > ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/applications/autostart/primo-di-tutto-autostart.desktop << EOL
 [Desktop Entry]
@@ -148,6 +164,8 @@ chmod +x ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/bin/primo-di-tutto
 cd ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/
 chmod -R 755 debian
 chmod 644 ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/applications/primo-di-tutto.desktop
+chmod 644 ~/primo-di-tutto/PRIMO-DEBIAN-BUILD-BOX/debian/usr/share/applications/gos-menu.desktop
+chmod 644
 sudo chown -R root:root debian
 
 dpkg-deb --build -Zxz debian

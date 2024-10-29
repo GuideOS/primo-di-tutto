@@ -407,6 +407,45 @@ class LookTab(ttk.Frame):
             with open(config_path, "w") as file:
                 json.dump(config, file, indent=4)
 
+
+            # Pfad zum gewünschten Verzeichnis
+            directory = os.path.expanduser("~/.config/cinnamon/spices/panel-launchers@cinnamon.org")
+            file_path = os.path.join(directory, "23.json")
+
+            # JSON-Inhalt
+            data = {
+                "section1": {
+                    "type": "section",
+                    "description": "Behavior"
+                },
+                "launcherList": {
+                    "type": "generic",
+                    "default": [
+                        "gos-menu.desktop",
+                    ],
+                    "value": [
+                        "gos-menu.desktop",
+                    ]
+                },
+                "allow-dragging": {
+                    "type": "switch",
+                    "default": True,
+                    "description": "Allow dragging of launchers",
+                    "value": True
+                },
+                "__md5__": "366f8e129abf9622014c95f26ce5aa0f"
+            }
+
+            # Verzeichnis erstellen, falls es nicht existiert
+            os.makedirs(directory, exist_ok=True)
+
+            # JSON-Datei erstellen und Inhalt schreiben
+            with open(file_path, "w") as file:
+                json.dump(data, file, indent=4)
+
+            print(f"Datei {file_path} wurde erfolgreich erstellt.")
+
+
             subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]             
             )
@@ -465,8 +504,8 @@ class LookTab(ttk.Frame):
                 "enable-vfade": True,
                 "enabled-applets": [
                     "panel1:left:2:grouped-window-list@cinnamon.org:2",
-                    "panel1:right:2:systray@cinnamon.org:3",
-                    "panel1:right:3:xapp-status@cinnamon.org:4",
+                    #"panel1:right:2:systray@cinnamon.org:3",
+                    #"panel1:right:3:xapp-status@cinnamon.org:4",
                     "panel2:right:1:notifications@cinnamon.org:5",
                     "panel2:right:5:printers@cinnamon.org:6",
                     "panel2:right:3:removable-drives@cinnamon.org:7",
@@ -551,6 +590,10 @@ class LookTab(ttk.Frame):
                     )  # Ersetze einfache Anführungszeichen mit doppelten
                 # Führe den gsettings-Befehl aus
                 subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
+
+
+
+
 
         def set_upside_down_panel():
             subprocess.run(
