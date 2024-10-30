@@ -53,6 +53,10 @@ class DashTab(ttk.Frame):
         self.distro_debian_logo_img = ImageTk.PhotoImage(
             Image.open(f"{application_path}/images/icons/debian_logo_dash.png")
         )
+        self.distro_guide_logo_img = ImageTk.PhotoImage(
+            Image.open(f"{application_path}/images/icons/guideos_logo_dash.png")
+        )
+
 
         # Open the /proc/device-tree/model file for reading
         try:
@@ -161,7 +165,7 @@ class DashTab(ttk.Frame):
         )
 
         label1 = ttk.Label(self, image=self.system_icon)
-        label1.pack(pady=20)
+        label1.pack()
 
         self.os_info_frame = ttk.LabelFrame(
             self,
@@ -337,6 +341,8 @@ class DashTab(ttk.Frame):
             self.distro_logo_label.config(image=self.distro_ubuntu_logo_img)
         elif get_desktop_environment() == "lxde-pi-wayfire" or "lxde-pi" or "lxde":
             self.distro_logo_label.config(image=self.distro_pi_logo_img)
+        elif "GuideOS" in nice_name:
+            self.distro_logo_label.config(image=self.distro_guide_logo_img)
         else:
             self.distro_logo_label.config(image=self.distro_debian_logo_img)
 
