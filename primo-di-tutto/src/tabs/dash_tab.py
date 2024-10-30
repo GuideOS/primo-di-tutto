@@ -407,6 +407,9 @@ class DashTab(ttk.Frame):
         self.cpu_max_label.configure(text=f"Max: {cpufreq.max:.0f} Mhz")
         self.cpu_current_label.configure(text=f"Current: {cpufreq.current:.0f} Mhz")
         self.cpu_min_label.configure(text=f"Min: {cpufreq.min:.0f} Mhz")
+        
+
+
 
     def update_memory_labels(self, svmem, swap):
         """Update memory-related labels."""
@@ -420,11 +423,12 @@ class DashTab(ttk.Frame):
 
     def update_disk_labels(self):
         """Update disk-related labels."""
+        hdd_usage = psutil.disk_usage("/").percent
         obj_Disk = psutil.disk_usage("/")
         self.total_size_label.configure(text=f"Total Size: {obj_Disk.total / (2**30):.2f} GB")
         self.used_label.configure(text=f"Used: {obj_Disk.used / (2**30):.2f} GB")
         self.free_label.configure(text=f"Free: {obj_Disk.free / (2**30):.2f} GB")
-
+        self.hdd_percent.configure(text=f"{hdd_usage}%")
     def get_network_info(self):
         """Get network-related information."""
         try:

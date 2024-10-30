@@ -25,7 +25,7 @@ class WelcomeTab(ttk.Frame):
 
         # Icon für den Willkommensbildschirm laden
         self.welcome_icon = ImageTk.PhotoImage(
-            Image.open(f"{application_path}/images/icons/pigro_icons/test.png")
+            Image.open(f"{application_path}/images/icons/pigro_icons/test2.png")
         )
 
         # Label für das Icon erstellen und im Fenster platzieren
