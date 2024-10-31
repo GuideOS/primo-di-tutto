@@ -19,10 +19,10 @@ class SystemTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
         """System Tab Icons"""
-        self.raspi_config_cli_icon = PhotoImage(
+        self.rascinna_config_cli_icon = PhotoImage(
             file=f"{application_path}/images/icons/papirus/48x48/distributor-logo-raspbian.png"
         )
-        self.raspi_config_gui_icon = PhotoImage(
+        self.rascinna_config_gui_icon = PhotoImage(
             file=f"{application_path}/images/icons/papirus/48x48/distributor-logo-raspbian.png"
         )
         self.rename_user_icon = PhotoImage(
@@ -95,7 +95,7 @@ class SystemTab(ttk.Frame):
         self.bookshelf_icon = PhotoImage(
             file=f"{application_path}/images/icons/PiXflat/bookshelf.png"
         )
-        self.raspi_pipanel = PhotoImage(
+        self.rascinna_pipanel = PhotoImage(
             file=f"{application_path}/images/icons/PiXflat/preferences-desktop-theme.png"
         )
         self.gnome_ext_icon = PhotoImage(
@@ -105,84 +105,23 @@ class SystemTab(ttk.Frame):
             file=f"{application_path}/images/icons/papirus/48x48/gnome-tweak-tool.png"
         )
 
-        def pi_settings(text):
+        def cinna_settings(text):
             """commands for auto generated buttons"""
-            if text == "Raspi Bookshelf":
-                popen("rp-bookshelf")
-            if text == "Raspi-Config GUI":
-                popen("env SUDO_ASKPASS=/usr/lib/rc-gui/pwdrcg.sh sudo -AE rc_gui")
-            if text == "Raspi-Config CLI":
-                popen(
-                    f"x-terminal-emulator -e 'bash -c \"sudo raspi-config; exec bash\"'"
-                )
-
-            if text == "Edit Config.txt":
-                popen(f"{permit} mousepad {config_path}")
-                print("[Info] With great power comes great responsibility")
-
-            if text == "Raspi Diagnostics":
-                popen("agnostics")
-
-            if text == "Raspi Recommended\nSoftware":
-                popen(
-                    "env SUDO_ASKPASS=/usr/lib/rp-prefapps/pwdrpp.sh sudo -AE rp-prefapps"
-                )
             if text == "Gparted":
                 popen(f"{permit}  gparted")
-            if text == "Raspi Mouse & Keyboard":
-                popen("lxinput")
-            if text == "DeskpiPro Control":
-                popen("x-terminal-emulator -e 'bash -c \"deskpi-config; exec bash\"'")
-            if text == "Raspi SD Card Copier":
-                popen(
-                    "env SUDO_ASKPASS=/usr/lib/piclone/pwdpic.sh sudo -AE dbus-launch piclone"
-                )
-            if text == "Raspi Printer Settings":
-                popen("system-config-printer")
-            if text == "Raspi Desktop Settings":
-                popen("pcmanfm --desktop-pref")
-            if text == "Raspi Screen Settings":
-                popen("lxrandr")
             if text == "NeoFetch":
                 popen("x-terminal-emulator -e 'bash -c \"neofetch; exec bash\"'")
             if text == "FM God Mode":
-                if get_desktop_environment() == "gnome":
-                    popen(
-                        f"{permit} env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY xdg-open /"
-                    )
-
-                if get_desktop_environment() == "lxde-pi" or "lxde-pi-wayfire":
-                    popen(f"sudo pcmanfm /")
-
-                print("[Info] With great power comes great responsibility")
-
+                popen(
+                    f"{permit} nemo"
+                )
             if text == "dmesg":
-                if os.environ.get("DESKTOP_SESSION") == "gnome" or "ubuntu":
-                    popen("x-terminal-emulator -e 'bash -c \"sudo dmesg; exec bash\"'")
+                popen("x-terminal-emulator -e 'bash -c \"pkexec dmesg; exec bash\"'")
 
-                elif (
-                    os.environ.get("DESKTOP_SESSION") == "LXDE-pi" or "LXDE-pi-wayfire"
-                ):
-                    popen("x-terminal-emulator -e 'bash -c \"dmesg; exec bash\"'")
             if text == "dmesg --follow":
-                if os.environ.get("DESKTOP_SESSION") == "ubuntu:gnome" or "ubuntu":
-                    popen(
-                        "x-terminal-emulator -e 'bash -c \"sudo dmesg --follow; exec bash\"'"
-                    )
-
-                elif (
-                    os.environ.get("DESKTOP_SESSION") == "LXDE-pi" or "LXDE-pi-wayfire"
-                ):
-                    popen(
-                        "x-terminal-emulator -e 'bash -c \"dmesg --follow; exec bash\"'"
-                    )
-
-            if text == "Xfce Settings":
-                popen("xfce4-settings-manager")
-
-            if text == "Taskmanager":
-                popen("lxtask")
-
+                popen(
+                    "x-terminal-emulator -e 'bash -c \"sudo dmesg --follow; exec bash\"'"
+                )
             if text == "Bash History":
                 popen(f"xdg-open {home}/.bash_history")
 
@@ -196,21 +135,6 @@ class SystemTab(ttk.Frame):
                 add_auto = Update_Alternatives(self)
                 add_auto.grab_set()
 
-            if text == "Gnome Tweaks":
-                popen("gnome-tweaks")
-
-            if text == "Gnome Extensions":
-                popen("xdg-open https://extensions.gnome.org/")
-
-            if text == "Gnome Software\nUpdates":
-                popen("update-manager")
-
-            if text == "Gnome Update\nSettings":
-                popen("software-properties-gtk")
-
-            if text == "Gnome Settings":
-                popen("gnome-control-center")
-
             if text == "Reconfigure Keyboard":
                 popen(
                     "x-terminal-emulator -e 'bash -c \"sudo dpkg-reconfigure keyboard-configuration; exec bash\"'"
@@ -220,45 +144,41 @@ class SystemTab(ttk.Frame):
                 popen(
                     "x-terminal-emulator -e 'bash -c \"sudo dpkg-reconfigure locales; exec bash\"'"
                 )
-            if text == "Raspi Appearance\nSettings":
-                popen("pipanel")
 
-        self.pi_set = ttk.LabelFrame(
+        self.cinna_set = ttk.LabelFrame(
             self, text="Wichtige Werkzeuge auf einen Blick", padding=20
         )
-        self.pi_set.pack(pady=20, padx=20, fill="both", expand=True)
-        # self.pi_set["background"] = frame_color
-        # self.pi_set.columnconfigure(1,wei)
-        self.pi_set.grid_columnconfigure(0, weight=1)
-        self.pi_set.grid_columnconfigure(1, weight=1)
-        self.pi_set.grid_columnconfigure(2, weight=2)
-        self.pi_set.grid_columnconfigure(3, weight=2)
-        self.pi_set.grid_columnconfigure(4, weight=1)
+        self.cinna_set.pack(pady=20, padx=20, fill="both", expand=True)
+        # self.cinna_set["background"] = frame_color
+        # self.cinna_set.columnconfigure(1,wei)
+        self.cinna_set.grid_columnconfigure(0, weight=2)
+        self.cinna_set.grid_columnconfigure(1, weight=2)
+        self.cinna_set.grid_columnconfigure(2, weight=1)
+        self.cinna_set.grid_columnconfigure(3, weight=2)
+        self.cinna_set.grid_columnconfigure(4, weight=1)
 
-        pi_settings_btn_list = [
+        cinna_settings_btn_list = [
             "Bash History",
             "Cron Job",
             "dmesg --follow",
             "dmesg",
             "FM God Mode",
-            "Gnome Updates",
-            "Update Einstellungen",
             "Gparted",
             "Menu Optionen",
             "Reconfigure Keyboard",
             "Reconfigure Locales",
             "Update-Alternatives",
         ]
-        pi_settings_btn_list1 = []
+        cinna_settings_btn_list1 = []
         conf_row = 0
         conf_column = 0
-        for pi_settings_btn in pi_settings_btn_list:
-            self.pi_button_x = ttk.Button(
-                self.pi_set,
+        for cinna_settings_btn in cinna_settings_btn_list:
+            self.cinna_button_x = ttk.Button(
+                self.cinna_set,
                 # width=140,
                 # height=110,
-                text=pi_settings_btn,
-                command=lambda text=pi_settings_btn: pi_settings(text),
+                text=cinna_settings_btn,
+                command=lambda text=cinna_settings_btn: cinna_settings(text),
                 # highlightthickness=0,
                 # borderwidth=0,
                 # background=frame_color,
@@ -267,142 +187,62 @@ class SystemTab(ttk.Frame):
                 # activebackground=ext_btn,
                 style="Custom.TButton",
             )
-            self.pi_button_x.grid(
+            self.cinna_button_x.grid(
                 row=conf_row, column=conf_column, padx=5, pady=5, sticky="ew"
             )
-            pi_settings_btn_list1.append(self.pi_button_x)
+            cinna_settings_btn_list1.append(self.cinna_button_x)
             conf_column = conf_column + 1
             if conf_column == 5:
                 conf_row = conf_row + 1
                 conf_column = 0
 
-            if pi_settings_btn == "Raspi Bookshelf":
-                self.pi_button_x.config(image=self.bookshelf_icon)
+            if cinna_settings_btn == "Edit Config.txt":
+                self.cinna_button_x.config(image=self.edit_config_txt_icon)
 
-                if check_bookshelf() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-            if pi_settings_btn == "Raspi Recommended\nSoftware":
-                self.pi_button_x.config(image=self.raspi_config_cli_icon)
-                if check_agnostics() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-            if pi_settings_btn == "Raspi Diagnostics":
-                self.pi_button_x.config(image=self.raspi_config_cli_icon)
-                if check_rp_prefapps() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-            if pi_settings_btn == "Raspi-Config CLI":
-                self.pi_button_x.config(image=self.raspi_config_cli_icon)
-                if check_raspi_config() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-            if pi_settings_btn == "Raspi Appearance\nSettings":
-                self.pi_button_x.config(image=self.raspi_pipanel)
-                if check_pipanel() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-            if pi_settings_btn == "Raspi-Config GUI":
-                self.pi_button_x.config(image=self.raspi_config_cli_icon)
-                if check_rc_gui() == False:
-                    self.pi_button_x.configure(state=DISABLED)
 
-            if pi_settings_btn == "Edit Config.txt":
-                self.pi_button_x.config(image=self.edit_config_txt_icon)
-
-            if pi_settings_btn == "Raspi Mouse & Keyboard":
-                self.pi_button_x.config(image=self.mouse_keyboard_icon)
-                if check_rc_gui() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-            if pi_settings_btn == "DeskpiPro Control":
-                self.pi_button_x.config(image=self.deskpipro_icon)
-                if check_deskpi_config() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-            if pi_settings_btn == "Raspi SD Card Copier":
-                self.pi_button_x.config(image=self.sd_card_copier_icon)
-                if check_rc_gui() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-            if pi_settings_btn == "Raspi Printer Settings":
-                self.pi_button_x.config(image=self.printer_settings_icon)
-                if check_rc_gui() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-            if pi_settings_btn == "Raspi Desktop Settings":
-                self.pi_button_x.config(image=self.desktop_settings_icon)
-                if check_rc_gui() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-            if pi_settings_btn == "Raspi Screen Settings":
-                self.pi_button_x.config(image=self.screen_settings_icon)
-                if check_rc_gui() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-            if pi_settings_btn == "NeoFetch":
-                self.pi_button_x.config(image=self.neofetch_icon)
+            if cinna_settings_btn == "NeoFetch":
+                self.cinna_button_x.config(image=self.neofetch_icon)
                 if os.path.isfile("/bin/neofetch"):
                     print("[Info] Neofetch is installed")
-                    self.pi_button_x.configure(state=NORMAL)
+                    self.cinna_button_x.configure(state=NORMAL)
                 else:
                     print("[Info] Neofetch is not installed")
-                    self.pi_button_x.configure(state=DISABLED)
+                    self.cinna_button_x.configure(state=DISABLED)
 
-            if pi_settings_btn == "Gparted":
-                self.pi_button_x.config(image=self.gparted_icon)
+            if cinna_settings_btn == "Gparted":
+                self.cinna_button_x.config(image=self.gparted_icon)
                 if os.path.isfile("/usr/sbin/gparted"):
                     print("[Info] Gparted is installed")
-                    self.pi_button_x.configure(state=NORMAL)
+                    self.cinna_button_x.configure(state=NORMAL)
                 else:
                     print("[Info] Gparted is not installed")
-                    self.pi_button_x.configure(state=DISABLED)
+                    self.cinna_button_x.configure(state=DISABLED)
 
-            if pi_settings_btn == "FM God Mode":
-                self.pi_button_x.config(image=self.fm_godmode_icon)
+            if cinna_settings_btn == "FM God Mode":
+                self.cinna_button_x.config(image=self.fm_godmode_icon)
 
-            if pi_settings_btn == "dmesg --follow":
-                self.pi_button_x.config(image=self.boot_log_icon)
-            if pi_settings_btn == "dmesg":
-                self.pi_button_x.config(image=self.boot_log_icon)
+            if cinna_settings_btn == "dmesg --follow":
+                self.cinna_button_x.config(image=self.boot_log_icon)
+            if cinna_settings_btn == "dmesg":
+                self.cinna_button_x.config(image=self.boot_log_icon)
 
-            if pi_settings_btn == "Reconfigure Keyboard":
-                self.pi_button_x.config(image=self.boot_log_icon)
-            if pi_settings_btn == "Reconfigure Locales":
-                self.pi_button_x.config(image=self.boot_log_icon)
+            if cinna_settings_btn == "Reconfigure Keyboard":
+                self.cinna_button_x.config(image=self.boot_log_icon)
+            if cinna_settings_btn == "Reconfigure Locales":
+                self.cinna_button_x.config(image=self.boot_log_icon)
 
-            if pi_settings_btn == "Xfce Settings":
-                self.pi_button_x.config(image=self.xfce_settings_icon)
-                self.pi_button_x.configure(state=DISABLED)
-                if get_desktop_environment() == "xfce":
-                    self.pi_button_x.configure(state=NORMAL)
 
-            if pi_settings_btn == "Bash History":
-                self.pi_button_x.config(image=self.bash_history_icon)
+            if cinna_settings_btn == "Bash History":
+                self.cinna_button_x.config(image=self.bash_history_icon)
 
-            if pi_settings_btn == "Cron Job":
-                self.pi_button_x.config(image=self.cron_job_icon)
+            if cinna_settings_btn == "Cron Job":
+                self.cinna_button_x.config(image=self.cron_job_icon)
 
-            if pi_settings_btn == "Menu Optionen":
-                self.pi_button_x.config(image=self.alacard_icon)
+            if cinna_settings_btn == "Menu Optionen":
+                self.cinna_button_x.config(image=self.alacard_icon)
                 if check_alacarte() == False:
-                    self.pi_button_x.configure(state=DISABLED)
+                    self.cinna_button_x.configure(state=DISABLED)
 
-            if pi_settings_btn == "Update-Alternatives":
-                self.pi_button_x.config(image=self.bash_history_icon)
+            if cinna_settings_btn == "Update-Alternatives":
+                self.cinna_button_x.config(image=self.bash_history_icon)
 
-            if pi_settings_btn == "Gnome Tweaks":
-                self.pi_button_x.config(image=self.gnome_tweaks_icon)
-                if check_gnome_tweaks() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-
-            if pi_settings_btn == "Gnome Extensions":
-                self.pi_button_x.config(image=self.gnome_ext_icon)
-                if get_desktop_environment() == "gnome":
-                    self.pi_button_x.configure(state=NORMAL)
-                else:
-                    self.pi_button_x.configure(state=DISABLED)
-
-            if pi_settings_btn == "Gnome Updates":
-                self.pi_button_x.config(image=self.update_icon)
-                if check_update_manager() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-
-            if pi_settings_btn == "Update Einstellungen":
-                self.pi_button_x.config(image=self.update_icon)
-                if check_software_properties_gtk() == False:
-                    self.pi_button_x.configure(state=DISABLED)
-
-            if pi_settings_btn == "Gnome Settings":
-                self.pi_button_x.config(image=self.source_settings_icon)
-                if check_gnome_control_center() == False:
-                    self.pi_button_x.configure(state=DISABLED)

@@ -6,13 +6,13 @@ class SoftwareStore:
         "store_0": {
             "Name": "Gnome Software",  # Name
             "Icon": f"{application_path}/images/apps/gnomesoftware_icon_36.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
-
+            "Open": "gnome-software"        
         },
         "store_1": {
             "Name": "Synaptic",  # Name
             "Package": "Debian-Paket",  # Paketformat
             "Icon": f"{application_path}/images/apps/synaptic_icon_36.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
-
+            "Open": "pkexec synaptic"
         },
     }
 

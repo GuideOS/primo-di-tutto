@@ -80,13 +80,11 @@ class LookTab(ttk.Frame):
 
         def set_elfi_panel():
             subprocess.run(
-                ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]             
+                ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
-            #subprocess.run(
-            #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]             
-            #)
-
-
+            # subprocess.run(
+            #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]
+            # )
 
             gsettings_11_config = {
                 "allow-other-notification-handlers": False,
@@ -106,7 +104,12 @@ class LookTab(ttk.Frame):
                 "date-format": "'%a, %h %d %Y%l:%M %p'",
                 "demands-attention-ignored-wm-classes": [],
                 "demands-attention-passthru-wm-classes": [
-                    "gnome-screenshot", "lxterminal", "xfce4-terminal", "firefox", "libreoffice", "soffice"
+                    "gnome-screenshot",
+                    "lxterminal",
+                    "xfce4-terminal",
+                    "firefox",
+                    "libreoffice",
+                    "soffice",
                 ],
                 "desklet-cache-updated": 0,
                 "desklet-decorations": 1,
@@ -148,18 +151,29 @@ class LookTab(ttk.Frame):
                     "panel1:right:13:calendar@cinnamon.org:13",
                     "panel1:right:11:trash@cinnamon.org:15",
                     "panel1:left:0:weather@mockturtl:19",
-                    #"panel1:right:14:calendar@cinnamon.org:20",
-                    "panel1:right:0:expo@cinnamon.org:22"
+                    # "panel1:right:14:calendar@cinnamon.org:20",
+                    "panel1:right:0:expo@cinnamon.org:22",
                 ],
                 "enabled-desklets": [],
-                "enabled-extensions": ["opacify@anish.org", "transparent-panels@germanfr"],
+                "enabled-extensions": [
+                    "opacify@anish.org",
+                    "transparent-panels@germanfr",
+                ],
                 "enabled-search-providers": [],
                 "extension-cache-updated": 0,
                 "favorite-apps": [
-                    "cinnamon-settings.desktop", "nemo.desktop", "org.gnome.Software.desktop",
-                    "system-config-printer.desktop", "org.gnome.DejaDup.desktop"
+                    "cinnamon-settings.desktop",
+                    "nemo.desktop",
+                    "org.gnome.Software.desktop",
+                    "system-config-printer.desktop",
+                    "org.gnome.DejaDup.desktop",
                 ],
-                "hotcorner-layout": ["expo:false:0", "scale:false:0", "scale:false:0", "desktop:false:0"],
+                "hotcorner-layout": [
+                    "expo:false:0",
+                    "scale:false:0",
+                    "scale:false:0",
+                    "desktop:false:0",
+                ],
                 "hoverclick-action": "single",
                 "hoverclick-layout": "vertical::both",
                 "hoverclick-position": "",
@@ -196,7 +210,7 @@ class LookTab(ttk.Frame):
                 "window-effect-speed": 1,
                 "workspace-expo-view-as-grid": False,
                 "workspace-name-overrides": ["DEPRECATED"],
-                "workspace-osd-visible": True
+                "workspace-osd-visible": True,
             }
 
             # Schleife durch jedes Schlüssel-Wert-Paar im Dictionary
@@ -211,11 +225,11 @@ class LookTab(ttk.Frame):
 
         def set_classico_panel():
             subprocess.run(
-                ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]             
+                ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
-            #subprocess.run(
-            #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]             
-            #)
+            # subprocess.run(
+            #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]
+            # )
             # Transparent Panel
             config_path = os.path.expanduser(
                 "~/.config/cinnamon/spices/transparent-panels@germanfr/transparent-panels@germanfr.json"
@@ -298,27 +312,27 @@ class LookTab(ttk.Frame):
                 "enable-indicators": "false",
                 "enable-vfade": "true",
                 "enabled-applets": [
-                    'panel1:left:0:menu@cinnamon.org:0',
-                    'panel1:left:2:grouped-window-list@cinnamon.org:2',
-                    'panel1:right:2:systray@cinnamon.org:3',
-                    'panel1:right:3:xapp-status@cinnamon.org:4',
-                    'panel1:right:4:notifications@cinnamon.org:5',
-                    'panel1:right:5:printers@cinnamon.org:6',
-                    'panel1:right:6:removable-drives@cinnamon.org:7',
-                    'panel1:right:7:keyboard@cinnamon.org:8',
-                    'panel1:right:8:favorites@cinnamon.org:9',
-                    'panel1:right:9:network@cinnamon.org:10',
-                    'panel1:right:10:sound@cinnamon.org:11',
-                    'panel1:right:11:power@cinnamon.org:12',
-                    'panel2:center:0:calendar@cinnamon.org:13',
-                    'panel1:right:1:trash@cinnamon.org:15',
-                    'panel2:right:1:temperature@fevimu:16',
-                    'panel1:left:1:placesCenter@scollins:17',
-                    'panel1:right:13:sessionManager@scollins:18',
-                    'panel2:center:1:weather@mockturtl:19',
+                    "panel1:left:0:menu@cinnamon.org:0",
+                    "panel1:left:2:grouped-window-list@cinnamon.org:2",
+                    "panel1:right:2:systray@cinnamon.org:3",
+                    "panel1:right:3:xapp-status@cinnamon.org:4",
+                    "panel1:right:4:notifications@cinnamon.org:5",
+                    "panel1:right:5:printers@cinnamon.org:6",
+                    "panel1:right:6:removable-drives@cinnamon.org:7",
+                    "panel1:right:7:keyboard@cinnamon.org:8",
+                    "panel1:right:8:favorites@cinnamon.org:9",
+                    "panel1:right:9:network@cinnamon.org:10",
+                    "panel1:right:10:sound@cinnamon.org:11",
+                    "panel1:right:11:power@cinnamon.org:12",
+                    "panel2:center:0:calendar@cinnamon.org:13",
+                    "panel1:right:1:trash@cinnamon.org:15",
+                    "panel2:right:1:temperature@fevimu:16",
+                    "panel1:left:1:placesCenter@scollins:17",
+                    "panel1:right:13:sessionManager@scollins:18",
+                    "panel2:center:1:weather@mockturtl:19",
                     #'panel1:right:12:calendar@cinnamon.org:20',
-                    'panel1:right:0:expo@cinnamon.org:22'
-                    ],
+                    "panel1:right:0:expo@cinnamon.org:22",
+                ],
                 "enabled-desklets": "@as []",
                 "enabled-extensions": "['opacify@anish.org', 'transparent-panels@germanfr']",
                 "enabled-search-providers": "@as []",
@@ -407,17 +421,15 @@ class LookTab(ttk.Frame):
             with open(config_path, "w") as file:
                 json.dump(config, file, indent=4)
 
-
             # Pfad zum gewünschten Verzeichnis
-            directory = os.path.expanduser("~/.config/cinnamon/spices/panel-launchers@cinnamon.org")
+            directory = os.path.expanduser(
+                "~/.config/cinnamon/spices/panel-launchers@cinnamon.org"
+            )
             file_path = os.path.join(directory, "23.json")
 
             # JSON-Inhalt
             data = {
-                "section1": {
-                    "type": "section",
-                    "description": "Behavior"
-                },
+                "section1": {"type": "section", "description": "Behavior"},
                 "launcherList": {
                     "type": "generic",
                     "default": [
@@ -425,15 +437,15 @@ class LookTab(ttk.Frame):
                     ],
                     "value": [
                         "gos-menu.desktop",
-                    ]
+                    ],
                 },
                 "allow-dragging": {
                     "type": "switch",
                     "default": True,
                     "description": "Allow dragging of launchers",
-                    "value": True
+                    "value": True,
                 },
-                "__md5__": "366f8e129abf9622014c95f26ce5aa0f"
+                "__md5__": "366f8e129abf9622014c95f26ce5aa0f",
             }
 
             # Verzeichnis erstellen, falls es nicht existiert
@@ -445,13 +457,12 @@ class LookTab(ttk.Frame):
 
             print(f"Datei {file_path} wurde erfolgreich erstellt.")
 
-
             subprocess.run(
-                ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]             
+                ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
-            #subprocess.run(
-            #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]             
-            #)
+            # subprocess.run(
+            #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]
+            # )
 
             gsettings_config = {
                 "allow-other-notification-handlers": False,
@@ -504,8 +515,8 @@ class LookTab(ttk.Frame):
                 "enable-vfade": True,
                 "enabled-applets": [
                     "panel1:left:2:grouped-window-list@cinnamon.org:2",
-                    #"panel1:right:2:systray@cinnamon.org:3",
-                    #"panel1:right:3:xapp-status@cinnamon.org:4",
+                    # "panel1:right:2:systray@cinnamon.org:3",
+                    # "panel1:right:3:xapp-status@cinnamon.org:4",
                     "panel2:right:1:notifications@cinnamon.org:5",
                     "panel2:right:5:printers@cinnamon.org:6",
                     "panel2:right:3:removable-drives@cinnamon.org:7",
@@ -514,7 +525,7 @@ class LookTab(ttk.Frame):
                     "panel2:right:6:network@cinnamon.org:10",
                     "panel2:right:7:sound@cinnamon.org:11",
                     "panel2:right:8:power@cinnamon.org:12",
-                    #"panel2:center:0:calendar@cinnamon.org:13",
+                    # "panel2:center:0:calendar@cinnamon.org:13",
                     "panel2:right:0:temperature@fevimu:16",
                     "panel2:right:9:sessionManager@scollins:18",
                     "panel2:center:2:weather@mockturtl:19",
@@ -591,144 +602,140 @@ class LookTab(ttk.Frame):
                 # Führe den gsettings-Befehl aus
                 subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
 
-
-
-
-
         def set_upside_down_panel():
             subprocess.run(
-                ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]             
+                ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
-            #subprocess.run(
-            #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]             
-            #)
+            # subprocess.run(
+            #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]
+            # )
 
             gsettings_config = {
-			    "allow-other-notification-handlers": False,
-			    "alttab-minimized-aware": False,
-			    "alttab-switcher-delay": 100,
-			    "alttab-switcher-enforce-primary-monitor": False,
-			    "alttab-switcher-show-all-workspaces": False,
-			    "alttab-switcher-style": "icons+thumbnails",
-			    "alttab-switcher-warp-mouse-pointer": False,
-			    "app-menu-icon-name": "ubuntucinnamon-symbolic",
-			    "app-menu-label": "Menu",
-			    "applet-cache-updated": 0,
-			    "bring-windows-to-current-workspace": False,
-			    "center-warped-pointer": True,
-			    "cinnamon-settings-advanced": False,
-			    "command-history": [],
-			    "date-format": "%a, %h %d %Y %l:%M %p",
-			    "demands-attention-ignored-wm-classes": [],
-			    "demands-attention-passthru-wm-classes": [
-			        "gnome-screenshot", 
-			        "lxterminal", 
-			        "xfce4-terminal", 
-			        "firefox", 
-			        "libreoffice", 
-			        "soffice"
-			    ],
-			    "desklet-cache-updated": 0,
-			    "desklet-decorations": 1,
-			    "desklet-snap": True,
-			    "desklet-snap-interval": 25,
-			    "desktop-effects": True,
-			    "desktop-effects-change-size": True,
-			    "desktop-effects-close": "traditional",
-			    "desktop-effects-map": "traditional",
-			    "desktop-effects-minimize": "traditional",
-			    "desktop-effects-on-dialogs": True,
-			    "desktop-effects-on-menus": True,
-			    "desktop-effects-sizechange-effect": "scale",
-			    "desktop-effects-sizechange-time": 100,
-			    "desktop-effects-sizechange-transition": "easeInQuad",
-			    "desktop-effects-workspace": True,
-			    "desktop-layout": "",
-			    "development-tools": True,
-			    "device-aliases": [],
-			    "disabled-open-search-providers": [],
-			    "edge-flip-delay": 1000,
-			    "enable-app-monitoring": True,
-			    "enable-edge-flip": False,
-			    "enable-indicators": False,
-			    "enable-vfade": True,
-			    "enabled-applets": [
-			        "panel1:left:0:menu@cinnamon.org:0", 
-			        "panel1:left:2:grouped-window-list@cinnamon.org:2", 
-			        "panel1:right:2:systray@cinnamon.org:3", 
-			        "panel1:right:3:xapp-status@cinnamon.org:4", 
-			        "panel1:right:4:notifications@cinnamon.org:5", 
-			        "panel1:right:5:printers@cinnamon.org:6", 
-			        "panel1:right:6:removable-drives@cinnamon.org:7", 
-			        "panel1:right:7:keyboard@cinnamon.org:8", 
-			        "panel1:right:8:favorites@cinnamon.org:9", 
-			        "panel1:right:9:network@cinnamon.org:10", 
-			        "panel1:right:15:sound@cinnamon.org:11", 
-			        "panel1:right:10:power@cinnamon.org:12", 
-			        #"panel1:right:11:calendar@cinnamon.org:13", 
-			        "panel1:right:14:trash@cinnamon.org:15", 
-			        "panel2:right:1:temperature@fevimu:16", 
-			        "panel1:left:1:placesCenter@scollins:17", 
-			        "panel1:right:16:sessionManager@scollins:18", 
-			        "panel1:right:12:weather@mockturtl:19", 
-			        "panel1:right:13:calendar@cinnamon.org:20", 
-			        "panel1:right:0:expo@cinnamon.org:22"
-			    ],
-			    "enabled-desklets": [],
-			    "enabled-extensions": [],
-			    "enabled-search-providers": [],
-			    "extension-cache-updated": 0,
-			    "favorite-apps": [
-			        "cinnamon-settings.desktop", 
-			        "nemo.desktop", 
-			        "org.gnome.Software.desktop", 
-			        "system-config-printer.desktop", 
-			        "org.gnome.DejaDup.desktop"
-			    ],
-			    "hotcorner-layout": [
-			        "expo:false:0", 
-			        "scale:false:0", 
-			        "scale:false:0", 
-			        "desktop:false:0"
-			    ],
-			    "hoverclick-action": "single",
-			    "hoverclick-layout": "vertical::both",
-			    "hoverclick-position": "",
-			    "lock-desklets": False,
-			    "looking-glass-history": [],
-			    "next-applet-id": 23,
-			    "next-desklet-id": 0,
-			    "no-adjacent-panel-barriers": False,
-			    "number-workspaces": 0,
-			    "overview-corner": ["DEPRECATED"],
-			    "panel-edit-mode": False,
-			    "panel-launchers": ["DEPRECATED"],
-			    "panel-launchers-draggable": True,
-			    "panel-scale-text-icons": False,
-			    "panel-zone-icon-sizes": '[{"panelId":1,"left":0,"center":0,"right":22}]',
-			    "panel-zone-symbolic-icon-sizes": '[{"panelId":1,"left":22,"center":28,"right":18}]',
-			    "panel-zone-text-sizes": '[{"panelId":1,"left":0,"center":0,"right":0}]',
-			    "panels-autohide": ['1:false', '2:intel'],
-			    "panels-enabled": ['1:0:top'],
-			    "panels-height": ['1:38', '2:21'],
-			    "panels-hide-delay": ['1:0', '2:0'],
-			    "panels-show-delay": ['1:0', '2:0'],
-			    "prevent-focus-stealing": False,
-			    "run-dialog-aliases": ['<Super>r'],
-			    "run-dialog-show-completions": True,
-			    "saved-im-presence": 1,
-			    "saved-session-presence": 0,
-			    "show-media-keys-osd": "medium",
-			    "show-snap-osd": True,
-			    "show-tile-hud": True,
-			    "startup-animation": True,
-			    "startup-icon-name": "",
-			    "system-icon": "",
-			    "window-effect-speed": 1,
-			    "workspace-expo-view-as-grid": False,
-			    "workspace-name-overrides": ["DEPRECATED"],
-			    "workspace-osd-visible": True
-			}
+                "allow-other-notification-handlers": False,
+                "alttab-minimized-aware": False,
+                "alttab-switcher-delay": 100,
+                "alttab-switcher-enforce-primary-monitor": False,
+                "alttab-switcher-show-all-workspaces": False,
+                "alttab-switcher-style": "icons+thumbnails",
+                "alttab-switcher-warp-mouse-pointer": False,
+                "app-menu-icon-name": "ubuntucinnamon-symbolic",
+                "app-menu-label": "Menu",
+                "applet-cache-updated": 0,
+                "bring-windows-to-current-workspace": False,
+                "center-warped-pointer": True,
+                "cinnamon-settings-advanced": False,
+                "command-history": [],
+                "date-format": "%a, %h %d %Y %l:%M %p",
+                "demands-attention-ignored-wm-classes": [],
+                "demands-attention-passthru-wm-classes": [
+                    "gnome-screenshot",
+                    "lxterminal",
+                    "xfce4-terminal",
+                    "firefox",
+                    "libreoffice",
+                    "soffice",
+                ],
+                "desklet-cache-updated": 0,
+                "desklet-decorations": 1,
+                "desklet-snap": True,
+                "desklet-snap-interval": 25,
+                "desktop-effects": True,
+                "desktop-effects-change-size": True,
+                "desktop-effects-close": "traditional",
+                "desktop-effects-map": "traditional",
+                "desktop-effects-minimize": "traditional",
+                "desktop-effects-on-dialogs": True,
+                "desktop-effects-on-menus": True,
+                "desktop-effects-sizechange-effect": "scale",
+                "desktop-effects-sizechange-time": 100,
+                "desktop-effects-sizechange-transition": "easeInQuad",
+                "desktop-effects-workspace": True,
+                "desktop-layout": "",
+                "development-tools": True,
+                "device-aliases": [],
+                "disabled-open-search-providers": [],
+                "edge-flip-delay": 1000,
+                "enable-app-monitoring": True,
+                "enable-edge-flip": False,
+                "enable-indicators": False,
+                "enable-vfade": True,
+                "enabled-applets": [
+                    "panel1:left:0:menu@cinnamon.org:0",
+                    "panel1:left:2:grouped-window-list@cinnamon.org:2",
+                    "panel1:right:2:systray@cinnamon.org:3",
+                    "panel1:right:3:xapp-status@cinnamon.org:4",
+                    "panel1:right:4:notifications@cinnamon.org:5",
+                    "panel1:right:5:printers@cinnamon.org:6",
+                    "panel1:right:6:removable-drives@cinnamon.org:7",
+                    "panel1:right:7:keyboard@cinnamon.org:8",
+                    "panel1:right:8:favorites@cinnamon.org:9",
+                    "panel1:right:9:network@cinnamon.org:10",
+                    "panel1:right:15:sound@cinnamon.org:11",
+                    "panel1:right:10:power@cinnamon.org:12",
+                    # "panel1:right:11:calendar@cinnamon.org:13",
+                    "panel1:right:14:trash@cinnamon.org:15",
+                    "panel2:right:1:temperature@fevimu:16",
+                    "panel1:left:1:placesCenter@scollins:17",
+                    "panel1:right:16:sessionManager@scollins:18",
+                    "panel1:right:12:weather@mockturtl:19",
+                    "panel1:right:13:calendar@cinnamon.org:20",
+                    "panel1:right:0:expo@cinnamon.org:22",
+                ],
+                "enabled-desklets": [],
+                "enabled-extensions": [],
+                "enabled-search-providers": [],
+                "extension-cache-updated": 0,
+                "favorite-apps": [
+                    "cinnamon-settings.desktop",
+                    "nemo.desktop",
+                    "org.gnome.Software.desktop",
+                    "system-config-printer.desktop",
+                    "org.gnome.DejaDup.desktop",
+                ],
+                "hotcorner-layout": [
+                    "expo:false:0",
+                    "scale:false:0",
+                    "scale:false:0",
+                    "desktop:false:0",
+                ],
+                "hoverclick-action": "single",
+                "hoverclick-layout": "vertical::both",
+                "hoverclick-position": "",
+                "lock-desklets": False,
+                "looking-glass-history": [],
+                "next-applet-id": 23,
+                "next-desklet-id": 0,
+                "no-adjacent-panel-barriers": False,
+                "number-workspaces": 0,
+                "overview-corner": ["DEPRECATED"],
+                "panel-edit-mode": False,
+                "panel-launchers": ["DEPRECATED"],
+                "panel-launchers-draggable": True,
+                "panel-scale-text-icons": False,
+                "panel-zone-icon-sizes": '[{"panelId":1,"left":0,"center":0,"right":22}]',
+                "panel-zone-symbolic-icon-sizes": '[{"panelId":1,"left":22,"center":28,"right":18}]',
+                "panel-zone-text-sizes": '[{"panelId":1,"left":0,"center":0,"right":0}]',
+                "panels-autohide": ["1:false", "2:intel"],
+                "panels-enabled": ["1:0:top"],
+                "panels-height": ["1:38", "2:21"],
+                "panels-hide-delay": ["1:0", "2:0"],
+                "panels-show-delay": ["1:0", "2:0"],
+                "prevent-focus-stealing": False,
+                "run-dialog-aliases": ["<Super>r"],
+                "run-dialog-show-completions": True,
+                "saved-im-presence": 1,
+                "saved-session-presence": 0,
+                "show-media-keys-osd": "medium",
+                "show-snap-osd": True,
+                "show-tile-hud": True,
+                "startup-animation": True,
+                "startup-icon-name": "",
+                "system-icon": "",
+                "window-effect-speed": 1,
+                "workspace-expo-view-as-grid": False,
+                "workspace-name-overrides": ["DEPRECATED"],
+                "workspace-osd-visible": True,
+            }
 
             # Schleife durch jedes Schlüssel-Wert-Paar im Dictionary
             for key, value in gsettings_config.items():

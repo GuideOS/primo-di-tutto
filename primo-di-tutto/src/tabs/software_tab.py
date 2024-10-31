@@ -80,6 +80,12 @@ class StorePanel(tk.Frame):
 
         self.store_btn1_icon = PhotoImage(file=SoftwareStore.store_dict["store_1"]["Icon"])
 
+
+
+        def open_store(store_key):
+            popen(f"""{SoftwareStore.store_dict[store_key]["Open"]}""")
+
+
         # Create the button frame first
         store_btn_frame = ttk.LabelFrame(self, text="Softwareverwaltung", padding=20)
         store_btn_frame.pack(pady=20, padx=20, fill="x")
@@ -92,7 +98,7 @@ class StorePanel(tk.Frame):
             store_btn_frame,
             text=SoftwareStore.store_dict["store_0"]["Name"],
             image=self.store_btn0_icon,
-            command=lambda: store_btn_action("store_0"),
+            command=lambda: open_store("store_0"),
             compound=tk.TOP,
             style="Custom.TButton",
         )
@@ -102,7 +108,7 @@ class StorePanel(tk.Frame):
             store_btn_frame,
             text=SoftwareStore.store_dict["store_1"]["Name"],
             image=self.store_btn1_icon,
-            command=lambda: store_btn_action("store_1"),
+            command=lambda: open_store("store_1"),
             compound=tk.TOP,
             style="Custom.TButton",
         )
