@@ -22,12 +22,18 @@ from subprocess import Popen, PIPE
 from threading import Thread
 from tool_tipps import CreateToolTip
 from tkinter import messagebox
-from tabs.text_dict_lib import SoftwareGame, SoftwareBrowser, SoftwareOffice, SoftwareStore
+from tabs.text_dict_lib import (
+    SoftwareGame,
+    SoftwareBrowser,
+    SoftwareOffice,
+    SoftwareStore,
+)
 from apt_manage import *
 from snap_manage import *
 from flatpak_manage import flatpak_path
 from flatpak_manage import Flat_remote_dict
 from flatpak_manage import refresh_flatpak_installs
+
 
 def resize(img):
     basewidth = 500
@@ -87,8 +93,6 @@ def build_screenshot_url():
         print("Kein Standard-Screenshot gefunden für {}.".format(app_id))
 
 
-
-
 class SoftwareTab(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
@@ -104,7 +108,6 @@ class SoftwareTab(ttk.Frame):
         edu_frame = ttk.Frame(self.inst_notebook)
         gaming_frame = ttk.Frame(self.inst_notebook)
 
-        test_frame.pack(fill="both", expand=True)
         store_frame.pack(fill="both", expand=True)
         browser_frame.pack(fill="both", expand=True)
         office_frame.pack(fill="both", expand=True)
@@ -112,15 +115,11 @@ class SoftwareTab(ttk.Frame):
         gaming_frame.pack(fill="both", expand=True)
 
         # add frames to notebook
-        self.inst_notebook.add(test_frame, compound=LEFT, text="Test")
         self.inst_notebook.add(store_frame, compound=LEFT, text="Start")
         self.inst_notebook.add(office_frame, compound=LEFT, text="Textverarbeitung")
         self.inst_notebook.add(edu_frame, compound=LEFT, text="Bildbearbeitung")
         self.inst_notebook.add(browser_frame, compound=LEFT, text="Browser")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Gaming")
-
-        test_note_frame = TestPanel(test_frame)
-        test_note_frame.pack(fill=tk.BOTH, expand=True)
 
         store_note_frame = StorePanel(store_frame)
         store_note_frame.pack(fill=tk.BOTH, expand=True)
@@ -137,440 +136,21 @@ class SoftwareTab(ttk.Frame):
         gaming_note_frame = GamingPanel(gaming_frame)
         gaming_note_frame.pack(fill=tk.BOTH, expand=True)
 
-# Beispiel für combined_data
-combined_data = {
-    "flatpak_remotes": {"remote1": "Flatpak Remote 1", "remote2": "Flatpak Remote 2"},
-    "apt_cache": {"package1": "package1", "package2": "package2", "package3": "package3"}
-}
-
-# Alle Schlüssel von flatpak_remotes und apt_cache in eine Liste packen
-search_items = list(combined_data["flatpak_remotes"].keys()) + list(combined_data["apt_cache"].keys())
-
-class TestPanel(tk.Frame):
-    def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
-        
-        def error_message_0():
-            e_mass = Error_Mass(self)
-            e_mass.grab_set()
-
-        def error_message_1():
-            e_mass = Error_Mass(self)
-            e_mass.grab_set()
-
-        #self["background"] = maincolor
-        if "dark" in theme or "noir" in theme:
-            self.deb_butt = PhotoImage(
-                file=f"{application_path}/images/icons/nav_bar/debian_dark_24x24.png"
-            )
-        else:
-            self.deb_butt = PhotoImage(
-                file=f"{application_path}/images/icons/nav_bar/debian_light_24x24.png"
-            )
-        self.debinstall_icon = PhotoImage(
-            file=f"{application_path}/images/icons/papirus/64x64/debian-logo.png"
-        )
-        self.no_img = PhotoImage(file=f"{application_path}/images/apps/no_image.png")
-        self.deb_pack_l = PhotoImage(
-            file=f"{application_path}/images/icons/deb_pack_l.png"
-        )
-
-        self.deb_nav = PhotoImage(
-            file=f"{application_path}/images/icons/nav_bar/debian_light_24x24.png"
-        )
-        self.search_btn = PhotoImage(
-            file=f"{application_path}/images/icons/nav_bar/glass_icon.png"
-        )
-        self.exit_btn = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/exit_btn.png"
-        )
-
-        def apt_install():
-            hide_apt_frame()
-            pigro_skript_task = "Installing ..."
-            pigro_skript_task_app = f"{apt_entry.get()}"
-            pigro_skript = [f"{permit}", "apt", "install", "-y", f"{apt_entry.get()}"]
-            custom_installer = Custom_Installer(master)
-            custom_installer.do_task(
-                pigro_skript_task, pigro_skript_task_app, pigro_skript
-            )
-
-        def apt_uninstall():
-            hide_apt_frame()
-            pigro_skript_task = "Removing From System"
-            pigro_skript_task_app = f"{apt_entry.get()}"
-            pigro_skript = [f"{permit}", "apt", "remove", "-y", f"{apt_entry.get()}"]
-
-            custom_installer = Custom_Installer(master)
-            custom_installer.do_task(
-                pigro_skript_task, pigro_skript_task_app, pigro_skript
-            )
-
-            apt_search_container.pack(anchor="w", side=LEFT, pady=20, padx=10)
-
-        def update_apt_list(apt_data):
-            apt_data = sorted(apt_data)
-            apt_list_box.delete(0, END)
-            for item in apt_data:
-                apt_list_box.insert(END, item)
-
-        def apt_list_fillout(e):
-            apt_entry.delete(0, END)
-            apt_entry.insert(0, apt_list_box.get(apt_list_box.curselection()))
-            apt_show_infos()
-
-        def apt_entry_delete():
-            apt_entry.delete(0, END)
-
-        def apt_search_check(e):
-            typed = apt_entry.get()
-            if typed == "":
-                apt_data = get_apt_cache()
-            else:
-                apt_data = []
-                for item in get_apt_cache():
-                    if typed.lower() in item.lower():
-                        apt_data.append(item)
-            update_apt_list(apt_data)
-
-        def get_debian_icon():
-            if apt_entry.get() in apt_flatpak_matches:
-                try:
-                    url_output = f"https://dl.flathub.org/repo/appstream/x86_64/icons/128x128/{apt_flatpak_matches[apt_entry.get()]}.png"
-                    with urlopen(url_output) as url_output:
-                        self.deban_navbar_icon = Image.open(url_output)
-                    self.deban_navbar_icon = resize2(self.deban_navbar_icon)
-
-                    self.deban_navbar_icon = ImageTk.PhotoImage(self.deban_navbar_icon)
-                    apt_pkg_icon.config(image=self.deban_navbar_icon)
-                except urllib.error.HTTPError as e:
-                    print(f"{e}")
-                    apt_pkg_icon.config(image=self.debinstall_icon)
-            else:
-                apt_pkg_icon.config(image=self.debinstall_icon)
-
-        def apt_screenshot():
-            try:
-                apt_app = str(apt_entry.get())
-                url = f"https://screenshots.debian.net/package/{apt_app}#gallery-1"
-                response = requests.get(url)
-                soup = BeautifulSoup(response.text, "html.parser")
-                links = [
-                    link.get("href")
-                    for link in soup.find_all("a")
-                    if link.get("href").endswith(".png")
-                ]
-
-                url_output = f"https://screenshots.debian.net{str(links[1])}"
-                with urlopen(url_output) as url_output:
-                    self.app_img = Image.open(url_output)
-                self.app_img = resize(self.app_img)
-
-                self.app_img = ImageTk.PhotoImage(self.app_img)
-                apt_panel.config(image=self.app_img)
-            except IndexError as e:
-                print(f"{e}")
-                if apt_entry.get() in apt_flatpak_matches:
-                    try:
-                        app_id = Flat_remote_dict[flatpak_entry.get()]
-                        screenshot_url = extract_default_screenshot_url(app_id)
-                        if screenshot_url:
-                            print("Screenshot-URL {}:".format(app_id))
-                            print(screenshot_url)
-                        else:
-                            print("No Screenshot Found {}.".format(app_id))
-
-                        with urlopen(screenshot_url) as url_output:
-                            self.img = Image.open(url_output)
-                        self.img = resize(self.img)
-                        self.img = ImageTk.PhotoImage(self.img)
-                        apt_panel.config(image=self.img)
-
-                    except requests.exceptions.RequestException as e:
-                        print("Error fetching URL:", e)
-                        apt_panel.config(self.no_img)
-
-                    except subprocess.CalledProcessError as err:
-                        print("Command returned non-zero exit status:", err)
-                        if "returned non-zero exit status 4" in str(err):
-                            try:
-                                app_id += ".desktop"
-                                screenshot_url = extract_default_screenshot_url(app_id)
-                                if screenshot_url:
-                                    print("Screenshot-URL {}:".format(app_id))
-                                    print(screenshot_url)
-                                else:
-                                    print("No Screenshot Found {}.".format(app_id))
-
-                                with urlopen(screenshot_url) as url_output:
-                                    self.img = Image.open(url_output)
-                                self.img = resize(self.img)
-                                self.img = ImageTk.PhotoImage(self.img)
-                                apt_panel.config(image=self.img)
-
-                            except subprocess.CalledProcessError as err:
-                                print("Command returned non-zero exit status again:", err)
-                                apt_panel.config(self.no_img)
-
-        def put_apt_description():
-            pkg_infos = os.popen(f"apt show -a {apt_entry.get()}")
-            read_pkg_infos = pkg_infos.read()
-
-            insert_description = read_pkg_infos
-            description_text.delete("1.0", "end")
-            description_text.insert(END, insert_description)
-
-        def hide_apt_search_container():
-            apt_search_container.pack_forget()
-
-        def apt_show_infos():
-            if apt_entry.get() == "":
-                error_message_0()
-            elif apt_entry.get() not in get_apt_cache():
-                error_message_1()
-            else:
-                apt_info_container.pack(fill=BOTH, expand=True)
-                apt_pkg_name.config(text=f"{apt_entry.get()}")
-                pkg_infos_desc = os.popen(
-                    f"apt show -a {apt_entry.get()} | grep -E 'Description:'"
-                )
-                read_pkg_infos_desc = pkg_infos_desc.read()
-
-                apt_pkg_status.config(
-                    text=f"{read_pkg_infos_desc.split(':')[1]}",
-                    justify="left",
-                    anchor="w",
-                )
-
-                if apt_entry.get() in get_installed_apt_pkgs():
-                    apt_pkg_inst.config(
-                        text="Uninstall",
-                        width=10,
-                        command=apt_uninstall,
-                        style='Red.TButton'
-                    )
-                else:
-                    apt_pkg_inst.config(
-                        text="Install",
-                        width=10,
-                        command=apt_install,
-                        style='Green.TButton'
-                    )
-
-                apt_panel.config(image=self.no_img)
-
-                hide_apt_search_container()
-                get_debian_icon()
-                apt_screenshot()
-                put_apt_description()
-
-        def hide_apt_frame():
-            apt_info_container.pack_forget()
-            apt_search_container.pack(anchor="w", side=LEFT, pady=20, padx=10,fill=BOTH,expand=True)
-
-        apt_main_container = Frame(self)
-        apt_main_container.pack(fill="both", expand=True)
-
-        apt_search_container = ttk.LabelFrame(
-            apt_main_container,
-            text="Suchen",
-            padding=20
-        )
-        apt_search_container.pack(anchor="w", side=LEFT, pady=20, padx=10,fill=BOTH,expand=True)
-
-        apt_search_field = Frame(
-            apt_search_container,
-            borderwidth=0,
-            highlightthickness=0,
-        )
-        apt_search_field.pack(fill="x", pady=5)
-
-        apt_search_btn = Label(
-            apt_search_field,
-            image=self.search_btn,
-
-        )
-
-        apt_entry = ttk.Entry(
-            apt_search_field, font=("Sans", 15)
-        )
-        listbox_ttp = CreateToolTip(
-            apt_entry,
-            " - Typ to finde a package\n\n - Single click on a listbox item to show more infos",
-        )
-        apt_entry.pack(fill="x", expand=True, side="left")
-
-        apt_list_box = Listbox(
-            apt_search_container,
-            height=59,
-            width=40,
-            borderwidth=0,
-            highlightthickness=0,
-            selectmode=tk.SINGLE,
-        )
-        apt_list_box_scrollbar = ttk.Scrollbar(apt_search_container)
-        apt_list_box_scrollbar.pack(side=RIGHT, fill=Y)
-        apt_list_box.config(yscrollcommand=apt_list_box_scrollbar.set)
-        apt_list_box_scrollbar.config(command=apt_list_box.yview)
-        apt_list_box.pack(fill=BOTH)
-
-        update_apt_list(get_apt_cache())
-
-        apt_list_box.bind("<ButtonRelease-1>", apt_list_fillout)
-
-        apt_entry.bind("<KeyRelease>", apt_search_check)
-
-
-
-        apt_info_container = Frame(apt_main_container)
-
-        apt_exit = Button(
-            apt_info_container,
-            text="Back",
-            image=self.exit_btn,
-            #background=nav2_color,
-            foreground="white",
-            borderwidth=0,
-            highlightthickness=0,
-            compound=LEFT,
-            font=font_10_b,
-            command=hide_apt_frame,
-            anchor="w",
-            padx=10,
-        )
-        apt_exit.pack(fill="x")
-
-        apt_pkg_header_1 = Frame(
-            apt_info_container,
-            borderwidth=0,
-            highlightthickness=0,
-            relief=GROOVE,
-            pady=20,
-            padx=20,
-            ##background=nav_color,
-        )
-        apt_pkg_header_1.pack(anchor="n", fill="x")
-
-        apt_pkg_header_1_1 = Frame(
-            apt_pkg_header_1, borderwidth=0, highlightthickness=0
-        )
-        apt_pkg_header_1_1.pack(fill="x")
-        apt_pkg_header_1_1.columnconfigure(1, weight=2)
-
-        apt_pkg_icon = Label(
-            apt_pkg_header_1_1,
-            image=self.debinstall_icon,
-            font=font_10_b,
-            justify="left",
-            ##background=nav_color,
-            #foreground=main_font,
-            padx=10,
-        )
-        apt_pkg_icon.grid(row=0, rowspan=2, column=0)
-
-        apt_pkg_name = Label(
-            apt_pkg_header_1_1,
-            text="",
-            font=font_20,
-            justify="left",
-            ##background=nav_color,
-            #foreground=main_font,
-            anchor="w",
-            padx=20,
-        )
-        apt_pkg_name.grid(row=0, column=1, sticky="ew")
-
-        apt_pkg_status = Label(
-            apt_pkg_header_1_1,
-            text="",
-            font=font_8,
-            justify="left",
-            #background=nav_color,
-            #foreground=main_font,
-            anchor="w",
-            padx=20,
-        )
-        apt_pkg_status.grid(row=1, column=1, sticky="ew")
-
-        apt_pkg_inst = ttk.Button(
-            apt_pkg_header_1_1,
-            text="Install",
-            #justify="left",
-            width=10,
-            #background="#6abd43",
-            #foreground=ext_btn_font,
-            #font=font_10,
-            #borderwidth=0,
-            #highlightthickness=0,
-            command=apt_install,
-            style='Green.TButton'
-        )
-        apt_pkg_inst.grid(row=0, column=2, sticky="e")
-
-        def on_configure(event):
-            canvas.configure(scrollregion=canvas.bbox("all"))
-            update_canvas()
-
-        def on_mousewheel(event):
-            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
-
-        def update_canvas():
-            canvas_width = canvas.winfo_width()
-            frame_width = canvas_frame.winfo_reqwidth()
-            x_offset = max((canvas_width - frame_width) // 2, 0)
-            canvas.coords("frame", x_offset, 0)
-
-        canvas_container = Frame(apt_info_container, width=869)
-        canvas_container.pack(side=LEFT, fill="both", expand=True)
-
-        canvas = Canvas(canvas_container, highlightthickness=0)
-        canvas.pack(fill="both", expand=True, side=RIGHT)
-        canvas.pack_propagate(False)
-
-        canvas_frame = tk.Frame(canvas, padx=120)
-        canvas.create_window((0, 0), window=canvas_frame, anchor="n", tags="frame")
-
-        apt_panel = Label(canvas_frame, text="Apartment Panel")
-        apt_panel.pack(anchor="n", pady=20)
-
-        description_text = Text(
-            canvas_frame,
-            borderwidth=0,
-            highlightthickness=0,
-            #background=frame_color,
-            #foreground=main_font,
-            font=("Sans", 9),
-            height=100,
-            width=80,
-            wrap=WORD,
-            padx=20,
-        )
-        description_text.pack(side=LEFT, fill=BOTH, expand=True, padx=20)
-
-        scrollbar = ttk.Scrollbar(
-            apt_info_container, orient=VERTICAL, command=canvas.yview
-        )
-        scrollbar.pack(side=RIGHT, fill=Y)
-        canvas.config(yscrollcommand=scrollbar.set)
-
-        canvas_frame.bind("<Configure>", on_configure)
-        canvas_frame.bind_all("<MouseWheel>", on_mousewheel)
-
-
 
 class StorePanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
 
-        self.store_btn0_icon = PhotoImage(file=SoftwareStore.store_dict["store_0"]["Icon"])
+        self.store_btn0_icon = PhotoImage(
+            file=SoftwareStore.store_dict["store_0"]["Icon"]
+        )
 
-        self.store_btn1_icon = PhotoImage(file=SoftwareStore.store_dict["store_1"]["Icon"])
-
-
+        self.store_btn1_icon = PhotoImage(
+            file=SoftwareStore.store_dict["store_1"]["Icon"]
+        )
 
         def open_store(store_key):
             popen(f"""{SoftwareStore.store_dict[store_key]["Open"]}""")
-
 
         # Create the button frame first
         store_btn_frame = ttk.LabelFrame(self, text="Softwareverwaltung", padding=20)
@@ -578,7 +158,6 @@ class StorePanel(tk.Frame):
 
         store_btn_frame.grid_columnconfigure(0, weight=1)
         store_btn_frame.grid_columnconfigure(1, weight=1)
-
 
         store0_button = ttk.Button(
             store_btn_frame,
@@ -647,6 +226,18 @@ class OfficePanel(tk.Frame):
         # )
 
         # Create the button frame first
+
+        def show_button_frame():
+            office_btn_frame.pack(pady=20, padx=20, fill="x")
+            back_button.pack_forget()
+            office_detail_frame.pack_forget()
+
+        def hide_button_frame():
+            office_btn_frame.pack_forget()
+            back_button.pack(pady=20, padx=20, fill="x")
+
+        back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
+
         office_btn_frame = ttk.LabelFrame(self, text="Office-Auswahl", padding=20)
         office_btn_frame.pack(pady=20, padx=20, fill="x")
 
@@ -728,6 +319,8 @@ class OfficePanel(tk.Frame):
             office_disc = SoftwareOffice.office_dict[office_key]["Description"]
             office_path = SoftwareOffice.office_dict[office_key]["Path"]
             office_thumb = SoftwareOffice.office_dict[office_key]["Thumbnail"]
+            hide_button_frame()
+            office_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
             self.office_thumb = PhotoImage(file=office_thumb)
 
@@ -786,7 +379,6 @@ class OfficePanel(tk.Frame):
 
         # Create the detail frame
         office_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
-        office_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
         office_detail_frame.grid_columnconfigure(0, weight=1)
         office_detail_frame.grid_columnconfigure(1, weight=1)
@@ -831,35 +423,46 @@ class GamingPanel(tk.Frame):
         self.update_interval = 1000
         # refresh_flatpak_installs()
 
-        self.games_btn0_icon = PhotoImage(file=SoftwareGame.game_dict["game_0"]["Icon"])
+        self.game_btn0_icon = PhotoImage(file=SoftwareGame.game_dict["game_0"]["Icon"])
 
-        self.games_btn1_icon = PhotoImage(file=SoftwareGame.game_dict["game_1"]["Icon"])
+        self.game_btn1_icon = PhotoImage(file=SoftwareGame.game_dict["game_1"]["Icon"])
 
-        self.games_btn2_icon = PhotoImage(file=SoftwareGame.game_dict["game_2"]["Icon"])
+        self.game_btn2_icon = PhotoImage(file=SoftwareGame.game_dict["game_2"]["Icon"])
 
-        self.games_btn3_icon = PhotoImage(file=SoftwareGame.game_dict["game_3"]["Icon"])
+        self.game_btn3_icon = PhotoImage(file=SoftwareGame.game_dict["game_3"]["Icon"])
 
-        self.games_btn4_icon = PhotoImage(file=SoftwareGame.game_dict["game_4"]["Icon"])
+        self.game_btn4_icon = PhotoImage(file=SoftwareGame.game_dict["game_4"]["Icon"])
 
-        self.games_btn5_icon = PhotoImage(file=SoftwareGame.game_dict["game_5"]["Icon"])
+        self.game_btn5_icon = PhotoImage(file=SoftwareGame.game_dict["game_5"]["Icon"])
 
-        self.games_btn6_icon = PhotoImage(file=SoftwareGame.game_dict["game_6"]["Icon"])
+        self.game_btn6_icon = PhotoImage(file=SoftwareGame.game_dict["game_6"]["Icon"])
 
-        self.games_btn7_icon = PhotoImage(file=SoftwareGame.game_dict["game_7"]["Icon"])
+        self.game_btn7_icon = PhotoImage(file=SoftwareGame.game_dict["game_7"]["Icon"])
 
-        self.games_btn8_icon = PhotoImage(file=SoftwareGame.game_dict["game_8"]["Icon"])
+        self.game_btn8_icon = PhotoImage(file=SoftwareGame.game_dict["game_8"]["Icon"])
 
-        self.games_btn9_icon = PhotoImage(file=SoftwareGame.game_dict["game_9"]["Icon"])
+        self.game_btn9_icon = PhotoImage(file=SoftwareGame.game_dict["game_9"]["Icon"])
+
+        def show_button_frame():
+            game_btn_frame.pack(pady=20, padx=20, fill="x")
+            back_button.pack_forget()
+            game_detail_frame.pack_forget()
+
+        def hide_button_frame():
+            game_btn_frame.pack_forget()
+            back_button.pack(pady=20, padx=20, fill="x")
+
+        back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
 
         # Create the button frame first
-        games_btn_frame = ttk.LabelFrame(self, text="Gaming Installer", padding=20)
-        games_btn_frame.pack(pady=20, padx=20, fill="x")
+        game_btn_frame = ttk.LabelFrame(self, text="Gaming Empfehlungen", padding=20)
+        game_btn_frame.pack(pady=20, padx=20, fill="x")
 
-        games_btn_frame.grid_columnconfigure(0, weight=2)
-        games_btn_frame.grid_columnconfigure(1, weight=2)
-        games_btn_frame.grid_columnconfigure(2, weight=2)
-        games_btn_frame.grid_columnconfigure(3, weight=1)
-        games_btn_frame.grid_columnconfigure(4, weight=2)
+        game_btn_frame.grid_columnconfigure(0, weight=2)
+        game_btn_frame.grid_columnconfigure(1, weight=2)
+        game_btn_frame.grid_columnconfigure(2, weight=2)
+        game_btn_frame.grid_columnconfigure(3, weight=1)
+        game_btn_frame.grid_columnconfigure(4, weight=2)
 
         def run_installation(game_key):
             # hide_apt_frame()
@@ -931,7 +534,7 @@ class GamingPanel(tk.Frame):
             game_path = SoftwareGame.game_dict[game_key]["Path"]
             game_thumb = SoftwareGame.game_dict[game_key]["Thumbnail"]
 
-            self.games_thumb = PhotoImage(file=game_thumb)
+            self.game_thumb = PhotoImage(file=game_thumb)
 
             self.gaming_name.config(text=f"Name: {game_name}")
             self.gaming_pak.config(text=f"Paket: {game_pakage}")
@@ -939,16 +542,19 @@ class GamingPanel(tk.Frame):
 
             self.gaming_inst_btn.grid(column=1, row=0, rowspan=2, sticky="e")
             self.termf.grid(column=0, columnspan=2, row=3)
-            self.thumb_lbl.configure(image=self.games_thumb)
+            self.thumb_lbl.configure(image=self.game_thumb)
             self.thumb_lbl.pack()
+
+            hide_button_frame()
+            game_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
             # print(get_installed_apt_pkgs())
             refresh_status(game_key)
 
         game0_button = ttk.Button(
-            games_btn_frame,
+            game_btn_frame,
             text=SoftwareGame.game_dict["game_0"]["Name"],
-            image=self.games_btn0_icon,
+            image=self.game_btn0_icon,
             command=lambda: game_btn_action("game_0"),
             compound=tk.TOP,
             style="Custom.TButton",
@@ -956,9 +562,9 @@ class GamingPanel(tk.Frame):
         game0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
 
         game1_button = ttk.Button(
-            games_btn_frame,
+            game_btn_frame,
             text=SoftwareGame.game_dict["game_1"]["Name"],
-            image=self.games_btn1_icon,
+            image=self.game_btn1_icon,
             command=lambda: game_btn_action("game_1"),
             compound=tk.TOP,
             style="Custom.TButton",
@@ -966,9 +572,9 @@ class GamingPanel(tk.Frame):
         game1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
 
         game2_button = ttk.Button(
-            games_btn_frame,
+            game_btn_frame,
             text=SoftwareGame.game_dict["game_2"]["Name"],
-            image=self.games_btn2_icon,
+            image=self.game_btn2_icon,
             command=lambda: game_btn_action("game_2"),
             compound=tk.TOP,
             style="Custom.TButton",
@@ -976,9 +582,9 @@ class GamingPanel(tk.Frame):
         game2_button.grid(row=0, column=2, padx=5, pady=5, sticky="nesw")
 
         game3_button = ttk.Button(
-            games_btn_frame,
+            game_btn_frame,
             text=SoftwareGame.game_dict["game_3"]["Name"],
-            image=self.games_btn3_icon,
+            image=self.game_btn3_icon,
             command=lambda: game_btn_action("game_3"),
             compound=tk.TOP,
             style="Custom.TButton",
@@ -986,9 +592,9 @@ class GamingPanel(tk.Frame):
         game3_button.grid(row=0, column=3, padx=5, pady=5, sticky="nesw")
 
         game4_button = ttk.Button(
-            games_btn_frame,
+            game_btn_frame,
             text=SoftwareGame.game_dict["game_4"]["Name"],
-            image=self.games_btn4_icon,
+            image=self.game_btn4_icon,
             command=lambda: open_website("game_4"),
             compound=tk.TOP,
             style="Custom.TButton",
@@ -996,9 +602,9 @@ class GamingPanel(tk.Frame):
         game4_button.grid(row=0, column=4, padx=5, pady=5, sticky="nesw")
 
         game5_button = ttk.Button(
-            games_btn_frame,
+            game_btn_frame,
             text=SoftwareGame.game_dict["game_5"]["Name"],
-            image=self.games_btn5_icon,
+            image=self.game_btn5_icon,
             command=lambda: game_btn_action("game_5"),
             compound=tk.TOP,
             style="Custom.TButton",
@@ -1006,9 +612,9 @@ class GamingPanel(tk.Frame):
         game5_button.grid(row=1, column=0, padx=5, pady=5, sticky="nesw")
 
         game6_button = ttk.Button(
-            games_btn_frame,
+            game_btn_frame,
             text=SoftwareGame.game_dict["game_6"]["Name"],
-            image=self.games_btn6_icon,
+            image=self.game_btn6_icon,
             command=lambda: game_btn_action("game_6"),
             compound=tk.TOP,
             style="Custom.TButton",
@@ -1016,9 +622,9 @@ class GamingPanel(tk.Frame):
         game6_button.grid(row=1, column=1, padx=5, pady=5, sticky="nesw")
 
         game7_button = ttk.Button(
-            games_btn_frame,
+            game_btn_frame,
             text=SoftwareGame.game_dict["game_7"]["Name"],
-            image=self.games_btn7_icon,
+            image=self.game_btn7_icon,
             command=lambda: game_btn_action("game_7"),
             compound=tk.TOP,
             style="Custom.TButton",
@@ -1026,9 +632,9 @@ class GamingPanel(tk.Frame):
         game7_button.grid(row=1, column=2, padx=5, pady=5, sticky="nesw")
         # print(SoftwareGame.game_dict)
         game8_button = ttk.Button(
-            games_btn_frame,
+            game_btn_frame,
             text=SoftwareGame.game_dict["game_8"]["Name"],
-            image=self.games_btn8_icon,
+            image=self.game_btn8_icon,
             command=lambda: game_btn_action("game_8"),
             compound=tk.TOP,
             style="Custom.TButton",
@@ -1036,9 +642,9 @@ class GamingPanel(tk.Frame):
         game8_button.grid(row=1, column=3, padx=5, pady=5, sticky="nesw")
 
         game9_button = ttk.Button(
-            games_btn_frame,
+            game_btn_frame,
             text=SoftwareGame.game_dict["game_9"]["Name"],
-            image=self.games_btn9_icon,
+            image=self.game_btn9_icon,
             command=lambda: game_btn_action("game_9"),
             compound=tk.TOP,
             style="Custom.TButton",
@@ -1047,7 +653,7 @@ class GamingPanel(tk.Frame):
 
         # Create the detail frame
         game_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
-        game_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
+        # game_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
         game_detail_frame.grid_columnconfigure(0, weight=1)
         game_detail_frame.grid_columnconfigure(1, weight=1)
