@@ -105,3 +105,5 @@ else:
     print("[Info] Flatpak is not installed")
     Flat_remote_dict = {}
     flat_counted = "-"
+
+#print(Flat_remote_dict)

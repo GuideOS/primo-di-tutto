@@ -19,7 +19,7 @@ def get_installed_apt_pkgs():
     for package in cache:
         if package.is_installed:
             apt_installed_content.append(package.name)
-    print(apt_installed_content)
+    #print(apt_installed_content)
     return apt_installed_content
 
 

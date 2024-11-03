@@ -29,6 +29,65 @@ from flatpak_manage import flatpak_path
 from flatpak_manage import Flat_remote_dict
 from flatpak_manage import refresh_flatpak_installs
 
+def resize(img):
+    basewidth = 500
+    wpercent = basewidth / float(img.size[0])
+    hsize = int((float(img.size[1]) * float(wpercent)))
+    return img.resize((basewidth, hsize))
+
+
+def resize2(img):
+    basewidth = 96
+    wpercent = basewidth / float(img.size[0])
+    hsize = int((float(img.size[1]) * float(wpercent)))
+    return img.resize((basewidth, hsize))
+
+
+def get_app_summary(appstream_id):
+    command = f"appstreamcli dump {appstream_id} | grep -m 1 -oP '<summary>\\K[^<]*'"
+    try:
+        result = subprocess.run(
+            command, shell=True, check=True, capture_output=True, text=True
+        )
+        return result.stdout.strip()
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing the command: {e.stderr}")
+        return ""
+
+
+def extract_default_screenshot_url(application_id):
+    output = subprocess.check_output(
+        ["appstreamcli", "dump", application_id], text=True
+    )
+
+    start_index = output.find("<screenshots>")
+    end_index = output.find("</screenshots>") + len("</screenshots>")
+
+    xml_part = output[start_index:end_index]
+
+    root = ET.fromstring(xml_part)
+
+    for screenshot in root.findall(
+        ".//screenshot[@type='default']/image[@type='source']"
+    ):
+        return screenshot.text
+
+    return None
+
+
+def build_screenshot_url():
+    app_id = Flat_remote_dict[flatpak_entry.get()]
+
+    screenshot_url = extract_default_screenshot_url(app_id)
+    if screenshot_url:
+        print("Standard-Screenshot-URL für {}:".format(app_id))
+        print(screenshot_url)
+
+    else:
+        print("Kein Standard-Screenshot gefunden für {}.".format(app_id))
+
+
+
 
 class SoftwareTab(ttk.Frame):
     def __init__(self, master):
@@ -38,12 +97,14 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook = ttk.Notebook(self)
         self.inst_notebook.pack(fill=BOTH, expand=True)
 
+        test_frame = ttk.Frame(self.inst_notebook)
         store_frame = ttk.Frame(self.inst_notebook)
         browser_frame = ttk.Frame(self.inst_notebook)
         office_frame = ttk.Frame(self.inst_notebook)
         edu_frame = ttk.Frame(self.inst_notebook)
         gaming_frame = ttk.Frame(self.inst_notebook)
 
+        test_frame.pack(fill="both", expand=True)
         store_frame.pack(fill="both", expand=True)
         browser_frame.pack(fill="both", expand=True)
         office_frame.pack(fill="both", expand=True)
@@ -51,11 +112,15 @@ class SoftwareTab(ttk.Frame):
         gaming_frame.pack(fill="both", expand=True)
 
         # add frames to notebook
+        self.inst_notebook.add(test_frame, compound=LEFT, text="Test")
         self.inst_notebook.add(store_frame, compound=LEFT, text="Start")
         self.inst_notebook.add(office_frame, compound=LEFT, text="Textverarbeitung")
         self.inst_notebook.add(edu_frame, compound=LEFT, text="Bildbearbeitung")
         self.inst_notebook.add(browser_frame, compound=LEFT, text="Browser")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Gaming")
+
+        test_note_frame = TestPanel(test_frame)
+        test_note_frame.pack(fill=tk.BOTH, expand=True)
 
         store_note_frame = StorePanel(store_frame)
         store_note_frame.pack(fill=tk.BOTH, expand=True)
@@ -71,6 +136,427 @@ class SoftwareTab(ttk.Frame):
 
         gaming_note_frame = GamingPanel(gaming_frame)
         gaming_note_frame.pack(fill=tk.BOTH, expand=True)
+
+# Beispiel für combined_data
+combined_data = {
+    "flatpak_remotes": {"remote1": "Flatpak Remote 1", "remote2": "Flatpak Remote 2"},
+    "apt_cache": {"package1": "package1", "package2": "package2", "package3": "package3"}
+}
+
+# Alle Schlüssel von flatpak_remotes und apt_cache in eine Liste packen
+search_items = list(combined_data["flatpak_remotes"].keys()) + list(combined_data["apt_cache"].keys())
+
+class TestPanel(tk.Frame):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+        
+        def error_message_0():
+            e_mass = Error_Mass(self)
+            e_mass.grab_set()
+
+        def error_message_1():
+            e_mass = Error_Mass(self)
+            e_mass.grab_set()
+
+        #self["background"] = maincolor
+        if "dark" in theme or "noir" in theme:
+            self.deb_butt = PhotoImage(
+                file=f"{application_path}/images/icons/nav_bar/debian_dark_24x24.png"
+            )
+        else:
+            self.deb_butt = PhotoImage(
+                file=f"{application_path}/images/icons/nav_bar/debian_light_24x24.png"
+            )
+        self.debinstall_icon = PhotoImage(
+            file=f"{application_path}/images/icons/papirus/64x64/debian-logo.png"
+        )
+        self.no_img = PhotoImage(file=f"{application_path}/images/apps/no_image.png")
+        self.deb_pack_l = PhotoImage(
+            file=f"{application_path}/images/icons/deb_pack_l.png"
+        )
+
+        self.deb_nav = PhotoImage(
+            file=f"{application_path}/images/icons/nav_bar/debian_light_24x24.png"
+        )
+        self.search_btn = PhotoImage(
+            file=f"{application_path}/images/icons/nav_bar/glass_icon.png"
+        )
+        self.exit_btn = PhotoImage(
+            file=f"{application_path}/images/icons/pigro_icons/exit_btn.png"
+        )
+
+        def apt_install():
+            hide_apt_frame()
+            pigro_skript_task = "Installing ..."
+            pigro_skript_task_app = f"{apt_entry.get()}"
+            pigro_skript = [f"{permit}", "apt", "install", "-y", f"{apt_entry.get()}"]
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                pigro_skript_task, pigro_skript_task_app, pigro_skript
+            )
+
+        def apt_uninstall():
+            hide_apt_frame()
+            pigro_skript_task = "Removing From System"
+            pigro_skript_task_app = f"{apt_entry.get()}"
+            pigro_skript = [f"{permit}", "apt", "remove", "-y", f"{apt_entry.get()}"]
+
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                pigro_skript_task, pigro_skript_task_app, pigro_skript
+            )
+
+            apt_search_container.pack(anchor="w", side=LEFT, pady=20, padx=10)
+
+        def update_apt_list(apt_data):
+            apt_data = sorted(apt_data)
+            apt_list_box.delete(0, END)
+            for item in apt_data:
+                apt_list_box.insert(END, item)
+
+        def apt_list_fillout(e):
+            apt_entry.delete(0, END)
+            apt_entry.insert(0, apt_list_box.get(apt_list_box.curselection()))
+            apt_show_infos()
+
+        def apt_entry_delete():
+            apt_entry.delete(0, END)
+
+        def apt_search_check(e):
+            typed = apt_entry.get()
+            if typed == "":
+                apt_data = get_apt_cache()
+            else:
+                apt_data = []
+                for item in get_apt_cache():
+                    if typed.lower() in item.lower():
+                        apt_data.append(item)
+            update_apt_list(apt_data)
+
+        def get_debian_icon():
+            if apt_entry.get() in apt_flatpak_matches:
+                try:
+                    url_output = f"https://dl.flathub.org/repo/appstream/x86_64/icons/128x128/{apt_flatpak_matches[apt_entry.get()]}.png"
+                    with urlopen(url_output) as url_output:
+                        self.deban_navbar_icon = Image.open(url_output)
+                    self.deban_navbar_icon = resize2(self.deban_navbar_icon)
+
+                    self.deban_navbar_icon = ImageTk.PhotoImage(self.deban_navbar_icon)
+                    apt_pkg_icon.config(image=self.deban_navbar_icon)
+                except urllib.error.HTTPError as e:
+                    print(f"{e}")
+                    apt_pkg_icon.config(image=self.debinstall_icon)
+            else:
+                apt_pkg_icon.config(image=self.debinstall_icon)
+
+        def apt_screenshot():
+            try:
+                apt_app = str(apt_entry.get())
+                url = f"https://screenshots.debian.net/package/{apt_app}#gallery-1"
+                response = requests.get(url)
+                soup = BeautifulSoup(response.text, "html.parser")
+                links = [
+                    link.get("href")
+                    for link in soup.find_all("a")
+                    if link.get("href").endswith(".png")
+                ]
+
+                url_output = f"https://screenshots.debian.net{str(links[1])}"
+                with urlopen(url_output) as url_output:
+                    self.app_img = Image.open(url_output)
+                self.app_img = resize(self.app_img)
+
+                self.app_img = ImageTk.PhotoImage(self.app_img)
+                apt_panel.config(image=self.app_img)
+            except IndexError as e:
+                print(f"{e}")
+                if apt_entry.get() in apt_flatpak_matches:
+                    try:
+                        app_id = Flat_remote_dict[flatpak_entry.get()]
+                        screenshot_url = extract_default_screenshot_url(app_id)
+                        if screenshot_url:
+                            print("Screenshot-URL {}:".format(app_id))
+                            print(screenshot_url)
+                        else:
+                            print("No Screenshot Found {}.".format(app_id))
+
+                        with urlopen(screenshot_url) as url_output:
+                            self.img = Image.open(url_output)
+                        self.img = resize(self.img)
+                        self.img = ImageTk.PhotoImage(self.img)
+                        apt_panel.config(image=self.img)
+
+                    except requests.exceptions.RequestException as e:
+                        print("Error fetching URL:", e)
+                        apt_panel.config(self.no_img)
+
+                    except subprocess.CalledProcessError as err:
+                        print("Command returned non-zero exit status:", err)
+                        if "returned non-zero exit status 4" in str(err):
+                            try:
+                                app_id += ".desktop"
+                                screenshot_url = extract_default_screenshot_url(app_id)
+                                if screenshot_url:
+                                    print("Screenshot-URL {}:".format(app_id))
+                                    print(screenshot_url)
+                                else:
+                                    print("No Screenshot Found {}.".format(app_id))
+
+                                with urlopen(screenshot_url) as url_output:
+                                    self.img = Image.open(url_output)
+                                self.img = resize(self.img)
+                                self.img = ImageTk.PhotoImage(self.img)
+                                apt_panel.config(image=self.img)
+
+                            except subprocess.CalledProcessError as err:
+                                print("Command returned non-zero exit status again:", err)
+                                apt_panel.config(self.no_img)
+
+        def put_apt_description():
+            pkg_infos = os.popen(f"apt show -a {apt_entry.get()}")
+            read_pkg_infos = pkg_infos.read()
+
+            insert_description = read_pkg_infos
+            description_text.delete("1.0", "end")
+            description_text.insert(END, insert_description)
+
+        def hide_apt_search_container():
+            apt_search_container.pack_forget()
+
+        def apt_show_infos():
+            if apt_entry.get() == "":
+                error_message_0()
+            elif apt_entry.get() not in get_apt_cache():
+                error_message_1()
+            else:
+                apt_info_container.pack(fill=BOTH, expand=True)
+                apt_pkg_name.config(text=f"{apt_entry.get()}")
+                pkg_infos_desc = os.popen(
+                    f"apt show -a {apt_entry.get()} | grep -E 'Description:'"
+                )
+                read_pkg_infos_desc = pkg_infos_desc.read()
+
+                apt_pkg_status.config(
+                    text=f"{read_pkg_infos_desc.split(':')[1]}",
+                    justify="left",
+                    anchor="w",
+                )
+
+                if apt_entry.get() in get_installed_apt_pkgs():
+                    apt_pkg_inst.config(
+                        text="Uninstall",
+                        width=10,
+                        command=apt_uninstall,
+                        style='Red.TButton'
+                    )
+                else:
+                    apt_pkg_inst.config(
+                        text="Install",
+                        width=10,
+                        command=apt_install,
+                        style='Green.TButton'
+                    )
+
+                apt_panel.config(image=self.no_img)
+
+                hide_apt_search_container()
+                get_debian_icon()
+                apt_screenshot()
+                put_apt_description()
+
+        def hide_apt_frame():
+            apt_info_container.pack_forget()
+            apt_search_container.pack(anchor="w", side=LEFT, pady=20, padx=10,fill=BOTH,expand=True)
+
+        apt_main_container = Frame(self)
+        apt_main_container.pack(fill="both", expand=True)
+
+        apt_search_container = ttk.LabelFrame(
+            apt_main_container,
+            text="Suchen",
+            padding=20
+        )
+        apt_search_container.pack(anchor="w", side=LEFT, pady=20, padx=10,fill=BOTH,expand=True)
+
+        apt_search_field = Frame(
+            apt_search_container,
+            borderwidth=0,
+            highlightthickness=0,
+        )
+        apt_search_field.pack(fill="x", pady=5)
+
+        apt_search_btn = Label(
+            apt_search_field,
+            image=self.search_btn,
+
+        )
+
+        apt_entry = ttk.Entry(
+            apt_search_field, font=("Sans", 15)
+        )
+        listbox_ttp = CreateToolTip(
+            apt_entry,
+            " - Typ to finde a package\n\n - Single click on a listbox item to show more infos",
+        )
+        apt_entry.pack(fill="x", expand=True, side="left")
+
+        apt_list_box = Listbox(
+            apt_search_container,
+            height=59,
+            width=40,
+            borderwidth=0,
+            highlightthickness=0,
+            selectmode=tk.SINGLE,
+        )
+        apt_list_box_scrollbar = ttk.Scrollbar(apt_search_container)
+        apt_list_box_scrollbar.pack(side=RIGHT, fill=Y)
+        apt_list_box.config(yscrollcommand=apt_list_box_scrollbar.set)
+        apt_list_box_scrollbar.config(command=apt_list_box.yview)
+        apt_list_box.pack(fill=BOTH)
+
+        update_apt_list(get_apt_cache())
+
+        apt_list_box.bind("<ButtonRelease-1>", apt_list_fillout)
+
+        apt_entry.bind("<KeyRelease>", apt_search_check)
+
+
+
+        apt_info_container = Frame(apt_main_container)
+
+        apt_exit = Button(
+            apt_info_container,
+            text="Back",
+            image=self.exit_btn,
+            #background=nav2_color,
+            foreground="white",
+            borderwidth=0,
+            highlightthickness=0,
+            compound=LEFT,
+            font=font_10_b,
+            command=hide_apt_frame,
+            anchor="w",
+            padx=10,
+        )
+        apt_exit.pack(fill="x")
+
+        apt_pkg_header_1 = Frame(
+            apt_info_container,
+            borderwidth=0,
+            highlightthickness=0,
+            relief=GROOVE,
+            pady=20,
+            padx=20,
+            ##background=nav_color,
+        )
+        apt_pkg_header_1.pack(anchor="n", fill="x")
+
+        apt_pkg_header_1_1 = Frame(
+            apt_pkg_header_1, borderwidth=0, highlightthickness=0
+        )
+        apt_pkg_header_1_1.pack(fill="x")
+        apt_pkg_header_1_1.columnconfigure(1, weight=2)
+
+        apt_pkg_icon = Label(
+            apt_pkg_header_1_1,
+            image=self.debinstall_icon,
+            font=font_10_b,
+            justify="left",
+            ##background=nav_color,
+            #foreground=main_font,
+            padx=10,
+        )
+        apt_pkg_icon.grid(row=0, rowspan=2, column=0)
+
+        apt_pkg_name = Label(
+            apt_pkg_header_1_1,
+            text="",
+            font=font_20,
+            justify="left",
+            ##background=nav_color,
+            #foreground=main_font,
+            anchor="w",
+            padx=20,
+        )
+        apt_pkg_name.grid(row=0, column=1, sticky="ew")
+
+        apt_pkg_status = Label(
+            apt_pkg_header_1_1,
+            text="",
+            font=font_8,
+            justify="left",
+            #background=nav_color,
+            #foreground=main_font,
+            anchor="w",
+            padx=20,
+        )
+        apt_pkg_status.grid(row=1, column=1, sticky="ew")
+
+        apt_pkg_inst = ttk.Button(
+            apt_pkg_header_1_1,
+            text="Install",
+            #justify="left",
+            width=10,
+            #background="#6abd43",
+            #foreground=ext_btn_font,
+            #font=font_10,
+            #borderwidth=0,
+            #highlightthickness=0,
+            command=apt_install,
+            style='Green.TButton'
+        )
+        apt_pkg_inst.grid(row=0, column=2, sticky="e")
+
+        def on_configure(event):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+            update_canvas()
+
+        def on_mousewheel(event):
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+        def update_canvas():
+            canvas_width = canvas.winfo_width()
+            frame_width = canvas_frame.winfo_reqwidth()
+            x_offset = max((canvas_width - frame_width) // 2, 0)
+            canvas.coords("frame", x_offset, 0)
+
+        canvas_container = Frame(apt_info_container, width=869)
+        canvas_container.pack(side=LEFT, fill="both", expand=True)
+
+        canvas = Canvas(canvas_container, highlightthickness=0)
+        canvas.pack(fill="both", expand=True, side=RIGHT)
+        canvas.pack_propagate(False)
+
+        canvas_frame = tk.Frame(canvas, padx=120)
+        canvas.create_window((0, 0), window=canvas_frame, anchor="n", tags="frame")
+
+        apt_panel = Label(canvas_frame, text="Apartment Panel")
+        apt_panel.pack(anchor="n", pady=20)
+
+        description_text = Text(
+            canvas_frame,
+            borderwidth=0,
+            highlightthickness=0,
+            #background=frame_color,
+            #foreground=main_font,
+            font=("Sans", 9),
+            height=100,
+            width=80,
+            wrap=WORD,
+            padx=20,
+        )
+        description_text.pack(side=LEFT, fill=BOTH, expand=True, padx=20)
+
+        scrollbar = ttk.Scrollbar(
+            apt_info_container, orient=VERTICAL, command=canvas.yview
+        )
+        scrollbar.pack(side=RIGHT, fill=Y)
+        canvas.config(yscrollcommand=scrollbar.set)
+
+        canvas_frame.bind("<Configure>", on_configure)
+        canvas_frame.bind_all("<MouseWheel>", on_mousewheel)
+
+
 
 class StorePanel(tk.Frame):
     def __init__(self, master=None, **kwargs):

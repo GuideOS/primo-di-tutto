@@ -277,7 +277,7 @@ class LookTab(ttk.Frame):
                 "alttab-switcher-show-all-workspaces": "false",
                 "alttab-switcher-style": "'icons+thumbnails'",
                 "alttab-switcher-warp-mouse-pointer": "false",
-                "app-menu-icon-name": "'ubuntucinnamon-symbolic'",
+                "app-menu-icon-name": "ubuntucinnamon-symbolic",
                 "app-menu-label": "'Menu'",
                 "applet-cache-updated": "0",
                 "bring-windows-to-current-workspace": "false",

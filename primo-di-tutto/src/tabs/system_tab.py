@@ -120,7 +120,7 @@ class SystemTab(ttk.Frame):
 
             if text == "dmesg --follow":
                 popen(
-                    "x-terminal-emulator -e 'bash -c \"sudo dmesg --follow; exec bash\"'"
+                    "x-terminal-emulator -e 'bash -c \"pkexec dmesg --follow; exec bash\"'"
                 )
             if text == "Bash History":
                 popen(f"xdg-open {home}/.bash_history")
@@ -137,12 +137,12 @@ class SystemTab(ttk.Frame):
 
             if text == "Reconfigure Keyboard":
                 popen(
-                    "x-terminal-emulator -e 'bash -c \"sudo dpkg-reconfigure keyboard-configuration; exec bash\"'"
+                    "x-terminal-emulator -e 'bash -c \"pkexec dpkg-reconfigure keyboard-configuration; exec bash\"'"
                 )
 
             if text == "Reconfigure Locales":
                 popen(
-                    "x-terminal-emulator -e 'bash -c \"sudo dpkg-reconfigure locales; exec bash\"'"
+                    "x-terminal-emulator -e 'bash -c \"pkexec dpkg-reconfigure locales; exec bash\"'"
                 )
 
         self.cinna_set = ttk.LabelFrame(
