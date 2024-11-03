@@ -22,7 +22,7 @@ from subprocess import Popen, PIPE
 from threading import Thread
 from tool_tipps import CreateToolTip
 from tkinter import messagebox
-from tabs.text_dict_lib import (
+from tabs.software_dict_lib import (
     SoftwareGame,
     SoftwareBrowser,
     SoftwareOffice,
@@ -697,13 +697,13 @@ class BrowserPanel(tk.Frame):
             file=SoftwareBrowser.browser_dict["browser_1"]["Icon"]
         )
 
-        # self.browser_btn2_icon = PhotoImage(
-        #    file=SoftwareBrowser.browser_dict["browser_2"]["Icon"]
-        # )
+        self.browser_btn2_icon = PhotoImage(
+           file=SoftwareBrowser.browser_dict["browser_2"]["Icon"]
+        )
 
-        # elf.browser_btn3_icon = PhotoImage(
-        #    file=SoftwareBrowser.browser_dict["browser_3"]["Icon"]
-        # )
+        self.browser_btn3_icon = PhotoImage(
+           file=SoftwareBrowser.browser_dict["browser_3"]["Icon"]
+        )
 
         # self.browser_btn4_icon = PhotoImage(
         #    file=SoftwareBrowser.browser_dict["browser_4"]["Icon"]
@@ -826,25 +826,25 @@ class BrowserPanel(tk.Frame):
         )
         browser1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
 
-        # browser2_button = ttk.Button(
-        #     browser_btn_frame,
-        #     text=SoftwareBrowser.browser_dict["browser_2"]["Name"],
-        #     image=self.browser_btn2_icon,
-        #     command=lambda: browser_btn_action("browser_2"),
-        #     compound=tk.TOP,
-        #     style="Custom.TButton"
-        # )
-        # browser2_button.grid(row=0, column=2, padx=5, pady=5, sticky="nesw")
+        browser2_button = ttk.Button(
+            browser_btn_frame,
+            text=SoftwareBrowser.browser_dict["browser_2"]["Name"],
+            image=self.browser_btn2_icon,
+            command=lambda: browser_btn_action("browser_2"),
+            compound=tk.TOP,
+            style="Custom.TButton"
+        )
+        browser2_button.grid(row=0, column=2, padx=5, pady=5, sticky="nesw")
 
-        # browser3_button = ttk.Button(
-        #     browser_btn_frame,
-        #     text=SoftwareBrowser.browser_dict["browser_3"]["Name"],
-        #     image=self.browser_btn3_icon,
-        #     command=lambda: browser_btn_action("browser_3"),
-        #     compound=tk.TOP,
-        #     style="Custom.TButton"
-        # )
-        # browser3_button.grid(row=0, column=3, padx=5, pady=5, sticky="nesw")
+        browser3_button = ttk.Button(
+            browser_btn_frame,
+            text=SoftwareBrowser.browser_dict["browser_3"]["Name"],
+            image=self.browser_btn3_icon,
+            command=lambda: browser_btn_action("browser_3"),
+            compound=tk.TOP,
+            style="Custom.TButton"
+        )
+        browser3_button.grid(row=0, column=3, padx=5, pady=5, sticky="nesw")
 
         # browser4_button = ttk.Button(
         #     browser_btn_frame,
