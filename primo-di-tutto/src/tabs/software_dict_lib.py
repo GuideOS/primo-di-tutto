@@ -164,13 +164,13 @@ class SoftwareBrowser:
         },
         "browser_2": {
             "Name": "Vivaldi",
-            "Package": "Debian-Paket",
+            "Package": "Flatpak",
             "Description": "????",
             "Icon": f"{application_path}/images/apps/vivaldi_icon_36.png",
             "Thumbnail": f"{application_path}/images/apps/soft-vivaldi-thumb.png",
-            "Install": "pkexec -y",
-            "Uninstall": "pkexec pkexec -y",
-            "Path": "vivaldi",
+            "Install": "flatpak install flathub com.vivaldi.Vivaldi -y",
+            "Uninstall": "flatpak com.vivaldi.Vivaldi",
+            "Path": "com.vivaldi.Vivaldi",
         },
         "browser_3": {
             "Name": "LibreWolf",
