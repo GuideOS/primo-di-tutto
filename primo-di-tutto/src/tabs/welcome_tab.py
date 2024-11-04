@@ -42,7 +42,7 @@ class WelcomeTab(ttk.Frame):
         welcome_text_message = """GuideOS ist eine Linux Distribution, dem sich Mitglieder des Forums https://linuxguides.de angenommen haben.Die Idee wurde Ende 2024 umgesetzt und hat zum Ziel auch den Einstieg oder Umstieg auf Linux für jeden Anwender verständlich zu machen. Als Basis dient UBUNTU und der Desktop Cinnamon. Viele der installierbaren Programme haben wir aus langjähriger Erfahrung ausgewählt und unser Ziel ist GuideOS mit euch gemeinsam weiter zu entwickeln. Du hast Lust ein Teil dieser Community zu sein, dann schaue doch mal bei https://forum.linuxguides.de vorbei. Dort kannst du dich auch registrieren und Fragen und Ideen los werden.\n\nWir freuen uns auf jeden, der GuideOS nutzt und auch über jede neue Idee!"""
 
         # Label für die Willkommensnachricht erstellen
-        self.welcome_text_label = ttk.Label(self, text=welcome_text_message,wraplength=800,justify="left", anchor="w")
+        self.welcome_text_label = ttk.Label(self, text=welcome_text_message,wraplength=800,justify="center")
         self.welcome_text_label.pack(pady=10)
 
         # LabelFrame für Autostart-Optionen erstellen

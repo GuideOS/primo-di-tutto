@@ -27,6 +27,7 @@ from tabs.software_dict_lib import (
     SoftwareBrowser,
     SoftwareOffice,
     SoftwareStore,
+    SoftwareCommunication,
 )
 from apt_manage import *
 from snap_manage import *
@@ -101,31 +102,28 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook = ttk.Notebook(self)
         self.inst_notebook.pack(fill=BOTH, expand=True)
 
-        test_frame = ttk.Frame(self.inst_notebook)
-        store_frame = ttk.Frame(self.inst_notebook)
-        browser_frame = ttk.Frame(self.inst_notebook)
+        com_frame = ttk.Frame(self.inst_notebook)
         office_frame = ttk.Frame(self.inst_notebook)
         edu_frame = ttk.Frame(self.inst_notebook)
         gaming_frame = ttk.Frame(self.inst_notebook)
 
-        store_frame.pack(fill="both", expand=True)
-        browser_frame.pack(fill="both", expand=True)
+        store_frame = ttk.Frame(self.inst_notebook)
+
+        com_frame.pack(fill="both", expand=True)
         office_frame.pack(fill="both", expand=True)
         edu_frame.pack(fill="both", expand=True)
         gaming_frame.pack(fill="both", expand=True)
+        store_frame.pack(fill="both", expand=True)
 
         # add frames to notebook
-        self.inst_notebook.add(store_frame, compound=LEFT, text="Start")
+        self.inst_notebook.add(com_frame, compound=LEFT, text="Kommunikation")
         self.inst_notebook.add(office_frame, compound=LEFT, text="Textverarbeitung")
         self.inst_notebook.add(edu_frame, compound=LEFT, text="Bildbearbeitung")
-        self.inst_notebook.add(browser_frame, compound=LEFT, text="Browser")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Gaming")
+        self.inst_notebook.add(store_frame, compound=LEFT, text="Verwaltung")
 
-        store_note_frame = StorePanel(store_frame)
-        store_note_frame.pack(fill=tk.BOTH, expand=True)
-
-        browser_note_frame = BrowserPanel(browser_frame)
-        browser_note_frame.pack(fill=tk.BOTH, expand=True)
+        com_note_frame = ComPanel(com_frame)
+        com_note_frame.pack(fill=tk.BOTH, expand=True)
 
         office_note_frame = OfficePanel(office_frame)
         office_note_frame.pack(fill=tk.BOTH, expand=True)
@@ -135,6 +133,9 @@ class SoftwareTab(ttk.Frame):
 
         gaming_note_frame = GamingPanel(gaming_frame)
         gaming_note_frame.pack(fill=tk.BOTH, expand=True)
+
+        store_note_frame = StorePanel(store_frame)
+        store_note_frame.pack(fill=tk.BOTH, expand=True)
 
 
 class StorePanel(tk.Frame):
@@ -154,7 +155,7 @@ class StorePanel(tk.Frame):
 
         # Create the button frame first
         store_btn_frame = ttk.LabelFrame(self, text="Softwareverwaltung", padding=20)
-        store_btn_frame.pack(pady=20, padx=20, fill="x")
+        store_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         store_btn_frame.grid_columnconfigure(0, weight=1)
         store_btn_frame.grid_columnconfigure(1, weight=1)
@@ -228,18 +229,18 @@ class OfficePanel(tk.Frame):
         # Create the button frame first
 
         def show_button_frame():
-            office_btn_frame.pack(pady=20, padx=20, fill="x")
+            office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
             back_button.pack_forget()
             office_detail_frame.pack_forget()
 
         def hide_button_frame():
             office_btn_frame.pack_forget()
-            back_button.pack(pady=20, padx=20, fill="x")
+            back_button.pack(pady=20, padx=20, anchor="w")
 
         back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
 
         office_btn_frame = ttk.LabelFrame(self, text="Office-Auswahl", padding=20)
-        office_btn_frame.pack(pady=20, padx=20, fill="x")
+        office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         office_btn_frame.grid_columnconfigure(0, weight=1)
         office_btn_frame.grid_columnconfigure(1, weight=1)
@@ -333,7 +334,7 @@ class OfficePanel(tk.Frame):
             self.thumb_lbl.configure(image=self.office_thumb)
             self.thumb_lbl.pack()
 
-            print(get_installed_snaps())
+            # print(get_installed_snaps())
             refresh_status(office_key)
 
         office0_button = ttk.Button(
@@ -421,42 +422,20 @@ class GamingPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.update_interval = 1000
-        # refresh_flatpak_installs()
-
-        self.game_btn0_icon = PhotoImage(file=SoftwareGame.game_dict["game_0"]["Icon"])
-
-        self.game_btn1_icon = PhotoImage(file=SoftwareGame.game_dict["game_1"]["Icon"])
-
-        self.game_btn2_icon = PhotoImage(file=SoftwareGame.game_dict["game_2"]["Icon"])
-
-        self.game_btn3_icon = PhotoImage(file=SoftwareGame.game_dict["game_3"]["Icon"])
-
-        self.game_btn4_icon = PhotoImage(file=SoftwareGame.game_dict["game_4"]["Icon"])
-
-        self.game_btn5_icon = PhotoImage(file=SoftwareGame.game_dict["game_5"]["Icon"])
-
-        self.game_btn6_icon = PhotoImage(file=SoftwareGame.game_dict["game_6"]["Icon"])
-
-        self.game_btn7_icon = PhotoImage(file=SoftwareGame.game_dict["game_7"]["Icon"])
-
-        self.game_btn8_icon = PhotoImage(file=SoftwareGame.game_dict["game_8"]["Icon"])
-
-        self.game_btn9_icon = PhotoImage(file=SoftwareGame.game_dict["game_9"]["Icon"])
 
         def show_button_frame():
-            game_btn_frame.pack(pady=20, padx=20, fill="x")
+            game_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
             back_button.pack_forget()
             game_detail_frame.pack_forget()
 
         def hide_button_frame():
             game_btn_frame.pack_forget()
-            back_button.pack(pady=20, padx=20, fill="x")
+            back_button.pack(pady=20, padx=20, anchor="w")
 
         back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
 
-        # Create the button frame first
         game_btn_frame = ttk.LabelFrame(self, text="Gaming Empfehlungen", padding=20)
-        game_btn_frame.pack(pady=20, padx=20, fill="x")
+        game_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         game_btn_frame.grid_columnconfigure(0, weight=2)
         game_btn_frame.grid_columnconfigure(1, weight=2)
@@ -465,7 +444,6 @@ class GamingPanel(tk.Frame):
         game_btn_frame.grid_columnconfigure(4, weight=2)
 
         def run_installation(game_key):
-            # hide_apt_frame()
             primo_skript_task = "Installation ..."
             primo_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
             primo_skript = SoftwareGame.game_dict[game_key]["Install"]
@@ -474,12 +452,11 @@ class GamingPanel(tk.Frame):
                 primo_skript_task, primo_skript_task_app, primo_skript
             )
             self.master.wait_window(custom_installer)
-            self.gaming_inst_btn.config(text="Deinstallieren")
+            self.game_detail_inst.config(text="Deinstallieren")
 
             refresh_status(game_key)
 
         def run_uninstall(game_key):
-            # hide_apt_frame()
             primo_skript_task = "Deinstallation ..."
             primo_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
             primo_skript = SoftwareGame.game_dict[game_key]["Uninstall"]
@@ -489,13 +466,12 @@ class GamingPanel(tk.Frame):
                 primo_skript_task, primo_skript_task_app, primo_skript
             )
             self.master.wait_window(custom_installer)
-            self.gaming_inst_btn.config(text="Installieren")
+            self.game_detail_inst.config(text="Installieren")
 
             refresh_status(game_key)
 
         def open_website(game_key):
             path = SoftwareGame.game_dict[game_key]["Path"]
-            # Quotes added around the path
             subprocess.run(f'xdg-open "{path}"', shell=True)
 
         def refresh_status(game_key):
@@ -503,31 +479,33 @@ class GamingPanel(tk.Frame):
             game_pakage = SoftwareGame.game_dict[game_key]["Package"]
             game_disc = SoftwareGame.game_dict[game_key]["Description"]
             game_path = SoftwareGame.game_dict[game_key]["Path"]
-            # APT-Pakete und Flatpak-Installationen überprüfen
+
             installed_apt = game_path in get_installed_apt_pkgs()
 
-            # Flatpak-Installationen abrufen und prüfen, ob der `game_path` in den Werten vorhanden ist
+            # Flatpak-Installationen abrufen und prüfen, ob der `com_path` in den Werten vorhanden ist
             flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
             installed_flatpak = game_path in flatpak_installs.values()
+            installed_snap = game_path in get_installed_snaps()
+            print()
             # self.master.wait_window(custom_installer)
             # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
-            if installed_apt or installed_flatpak:
+            if installed_snap or installed_apt or installed_flatpak:
                 print(f"{game_name} is installed")
-                self.gaming_inst_btn.config(
+                self.game_detail_inst.config(
                     text="Deinstallieren",
                     command=lambda: run_uninstall(game_key),
                     style="Red.TButton",
                 )
             else:
                 print(f"{game_name} is not installed")
-                self.gaming_inst_btn.config(
+                self.game_detail_inst.config(
                     text="Installieren",
                     command=lambda: run_installation(game_key),
                     style="Green.TButton",
                 )
 
         def game_btn_action(game_key):
-            # Den Namen des Spiels aus der SoftwareGame-Klasse holen
+            game_icon_img = SoftwareGame.game_dict[game_key]["Icon"]
             game_name = SoftwareGame.game_dict[game_key]["Name"]
             game_pakage = SoftwareGame.game_dict[game_key]["Package"]
             game_disc = SoftwareGame.game_dict[game_key]["Description"]
@@ -535,12 +513,14 @@ class GamingPanel(tk.Frame):
             game_thumb = SoftwareGame.game_dict[game_key]["Thumbnail"]
 
             self.game_thumb = PhotoImage(file=game_thumb)
+            self.game_icon = PhotoImage(file=game_icon_img)
 
-            self.gaming_name.config(text=f"Name: {game_name}")
-            self.gaming_pak.config(text=f"Paket: {game_pakage}")
-            self.gaming_desc.config(text=f"Beschreibung: {game_disc}")
+            self.game_detail_icon.configure(image=self.game_icon)
+            self.game_detail_name.config(text=f"{game_name}")
+            self.game_detail_pak.config(text=f"{game_pakage}")
+            self.game_detail_desc.config(text=f"\n{game_disc}")
 
-            self.gaming_inst_btn.grid(column=1, row=0, rowspan=2, sticky="e")
+            self.game_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
             self.termf.grid(column=0, columnspan=2, row=3)
             self.thumb_lbl.configure(image=self.game_thumb)
             self.thumb_lbl.pack()
@@ -551,129 +531,57 @@ class GamingPanel(tk.Frame):
             # print(get_installed_apt_pkgs())
             refresh_status(game_key)
 
-        game0_button = ttk.Button(
-            game_btn_frame,
-            text=SoftwareGame.game_dict["game_0"]["Name"],
-            image=self.game_btn0_icon,
-            command=lambda: game_btn_action("game_0"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        game0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
+        self.game_btn_icons = []
 
-        game1_button = ttk.Button(
-            game_btn_frame,
-            text=SoftwareGame.game_dict["game_1"]["Name"],
-            image=self.game_btn1_icon,
-            command=lambda: game_btn_action("game_1"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        game1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
+        for i, (game_key, game_info) in enumerate(SoftwareGame.game_dict.items()):
+            icon = tk.PhotoImage(file=game_info["Icon"])
+            self.game_btn_icons.append(icon)
 
-        game2_button = ttk.Button(
-            game_btn_frame,
-            text=SoftwareGame.game_dict["game_2"]["Name"],
-            image=self.game_btn2_icon,
-            command=lambda: game_btn_action("game_2"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        game2_button.grid(row=0, column=2, padx=5, pady=5, sticky="nesw")
+        max_columns = 5
 
-        game3_button = ttk.Button(
-            game_btn_frame,
-            text=SoftwareGame.game_dict["game_3"]["Name"],
-            image=self.game_btn3_icon,
-            command=lambda: game_btn_action("game_3"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        game3_button.grid(row=0, column=3, padx=5, pady=5, sticky="nesw")
+        for i, (game_key, game_info) in enumerate(SoftwareGame.game_dict.items()):
+            row = i // max_columns
+            column = i % max_columns
 
-        game4_button = ttk.Button(
-            game_btn_frame,
-            text=SoftwareGame.game_dict["game_4"]["Name"],
-            image=self.game_btn4_icon,
-            command=lambda: open_website("game_4"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        game4_button.grid(row=0, column=4, padx=5, pady=5, sticky="nesw")
+            game_button = ttk.Button(
+                game_btn_frame,
+                text=game_info["Name"],
+                image=self.game_btn_icons[i],
+                command=lambda key=game_key: game_btn_action(key),
+                compound=tk.TOP,
+                style="Custom.TButton",
+            )
+            game_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
 
-        game5_button = ttk.Button(
-            game_btn_frame,
-            text=SoftwareGame.game_dict["game_5"]["Name"],
-            image=self.game_btn5_icon,
-            command=lambda: game_btn_action("game_5"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        game5_button.grid(row=1, column=0, padx=5, pady=5, sticky="nesw")
-
-        game6_button = ttk.Button(
-            game_btn_frame,
-            text=SoftwareGame.game_dict["game_6"]["Name"],
-            image=self.game_btn6_icon,
-            command=lambda: game_btn_action("game_6"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        game6_button.grid(row=1, column=1, padx=5, pady=5, sticky="nesw")
-
-        game7_button = ttk.Button(
-            game_btn_frame,
-            text=SoftwareGame.game_dict["game_7"]["Name"],
-            image=self.game_btn7_icon,
-            command=lambda: game_btn_action("game_7"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        game7_button.grid(row=1, column=2, padx=5, pady=5, sticky="nesw")
-        # print(SoftwareGame.game_dict)
-        game8_button = ttk.Button(
-            game_btn_frame,
-            text=SoftwareGame.game_dict["game_8"]["Name"],
-            image=self.game_btn8_icon,
-            command=lambda: game_btn_action("game_8"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        game8_button.grid(row=1, column=3, padx=5, pady=5, sticky="nesw")
-
-        game9_button = ttk.Button(
-            game_btn_frame,
-            text=SoftwareGame.game_dict["game_9"]["Name"],
-            image=self.game_btn9_icon,
-            command=lambda: game_btn_action("game_9"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        game9_button.grid(row=1, column=4, padx=5, pady=5, sticky="nesw")
-
-        # Create the detail frame
         game_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
-        # game_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-        game_detail_frame.grid_columnconfigure(0, weight=1)
         game_detail_frame.grid_columnconfigure(1, weight=1)
         game_detail_frame.grid_rowconfigure(3, weight=1)
 
-        self.gaming_name = Label(game_detail_frame, text="", justify="left", anchor="w")
-        self.gaming_name.grid(column=0, row=0, sticky="ew")
+        self.game_detail_icon = Label(
+            game_detail_frame,
+        )
+        self.game_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
 
-        self.gaming_pak = Label(game_detail_frame, text="", justify="left", anchor="w")
-        self.gaming_pak.grid(column=0, row=1, sticky="ew")
-        self.gaming_desc = Label(
+        self.game_detail_name = Label(
+            game_detail_frame, text="", justify="left", anchor="w"
+        )
+        self.game_detail_name.grid(column=1, row=0, sticky="w")
+
+        self.game_detail_pak = Label(
+            game_detail_frame, text="", justify="left", anchor="w"
+        )
+        self.game_detail_pak.grid(column=1, row=1, sticky="we")
+
+        self.game_detail_desc = Label(
             game_detail_frame, text="", justify="left", anchor="w", wraplength=750
         )
-        self.gaming_desc.grid(column=0, row=2, columnspan=2, sticky="ew")
+        self.game_detail_desc.grid(column=0, row=2, columnspan=3, sticky="ew")
 
-        self.gaming_inst_btn = ttk.Button(
+        self.game_detail_inst = ttk.Button(
             game_detail_frame, text="Install", style="Custom.TButton"
         )
 
-        # Initialize termf and pack it below the install button
         self.termf = Frame(
             game_detail_frame,
         )
@@ -683,214 +591,177 @@ class GamingPanel(tk.Frame):
         game_wid = self.termf.winfo_id()
 
 
-class BrowserPanel(tk.Frame):
+class ComPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.update_interval = 1000
-        # refresh_flatpak_installs()
 
-        self.browser_btn0_icon = PhotoImage(
-            file=SoftwareBrowser.browser_dict["browser_0"]["Icon"]
-        )
+        def show_button_frame():
+            com_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+            back_button.pack_forget()
+            com_detail_frame.pack_forget()
 
-        self.browser_btn1_icon = PhotoImage(
-            file=SoftwareBrowser.browser_dict["browser_1"]["Icon"]
-        )
+        def hide_button_frame():
+            com_btn_frame.pack_forget()
+            back_button.pack(pady=20, padx=20, anchor="w")
 
-        self.browser_btn2_icon = PhotoImage(
-           file=SoftwareBrowser.browser_dict["browser_2"]["Icon"]
-        )
+        back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
 
-        self.browser_btn3_icon = PhotoImage(
-           file=SoftwareBrowser.browser_dict["browser_3"]["Icon"]
-        )
+        com_btn_frame = ttk.LabelFrame(self, text="Communication Empfehlungen", padding=20)
+        com_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
-        # self.browser_btn4_icon = PhotoImage(
-        #    file=SoftwareBrowser.browser_dict["browser_4"]["Icon"]
-        # )
+        com_btn_frame.grid_columnconfigure(0, weight=2)
+        com_btn_frame.grid_columnconfigure(1, weight=2)
+        com_btn_frame.grid_columnconfigure(2, weight=2)
+        com_btn_frame.grid_columnconfigure(3, weight=1)
+        com_btn_frame.grid_columnconfigure(4, weight=2)
 
-        # Create the button frame first
-        browser_btn_frame = ttk.LabelFrame(self, text="Browser-Auswahl", padding=20)
-        browser_btn_frame.pack(pady=20, padx=20, fill="x")
-
-        browser_btn_frame.grid_columnconfigure(0, weight=1)
-        browser_btn_frame.grid_columnconfigure(1, weight=1)
-        browser_btn_frame.grid_columnconfigure(2, weight=1)
-        browser_btn_frame.grid_columnconfigure(3, weight=1)
-        browser_btn_frame.grid_columnconfigure(4, weight=1)
-
-        def run_installation(browser_key):
-            # hide_apt_frame()
+        def run_installation(com_key):
             primo_skript_task = "Installation ..."
-            primo_skript_task_app = SoftwareBrowser.browser_dict[browser_key]["Name"]
-            primo_skript = SoftwareBrowser.browser_dict[browser_key]["Install"]
+            primo_skript_task_app = SoftwareCommunication.com_dict[com_key]["Name"]
+            primo_skript = SoftwareCommunication.com_dict[com_key]["Install"]
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
                 primo_skript_task, primo_skript_task_app, primo_skript
             )
             self.master.wait_window(custom_installer)
-            self.browser_inst_btn.config(text="Deinstallieren")
+            self.com_detail_inst.config(text="Deinstallieren")
 
-            refresh_status(browser_key)
+            refresh_status(com_key)
 
-        def run_uninstall(browser_key):
-            # hide_apt_frame()
+        def run_uninstall(com_key):
             primo_skript_task = "Deinstallation ..."
-            primo_skript_task_app = SoftwareBrowser.browser_dict[browser_key]["Name"]
-            primo_skript = SoftwareBrowser.browser_dict[browser_key]["Uninstall"]
+            primo_skript_task_app = SoftwareCommunication.com_dict[com_key]["Name"]
+            primo_skript = SoftwareCommunication.com_dict[com_key]["Uninstall"]
 
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
                 primo_skript_task, primo_skript_task_app, primo_skript
             )
             self.master.wait_window(custom_installer)
-            self.browser_inst_btn.config(text="Installieren")
+            self.com_detail_inst.config(text="Installieren")
 
-            refresh_status(browser_key)
+            refresh_status(com_key)
 
-        def refresh_status(browser_key):
-            browser_name = SoftwareBrowser.browser_dict[browser_key]["Name"]
-            browser_pakage = SoftwareBrowser.browser_dict[browser_key]["Package"]
-            browser_disc = SoftwareBrowser.browser_dict[browser_key]["Description"]
-            browser_path = SoftwareBrowser.browser_dict[browser_key]["Path"]
-            # APT-Pakete und Flatpak-Installationen überprüfen
-            installed_apt = browser_path in get_installed_apt_pkgs()
+        def open_website(com_key):
+            path = SoftwareCommunication.com_dict[com_key]["Path"]
+            subprocess.run(f'xdg-open "{path}"', shell=True)
 
-            # Flatpak-Installationen abrufen und prüfen, ob der `browser_path` in den Werten vorhanden ist
+        def refresh_status(com_key):
+            com_name = SoftwareCommunication.com_dict[com_key]["Name"]
+            com_pakage = SoftwareCommunication.com_dict[com_key]["Package"]
+            com_disc = SoftwareCommunication.com_dict[com_key]["Description"]
+            com_path = SoftwareCommunication.com_dict[com_key]["Path"]
+
+            installed_apt = com_path in get_installed_apt_pkgs()
+
+            # Flatpak-Installationen abrufen und prüfen, ob der `com_path` in den Werten vorhanden ist
             flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
-            installed_flatpak = browser_path in flatpak_installs.values()
-            installed_snap = browser_path in get_installed_snaps()
+            installed_flatpak = com_path in flatpak_installs.values()
+            installed_snap = com_path in get_installed_snaps()
+            print()
             # self.master.wait_window(custom_installer)
             # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
-            if not installed_snap or installed_apt or installed_flatpak:
-                print(f"{browser_name} is not installed")
-                self.browser_inst_btn.config(
-                    text="Installieren",
-                    command=lambda: run_installation(browser_key),
-                    style="Green.TButton",
-                )
             if installed_snap or installed_apt or installed_flatpak:
-                print(f"{browser_name} is installed")
-                self.browser_inst_btn.config(
+                print(f"{com_name} is installed")
+                self.com_detail_inst.config(
                     text="Deinstallieren",
-                    command=lambda: run_uninstall(browser_key),
+                    command=lambda: run_uninstall(com_key),
                     style="Red.TButton",
                 )
             else:
-                print(f"{browser_name} is not installed")
-                self.browser_inst_btn.config(
+                print(f"{com_name} is not installed")
+                self.com_detail_inst.config(
                     text="Installieren",
-                    command=lambda: run_installation(browser_key),
+                    command=lambda: run_installation(com_key),
                     style="Green.TButton",
                 )
 
-        def browser_btn_action(browser_key):
-            # Den Namen des Spiels aus der SoftwareBrowser-Klasse holen
-            browser_name = SoftwareBrowser.browser_dict[browser_key]["Name"]
-            browser_pakage = SoftwareBrowser.browser_dict[browser_key]["Package"]
-            browser_disc = SoftwareBrowser.browser_dict[browser_key]["Description"]
-            browser_path = SoftwareBrowser.browser_dict[browser_key]["Path"]
-            browser_thumb = SoftwareBrowser.browser_dict[browser_key]["Thumbnail"]
+        def com_btn_action(com_key):
+            com_icon_img = SoftwareCommunication.com_dict[com_key]["Icon"]
+            com_name = SoftwareCommunication.com_dict[com_key]["Name"]
+            com_pakage = SoftwareCommunication.com_dict[com_key]["Package"]
+            com_disc = SoftwareCommunication.com_dict[com_key]["Description"]
+            com_path = SoftwareCommunication.com_dict[com_key]["Path"]
+            com_thumb = SoftwareCommunication.com_dict[com_key]["Thumbnail"]
 
-            self.browser_thumb = PhotoImage(file=browser_thumb)
+            self.com_thumb = PhotoImage(file=com_thumb)
+            self.com_icon = PhotoImage(file=com_icon_img)
 
-            self.browser_name.config(text=f"Name: {browser_name}")
-            self.browser_pak.config(text=f"Paket: {browser_pakage}")
-            self.browser_desc.config(text=f"Beschreibung: {browser_disc}")
+            self.com_detail_icon.configure(image=self.com_icon)
+            self.com_detail_name.config(text=f"{com_name}")
+            self.com_detail_pak.config(text=f"{com_pakage}")
+            self.com_detail_desc.config(text=f"\n{com_disc}")
 
-            self.browser_inst_btn.grid(column=1, row=0, rowspan=2, sticky="e")
+            self.com_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
             self.termf.grid(column=0, columnspan=2, row=3)
-            self.thumb_lbl.configure(image=self.browser_thumb)
+            self.thumb_lbl.configure(image=self.com_thumb)
             self.thumb_lbl.pack()
 
-            print(get_installed_snaps())
-            refresh_status(browser_key)
+            hide_button_frame()
+            com_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-        browser0_button = ttk.Button(
-            browser_btn_frame,
-            text=SoftwareBrowser.browser_dict["browser_0"]["Name"],
-            image=self.browser_btn0_icon,
-            command=lambda: browser_btn_action("browser_0"),
-            compound=tk.TOP,
-            style="Custom.TButton",
+            # print(get_installed_apt_pkgs())
+            refresh_status(com_key)
+
+        self.com_btn_icons = []
+
+        for i, (com_key, com_info) in enumerate(SoftwareCommunication.com_dict.items()):
+            icon = tk.PhotoImage(file=com_info["Icon"])
+            self.com_btn_icons.append(icon)
+
+        max_columns = 5
+
+        for i, (com_key, com_info) in enumerate(SoftwareCommunication.com_dict.items()):
+            row = i // max_columns
+            column = i % max_columns
+
+            com_button = ttk.Button(
+                com_btn_frame,
+                text=com_info["Name"],
+                image=self.com_btn_icons[i],
+                command=lambda key=com_key: com_btn_action(key),
+                compound=tk.TOP,
+                style="Custom.TButton",
+            )
+            com_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
+
+        com_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
+
+        com_detail_frame.grid_columnconfigure(1, weight=1)
+        com_detail_frame.grid_rowconfigure(3, weight=1)
+
+        self.com_detail_icon = Label(
+            com_detail_frame,
         )
-        browser0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
+        self.com_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
 
-        browser1_button = ttk.Button(
-            browser_btn_frame,
-            text=SoftwareBrowser.browser_dict["browser_1"]["Name"],
-            image=self.browser_btn1_icon,
-            command=lambda: browser_btn_action("browser_1"),
-            compound=tk.TOP,
-            style="Custom.TButton",
+        self.com_detail_name = Label(
+            com_detail_frame, text="", justify="left", anchor="w"
         )
-        browser1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
+        self.com_detail_name.grid(column=1, row=0, sticky="w")
 
-        browser2_button = ttk.Button(
-            browser_btn_frame,
-            text=SoftwareBrowser.browser_dict["browser_2"]["Name"],
-            image=self.browser_btn2_icon,
-            command=lambda: browser_btn_action("browser_2"),
-            compound=tk.TOP,
-            style="Custom.TButton"
+        self.com_detail_pak = Label(
+            com_detail_frame, text="", justify="left", anchor="w"
         )
-        browser2_button.grid(row=0, column=2, padx=5, pady=5, sticky="nesw")
+        self.com_detail_pak.grid(column=1, row=1, sticky="we")
 
-        browser3_button = ttk.Button(
-            browser_btn_frame,
-            text=SoftwareBrowser.browser_dict["browser_3"]["Name"],
-            image=self.browser_btn3_icon,
-            command=lambda: browser_btn_action("browser_3"),
-            compound=tk.TOP,
-            style="Custom.TButton"
+        self.com_detail_desc = Label(
+            com_detail_frame, text="", justify="left", anchor="w", wraplength=750
         )
-        browser3_button.grid(row=0, column=3, padx=5, pady=5, sticky="nesw")
+        self.com_detail_desc.grid(column=0, row=2, columnspan=3, sticky="ew")
 
-        # browser4_button = ttk.Button(
-        #     browser_btn_frame,
-        #     text=SoftwareBrowser.browser_dict["browser_4"]["Name"],
-        #     image=self.browser_btn4_icon,
-        #     command=lambda: open_website("browser_4"),
-        #     compound=tk.TOP,
-        #     style="Custom.TButton"
-        # )
-        # browser4_button.grid(row=0, column=4, padx=5, pady=5, sticky="nesw")
-        # print(SoftwareBrowser.browser_dict)
-
-        # Create the detail frame
-        browser_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
-        browser_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
-
-        browser_detail_frame.grid_columnconfigure(0, weight=1)
-        browser_detail_frame.grid_columnconfigure(1, weight=1)
-        browser_detail_frame.grid_rowconfigure(3, weight=1)
-
-        self.browser_name = Label(
-            browser_detail_frame, text="", justify="left", anchor="w"
-        )
-        self.browser_name.grid(column=0, row=0, sticky="ew")
-
-        self.browser_pak = Label(
-            browser_detail_frame, text="", justify="left", anchor="w"
-        )
-        self.browser_pak.grid(column=0, row=1, sticky="ew")
-        self.browser_desc = Label(
-            browser_detail_frame, text="", justify="left", anchor="w", wraplength=600
-        )
-        self.browser_desc.grid(column=0, row=2, sticky="ew")
-
-        self.browser_inst_btn = ttk.Button(
-            browser_detail_frame, text="Install", style="Custom.TButton"
+        self.com_detail_inst = ttk.Button(
+            com_detail_frame, text="Install", style="Custom.TButton"
         )
 
-        # Initialize termf and pack it below the install button
         self.termf = Frame(
-            browser_detail_frame,
+            com_detail_frame,
         )
         self.thumb_lbl = Label(self.termf)
 
-        global browser_wid
-        browser_wid = self.termf.winfo_id()
+        global com_wid
+        com_wid = self.termf.winfo_id()
 
 
 class Custom_Installer(tk.Toplevel):

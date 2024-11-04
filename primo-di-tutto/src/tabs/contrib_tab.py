@@ -66,7 +66,7 @@ class ContribTab(ttk.Frame):
         text_box.config(yscrollcommand=scrollbar.set)
 
         # Text in die Textbox einfügen
-        text_box.insert(tk.END, "@Toadie @StephanR @stryvyr @maik3531")
+        text_box.insert(tk.END, "@Toadie @StephanR @stryvyr @maik3531 @Bulvai")
 
         # Textbox für Eingaben sperren (read-only)
         text_box.config(state=tk.DISABLED)
