@@ -24,7 +24,6 @@ from tool_tipps import CreateToolTip
 from tkinter import messagebox
 from tabs.software_dict_lib import (
     SoftwareGame,
-    SoftwareBrowser,
     SoftwareOffice,
     SoftwareStore,
     SoftwareCommunication,

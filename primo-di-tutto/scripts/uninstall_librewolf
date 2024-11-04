@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt remove librewolf
+sudo apt remove librewolf -y
 
 sudo rm -f \
     /etc/apt/sources.list.d/librewolf.sources \
