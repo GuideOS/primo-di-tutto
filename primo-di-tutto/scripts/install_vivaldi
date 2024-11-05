@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /tmp/
+wget https://downloads.vivaldi.com/stable/vivaldi-stable_7.0.3495.10-1_amd64.deb
+pkexec apt install ./vivaldi-stable_7.0.3495.10-1_amd64.deb

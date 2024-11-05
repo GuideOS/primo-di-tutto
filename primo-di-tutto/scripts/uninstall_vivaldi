@@ -1,0 +1,9 @@
+#!/bin/bash
+
+sudo apt remove -y vivaldi-stable
+
+
+sudo rm -f \
+    /etc/apt/sources.list.d/vivaldi.list \
+    /etc/apt/trusted.gpg.d/vivaldi*
+

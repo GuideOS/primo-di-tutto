@@ -24,6 +24,7 @@ from tool_tipps import CreateToolTip
 from tkinter import messagebox
 from tabs.software_dict_lib import (
     SoftwareGame,
+    SoftwareBrowser,
     SoftwareOffice,
     SoftwareStore,
     SoftwareCommunication,
@@ -35,15 +36,21 @@ from flatpak_manage import Flat_remote_dict
 from flatpak_manage import refresh_flatpak_installs
 
 
-def resize(img):
-    basewidth = 500
+def resize700(img):
+    basewidth = 700
     wpercent = basewidth / float(img.size[0])
     hsize = int((float(img.size[1]) * float(wpercent)))
     return img.resize((basewidth, hsize))
 
 
-def resize2(img):
-    basewidth = 96
+def resize36(img):
+    basewidth = 36
+    wpercent = basewidth / float(img.size[0])
+    hsize = int((float(img.size[1]) * float(wpercent)))
+    return img.resize((basewidth, hsize))
+
+def resize46(img):
+    basewidth = 46
     wpercent = basewidth / float(img.size[0])
     hsize = int((float(img.size[1]) * float(wpercent)))
     return img.resize((basewidth, hsize))
@@ -511,8 +518,19 @@ class GamingPanel(tk.Frame):
             game_path = SoftwareGame.game_dict[game_key]["Path"]
             game_thumb = SoftwareGame.game_dict[game_key]["Thumbnail"]
 
-            self.game_thumb = PhotoImage(file=game_thumb)
-            self.game_icon = PhotoImage(file=game_icon_img)
+            #self.game_thumb = PhotoImage(file=game_thumb)
+            #self.game_icon = PhotoImage(file=game_icon_img)
+
+            # Öffnen und skalieren des Thumbnails
+            thumb_img = Image.open(game_thumb)
+            resized_thumb_img = resize700(thumb_img)
+            self.game_thumb = ImageTk.PhotoImage(resized_thumb_img)
+            
+            # Öffnen und skalieren des Icons
+            icon_img = Image.open(game_icon_img)
+            resized_icon_img = resize46(icon_img)
+            self.game_icon = ImageTk.PhotoImage(resized_icon_img)
+
 
             self.game_detail_icon.configure(image=self.game_icon)
             self.game_detail_name.config(text=f"{game_name}")
@@ -533,7 +551,9 @@ class GamingPanel(tk.Frame):
         self.game_btn_icons = []
 
         for i, (game_key, game_info) in enumerate(SoftwareGame.game_dict.items()):
-            icon = tk.PhotoImage(file=game_info["Icon"])
+            img = Image.open(game_info["Icon"])
+            resized_img = resize36(img)
+            icon = ImageTk.PhotoImage(resized_img)
             self.game_btn_icons.append(icon)
 
         max_columns = 5

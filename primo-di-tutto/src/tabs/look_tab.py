@@ -78,6 +78,63 @@ class LookTab(ttk.Frame):
                 file=f"{application_path}/images/icons/pigro_icons/devil_thumb_light.png"
             )
 
+        def copy_guide_menu(application_path):
+            """
+            Kopiert die Datei guide_menu.json in das Cinnamon Menü Verzeichnis.
+            
+            Args:
+                application_path (str): Der Pfad zum Hauptverzeichnis der Anwendung.
+            """
+            source_file = f"{application_path}/scripts/guide_menu.json"
+            destination_directory = os.path.expanduser("~/.config/cinnamon/spices/menu@cinnamon.org")
+            destination_file = os.path.join(destination_directory, "0.json")
+
+            # Erstelle das Zielverzeichnis, falls es nicht existiert
+            os.makedirs(destination_directory, exist_ok=True)
+
+            # Kopiere die Datei
+            try:
+                # Datei auslesen
+                with open(source_file, "r") as src:
+                    content = src.read()
+                
+                # Datei im Zielverzeichnis erstellen und Inhalt schreiben
+                with open(destination_file, "w") as dst:
+                    dst.write(content)
+                
+                print(f"Datei erfolgreich nach {destination_file} kopiert.")
+            except Exception as e:
+                print(f"Fehler beim Kopieren der Datei: {e}")
+
+        def copy_guide_menu_up(application_path):
+            """
+            Kopiert die Datei guide_menu.json in das Cinnamon Menü Verzeichnis.
+            
+            Args:
+                application_path (str): Der Pfad zum Hauptverzeichnis der Anwendung.
+            """
+            source_file = f"{application_path}/scripts/guide_menu_up.json"
+            destination_directory = os.path.expanduser("~/.config/cinnamon/spices/menu@cinnamon.org")
+            destination_file = os.path.join(destination_directory, "0.json")
+
+            # Erstelle das Zielverzeichnis, falls es nicht existiert
+            os.makedirs(destination_directory, exist_ok=True)
+
+            # Kopiere die Datei
+            try:
+                # Datei auslesen
+                with open(source_file, "r") as src:
+                    content = src.read()
+                
+                # Datei im Zielverzeichnis erstellen und Inhalt schreiben
+                with open(destination_file, "w") as dst:
+                    dst.write(content)
+                
+                print(f"Datei erfolgreich nach {destination_file} kopiert.")
+            except Exception as e:
+                print(f"Fehler beim Kopieren der Datei: {e}")
+
+
         def set_elfi_panel():
             subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
@@ -85,7 +142,7 @@ class LookTab(ttk.Frame):
             # subprocess.run(
             #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]
             # )
-
+            copy_guide_menu(application_path)
             gsettings_11_config = {
                 "allow-other-notification-handlers": False,
                 "alttab-minimized-aware": False,
@@ -231,6 +288,7 @@ class LookTab(ttk.Frame):
             #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]
             # )
             # Transparent Panel
+            copy_guide_menu(application_path)
             config_path = os.path.expanduser(
                 "~/.config/cinnamon/spices/transparent-panels@germanfr/transparent-panels@germanfr.json"
             )
@@ -389,6 +447,13 @@ class LookTab(ttk.Frame):
                 subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
 
         def set_der_teufel_panel():
+            subprocess.run(
+                ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
+            )
+            subprocess.run(
+                ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]
+             )
+
 
             # Transparent Panel
             config_path = os.path.expanduser(
@@ -457,12 +522,7 @@ class LookTab(ttk.Frame):
 
             print(f"Datei {file_path} wurde erfolgreich erstellt.")
 
-            subprocess.run(
-                ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
-            )
-            # subprocess.run(
-            #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]
-            # )
+
 
             gsettings_config = {
                 "allow-other-notification-handlers": False,
@@ -606,10 +666,10 @@ class LookTab(ttk.Frame):
             subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
-            # subprocess.run(
+            #subprocess.run(
             #    ["gsettings", "set", "org.cinnamon", "enabled-applets", "[]"]
             # )
-
+            #copy_guide_menu_up(application_path)
             gsettings_config = {
                 "allow-other-notification-handlers": False,
                 "alttab-minimized-aware": False,
