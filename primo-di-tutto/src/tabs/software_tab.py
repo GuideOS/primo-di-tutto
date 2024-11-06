@@ -24,7 +24,6 @@ from tool_tipps import CreateToolTip
 from tkinter import messagebox
 from tabs.software_dict_lib import (
     SoftwareGame,
-    SoftwareBrowser,
     SoftwareOffice,
     SoftwareStore,
     SoftwareCommunication,
@@ -42,12 +41,6 @@ def resize700(img):
     hsize = int((float(img.size[1]) * float(wpercent)))
     return img.resize((basewidth, hsize))
 
-
-def resize36(img):
-    basewidth = 36
-    wpercent = basewidth / float(img.size[0])
-    hsize = int((float(img.size[1]) * float(wpercent)))
-    return img.resize((basewidth, hsize))
 
 def resize46(img):
     basewidth = 46
@@ -214,25 +207,6 @@ class OfficePanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.update_interval = 1000
-        # refresh_flatpak_installs()
-
-        self.office_btn0_icon = PhotoImage(
-            file=SoftwareOffice.office_dict["office_0"]["Icon"]
-        )
-
-        # self.office_btn2_icon = PhotoImage(
-        #    file=SoftwareOffice.office_dict["office_2"]["Icon"]
-        # )
-
-        # elf.office_btn3_icon = PhotoImage(
-        #    file=SoftwareOffice.office_dict["office_3"]["Icon"]
-        # )
-
-        # self.office_btn4_icon = PhotoImage(
-        #    file=SoftwareOffice.office_dict["office_4"]["Icon"]
-        # )
-
-        # Create the button frame first
 
         def show_button_frame():
             office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
@@ -245,7 +219,7 @@ class OfficePanel(tk.Frame):
 
         back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
 
-        office_btn_frame = ttk.LabelFrame(self, text="Office-Auswahl", padding=20)
+        office_btn_frame = ttk.LabelFrame(self, text="Gaming Empfehlungen", padding=20)
         office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         office_btn_frame.grid_columnconfigure(0, weight=1)
@@ -255,7 +229,6 @@ class OfficePanel(tk.Frame):
         office_btn_frame.grid_columnconfigure(4, weight=1)
 
         def run_installation(office_key):
-            # hide_apt_frame()
             primo_skript_task = "Installation ..."
             primo_skript_task_app = SoftwareOffice.office_dict[office_key]["Name"]
             primo_skript = SoftwareOffice.office_dict[office_key]["Install"]
@@ -264,12 +237,11 @@ class OfficePanel(tk.Frame):
                 primo_skript_task, primo_skript_task_app, primo_skript
             )
             self.master.wait_window(custom_installer)
-            self.office_inst_btn.config(text="Deinstallieren")
+            self.office_detail_inst.config(text="Deinstallieren")
 
             refresh_status(office_key)
 
         def run_uninstall(office_key):
-            # hide_apt_frame()
             primo_skript_task = "Deinstallation ..."
             primo_skript_task_app = SoftwareOffice.office_dict[office_key]["Name"]
             primo_skript = SoftwareOffice.office_dict[office_key]["Uninstall"]
@@ -279,137 +251,138 @@ class OfficePanel(tk.Frame):
                 primo_skript_task, primo_skript_task_app, primo_skript
             )
             self.master.wait_window(custom_installer)
-            self.office_inst_btn.config(text="Installieren")
+            self.office_detail_inst.config(text="Installieren")
 
             refresh_status(office_key)
+
+        def open_website(office_key):
+            path = SoftwareOffice.office_dict[office_key]["Path"]
+            subprocess.run(f'xdg-open "{path}"', shell=True)
 
         def refresh_status(office_key):
             office_name = SoftwareOffice.office_dict[office_key]["Name"]
             office_pakage = SoftwareOffice.office_dict[office_key]["Package"]
             office_disc = SoftwareOffice.office_dict[office_key]["Description"]
             office_path = SoftwareOffice.office_dict[office_key]["Path"]
-            # APT-Pakete und Flatpak-Installationen überprüfen
+
             installed_apt = office_path in get_installed_apt_pkgs()
 
-            # Flatpak-Installationen abrufen und prüfen, ob der `office_path` in den Werten vorhanden ist
+            # Flatpak-Installationen abrufen und prüfen, ob der `com_path` in den Werten vorhanden ist
             flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
             installed_flatpak = office_path in flatpak_installs.values()
             installed_snap = office_path in get_installed_snaps()
+            print()
             # self.master.wait_window(custom_installer)
             # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
-            if not installed_snap or installed_apt or installed_flatpak:
-                print(f"{office_name} is not installed")
-                self.office_inst_btn.config(
-                    text="Installieren",
-                    command=lambda: run_installation(office_key),
-                    style="Green.TButton",
-                )
             if installed_snap or installed_apt or installed_flatpak:
                 print(f"{office_name} is installed")
-                self.office_inst_btn.config(
+                self.office_detail_inst.config(
                     text="Deinstallieren",
                     command=lambda: run_uninstall(office_key),
                     style="Red.TButton",
                 )
             else:
                 print(f"{office_name} is not installed")
-                self.office_inst_btn.config(
+                self.office_detail_inst.config(
                     text="Installieren",
                     command=lambda: run_installation(office_key),
                     style="Green.TButton",
                 )
 
         def office_btn_action(office_key):
-            # Den Namen des Spiels aus der SoftwareOffice-Klasse holen
+            office_icon_img = SoftwareOffice.office_dict[office_key]["Icon"]
             office_name = SoftwareOffice.office_dict[office_key]["Name"]
             office_pakage = SoftwareOffice.office_dict[office_key]["Package"]
             office_disc = SoftwareOffice.office_dict[office_key]["Description"]
             office_path = SoftwareOffice.office_dict[office_key]["Path"]
             office_thumb = SoftwareOffice.office_dict[office_key]["Thumbnail"]
-            hide_button_frame()
-            office_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-            self.office_thumb = PhotoImage(file=office_thumb)
+            # self.office_thumb = PhotoImage(file=office_thumb)
+            # self.office_icon = PhotoImage(file=office_icon_img)
 
-            self.office_name.config(text=f"Name: {office_name}")
-            self.office_pak.config(text=f"Paket: {office_pakage}")
-            self.office_desc.config(text=f"Beschreibung: {office_disc}")
+            # Öffnen und skalieren des Thumbnails
+            thumb_img = Image.open(office_thumb)
+            resized_thumb_img = resize700(thumb_img)
+            self.office_thumb = ImageTk.PhotoImage(resized_thumb_img)
 
-            self.office_inst_btn.grid(column=1, row=0, rowspan=2, sticky="e")
-            self.termf.grid(column=0, columnspan=2, row=3)
+            # Öffnen und skalieren des Icons
+            icon_img = Image.open(office_icon_img)
+            resized_icon_img = resize46(icon_img)
+            self.office_icon = ImageTk.PhotoImage(resized_icon_img)
+
+            self.office_detail_icon.configure(image=self.office_icon)
+            self.office_detail_name.config(text=f"{office_name}")
+            self.office_detail_pak.config(text=f"{office_pakage}")
+            self.office_detail_desc.config(text=f"\n{office_disc}")
+
+            self.office_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
+            self.termf.grid(column=0, columnspan=3, row=3)
             self.thumb_lbl.configure(image=self.office_thumb)
             self.thumb_lbl.pack()
 
-            # print(get_installed_snaps())
+            hide_button_frame()
+            office_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
+
+            # print(get_installed_apt_pkgs())
             refresh_status(office_key)
 
-        office0_button = ttk.Button(
-            office_btn_frame,
-            text=SoftwareOffice.office_dict["office_0"]["Name"],
-            image=self.office_btn0_icon,
-            command=lambda: office_btn_action("office_0"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        office0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
+        self.office_btn_icons = []
 
-        # office2_button = ttk.Button(
-        #     office_btn_frame,
-        #     text=SoftwareOffice.office_dict["office_2"]["Name"],
-        #     image=self.office_btn2_icon,
-        #     command=lambda: office_btn_action("office_2"),
-        #     compound=tk.TOP,
-        #     style="Custom.TButton"
-        # )
-        # office2_button.grid(row=0, column=2, padx=5, pady=5, sticky="nesw")
+        for i, (office_key, office_info) in enumerate(
+            SoftwareOffice.office_dict.items()
+        ):
+            img = Image.open(office_info["Icon"])
+            resized_img = resize46(img)
+            icon = ImageTk.PhotoImage(resized_img)
+            self.office_btn_icons.append(icon)
 
-        # office3_button = ttk.Button(
-        #     office_btn_frame,
-        #     text=SoftwareOffice.office_dict["office_3"]["Name"],
-        #     image=self.office_btn3_icon,
-        #     command=lambda: office_btn_action("office_3"),
-        #     compound=tk.TOP,
-        #     style="Custom.TButton"
-        # )
-        # office3_button.grid(row=0, column=3, padx=5, pady=5, sticky="nesw")
+        max_columns = 5
 
-        # office4_button = ttk.Button(
-        #     office_btn_frame,
-        #     text=SoftwareOffice.office_dict["office_4"]["Name"],
-        #     image=self.office_btn4_icon,
-        #     command=lambda: open_website("office_4"),
-        #     compound=tk.TOP,
-        #     style="Custom.TButton"
-        # )
-        # office4_button.grid(row=0, column=4, padx=5, pady=5, sticky="nesw")
-        # print(SoftwareOffice.office_dict)
+        for i, (office_key, office_info) in enumerate(
+            SoftwareOffice.office_dict.items()
+        ):
+            row = i // max_columns
+            column = i % max_columns
 
-        # Create the detail frame
+            office_button = ttk.Button(
+                office_btn_frame,
+                text=office_info["Name"],
+                image=self.office_btn_icons[i],
+                command=lambda key=office_key: office_btn_action(key),
+                compound=tk.TOP,
+                style="Custom.TButton",
+            )
+            office_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
+
         office_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
 
-        office_detail_frame.grid_columnconfigure(0, weight=1)
         office_detail_frame.grid_columnconfigure(1, weight=1)
         office_detail_frame.grid_rowconfigure(3, weight=1)
 
-        self.office_name = Label(
+        self.office_detail_icon = Label(
+            office_detail_frame,
+        )
+        self.office_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
+
+        self.office_detail_name = Label(
+            office_detail_frame, text="", justify="left", anchor="w", font=font_16
+        )
+        self.office_detail_name.grid(column=1, row=0, sticky="w")
+
+        self.office_detail_pak = Label(
             office_detail_frame, text="", justify="left", anchor="w"
         )
-        self.office_name.grid(column=0, row=0, sticky="ew")
+        self.office_detail_pak.grid(column=1, row=1, sticky="we")
 
-        self.office_pak = Label(
-            office_detail_frame, text="", justify="left", anchor="w"
+        self.office_detail_desc = Label(
+            office_detail_frame, text="", justify="left", anchor="w", wraplength=750
         )
-        self.office_pak.grid(column=0, row=1, sticky="ew")
-        self.office_desc = Label(
-            office_detail_frame, text="", justify="left", anchor="w", wraplength=600
-        )
-        self.office_desc.grid(column=0, row=2, sticky="ew")
+        self.office_detail_desc.grid(column=0, row=2, columnspan=3, sticky="ew")
 
-        self.office_inst_btn = ttk.Button(
+        self.office_detail_inst = ttk.Button(
             office_detail_frame, text="Install", style="Custom.TButton"
         )
 
-        # Initialize termf and pack it below the install button
         self.termf = Frame(
             office_detail_frame,
         )
@@ -443,11 +416,11 @@ class GamingPanel(tk.Frame):
         game_btn_frame = ttk.LabelFrame(self, text="Gaming Empfehlungen", padding=20)
         game_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
-        game_btn_frame.grid_columnconfigure(0, weight=2)
-        game_btn_frame.grid_columnconfigure(1, weight=2)
-        game_btn_frame.grid_columnconfigure(2, weight=2)
+        game_btn_frame.grid_columnconfigure(0, weight=1)
+        game_btn_frame.grid_columnconfigure(1, weight=1)
+        game_btn_frame.grid_columnconfigure(2, weight=1)
         game_btn_frame.grid_columnconfigure(3, weight=1)
-        game_btn_frame.grid_columnconfigure(4, weight=2)
+        game_btn_frame.grid_columnconfigure(4, weight=1)
 
         def run_installation(game_key):
             primo_skript_task = "Installation ..."
@@ -518,19 +491,18 @@ class GamingPanel(tk.Frame):
             game_path = SoftwareGame.game_dict[game_key]["Path"]
             game_thumb = SoftwareGame.game_dict[game_key]["Thumbnail"]
 
-            #self.game_thumb = PhotoImage(file=game_thumb)
-            #self.game_icon = PhotoImage(file=game_icon_img)
+            # self.game_thumb = PhotoImage(file=game_thumb)
+            # self.game_icon = PhotoImage(file=game_icon_img)
 
             # Öffnen und skalieren des Thumbnails
             thumb_img = Image.open(game_thumb)
             resized_thumb_img = resize700(thumb_img)
             self.game_thumb = ImageTk.PhotoImage(resized_thumb_img)
-            
+
             # Öffnen und skalieren des Icons
             icon_img = Image.open(game_icon_img)
             resized_icon_img = resize46(icon_img)
             self.game_icon = ImageTk.PhotoImage(resized_icon_img)
-
 
             self.game_detail_icon.configure(image=self.game_icon)
             self.game_detail_name.config(text=f"{game_name}")
@@ -538,7 +510,7 @@ class GamingPanel(tk.Frame):
             self.game_detail_desc.config(text=f"\n{game_disc}")
 
             self.game_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
-            self.termf.grid(column=0, columnspan=2, row=3)
+            self.termf.grid(column=0, columnspan=3, row=3)
             self.thumb_lbl.configure(image=self.game_thumb)
             self.thumb_lbl.pack()
 
@@ -552,7 +524,7 @@ class GamingPanel(tk.Frame):
 
         for i, (game_key, game_info) in enumerate(SoftwareGame.game_dict.items()):
             img = Image.open(game_info["Icon"])
-            resized_img = resize36(img)
+            resized_img = resize46(img)
             icon = ImageTk.PhotoImage(resized_img)
             self.game_btn_icons.append(icon)
 
@@ -569,6 +541,7 @@ class GamingPanel(tk.Frame):
                 command=lambda key=game_key: game_btn_action(key),
                 compound=tk.TOP,
                 style="Custom.TButton",
+                width=20,
             )
             game_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
 
@@ -583,7 +556,7 @@ class GamingPanel(tk.Frame):
         self.game_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
 
         self.game_detail_name = Label(
-            game_detail_frame, text="", justify="left", anchor="w"
+            game_detail_frame, text="", justify="left", anchor="w", font=font_16
         )
         self.game_detail_name.grid(column=1, row=0, sticky="w")
 
@@ -626,14 +599,16 @@ class ComPanel(tk.Frame):
 
         back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
 
-        com_btn_frame = ttk.LabelFrame(self, text="Communication Empfehlungen", padding=20)
+        com_btn_frame = ttk.LabelFrame(
+            self, text="Communication Empfehlungen", padding=20
+        )
         com_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
-        com_btn_frame.grid_columnconfigure(0, weight=2)
-        com_btn_frame.grid_columnconfigure(1, weight=2)
-        com_btn_frame.grid_columnconfigure(2, weight=2)
+        com_btn_frame.grid_columnconfigure(0, weight=1)
+        com_btn_frame.grid_columnconfigure(1, weight=1)
+        com_btn_frame.grid_columnconfigure(2, weight=1)
         com_btn_frame.grid_columnconfigure(3, weight=1)
-        com_btn_frame.grid_columnconfigure(4, weight=2)
+        com_btn_frame.grid_columnconfigure(4, weight=1)
 
         def run_installation(com_key):
             primo_skript_task = "Installation ..."
@@ -704,8 +679,15 @@ class ComPanel(tk.Frame):
             com_path = SoftwareCommunication.com_dict[com_key]["Path"]
             com_thumb = SoftwareCommunication.com_dict[com_key]["Thumbnail"]
 
-            self.com_thumb = PhotoImage(file=com_thumb)
-            self.com_icon = PhotoImage(file=com_icon_img)
+            # Öffnen und skalieren des Thumbnails
+            thumb_img = Image.open(com_thumb)
+            resized_thumb_img = resize700(thumb_img)
+            self.com_thumb = ImageTk.PhotoImage(resized_thumb_img)
+
+            # Öffnen und skalieren des Icons
+            icon_img = Image.open(com_icon_img)
+            resized_icon_img = resize46(icon_img)
+            self.com_icon = ImageTk.PhotoImage(resized_icon_img)
 
             self.com_detail_icon.configure(image=self.com_icon)
             self.com_detail_name.config(text=f"{com_name}")
@@ -713,9 +695,9 @@ class ComPanel(tk.Frame):
             self.com_detail_desc.config(text=f"\n{com_disc}")
 
             self.com_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
-            self.termf.grid(column=0, columnspan=2, row=3)
+            self.termf.grid(column=0, columnspan=3, row=3)
             self.thumb_lbl.configure(image=self.com_thumb)
-            self.thumb_lbl.pack()
+            self.thumb_lbl.pack(fill="x")
 
             hide_button_frame()
             com_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
@@ -726,7 +708,9 @@ class ComPanel(tk.Frame):
         self.com_btn_icons = []
 
         for i, (com_key, com_info) in enumerate(SoftwareCommunication.com_dict.items()):
-            icon = tk.PhotoImage(file=com_info["Icon"])
+            img = Image.open(com_info["Icon"])
+            resized_img = resize46(img)
+            icon = ImageTk.PhotoImage(resized_img)
             self.com_btn_icons.append(icon)
 
         max_columns = 5
@@ -742,6 +726,7 @@ class ComPanel(tk.Frame):
                 command=lambda key=com_key: com_btn_action(key),
                 compound=tk.TOP,
                 style="Custom.TButton",
+                width=20,
             )
             com_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
 
@@ -756,7 +741,7 @@ class ComPanel(tk.Frame):
         self.com_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
 
         self.com_detail_name = Label(
-            com_detail_frame, text="", justify="left", anchor="w"
+            com_detail_frame, text="", justify="left", anchor="w", font=font_16
         )
         self.com_detail_name.grid(column=1, row=0, sticky="w")
 

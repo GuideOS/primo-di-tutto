@@ -49,6 +49,38 @@ class WelcomeTab(ttk.Frame):
         self.autostart_frame = ttk.Labelframe(self, text="Autostart")
         self.autostart_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
 
+        def open_software_properties_tab():
+            # Der Befehl und seine Argumente als Liste
+            command = ["/usr/bin/software-properties-gtk", "--open-tab=4"]
+            
+            try:
+                # subprocess.run ausführen und auf Rückgabewert prüfen
+                subprocess.run(command, check=True)
+                print("Software Properties erfolgreich geöffnet.")
+            except subprocess.CalledProcessError as e:
+                print(f"Fehler beim Öffnen von Software Properties: {e}")
+
+
+        # LabelFrame für Autostart-Optionen erstellen
+        self.nvidia_frame = ttk.Labelframe(self, text="BAUSTELLE!!!!!!! BAUSTELLE!!!!!!! BAUSTELLE!!!!!!! BAUSTELLE!!!!!!!")
+        self.nvidia_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
+
+        nvidia_text_message = """Dieser Bereich wird in der fertigen Version nur Angezeigt, wenn du deinen Nvidia-Teiber nicht installiert hast. JUNGE!"""
+
+        # Label für die Willkommensnachricht erstellen
+        self.nvidia_text_label = ttk.Label(self.nvidia_frame, text=nvidia_text_message,wraplength=800,justify="center")
+        self.nvidia_text_label.pack(pady=10)
+
+        self.drivers_button = ttk.Button(
+                self.nvidia_frame,
+                text="Zusätzliche Treiber",
+                command=open_software_properties_tab,
+                style="Custom.TButton",
+            )
+        self.drivers_button.pack(pady=10)
+
+
+
         # Konfigurieren der Spalten im LabelFrame
         self.autostart_frame.columnconfigure(0, weight=1)  # Spalte für den Text
         self.autostart_frame.columnconfigure(1, weight=0)  # Spalte für den Checkbutton
