@@ -173,7 +173,7 @@ class OfficePanel(tk.Frame):
 
         back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
 
-        office_btn_frame = ttk.LabelFrame(self, text="Gaming Empfehlungen", padding=20)
+        office_btn_frame = ttk.LabelFrame(self, text="Textverarbeitung", padding=20)
         office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         office_btn_frame.grid_columnconfigure(0, weight=1)
@@ -362,7 +362,7 @@ class ImageEditingPanel(tk.Frame):
 
         back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
 
-        img_btn_frame = ttk.LabelFrame(self, text="Gaming Empfehlungen", padding=20)
+        img_btn_frame = ttk.LabelFrame(self, text="Bildbearbeitung", padding=20)
         img_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         img_btn_frame.grid_columnconfigure(0, weight=1)
@@ -548,7 +548,7 @@ class GamingPanel(tk.Frame):
 
         back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
 
-        game_btn_frame = ttk.LabelFrame(self, text="Gaming Empfehlungen", padding=20)
+        game_btn_frame = ttk.LabelFrame(self, text="Gaming", padding=20)
         game_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         game_btn_frame.grid_columnconfigure(0, weight=1)
@@ -734,7 +734,7 @@ class AVPanel(tk.Frame):
 
         back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
 
-        av_btn_frame = ttk.LabelFrame(self, text="Audio/Video Empfehlungen", padding=20)
+        av_btn_frame = ttk.LabelFrame(self, text="Audio/Video", padding=20)
         av_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         av_btn_frame.grid_columnconfigure(0, weight=1)
@@ -919,7 +919,7 @@ class ComPanel(tk.Frame):
         back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
 
         com_btn_frame = ttk.LabelFrame(
-            self, text="Communication Empfehlungen", padding=20
+            self, text="Kommunikation", padding=20
         )
         com_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 

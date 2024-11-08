@@ -20,20 +20,71 @@ class SoftwareStore:
     }
 
 
+
 class SoftwareOffice:
-    # Descriptions by ????????????
     office_dict = {
         "office_0": {
-            "Name": "LibreOffice",  # Name
-            "Package": "Debian-Paket",  # Paketformat
-            "Description": "Ein Office oder so",  # Beschreibung in 3 Sätzen
-            "Icon": f"{application_path}/images/apps/org.libreoffice.LibreOffice-icon.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
-            "Thumbnail": f"{application_path}/images/apps/org.libreoffice.LibreOffice-thumb.png",  # Miniaturbild / Maximiert / Max. 742x389
+            "Name": "LibreOffice",
+            "Package": "Debian-Paket",
+            "Description": "LibreOffice ist eine leistungsstarke, freie und quelloffene Office-Suite, die Textverarbeitung, Tabellenkalkulation, Präsentationen, Diagramme und mehr unterstützt. Es ist mit Microsoft Office-Dateien kompatibel und bietet eine Vielzahl von Funktionen für professionelle und persönliche Nutzung. Die benutzerfreundliche Oberfläche und hohe Anpassbarkeit machen es zu einer beliebten Wahl für viele Anwender.",
+            "Icon": f"{application_path}/images/apps/org.libreoffice.LibreOffice-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/org.libreoffice.LibreOffice-thumb.png",
             "Install": "pkexec apt install -y libreoffice-base-core libreoffice-calc libreoffice-common libreoffice-core libreoffice-draw libreoffice-gnome libreoffice-gtk3 libreoffice-help-common libreoffice-help-de libreoffice-help-en-gb libreoffice-help-en-us libreoffice-impress libreoffice-l10n-de libreoffice-l10n-en-gb libreoffice-l10n-en-za libreoffice-math libreoffice-style-colibre libreoffice-style-elementary libreoffice-style-yaru libreoffice-uiconfig-calc libreoffice-uiconfig-common libreoffice-uiconfig-draw libreoffice-uiconfig-impress libreoffice-uiconfig-math libreoffice-uiconfig-writer libreoffice-writer",
-            "Uninstall": "pkexec apt autoremove --purge libreoffice* -y",  # Exakter Befehl
-            "Path": "libreoffice-core",  # Name im Verwaltungs-Index
+            "Uninstall": "pkexec apt autoremove --purge libreoffice* -y",
+            "Path": "libreoffice-core",
+        },
+        "office_1": {
+            "Name": "AbiWord",
+            "Package": "Debian-Paket",
+            "Description": "AbiWord ist ein leichtgewichtiges Textverarbeitungsprogramm, das grundlegende Funktionen für die Erstellung und Bearbeitung von Dokumenten bietet. Es ist für einfache Textverarbeitungsaufgaben ideal und unterstützt eine Vielzahl von Dateiformaten, einschließlich Microsoft Word. Die kompakte Größe und Effizienz machen es zu einer guten Wahl für ältere oder ressourcenschwache Systeme.",
+            "Icon": f"{application_path}/images/apps/com.abisource.AbiWord-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/com.abisource.AbiWord-thumb.png",
+            "Install": "pkexec apt install -y abiword",
+            "Uninstall": "pkexec apt remove abiword -y",
+            "Path": "abiword",
+        },
+        "office_2": {
+            "Name": "Beaver Notes",
+            "Package": "Flatpak",
+            "Description": "Beaver Notes ist eine Notiz-App, die einfache und übersichtliche Notizfunktionen für den Alltag bietet. Sie ermöglicht das Erstellen, Organisieren und Suchen von Notizen auf eine intuitive Weise. Die App ist minimalistisch gestaltet und richtet sich an Nutzer, die eine fokussierte Umgebung für das Festhalten von Gedanken und Aufgaben wünschen.",
+            "Icon": f"{application_path}/images/apps/com.beavernotes.beavernotes-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/com.beavernotes.beavernotes-thumb.png",
+            "Install": "flatpak install flathub com.beavernotes.beavernotes -y",
+            "Uninstall": "flatpak remove com.beavernotes.beavernotes -y",
+            "Path": "com.beavernotes.beavernotes",
+        },
+        "office_3": {
+            "Name": "Xournal++",
+            "Package": "Flatpak",
+            "Description": "Xournal++ ist ein digitales Notizbuch und ein Zeichenwerkzeug, das ideal für handschriftliche Notizen und Anmerkungen ist. Die Anwendung unterstützt Stifteingaben und bietet verschiedene Zeichenwerkzeuge, um ein papierähnliches Schreibgefühl zu simulieren. Perfekt für Notizen in Vorlesungen, Meetings oder zum Kommentieren von PDF-Dokumenten.",
+            "Icon": f"{application_path}/images/apps/com.github.xournalpp.xournalpp-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/com.github.xournalpp.xournalpp-thumb.png",
+            "Install": "flatpak install flathub com.github.xournalpp.xournalpp -y",
+            "Uninstall": "flatpak remove com.github.xournalpp.xournalpp -y",
+            "Path": "com.github.xournalpp.xournalpp",
+        },
+        "office_4": {
+            "Name": "Apostrophe",
+            "Package": "Flatpak",
+            "Description": "Apostrophe ist ein minimalistischer Markdown-Editor, der speziell für fokussiertes Schreiben entwickelt wurde. Die App bietet eine ablenkungsfreie Oberfläche und unterstützt Markdown-Syntax für formatiertes Schreiben. Ideal für Autoren, die einfache und elegante Werkzeuge für Texte ohne viel Ablenkung bevorzugen.",
+            "Icon": f"{application_path}/images/apps/org.gnome.gitlab.somas.Apostrophe-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/org.gnome.gitlab.somas.Apostrophe-thumb.png",
+            "Install": "flatpak install flathub org.gnome.gitlab.somas.Apostrophe -y",
+            "Uninstall": "flatpak remove org.gnome.gitlab.somas.Apostrophe -y",
+            "Path": "org.gnome.gitlab.somas.Apostrophe",
+        },
+        "office_5": {
+            "Name": "Paperwork",
+            "Package": "Flatpak",
+            "Description": "Paperwork ist ein digitales Dokumentenmanagement-Tool, das Ihnen hilft, gescannte Dokumente und Notizen zu organisieren. Die Anwendung bietet eine integrierte Texterkennung und eine Suchfunktion, die das schnelle Auffinden von Dokumenten erleichtert. Ideal für Nutzer, die papierlose Ablagen und digitales Archivieren bevorzugen.",
+            "Icon": f"{application_path}/images/apps/work.openpaper.Paperwork-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/work.openpaper.Paperwork-thumb.png",
+            "Install": "flatpak install flathub work.openpaper.Paperwork -y",
+            "Uninstall": "flatpak remove work.openpaper.Paperwork -y",
+            "Path": "work.openpaper.Paperwork",
         },
     }
+
 
 
 class SoftwareGame:
@@ -385,6 +436,36 @@ class SoftwareAudioVideo:
             "Install": "flatpak install flathub org.kde.amarok -y",
             "Uninstall": "flatpak remove org.kde.amarok -y",
             "Path": "org.kde.amarok",
+        },
+        "av_8": {
+            "Name": "Cosy",
+            "Package": "Flatpak",
+            "Description": "Cosy ist ein moderner Hörbuch-Player, der speziell für Hörbücher entwickelt wurde. Die App bietet Funktionen wie Lesezeichen, Fortschrittsverfolgung und Sleep-Timer, um das Hörerlebnis zu verbessern. Ideal für Benutzer, die eine einfache und effektive Möglichkeit suchen, Hörbücher zu genießen.",
+            "Icon": f"{application_path}/images/apps/com.github.geigi.cozy-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/com.github.geigi.cozy-thumb.png",
+            "Install": "flatpak install flathub com.github.geigi.cozy -y",
+            "Uninstall": "flatpak remove com.github.geigi.cozy -y",
+            "Path": "com.github.geigi.cozy",
+        },
+        "av_9": {
+            "Name": "Shortwave",
+            "Package": "Flatpak",
+            "Description": "Shortwave ist ein Internet-Radio-Player, der den Zugriff auf tausende Radiosender weltweit ermöglicht. Die Anwendung bietet Favoritenlisten, eine Verlaufshistorie und eine einfache Suche, um gewünschte Sender schnell zu finden. Shortwave ist ideal für Radio-Enthusiasten, die eine elegante Möglichkeit suchen, Internet-Radio zu genießen.",
+            "Icon": f"{application_path}/images/apps/de.haeckerfelix.Shortwave-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/de.haeckerfelix.Shortwave-thumb.png",
+            "Install": "flatpak install flathub de.haeckerfelix.Shortwave -y",
+            "Uninstall": "flatpak remove de.haeckerfelix.Shortwave -y",
+            "Path": "de.haeckerfelix.Shortwave",
+        },
+        "av_10": {
+            "Name": "FreeTube",
+            "Package": "Flatpak",
+            "Description": "FreeTube ist ein YouTube-Client, der auf Datenschutz fokussiert ist. Die App ermöglicht das Ansehen und Abonnieren von YouTube-Inhalten ohne Werbeanzeigen und Tracking durch Google. Ideal für Nutzer, die ihre Privatsphäre beim Streaming schützen möchten.",
+            "Icon": f"{application_path}/images/apps/io.freetubeapp.FreeTube-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/io.freetubeapp.FreeTube-thumb.png",
+            "Install": "flatpak install flathub io.freetubeapp.FreeTube -y",
+            "Uninstall": "flatpak remove io.freetubeapp.FreeTube -y",
+            "Path": "io.freetubeapp.FreeTube",
         },
     }
 
