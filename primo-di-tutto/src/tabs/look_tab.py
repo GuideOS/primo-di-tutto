@@ -456,35 +456,7 @@ class LookTab(ttk.Frame):
 
 
             # Transparent Panel
-            config_path = os.path.expanduser(
-                "~/.config/cinnamon/spices/transparent-panels@germanfr/transparent-panels@germanfr.json"
-            )
 
-            with open(config_path, "r") as file:
-                config = json.load(file)
-
-            config["transparency-type"]["value"] = "panel-semi-transparent"
-            config["panel-top"]["value"] = False
-            config["panel-bottom"]["value"] = False
-            config["panel-left"]["value"] = False
-            config["panel-right"]["value"] = False
-
-            with open(config_path, "w") as file:
-                json.dump(config, file, indent=4)
-
-            with open(config_path, "r") as file:
-                config = json.load(file)
-
-            # Werte aktualisieren
-            config["transparency-type"]["value"] = "panel-semi-transparent"
-            config["panel-top"]["value"] = False
-            config["panel-bottom"]["value"] = False
-            config["panel-left"]["value"] = True
-            config["panel-right"]["value"] = False
-
-            # Konfigurationsdatei speichern
-            with open(config_path, "w") as file:
-                json.dump(config, file, indent=4)
 
             # Pfad zum gewünschten Verzeichnis
             directory = os.path.expanduser(
@@ -661,6 +633,25 @@ class LookTab(ttk.Frame):
                     )  # Ersetze einfache Anführungszeichen mit doppelten
                 # Führe den gsettings-Befehl aus
                 subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
+
+            config_path = os.path.expanduser(
+                "~/.config/cinnamon/spices/transparent-panels@germanfr/transparent-panels@germanfr.json"
+            )
+
+            with open(config_path, "r") as file:
+                config = json.load(file)
+
+            # Werte aktualisieren
+            config["transparency-type"]["value"] = "panel-semi-transparent"
+            config["panel-top"]["value"] = False
+            config["panel-bottom"]["value"] = False
+            config["panel-left"]["value"] = True
+            config["panel-right"]["value"] = False
+
+            # Konfigurationsdatei speichern
+            with open(config_path, "w") as file:
+                json.dump(config, file, indent=4)
+
 
         def set_upside_down_panel():
             subprocess.run(

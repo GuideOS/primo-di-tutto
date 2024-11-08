@@ -27,6 +27,8 @@ from tabs.software_dict_lib import (
     SoftwareOffice,
     SoftwareStore,
     SoftwareCommunication,
+    SoftwareAudioVideo,
+    SoftwareImageEditing,
 )
 from apt_manage import *
 from snap_manage import *
@@ -47,6 +49,7 @@ def resize46(img):
     wpercent = basewidth / float(img.size[0])
     hsize = int((float(img.size[1]) * float(wpercent)))
     return img.resize((basewidth, hsize))
+
 
 def resize(img):
     basewidth = 500
@@ -116,29 +119,24 @@ class SoftwareTab(ttk.Frame):
 
         com_frame = ttk.Frame(self.inst_notebook)
         office_frame = ttk.Frame(self.inst_notebook)
-        edu_frame = ttk.Frame(self.inst_notebook)
+        av_frame = ttk.Frame(self.inst_notebook)
+        image_frame = ttk.Frame(self.inst_notebook)
         gaming_frame = ttk.Frame(self.inst_notebook)
-        #store_frame = ttk.Frame(self.inst_notebook)
         apt_frame = ttk.Frame(self.inst_notebook)
-
 
         com_frame.pack(fill="both", expand=True)
         office_frame.pack(fill="both", expand=True)
-        edu_frame.pack(fill="both", expand=True)
+        av_frame.pack(fill="both", expand=True)
+        image_frame.pack(fill="both", expand=True)
         gaming_frame.pack(fill="both", expand=True)
-        #store_frame.pack(fill="both", expand=True)
         apt_frame.pack(fill="both", expand=True)
 
-
-        # add frames to notebook
         self.inst_notebook.add(com_frame, compound=LEFT, text="Kommunikation")
         self.inst_notebook.add(office_frame, compound=LEFT, text="Textverarbeitung")
-        self.inst_notebook.add(edu_frame, compound=LEFT, text="Bildbearbeitung")
+        self.inst_notebook.add(av_frame, compound=LEFT, text="Audio/Video")
+        self.inst_notebook.add(image_frame, compound=LEFT, text="Bildbearbeitung")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Gaming")
-        #self.inst_notebook.add(store_frame, compound=LEFT, text="Verwaltung")
         self.inst_notebook.add(apt_frame, compound=LEFT, text="APT-Verwaltung")
-
-
 
         com_note_frame = ComPanel(com_frame)
         com_note_frame.pack(fill=tk.BOTH, expand=True)
@@ -146,83 +144,17 @@ class SoftwareTab(ttk.Frame):
         office_note_frame = OfficePanel(office_frame)
         office_note_frame.pack(fill=tk.BOTH, expand=True)
 
-        edu_note_frame = EduPanel(edu_frame)
-        edu_note_frame.pack(fill=tk.BOTH, expand=True)
+        av_note_frame = AVPanel(av_frame)
+        av_note_frame.pack(fill=tk.BOTH, expand=True)
+
+        image_note_frame = ImageEditingPanel(image_frame)
+        image_note_frame.pack(fill=tk.BOTH, expand=True)
 
         gaming_note_frame = GamingPanel(gaming_frame)
         gaming_note_frame.pack(fill=tk.BOTH, expand=True)
 
-        #store_note_frame = StorePanel(store_frame)
-        #store_note_frame.pack(fill=tk.BOTH, expand=True)
-
         apt_search_panel = AptSearchPanel(apt_frame)
         apt_search_panel.pack(fill=tk.BOTH, expand=True)
-
-
-class StorePanel(tk.Frame):
-    def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
-
-        self.store_btn0_icon = PhotoImage(
-            file=SoftwareStore.store_dict["store_0"]["Icon"]
-        )
-
-        self.store_btn1_icon = PhotoImage(
-            file=SoftwareStore.store_dict["store_1"]["Icon"]
-        )
-
-        def open_store(store_key):
-            popen(f"""{SoftwareStore.store_dict[store_key]["Open"]}""")
-
-        # Create the button frame first
-        store_btn_frame = ttk.LabelFrame(self, text="Softwareverwaltung", padding=20)
-        store_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-
-        store_btn_frame.grid_columnconfigure(0, weight=1)
-        store_btn_frame.grid_columnconfigure(1, weight=1)
-
-        store0_button = ttk.Button(
-            store_btn_frame,
-            text=SoftwareStore.store_dict["store_0"]["Name"],
-            image=self.store_btn0_icon,
-            command=lambda: open_store("store_0"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        store0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
-
-        store1_button = ttk.Button(
-            store_btn_frame,
-            text=SoftwareStore.store_dict["store_1"]["Name"],
-            image=self.store_btn1_icon,
-            command=lambda: open_store("store_1"),
-            compound=tk.TOP,
-            style="Custom.TButton",
-        )
-        store1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
-
-        self.store_info_frame = ttk.LabelFrame(self, text="Info", padding=20)
-        self.store_info_frame.pack(pady=20, padx=20, fill=BOTH)
-
-        self.store_info_frame.columnconfigure(0, weight=1)
-        self.store_info_frame.rowconfigure(0, weight=1)
-
-        info_text = """Gnome Software ist eine moderne Softwareverwaltung, die vor allem dafür genutzt werden kann, grafische Desktop-Programme zu installieren. In GuideOS wird das volle Potenzial ausgenutzt: Es können sowohl Debian-Pakete, Flatpaks als auch Snaps installiert werden. Das stellt sicher, dass die größtmögliche Softwareauswahl verfügbar ist.
-
-
-Synaptic ist eine grafische Oberfläche zur Verwaltung von Debian-Systempaketen. Im Gegensatz zu Gnome Software findet man hier alle Systempakete des Repositorys, unter anderem auch Treiber und einzelne Bibliotheken. Vor allem für fortgeschrittene Nutzer bietet Synaptic eine Vielzahl von Informationen über einzelne Pakete.
-
-
-In den weiteren Kategorien befindet sich eine Softwareauswahl der Community, die darauf abgestimmt ist, den PC disziplinübergreifend zu nutzen.
-"""
-
-        self.store_info_discription = ttk.Label(
-            self.store_info_frame,
-            text=info_text,
-            justify="left",
-            wraplength=750,
-            anchor="w",
-        ).grid(row=0, column=0, columnspan=2, sticky="nesw")
 
 
 class OfficePanel(tk.Frame):
@@ -414,9 +346,190 @@ class OfficePanel(tk.Frame):
         office_wid = self.termf.winfo_id()
 
 
-class EduPanel(tk.Frame):
+class ImageEditingPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
+        self.update_interval = 1000
+
+        def show_button_frame():
+            img_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+            back_button.pack_forget()
+            img_detail_frame.pack_forget()
+
+        def hide_button_frame():
+            img_btn_frame.pack_forget()
+            back_button.pack(pady=20, padx=20, anchor="w")
+
+        back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
+
+        img_btn_frame = ttk.LabelFrame(self, text="Gaming Empfehlungen", padding=20)
+        img_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+
+        img_btn_frame.grid_columnconfigure(0, weight=1)
+        img_btn_frame.grid_columnconfigure(1, weight=1)
+        img_btn_frame.grid_columnconfigure(2, weight=1)
+        img_btn_frame.grid_columnconfigure(3, weight=1)
+        img_btn_frame.grid_columnconfigure(4, weight=1)
+
+        def run_installation(img_key):
+            primo_skript_task = "Installation ..."
+            primo_skript_task_app = SoftwareImageEditing.img_dict[img_key]["Name"]
+            primo_skript = SoftwareImageEditing.img_dict[img_key]["Install"]
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                primo_skript_task, primo_skript_task_app, primo_skript
+            )
+            self.master.wait_window(custom_installer)
+            self.img_detail_inst.config(text="Deinstallieren")
+
+            refresh_status(img_key)
+
+        def run_uninstall(img_key):
+            primo_skript_task = "Deinstallation ..."
+            primo_skript_task_app = SoftwareImageEditing.img_dict[img_key]["Name"]
+            primo_skript = SoftwareImageEditing.img_dict[img_key]["Uninstall"]
+
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                primo_skript_task, primo_skript_task_app, primo_skript
+            )
+            self.master.wait_window(custom_installer)
+            self.img_detail_inst.config(text="Installieren")
+
+            refresh_status(img_key)
+
+        def open_website(img_key):
+            path = SoftwareImageEditing.img_dict[img_key]["Path"]
+            subprocess.run(f'xdg-open "{path}"', shell=True)
+
+        def refresh_status(img_key):
+            img_name = SoftwareImageEditing.img_dict[img_key]["Name"]
+            img_pakage = SoftwareImageEditing.img_dict[img_key]["Package"]
+            img_disc = SoftwareImageEditing.img_dict[img_key]["Description"]
+            img_path = SoftwareImageEditing.img_dict[img_key]["Path"]
+
+            installed_apt = img_path in get_installed_apt_pkgs()
+
+            # Flatpak-Installationen abrufen und prüfen, ob der `com_path` in den Werten vorhanden ist
+            flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
+            installed_flatpak = img_path in flatpak_installs.values()
+            installed_snap = img_path in get_installed_snaps()
+            print()
+            # self.master.wait_window(custom_installer)
+            # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
+            if installed_snap or installed_apt or installed_flatpak:
+                print(f"{img_name} is installed")
+                self.img_detail_inst.config(
+                    text="Deinstallieren",
+                    command=lambda: run_uninstall(img_key),
+                    style="Red.TButton",
+                )
+            else:
+                print(f"{img_name} is not installed")
+                self.img_detail_inst.config(
+                    text="Installieren",
+                    command=lambda: run_installation(img_key),
+                    style="Green.TButton",
+                )
+
+        def img_btn_action(img_key):
+            img_icon_img = SoftwareImageEditing.img_dict[img_key]["Icon"]
+            img_name = SoftwareImageEditing.img_dict[img_key]["Name"]
+            img_pakage = SoftwareImageEditing.img_dict[img_key]["Package"]
+            img_disc = SoftwareImageEditing.img_dict[img_key]["Description"]
+            img_path = SoftwareImageEditing.img_dict[img_key]["Path"]
+            img_thumb = SoftwareImageEditing.img_dict[img_key]["Thumbnail"]
+
+            # self.img_thumb = PhotoImage(file=img_thumb)
+            # self.img_icon = PhotoImage(file=img_icon_img)
+
+            # Öffnen und skalieren des Thumbnails
+            thumb_img = Image.open(img_thumb)
+            resized_thumb_img = resize700(thumb_img)
+            self.img_thumb = ImageTk.PhotoImage(resized_thumb_img)
+
+            # Öffnen und skalieren des Icons
+            icon_img = Image.open(img_icon_img)
+            resized_icon_img = resize46(icon_img)
+            self.img_icon = ImageTk.PhotoImage(resized_icon_img)
+
+            self.img_detail_icon.configure(image=self.img_icon)
+            self.img_detail_name.config(text=f"{img_name}")
+            self.img_detail_pak.config(text=f"{img_pakage}")
+            self.img_detail_desc.config(text=f"\n{img_disc}")
+
+            self.img_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
+            self.termf.grid(column=0, columnspan=3, row=3)
+            self.thumb_lbl.configure(image=self.img_thumb)
+            self.thumb_lbl.pack()
+
+            hide_button_frame()
+            img_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
+
+            # print(get_installed_apt_pkgs())
+            refresh_status(img_key)
+
+        self.img_btn_icons = []
+
+        for i, (img_key, img_info) in enumerate(SoftwareImageEditing.img_dict.items()):
+            img = Image.open(img_info["Icon"])
+            resized_img = resize46(img)
+            icon = ImageTk.PhotoImage(resized_img)
+            self.img_btn_icons.append(icon)
+
+        max_columns = 5
+
+        for i, (img_key, img_info) in enumerate(SoftwareImageEditing.img_dict.items()):
+            row = i // max_columns
+            column = i % max_columns
+
+            img_button = ttk.Button(
+                img_btn_frame,
+                text=img_info["Name"],
+                image=self.img_btn_icons[i],
+                command=lambda key=img_key: img_btn_action(key),
+                compound=tk.TOP,
+                style="Custom.TButton",
+                width=20,
+            )
+            img_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
+
+        img_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
+
+        img_detail_frame.grid_columnconfigure(1, weight=1)
+        img_detail_frame.grid_rowconfigure(3, weight=1)
+
+        self.img_detail_icon = Label(
+            img_detail_frame,
+        )
+        self.img_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
+
+        self.img_detail_name = Label(
+            img_detail_frame, text="", justify="left", anchor="w", font=font_16
+        )
+        self.img_detail_name.grid(column=1, row=0, sticky="w")
+
+        self.img_detail_pak = Label(
+            img_detail_frame, text="", justify="left", anchor="w"
+        )
+        self.img_detail_pak.grid(column=1, row=1, sticky="we")
+
+        self.img_detail_desc = Label(
+            img_detail_frame, text="", justify="left", anchor="w", wraplength=750
+        )
+        self.img_detail_desc.grid(column=0, row=2, columnspan=3, sticky="ew")
+
+        self.img_detail_inst = ttk.Button(
+            img_detail_frame, text="Install", style="Custom.TButton"
+        )
+
+        self.termf = Frame(
+            img_detail_frame,
+        )
+        self.thumb_lbl = Label(self.termf)
+
+        global img_wid
+        img_wid = self.termf.winfo_id()
 
 
 class GamingPanel(tk.Frame):
@@ -603,6 +716,190 @@ class GamingPanel(tk.Frame):
 
         global game_wid
         game_wid = self.termf.winfo_id()
+
+
+class AVPanel(tk.Frame):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+        self.update_interval = 1000
+
+        def show_button_frame():
+            av_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+            back_button.pack_forget()
+            av_detail_frame.pack_forget()
+
+        def hide_button_frame():
+            av_btn_frame.pack_forget()
+            back_button.pack(pady=20, padx=20, anchor="w")
+
+        back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
+
+        av_btn_frame = ttk.LabelFrame(self, text="Audio/Video Empfehlungen", padding=20)
+        av_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+
+        av_btn_frame.grid_columnconfigure(0, weight=1)
+        av_btn_frame.grid_columnconfigure(1, weight=1)
+        av_btn_frame.grid_columnconfigure(2, weight=1)
+        av_btn_frame.grid_columnconfigure(3, weight=1)
+        av_btn_frame.grid_columnconfigure(4, weight=1)
+
+        def run_installation(av_key):
+            primo_skript_task = "Installation ..."
+            primo_skript_task_app = SoftwareAudioVideo.av_dict[av_key]["Name"]
+            primo_skript = SoftwareAudioVideo.av_dict[av_key]["Install"]
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                primo_skript_task, primo_skript_task_app, primo_skript
+            )
+            self.master.wait_window(custom_installer)
+            self.av_detail_inst.config(text="Deinstallieren")
+
+            refresh_status(av_key)
+
+        def run_uninstall(av_key):
+            primo_skript_task = "Deinstallation ..."
+            primo_skript_task_app = SoftwareAudioVideo.av_dict[av_key]["Name"]
+            primo_skript = SoftwareAudioVideo.av_dict[av_key]["Uninstall"]
+
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                primo_skript_task, primo_skript_task_app, primo_skript
+            )
+            self.master.wait_window(custom_installer)
+            self.av_detail_inst.config(text="Installieren")
+
+            refresh_status(av_key)
+
+        def open_website(av_key):
+            path = SoftwareAudioVideo.av_dict[av_key]["Path"]
+            subprocess.run(f'xdg-open "{path}"', shell=True)
+
+        def refresh_status(av_key):
+            av_name = SoftwareAudioVideo.av_dict[av_key]["Name"]
+            av_pakage = SoftwareAudioVideo.av_dict[av_key]["Package"]
+            av_disc = SoftwareAudioVideo.av_dict[av_key]["Description"]
+            av_path = SoftwareAudioVideo.av_dict[av_key]["Path"]
+
+            installed_apt = av_path in get_installed_apt_pkgs()
+
+            # Flatpak-Installationen abrufen und prüfen, ob der `com_path` in den Werten vorhanden ist
+            flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
+            installed_flatpak = av_path in flatpak_installs.values()
+            installed_snap = av_path in get_installed_snaps()
+            print()
+            # self.master.wait_window(custom_installer)
+            # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
+            if installed_snap or installed_apt or installed_flatpak:
+                print(f"{av_name} is installed")
+                self.av_detail_inst.config(
+                    text="Deinstallieren",
+                    command=lambda: run_uninstall(av_key),
+                    style="Red.TButton",
+                )
+            else:
+                print(f"{av_name} is not installed")
+                self.av_detail_inst.config(
+                    text="Installieren",
+                    command=lambda: run_installation(av_key),
+                    style="Green.TButton",
+                )
+
+        def av_btn_action(av_key):
+            av_icon_img = SoftwareAudioVideo.av_dict[av_key]["Icon"]
+            av_name = SoftwareAudioVideo.av_dict[av_key]["Name"]
+            av_pakage = SoftwareAudioVideo.av_dict[av_key]["Package"]
+            av_disc = SoftwareAudioVideo.av_dict[av_key]["Description"]
+            av_path = SoftwareAudioVideo.av_dict[av_key]["Path"]
+            av_thumb = SoftwareAudioVideo.av_dict[av_key]["Thumbnail"]
+
+            # self.av_thumb = PhotoImage(file=av_thumb)
+            # self.av_icon = PhotoImage(file=av_icon_img)
+
+            # Öffnen und skalieren des Thumbnails
+            thumb_img = Image.open(av_thumb)
+            resized_thumb_img = resize700(thumb_img)
+            self.av_thumb = ImageTk.PhotoImage(resized_thumb_img)
+
+            # Öffnen und skalieren des Icons
+            icon_img = Image.open(av_icon_img)
+            resized_icon_img = resize46(icon_img)
+            self.av_icon = ImageTk.PhotoImage(resized_icon_img)
+
+            self.av_detail_icon.configure(image=self.av_icon)
+            self.av_detail_name.config(text=f"{av_name}")
+            self.av_detail_pak.config(text=f"{av_pakage}")
+            self.av_detail_desc.config(text=f"\n{av_disc}")
+
+            self.av_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
+            self.termf.grid(column=0, columnspan=3, row=3)
+            self.thumb_lbl.configure(image=self.av_thumb)
+            self.thumb_lbl.pack()
+
+            hide_button_frame()
+            av_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
+
+            # print(get_installed_apt_pkgs())
+            refresh_status(av_key)
+
+        self.av_btn_icons = []
+
+        for i, (av_key, av_info) in enumerate(SoftwareAudioVideo.av_dict.items()):
+            img = Image.open(av_info["Icon"])
+            resized_img = resize46(img)
+            icon = ImageTk.PhotoImage(resized_img)
+            self.av_btn_icons.append(icon)
+
+        max_columns = 5
+
+        for i, (av_key, av_info) in enumerate(SoftwareAudioVideo.av_dict.items()):
+            row = i // max_columns
+            column = i % max_columns
+
+            av_button = ttk.Button(
+                av_btn_frame,
+                text=av_info["Name"],
+                image=self.av_btn_icons[i],
+                command=lambda key=av_key: av_btn_action(key),
+                compound=tk.TOP,
+                style="Custom.TButton",
+                width=20,
+            )
+            av_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
+
+        av_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
+
+        av_detail_frame.grid_columnconfigure(1, weight=1)
+        av_detail_frame.grid_rowconfigure(3, weight=1)
+
+        self.av_detail_icon = Label(
+            av_detail_frame,
+        )
+        self.av_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
+
+        self.av_detail_name = Label(
+            av_detail_frame, text="", justify="left", anchor="w", font=font_16
+        )
+        self.av_detail_name.grid(column=1, row=0, sticky="w")
+
+        self.av_detail_pak = Label(av_detail_frame, text="", justify="left", anchor="w")
+        self.av_detail_pak.grid(column=1, row=1, sticky="we")
+
+        self.av_detail_desc = Label(
+            av_detail_frame, text="", justify="left", anchor="w", wraplength=750
+        )
+        self.av_detail_desc.grid(column=0, row=2, columnspan=3, sticky="ew")
+
+        self.av_detail_inst = ttk.Button(
+            av_detail_frame, text="Install", style="Custom.TButton"
+        )
+
+        self.termf = Frame(
+            av_detail_frame,
+        )
+        self.thumb_lbl = Label(self.termf)
+
+        global av_wid
+        av_wid = self.termf.winfo_id()
 
 
 class ComPanel(tk.Frame):
@@ -953,7 +1250,9 @@ class AptSearchPanel(tk.Frame):
                                 apt_panel.config(image=self.img)
 
                             except subprocess.CalledProcessError as err:
-                                print("Command returned non-zero exit status again:", err)
+                                print(
+                                    "Command returned non-zero exit status again:", err
+                                )
                                 apt_panel.config(self.no_img)
 
         def put_apt_description():
@@ -992,14 +1291,14 @@ class AptSearchPanel(tk.Frame):
                         text="Uninstall",
                         width=10,
                         command=apt_uninstall,
-                        style='Red.TButton'
+                        style="Red.TButton",
                     )
                 else:
                     apt_pkg_inst.config(
                         text="Install",
                         width=10,
                         command=apt_install,
-                        style='Green.TButton'
+                        style="Green.TButton",
                     )
 
                 apt_panel.config(image=self.no_img)
@@ -1011,18 +1310,20 @@ class AptSearchPanel(tk.Frame):
 
         def hide_apt_frame():
             apt_info_container.pack_forget()
-            apt_search_container.pack(anchor="w", pady=20, padx=10,fill=BOTH, expand=True)
+            apt_search_container.pack(
+                anchor="w", pady=20, padx=10, fill=BOTH, expand=True
+            )
             apt_info_throber_frame.pack(fill="x", pady=20, padx=10)
 
         apt_main_container = Frame(self)
         apt_main_container.pack(fill="both", expand=True)
 
         apt_search_container = ttk.LabelFrame(
-            apt_main_container,
-            text="Suche",
-            padding=20
+            apt_main_container, text="Suche", padding=20
         )
-        apt_search_container.pack(anchor="w", pady=20, padx=10,fill="both", expand=True)
+        apt_search_container.pack(
+            anchor="w", pady=20, padx=10, fill="both", expand=True
+        )
 
         apt_search_field = Frame(
             apt_search_container,
@@ -1034,12 +1335,9 @@ class AptSearchPanel(tk.Frame):
         apt_search_btn = Label(
             apt_search_field,
             image=self.search_btn,
-
         )
 
-        apt_entry = ttk.Entry(
-            apt_search_field, font=("Sans", 15)
-        )
+        apt_entry = ttk.Entry(apt_search_field, font=("Sans", 15))
         listbox_ttp = CreateToolTip(
             apt_entry,
             " - Typ to finde a package\n\n - Single click on a listbox item to show more infos",
@@ -1056,7 +1354,7 @@ class AptSearchPanel(tk.Frame):
         apt_list_box_scrollbar.pack(side=RIGHT, fill=Y)
         apt_list_box.config(yscrollcommand=apt_list_box_scrollbar.set)
         apt_list_box_scrollbar.config(command=apt_list_box.yview)
-        apt_list_box.pack(fill=BOTH,expand=True)
+        apt_list_box.pack(fill=BOTH, expand=True)
 
         update_apt_list(get_apt_cache())
 
@@ -1067,7 +1365,6 @@ class AptSearchPanel(tk.Frame):
         apt_info_throber_frame = Frame(apt_main_container)
         apt_info_throber_frame.pack(fill="x", pady=20, padx=10)
 
- 
         self.store_btn0_icon = PhotoImage(
             file=SoftwareStore.store_dict["store_0"]["Icon"]
         )
@@ -1080,8 +1377,10 @@ class AptSearchPanel(tk.Frame):
             popen(f"""{SoftwareStore.store_dict[store_key]["Open"]}""")
 
         # Create the button frame first
-        store_btn_frame = ttk.LabelFrame(apt_info_throber_frame, text="Softwareverwaltung", padding=20)
-        store_btn_frame.pack( fill="x")
+        store_btn_frame = ttk.LabelFrame(
+            apt_info_throber_frame, text="Softwareverwaltung", padding=20
+        )
+        store_btn_frame.pack(fill="x")
 
         store_btn_frame.grid_columnconfigure(0, weight=1)
         store_btn_frame.grid_columnconfigure(1, weight=1)
@@ -1106,7 +1405,7 @@ class AptSearchPanel(tk.Frame):
         )
         store1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
 
-        apt_info_container = ttk.Frame(apt_main_container,padding=20)
+        apt_info_container = ttk.Frame(apt_main_container, padding=20)
         apt_info_container.columnconfigure(0, weight=1)
         apt_info_container.rowconfigure(2, weight=1)
 
@@ -1117,14 +1416,12 @@ class AptSearchPanel(tk.Frame):
             compound=LEFT,
             command=hide_apt_frame,
         )
-        apt_exit.grid(row=0,column=0,sticky="ew")
+        apt_exit.grid(row=0, column=0, sticky="ew")
 
         apt_pkg_header_1 = ttk.LabelFrame(
-            apt_info_container,
-            text="Application",
-            padding=20
+            apt_info_container, text="Application", padding=20
         )
-        apt_pkg_header_1.grid(row=1,column=0,sticky="ew")
+        apt_pkg_header_1.grid(row=1, column=0, sticky="ew")
 
         apt_pkg_header_1_1 = Frame(
             apt_pkg_header_1, borderwidth=0, highlightthickness=0
@@ -1166,29 +1463,23 @@ class AptSearchPanel(tk.Frame):
             text="Install",
             width=10,
             command=apt_install,
-            style='Green.TButton'
+            style="Green.TButton",
         )
         apt_pkg_inst.grid(row=0, column=2, sticky="e")
 
-
-        apt_detail_frame = ttk.LabelFrame(apt_info_container, text="Details", padding=20)
+        apt_detail_frame = ttk.LabelFrame(
+            apt_info_container, text="Details", padding=20
+        )
         apt_detail_frame.grid(row=2, column=0, sticky="nsew")
-
 
         apt_detail_frame.columnconfigure(0, weight=1)
         apt_detail_frame.rowconfigure(0, weight=1)
 
-        apt_canvas = Canvas(
-            apt_detail_frame,
-            borderwidth=0,
-            highlightthickness=0
-        )
+        apt_canvas = Canvas(apt_detail_frame, borderwidth=0, highlightthickness=0)
         apt_canvas.grid(row=0, column=0, sticky="nsew")
 
         apt_canvas_scrollbar = ttk.Scrollbar(
-            apt_detail_frame,
-            orient="vertical",
-            command=apt_canvas.yview
+            apt_detail_frame, orient="vertical", command=apt_canvas.yview
         )
         apt_canvas_scrollbar.grid(row=0, column=1, sticky="ns")
 
@@ -1197,7 +1488,10 @@ class AptSearchPanel(tk.Frame):
         apt_canvas_frame = Frame(apt_canvas)
         apt_canvas.create_window((0, 0), window=apt_canvas_frame, anchor="nw")
 
-        apt_canvas_frame.bind("<Configure>", lambda e: apt_canvas.configure(scrollregion=apt_canvas.bbox("all")))
+        apt_canvas_frame.bind(
+            "<Configure>",
+            lambda e: apt_canvas.configure(scrollregion=apt_canvas.bbox("all")),
+        )
 
         apt_panel = Label(apt_canvas_frame)
         apt_panel.grid(row=0, column=0, columnspan=2, pady=20)
