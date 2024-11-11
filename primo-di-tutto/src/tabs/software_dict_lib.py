@@ -19,6 +19,21 @@ class SoftwareStore:
         },
     }
 
+class FlatpakStore:
+    # Descriptions by ????????????
+    flatpak_store_dict = {
+        "store_0": {
+            "Name": "Gnome Software",  # Name
+            "Icon": f"{application_path}/images/apps/gnomesoftware_icon_36.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
+            "Open": "gnome-software",
+        },
+        "store_1": {
+            "Name": "Synaptic",  # Name
+            "Package": "Debian-Paket",  # Paketformat
+            "Icon": f"{application_path}/images/apps/synaptic_icon_36.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
+            "Open": "pkexec synaptic",
+        },
+    }
 
 
 class SoftwareOffice:
@@ -96,9 +111,9 @@ class SoftwareGame:
             "Description": "Steam ist eine Plattform zum Herunterladen, Kaufen und Spielen von Spielen.",
             "Icon": f"{application_path}/images/apps/com.valvesoftware.Steam-icon.png",
             "Thumbnail": f"{application_path}/images/apps/com.valvesoftware.Steam-thumb.png",
-            "Install": "pkexec apt install steam -y",
-            "Uninstall": "pkexec apt remove steam -y",
-            "Path": "steam",
+            "Install": f"{application_path}/scripts/install_steam",
+            "Uninstall": "pkexec apt remove steam-launcher -y",
+            "Path": "steam-launcher",
             "AppStream": "com.valvesoftware.Steam",
         },
         "game_1": {
@@ -108,7 +123,7 @@ class SoftwareGame:
             "Icon": f"{application_path}/images/apps/net.lutris.Lutris-icon.png",
             "Thumbnail": f"{application_path}/images/apps/net.lutris.Lutris-thumb.png",
             "Install": f"{application_path}/scripts/install_lutris",
-            "Uninstall": "pkexec apt remove lutris",
+            "Uninstall": "pkexec apt remove lutris -y",
             "Path": "lutris",
             "AppStream": "net.lutris.Lutris",
         },

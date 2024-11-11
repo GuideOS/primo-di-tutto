@@ -123,6 +123,8 @@ class SoftwareTab(ttk.Frame):
         image_frame = ttk.Frame(self.inst_notebook)
         gaming_frame = ttk.Frame(self.inst_notebook)
         apt_frame = ttk.Frame(self.inst_notebook)
+        #flat_frame = ttk.Frame(self.inst_notebook)
+
 
         com_frame.pack(fill="both", expand=True)
         office_frame.pack(fill="both", expand=True)
@@ -130,6 +132,8 @@ class SoftwareTab(ttk.Frame):
         image_frame.pack(fill="both", expand=True)
         gaming_frame.pack(fill="both", expand=True)
         apt_frame.pack(fill="both", expand=True)
+        #flat_frame.pack(fill="both", expand=True)
+
 
         self.inst_notebook.add(com_frame, compound=LEFT, text="Kommunikation")
         self.inst_notebook.add(office_frame, compound=LEFT, text="Textverarbeitung")
@@ -137,6 +141,8 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook.add(image_frame, compound=LEFT, text="Bildbearbeitung")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Gaming")
         self.inst_notebook.add(apt_frame, compound=LEFT, text="APT-Verwaltung")
+        #self.inst_notebook.add(flat_frame, compound=LEFT, text="Flatpak-Verwaltung")
+
 
         com_note_frame = ComPanel(com_frame)
         com_note_frame.pack(fill=tk.BOTH, expand=True)
@@ -155,6 +161,9 @@ class SoftwareTab(ttk.Frame):
 
         apt_search_panel = AptSearchPanel(apt_frame)
         apt_search_panel.pack(fill=tk.BOTH, expand=True)
+
+        #flatpack_search_panel = FlatpakSearchPanel(flat_frame)
+        #flatpack_search_panel.pack(fill=tk.BOTH, expand=True)
 
 
 class OfficePanel(tk.Frame):
@@ -1511,6 +1520,509 @@ class AptSearchPanel(tk.Frame):
 
         apt_info_container.columnconfigure(0, weight=1)
         apt_info_container.rowconfigure(2, weight=1)
+
+
+class FlatpakSearchPanel(tk.Frame):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+        #self["background"] = maincolor
+        self.no_img = PhotoImage(file=f"{application_path}/images/apps/no_image.png")
+
+        if "dark" in theme or "noir" in theme:
+            self.flatpak_butt = PhotoImage(
+                file=f"{application_path}/images/icons/nav_bar/flatpak_dark_24x24.png"
+            )
+        else:
+            self.flatpak_butt = PhotoImage(
+                file=f"{application_path}/images/icons/nav_bar/flatpak_light_24x24.png"
+            )
+        self.flatpak_big_icon = PhotoImage(
+            file=f"{application_path}/images/icons/flatpak-glogo.png"
+        )
+
+        self.debinstall_icon = PhotoImage(
+            file=f"{application_path}/images/icons/papirus/64x64/debian-logo.png"
+        )
+        self.search_btn = PhotoImage(
+            file=f"{application_path}/images/icons/nav_bar/glass_icon.png"
+        )
+        self.exit_btn = PhotoImage(
+            file=f"{application_path}/images/icons/pigro_icons/exit_btn.png"
+        )
+        self.flatpak_appsinstall_icon = PhotoImage(
+            file=f"{application_path}/images/icons/pigro_icons/flathub64x64.png"
+        )
+
+        def error_message_0():
+            e_mass = Error_Mass(self)
+            e_mass.grab_set()
+
+        def error_message_1():
+            e_mass = Error_Mass(self)
+            e_mass.grab_set()
+
+        def hide_flatpak_frame():
+            flatpak_info_frame.pack_forget()
+            flatpak_search_frame.pack(anchor="w", side=LEFT, pady=20, padx=10)
+            flatpak_info_throber_frame.pack(fill=BOTH, expand=True, pady=20, padx=10)
+
+        def flatpak_install():
+            hide_flatpak_frame()
+
+            pigro_skript_task = "Installing ..."
+            pigro_skript_task_app = f"{flatpak_entry.get()}"
+            pigro_skript = [
+                f"flatpak",
+                "install",
+                "-y",
+                "flathub",
+                f"{Flat_remote_dict[flatpak_entry.get()]}",
+            ]
+
+            custom_installer = Custom_Installer(master)
+
+            custom_installer.do_task(
+                pigro_skript_task, pigro_skript_task_app, pigro_skript
+            )
+
+            update_flatpak(Flat_remote_dict.keys())
+
+        def flatpak_uninstall():
+            hide_flatpak_frame()
+
+            pigro_skript_task = "Removing From System"
+            pigro_skript_task_app = f"{flatpak_entry.get()}"
+            pigro_skript = [
+                f"flatpak",
+                "uninstall",
+                "-y",
+                f"{Flat_remote_dict[flatpak_entry.get()]}",
+            ]
+
+            custom_installer = Custom_Installer(master)
+
+            custom_installer.do_task(
+                pigro_skript_task, pigro_skript_task_app, pigro_skript
+            )
+
+            update_flatpak(Flat_remote_dict.keys())
+
+        def update_flatpak(flatpak_data):
+            flatpak_data = sorted(flatpak_data)
+            flatpak_list_box.delete(0, END)
+            for item in flatpak_data:
+                flatpak_list_box.insert(END, item)
+
+        def flatpak_list_fillout(e):
+            flatpak_entry.delete(0, END)
+            flatpak_entry.insert(
+                0, flatpak_list_box.get(flatpak_list_box.curselection())
+            )
+            flatpak_show_infos()
+
+        def flatpak_search_check(e):
+            typed = flatpak_entry.get()
+            if typed == "":
+                flatpak_data = Flat_remote_dict.keys()
+            else:
+                flatpak_data = []
+                for item in Flat_remote_dict.keys():
+                    if typed.lower() in item.lower():
+                        flatpak_data.append(item)
+            update_flatpak(flatpak_data)
+
+        def get_flatpak_icon():
+            try:
+                url_output = f"https://dl.flathub.org/repo/appstream/x86_64/icons/128x128/{Flat_remote_dict[flatpak_entry.get()]}.png"
+                with urlopen(url_output) as url_output:
+                    self.flat_icon = Image.open(url_output)
+                self.flat_icon = resize2(self.flat_icon)
+
+                self.flat_icon = ImageTk.PhotoImage(self.flat_icon)
+                flatpak_pkg_icon.config(image=self.flat_icon)
+            except urllib.error.HTTPError as e:
+                flatpak_pkg_icon.config(image=self.flatpak_appsinstall_icon)
+
+        def get_flatpak_screenshot():
+            try:
+                app_id = Flat_remote_dict[flatpak_entry.get()]
+                screenshot_url = extract_default_screenshot_url(app_id)
+                if screenshot_url:
+                    print("Screenshot-URL {}:".format(app_id))
+                    print(screenshot_url)
+                else:
+                    print("No Screenshot Found {}.".format(app_id))
+
+                with urlopen(screenshot_url) as url_output:
+                    self.img = Image.open(url_output)
+                self.img = resize(self.img)
+                self.img = ImageTk.PhotoImage(self.img)
+                flatpak_panel.config(image=self.img)
+
+            except requests.exceptions.RequestException as e:
+                print("Error fetching URL:", e)
+                flatpak_panel.config(self.no_img)
+
+            except subprocess.CalledProcessError as err:
+                print("Command returned non-zero exit status:", err)
+                if "returned non-zero exit status 4" in str(err):
+                    try:
+                        app_id += ".desktop"
+                        screenshot_url = extract_default_screenshot_url(app_id)
+                        if screenshot_url:
+                            print("Screenshot-URL {}:".format(app_id))
+                            print(screenshot_url)
+                        else:
+                            print("No Screenshot Found {}.".format(app_id))
+
+                        with urlopen(screenshot_url) as url_output:
+                            self.img = Image.open(url_output)
+                        self.img = resize(self.img)
+                        self.img = ImageTk.PhotoImage(self.img)
+                        flatpak_panel.config(image=self.img)
+
+                    except subprocess.CalledProcessError as err:
+                        print("Command returned non-zero exit status again:", err)
+                        flatpak_panel.config(self.no_img)
+
+
+
+        def get_flatpak_description():
+            url = f"https://flathub.org/apps/{Flat_remote_dict[flatpak_entry.get()]}"
+
+            response = requests.get(url)
+            soup = BeautifulSoup(response.content, "html.parser")
+            prose_element = soup.find(
+                "div", {"class": "prose dark:prose-invert xl:max-w-[75%]"}
+            )
+            flatpak_description_text.delete("1.0", "end")
+            flatpak_description_text.insert(tk.END, prose_element.text)
+
+        def flatpak_show_infos():
+            if flatpak_entry.get() == "":
+                error_message_0()
+            elif flatpak_entry.get() not in Flat_remote_dict.keys():
+                error_message_1()
+            else:
+                flatpak_search_frame.pack_forget()
+                flatpak_info_throber_frame.pack_forget()
+                flatpak_info_frame.pack(fill=BOTH, expand=True)
+                get_flatpak_icon()
+                get_flatpak_screenshot()
+                get_flatpak_description()
+
+                flatpak_pkg_name.config(text=f"{flatpak_entry.get()}")
+                if flatpak_entry.get() in refresh_flatpak_installs().keys():
+                    flatpak_pkg_inst.config(
+                        text="Uninstall",
+                        #justify="left",
+                        width=10,
+                        #background="#f04a50",
+                        #foreground=ext_btn_font,
+                        #font=font_10_b,
+                        #borderwidth=0,
+                        #highlightthickness=0,
+                        command=flatpak_uninstall,
+                    )
+                else:
+                    flatpak_pkg_inst.config(
+                        text="Install",
+                        #justify="left",
+                        width=10,
+                        #background="#6abd43",
+                        #foreground=ext_btn_font,
+                        #font=font_10,
+                        #borderwidth=0,
+                        #highlightthickness=0,
+                        command=flatpak_install,
+                    )
+
+        flatpak_inst_main_frame = Frame(self)
+        flatpak_inst_main_frame.pack(fill="both", expand=True)
+
+        def install_flatpak_apt():
+            os.system(
+                f"x-terminal-emulator -e 'bash -c \"sudo apt install flatpak && flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo | bash; exec bash\"'"
+            )
+            rs_pigro = RestartPigroMass(self)
+            rs_pigro.grab_set()
+
+        if flatpak_path == False:
+            flatpak_inst_main_frame.pack_forget()
+
+            flat_not_installad_container = Frame(self, pady=200)
+            flat_not_installad_container.pack(fill=BOTH, expand=True)
+
+            flat_big_icon = Label(
+                flat_not_installad_container,
+                image=self.flatpak_big_icon,
+                font=font_10_b,
+                justify="left",
+                #foreground=main_font,
+            )
+            flat_big_icon.pack(anchor="center", pady=20)
+
+            flat_app_inst = Button(
+                flat_not_installad_container,
+                text="Install Flatpak",
+                justify="left",
+                width=20,
+                #background=ext_btn,
+                #foreground=ext_btn_font,
+                font=font_10_b,
+                borderwidth=0,
+                highlightthickness=0,
+                command=install_flatpak_apt,
+            )
+            flat_app_inst.pack()
+
+        flatpak_search_frame = ttk.LabelFrame(
+            flatpak_inst_main_frame,
+            text="Search",
+            #font=font_16,
+            #foreground=label_frame_color,
+            #borderwidth=0,
+            #highlightthickness=0,
+            #relief=GROOVE,
+            padding=20
+            #background=frame_color,
+        )
+        flatpak_search_frame.pack(
+            anchor="w", pady=20, padx=10, fill="both", expand=True)
+
+        flatpak_search_field = Frame(
+            flatpak_search_frame,
+            borderwidth=0,
+            highlightthickness=0,
+            #background=frame_color,
+        )
+        flatpak_search_field.pack(fill="x", pady=5)
+
+        flatpak_search_btn = Label(
+            flatpak_search_field,
+            image=self.search_btn,
+            #text="Select",
+            #bg=ext_btn,
+            #fg=main_font,
+            #borderwidth=0,
+            #highlightthickness=0,
+            # command=flatpak_show_infos,
+        )
+        #flatpak_search_btn.pack(side="left", fill=BOTH)
+
+        flatpak_entry = ttk.Entry(
+            flatpak_search_field,
+            font=("Sans", 15),
+        )
+        flatpak_entry.pack(fill="x", expand=True, side="left")
+        listbox_ttp = CreateToolTip(
+            flatpak_entry,
+            " - Typ to finde a package\n\n - Single click on a listbox item to show more infos",
+        )
+
+        flatpak_list_box = Listbox(
+            flatpak_search_frame,
+            borderwidth=0,
+            highlightthickness=0,
+            selectmode=tk.SINGLE,
+        )
+
+        flatpak_list_scrollbar = ttk.Scrollbar(flatpak_search_frame)
+        flatpak_list_scrollbar.pack(side=RIGHT, fill=Y)
+        flatpak_list_box.config(yscrollcommand=flatpak_list_scrollbar.set)
+        flatpak_list_scrollbar.config(command=flatpak_list_box.yview)
+
+        flatpak_list_box.pack(fill=BOTH,expand=True)
+
+        update_flatpak(Flat_remote_dict.keys())
+
+        flatpak_list_box.bind("<ButtonRelease-1>", flatpak_list_fillout)
+
+        flatpak_entry.bind("<KeyRelease>", flatpak_search_check)
+
+        flatpak_info_throber_frame = Frame(
+            flatpak_inst_main_frame, 
+        )
+        flatpak_info_throber_frame.pack(fill=BOTH, pady=20, padx=10)
+
+        flatpak_info_frame = Frame(flatpak_inst_main_frame)
+
+        flatpak_exit = Button(
+            flatpak_info_frame,
+            text="Back",
+            image=self.exit_btn,
+            #background=nav2_color,
+            foreground="white",
+            borderwidth=0,
+            highlightthickness=0,
+            compound=LEFT,
+            font=font_10_b,
+            command=hide_flatpak_frame,
+            anchor="w",
+            padx=10,
+        )
+        flatpak_exit.pack(fill="x")
+
+        flatpak_pkg_info_frame = ttk.LabelFrame(
+            flatpak_info_frame,
+            padding=20
+            ##background=nav_color,
+        )
+        flatpak_pkg_info_frame.pack(anchor="n", fill="x")
+
+        flatpak_pkg_info_container = Frame(
+            flatpak_pkg_info_frame,
+            borderwidth=0,
+            highlightthickness=0,
+            ##background=nav_color,
+        )
+        flatpak_pkg_info_container.pack(fill="x")
+        flatpak_pkg_info_container.columnconfigure(1, weight=2)
+
+        flatpak_pkg_icon = Label(
+            flatpak_pkg_info_container,
+            image=self.debinstall_icon,
+            font=font_10_b,
+            justify="left",
+            #background=nav_color,
+            #foreground=main_font,
+            padx=10,
+        )
+        flatpak_pkg_icon.grid(row=0, rowspan=2, column=0)
+
+        flatpak_pkg_name = Label(
+            flatpak_pkg_info_container,
+            text="",
+            font=font_20,
+            justify="left",
+            ##background=nav_color,
+            #foreground=main_font,
+            anchor="w",
+            padx=20,
+        )
+        flatpak_pkg_name.grid(row=0, column=1, sticky="ew")
+
+        flatpak_pkg_status = Label(
+            flatpak_pkg_info_container,
+            text="",
+            font=font_8,
+            justify="left",
+            ##background=nav_color,
+            #foreground=main_font,
+            anchor="w",
+            padx=20,
+        )
+        flatpak_pkg_status.grid(row=1, column=1, sticky="ew")
+
+        flatpak_pkg_inst = Button(
+            flatpak_pkg_info_container,
+            text="Install",
+            #justify="left",
+            width=10,
+            #background="#6abd43",
+            #foreground=ext_btn_font,
+            #font=font_10,
+            #borderwidth=0,
+            #highlightthickness=0,
+            command=flatpak_install,
+        )
+        flatpak_pkg_inst.grid(row=0, column=2, sticky="e")
+
+        def on_configure_flatpak_canvas(event):
+            flatpak_canvas.configure(scrollregion=flatpak_canvas.bbox("all"))
+            update_flatpak_canvas()
+
+        def on_mousewheel_flatpak_canvas(event):
+            flatpak_canvas.yview_scroll(int(0 * (event.delta / 120)), "units")
+
+        def update_flatpak_canvas():
+            flatpak_canvas_width = flatpak_canvas.winfo_width()
+            frame_width = flatpak_canvas_frame.winfo_reqwidth()
+            x_offset = max((flatpak_canvas_width - frame_width) // 2, 0)
+            flatpak_canvas.coords("frame", x_offset, 0)
+
+        flatpak_canvas_container = Frame(
+            flatpak_info_frame, width=869
+        )
+        flatpak_canvas_container.pack(side=LEFT, fill="both", expand=True)
+
+        flatpak_canvas = tk.Canvas(
+            flatpak_canvas_container, highlightthickness=0
+        )
+        flatpak_canvas.pack(fill=BOTH, expand=True, side=RIGHT)
+        flatpak_canvas.pack_propagate(False)
+        flatpak_canvas_frame = tk.Frame(flatpak_canvas, padx=120)
+        flatpak_canvas.create_window(
+            (0, 0), window=flatpak_canvas_frame, anchor="n", tags="frame"
+        )
+
+        flatpak_panel = Label(
+            flatpak_canvas_frame, text="Apartment Panel"
+        )
+        flatpak_panel.pack(anchor="n", pady=20)
+
+        flatpak_description_text = Text(
+            flatpak_canvas_frame,
+            borderwidth=0,
+            highlightthickness=0,
+            #background=frame_color,
+            #foreground=main_font,
+            font=("Sans", 9),
+            height=100,
+            width=80,
+            wrap=WORD,
+        )
+        flatpak_description_text.pack(side=LEFT, fill=BOTH, expand=True, padx=20)
+
+        flatpak_scrollbar = ttk.Scrollbar(
+            flatpak_info_frame, orient=VERTICAL, command=flatpak_canvas.yview
+        )
+        flatpak_scrollbar.pack(side=RIGHT, fill=Y)
+        flatpak_canvas.config(yscrollcommand=flatpak_scrollbar.set)
+
+        flatpak_canvas_frame.bind("<Configure>", on_configure_flatpak_canvas)
+        flatpak_canvas_frame.bind_all("<MouseWheel>", on_mousewheel_flatpak_canvas)
+
+        def open_store(store_key):
+            popen(f"""{SoftwareStore.store_dict[store_key]["Open"]}""")
+
+        self.store_btn0_icon = PhotoImage(
+            file=SoftwareStore.store_dict["store_0"]["Icon"]
+        )
+
+        self.store_btn1_icon = PhotoImage(
+            file=SoftwareStore.store_dict["store_1"]["Icon"]
+        )
+
+        # flatpak OneClicks
+        store_btn_frame = ttk.LabelFrame(
+            flatpak_info_throber_frame, text="Softwareverwaltung", padding=20
+        )
+        store_btn_frame.pack(fill="x",side="bottom")
+
+        store_btn_frame.grid_columnconfigure(0, weight=1)
+        store_btn_frame.grid_columnconfigure(1, weight=1)
+
+        store0_button = ttk.Button(
+            store_btn_frame,
+            text=SoftwareStore.store_dict["store_0"]["Name"],
+            image=self.store_btn0_icon,
+            command=lambda: open_store("store_0"),
+            compound=tk.TOP,
+            style="Custom.TButton",
+        )
+        store0_button.grid(row=0, column=0, padx=5, pady=5, sticky="nesw")
+
+        store1_button = ttk.Button(
+            store_btn_frame,
+            text=SoftwareStore.store_dict["store_1"]["Name"],
+            image=self.store_btn1_icon,
+            command=lambda: open_store("store_1"),
+            compound=tk.TOP,
+            style="Custom.TButton",
+        )
+        store1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
+
 
 
 class Custom_Installer(tk.Toplevel):
