@@ -17,7 +17,8 @@ from flatpak_alias_list import *
 from tabs.pop_ups import *
 from tool_tipps import CreateToolTip
 from pathlib import Path
-
+from tabs.pop_ups import *
+from tabs.software_tab import Custom_Installer
 
 class WelcomeTab(ttk.Frame):
     def __init__(self, master):
@@ -50,15 +51,17 @@ class WelcomeTab(ttk.Frame):
         self.autostart_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
 
         def open_software_properties_tab():
-            # Der Befehl und seine Argumente als Liste
-            command = ["/usr/bin/software-properties-gtk", "--open-tab=4"]
-            
-            try:
-                # subprocess.run ausführen und auf Rückgabewert prüfen
-                subprocess.run(command, check=True)
-                print("Software Properties erfolgreich geöffnet.")
-            except subprocess.CalledProcessError as e:
-                print(f"Fehler beim Öffnen von Software Properties: {e}")
+            #hide_apt_frame()
+            pigro_skript_task = "Installation von ..."
+            pigro_skript_task_app = "Nvidia Treiber"
+            pigro_skript = f"{permit} apt install -y neofetch"
+            custom_installer = Custom_Installer(master)
+            custom_installer.do_task(
+                pigro_skript_task, pigro_skript_task_app, pigro_skript
+            )
+            self.master.wait_window(custom_installer)
+
+
 
 
         # LabelFrame für Autostart-Optionen erstellen
@@ -73,7 +76,7 @@ class WelcomeTab(ttk.Frame):
 
         self.drivers_button = ttk.Button(
                 self.nvidia_frame,
-                text="Zusätzliche Treiber",
+                text="Nvidia Treiber installieren",
                 command=open_software_properties_tab,
                 style="Custom.TButton",
             )

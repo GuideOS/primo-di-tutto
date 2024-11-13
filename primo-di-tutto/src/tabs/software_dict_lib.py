@@ -249,9 +249,9 @@ class SoftwareCommunication:
             "Description": "Ein flexibler und datenschutzorientierter Browser von Mozilla. Unterstützt zahlreiche Add-ons und bietet eine hohe Anpassungsfähigkeit. Verfügbar auf allen gängigen Plattformen.",
             "Icon": f"{application_path}/images/apps/org.mozilla.firefox-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.mozilla.firefox-thumb.png",
-            "Install": "pkexec snap install firefox",
-            "Uninstall": "pkexec snap remove firefox",
-            "Path": "firefox",
+            "Install": "pkexec apt install firefox-esr",
+            "Uninstall": "pkexec apt remove firefox-esr",
+            "Path": "firefox-esr",
         },
         "com_2": {
             "Name": "Vivaldi",
@@ -300,8 +300,8 @@ class SoftwareCommunication:
             "Description": "Ein leistungsfähiger E-Mail-Client von Mozilla mit Kalender- und Aufgabenfunktion. Unterstützt POP3 und IMAP sowie RSS-Feeds. Plattformübergreifend verfügbar.",
             "Icon": f"{application_path}/images/apps/org.mozilla.Thunderbird-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.mozilla.Thunderbird-thumb.png",
-            "Install": "pkexec snap install thunderbird",
-            "Uninstall": "pkexec snap remove thunderbird",
+            "Install": "pkexec apt install thunderbird",
+            "Uninstall": "pkexec apt remove thunderbird",
             "Path": "thunderbird",
         },
         "com_7": {

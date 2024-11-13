@@ -33,18 +33,8 @@ import subprocess
 
 
 def get_installed_snaps():
-    command = "snap list"
-    output = subprocess.check_output(command, shell=True, text=True)
+    snap_names = [""]
 
-    lines = output.strip().split("\n")
-
-    lines = lines[1:]
-
-    snap_names = []
-
-    for line in lines:
-        snap_name = line.split()[0]
-        snap_names.append(snap_name)
 
     # print(snap_names)
     return snap_names

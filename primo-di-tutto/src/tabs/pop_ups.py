@@ -15,6 +15,39 @@ from apt_manage import *
 from flatpak_alias_list import *
 
 
+class InstallNvidiaDrivers(tk.Toplevel):
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.icon = tk.PhotoImage(file=f"{application_path}/images/icons/logo.png")
+        self.tk.call("wm", "iconphoto", self._w, self.icon)
+        self.resizable(0, 0)
+        app_width = 400
+        app_height = 500
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = (screen_width / 2) - (app_width / 2)
+        y = (screen_height / 2) - (app_height / 2)
+        self.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
+        self.title("Nvidia-Treiber")
+
+        # Listbox erstellen
+        self.listbox = tk.Listbox(self, width=50, height=10)
+        self.listbox.pack(pady=10)
+
+        # Filtere Pakete und füge sie zur Listbox hinzu
+        self.populate_listbox()
+
+    def populate_listbox(self):
+        # Filter für Pakete, die mit 'nvidia-driver' beginnen
+        filtered_pkgs = [pkg for pkg in get_apt_cache() if pkg.startswith("nvidia-driver")]
+        print(filtered_pkgs)
+        # Pakete zur Listbox hinzufügen
+        for pkg in filtered_pkgs:
+            self.listbox.insert(tk.END, pkg)
+
+
+
 class Update_Alternatives(tk.Toplevel):
     """child window for editing update-alternatives"""
 
@@ -30,8 +63,7 @@ class Update_Alternatives(tk.Toplevel):
         x = (screen_width / 2) - (app_width / 2)
         y = (screen_height / 2) - (app_height / 2)
         self.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
-        self.title("Update-Alternatives")
-        self["background"] = maincolor
+        self.title("Nvidia-Treiber")
 
         def choose_up():
             popen(
