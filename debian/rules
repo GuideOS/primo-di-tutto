@@ -1,0 +1,42 @@
+#!/usr/bin/make -f
+
+PACKAGE := primo-di-tutto
+
+%:
+	dh $@
+
+override_dh_install:
+	# Erstellen der notwendigen Verzeichnisse
+	mkdir -p debian/$(PACKAGE)/usr/share/applications
+	mkdir -p debian/$(PACKAGE)/usr/share/icons/hicolor/256x256/apps
+	mkdir -p debian/$(PACKAGE)/usr/share/icons/hicolor/scalable/apps
+	mkdir -p debian/$(PACKAGE)/usr/share/metainfo
+	mkdir -p debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)
+	mkdir -p debian/$(PACKAGE)/usr/share/applications/autostart
+	mkdir -p debian/$(PACKAGE)/opt/primo-di-tutto
+	mkdir -p debian/$(PACKAGE)/usr/bin
+
+	# Kopieren der Dateien
+	cp PRIMO-DEBIAN-BUILD-BOX/icon/primo-di-tutto-logo.png debian/$(PACKAGE)/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png
+	cp PRIMO-DEBIAN-BUILD-BOX/icon/primo-di-tutto-logo.svg debian/$(PACKAGE)/usr/share/icons/hicolor/scalable/apps/primo-di-tutto-logo.svg
+	cp PRIMO-DEBIAN-BUILD-BOX/io.github.actionschnitzel.primo-di-tutto.appdata.xml debian/$(PACKAGE)/usr/share/metainfo/io.github.actionschnitzel.primo-di-tutto.appdata.xml
+	cp PRIMO-DEBIAN-BUILD-BOX/LICENSE debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)/LICENSE
+
+	# Kopieren der notwendigen Dateien
+	rsync -av --exclude='start.sh' --exclude='.vscode' --exclude='src/__pycache__' --exclude='src/tabs/__pycache__' primo-di-tutto/* debian/$(PACKAGE)/opt/primo-di-tutto/
+
+	# Erstellen der .desktop-Datei
+	./create_desktop_files.sh
+
+	# Setzen der Berechtigungen
+	chmod +x debian/$(PACKAGE)/opt/primo-di-tutto/src/main.py
+
+	# Sicherstellen, dass alle Skripte ausführbar sind
+	find debian/$(PACKAGE)/opt/primo-di-tutto/scripts/ -type f -iname "*.sh" -exec chmod +x {} \;
+
+	# Erstellen der /bin/primo-di-tutto Datei
+	echo "#!/bin/bash" > debian/$(PACKAGE)/usr/bin/primo-di-tutto
+	echo '/opt/primo-di-tutto/src/main.py "$@"' >> debian/$(PACKAGE)/usr/bin/primo-di-tutto
+	chmod +x debian/$(PACKAGE)/usr/bin/primo-di-tutto
+
+	dh_install
