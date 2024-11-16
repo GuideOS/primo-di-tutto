@@ -14,3 +14,10 @@
 - [ ] Code säuber
 - [ ] Code formatieren mit Black
 - [ ] Debian Paket-Skript anpassen
+
+
+### Build DEB
+
+```
+dpkg-source --build ./
+```
