@@ -17,10 +17,10 @@ override_dh_install:
 	mkdir -p debian/$(PACKAGE)/usr/bin
 
 	# Kopieren der Dateien
-	cp PRIMO-DEBIAN-BUILD-BOX/icon/primo-di-tutto-logo.png debian/$(PACKAGE)/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png
-	cp PRIMO-DEBIAN-BUILD-BOX/icon/primo-di-tutto-logo.svg debian/$(PACKAGE)/usr/share/icons/hicolor/scalable/apps/primo-di-tutto-logo.svg
-	cp PRIMO-DEBIAN-BUILD-BOX/io.github.actionschnitzel.primo-di-tutto.appdata.xml debian/$(PACKAGE)/usr/share/metainfo/io.github.actionschnitzel.primo-di-tutto.appdata.xml
-	cp PRIMO-DEBIAN-BUILD-BOX/LICENSE debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)/LICENSE
+	cp primo-di-tutto-logo.png debian/$(PACKAGE)/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png
+	cp primo-di-tutto-logo.svg debian/$(PACKAGE)/usr/share/icons/hicolor/scalable/apps/primo-di-tutto-logo.svg
+	cp io.github.actionschnitzel.primo-di-tutto.appdata.xml debian/$(PACKAGE)/usr/share/metainfo/io.github.actionschnitzel.primo-di-tutto.appdata.xml
+	cp LICENSE debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)/LICENSE
 
 	# Kopieren der notwendigen Dateien
 	rsync -av --exclude='start.sh' --exclude='.vscode' --exclude='src/__pycache__' --exclude='src/tabs/__pycache__' primo-di-tutto/* debian/$(PACKAGE)/opt/primo-di-tutto/

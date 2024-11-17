@@ -98,6 +98,7 @@ class SoftwareOffice:
             "Uninstall": "flatpak remove work.openpaper.Paperwork -y",
             "Path": "work.openpaper.Paperwork",
         },
+
     }
 
 
@@ -225,6 +226,50 @@ class SoftwareGame:
             "Uninstall": "flatpak remove com.moddb.TotalChaos -y",
             "Path": "com.moddb.TotalChaos",
             "AppStream": "com.moddb.TotalChaos",
+        },
+        "game_12": {
+            "Name": "Warzone 2100",
+            "Package": "Flatpak",
+            "Description": "Das klassische 3D-Echtzeit-Strategiespiel von 1999 wurde aktualisiert, aufgerüstet und für die neuesten Plattformen modernisiert! Befehlige die Streitkräfte des Projekts in einem Kampf, die Welt wiederaufzubauen, nachdem die Menschheit fast durch Atomraketen ausgelöscht wurde. Warzone 2100 bietet eine storybasierte Einzelspieler-Kampagne, Online-Multiplayer sowie Einzelspieler-Gefecht-Modi. Ein umfangreicher Technologiebaum mit über 400 verschiedenen Technologien, kombiniert mit einem Einheitendesign-System, ermöglicht eine große Vielfalt an möglichen Einheiten und Taktiken.",
+            "Icon": f"{application_path}/images/apps/net.wz2100.wz2100-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/net.wz2100.wz2100-thumb.png",
+            "Install": "flatpak install flathub net.wz2100.wz2100 -y",
+            "Uninstall": "flatpak remove net.wz2100.wz2100 -y",
+            "Path": "net.wz2100.wz2100",
+            "AppStream": "net.wz2100.wz2100",
+        },
+        "game_13": {
+            "Name": "Alien Arena",
+            "Package": "Flatpak",
+            "Description": "Stehst du auf Old-School-Deathmatch mit modernen Features? Wie wäre es mit einer lebendigen, farbenfrohen Arcade-Atmosphäre? Oder vielleicht...Retro-Sci-Fi? Dann wirst du lieben, was Alien Arena für dich bereithält! Dieses Spiel vereint einige der besten Aspekte von Spielen wie Quake und Unreal und verpackt sie in ein Retro-Alien-Thema, während es eine Menge origineller Ideen hinzufügt, die das Spiel einzigartig machen.",
+            "Icon": f"{application_path}/images/apps/org.alienarena.alienarena-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/org.alienarena.alienarena-thumb.png",
+            "Install": "flatpak install flathub org.alienarena.alienarena -y",
+            "Uninstall": "flatpak remove org.alienarena.alienarena -y",
+            "Path": "org.alienarena.alienarena",
+            "AppStream": "org.alienarena.alienarena",
+        },
+        "game_13": {
+            "Name": "AstroMenace",
+            "Package": "Flatpak",
+            "Description": "AstroMenace ist ein beeindruckender, knallharter Scroll-Shooter, in dem mutige Weltraumkrieger die perfekte Gelegenheit finden, ihre Kampffähigkeiten zu verbessern. Sammle während der Schlacht Geld, um dein Raumschiff in eine ultimative Massenvernichtungswaffe zu verwandeln und Horden von Feinden das Fürchten zu lehren. Genieße die wunderbar gestalteten 3D-Grafiken und hochqualitativen Spezialeffekte sowie die detaillierte Schwierigkeitsanpassung und das benutzerfreundliche Interface von AstroMenace.",
+            "Icon": f"{application_path}/images/apps/com.viewizard.AstroMenace-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/com.viewizard.AstroMenace-thumb.png",
+            "Install": "flatpak install flathub com.viewizard.AstroMenace -y",
+            "Uninstall": "flatpak remove com.viewizard.AstroMenace -y",
+            "Path": "com.viewizard.AstroMenace",
+            "AppStream": "com.viewizard.AstroMenace",
+        },
+        "game_14": {
+            "Name": "FreeRCT",
+            "Package": "Flatpak",
+            "Description": "FreeRCT hat das Ziel, ein freies und quelloffenes Spiel zu sein, das das Aussehen, das Gefühl und das Gameplay der beliebten Spiele RollerCoaster Tycoon 1 und 2 einfängt. Das Spiel befindet sich noch in einem frühen Alpha-Zustand, ist aber bereits spielbar und bietet eine Vielzahl an Features.",
+            "Icon": f"{application_path}/images/apps/net.freerct.FreeRCT-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/net.freerct.FreeRCT-thumb.png",
+            "Install": "flatpak install flathub net.freerct.FreeRCT -y",
+            "Uninstall": "flatpak remove net.freerct.FreeRCT -y",
+            "Path": "net.freerct.FreeRCT",
+            "AppStream": "net.freerct.FreeRCT",
         },
     }
 

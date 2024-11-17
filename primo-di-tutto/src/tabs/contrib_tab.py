@@ -21,8 +21,8 @@ class ContribTab(ttk.Frame):
 
         take_part_message = ttk.Label(
             self.take_part_frame,
-            wraplength=900,
-            text="Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! Hier steht ein super kluger Text! ",
+            wraplength=950,
+            text="Das GuideOS-Projekt nimmt Open Source sehr ernst. Der wohl wichtigste Pfeiler der Philosophie ist die Teilhabe. Mit GuideOS wollen wir nicht die große neue Distro erschaffen, sondern einen einfachen Zugang zu Linux ermöglichen. Dazu gehört auch, dass Nutzer jeden Kenntnisstandes daran arbeiten können. Du kannst im Forum deine Meinung sagen, Code über Git beisteuern oder ohne Anmeldung eine Fehlermeldung verfassen (natürlich komplett anonym).",
         )
         take_part_message.pack(fill="x")
 
@@ -31,17 +31,36 @@ class ContribTab(ttk.Frame):
         )
         go_home.pack(fill="x", expand=True, pady=5)
 
+        def open_board():
+            webbrowser.open("https://forum.linuxguides.de/core/index.php?dashboard/")
+
         go_board = ttk.Button(
             self.take_part_frame,
             text="Werde Teil der Community!",
             style="Custom.TButton",
+            command=open_board,
         )
+
         go_board.pack(fill="x", expand=True, pady=5)
 
+        def open_gitlab():
+            webbrowser.open("https://gitlab.pgos.net/")
+
         go_git = ttk.Button(
-            self.take_part_frame, text="pgOS auf GitLab", style="Custom.TButton"
+            self.take_part_frame,
+            text="pgOS auf GitLab",
+            style="Custom.TButton",
+            command=open_gitlab,
         )
         go_git.pack(fill="x", expand=True, pady=5)
+
+        send_error = ttk.Button(
+            self.take_part_frame,
+            text="Melde einen Fehler oder ein Problem",
+            style="Custom.TButton",
+            command=open_gitlab,
+        )
+        send_error.pack(fill="x", expand=True, pady=5)
 
         self.thx_frame = ttk.LabelFrame(
             self,

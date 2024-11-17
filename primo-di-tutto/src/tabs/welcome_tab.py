@@ -19,6 +19,10 @@ from tool_tipps import CreateToolTip
 from pathlib import Path
 from tabs.pop_ups import *
 from tabs.software_tab import Custom_Installer
+import subprocess
+import re
+
+
 
 class WelcomeTab(ttk.Frame):
     def __init__(self, master):
@@ -28,6 +32,11 @@ class WelcomeTab(ttk.Frame):
         self.welcome_icon = ImageTk.PhotoImage(
             Image.open(f"{application_path}/images/icons/pigro_icons/test2.png")
         )
+        self.nvidia_icon = ImageTk.PhotoImage(
+            Image.open(f"{application_path}/images/icons/nvidia-attentione.png")
+        )
+
+
 
         # Label für das Icon erstellen und im Fenster platzieren
         self.icon_label = ttk.Label(self, image=self.welcome_icon)
@@ -40,7 +49,7 @@ class WelcomeTab(ttk.Frame):
         self.welcome_label = ttk.Label(self, text=welcome_message, font=("Ubuntu",20))
         self.welcome_label.pack(pady=10)
                 # Willkommensnachricht definieren
-        welcome_text_message = """GuideOS ist eine Linux Distribution, dem sich Mitglieder des Forums https://linuxguides.de angenommen haben.Die Idee wurde Ende 2024 umgesetzt und hat zum Ziel auch den Einstieg oder Umstieg auf Linux für jeden Anwender verständlich zu machen. Als Basis dient UBUNTU und der Desktop Cinnamon. Viele der installierbaren Programme haben wir aus langjähriger Erfahrung ausgewählt und unser Ziel ist GuideOS mit euch gemeinsam weiter zu entwickeln. Du hast Lust ein Teil dieser Community zu sein, dann schaue doch mal bei https://forum.linuxguides.de vorbei. Dort kannst du dich auch registrieren und Fragen und Ideen los werden.\n\nWir freuen uns auf jeden, der GuideOS nutzt und auch über jede neue Idee!"""
+        welcome_text_message = """GuideOS ist eine Linux Distribution, dem sich Mitglieder des Forums https://linuxguides.de angenommen haben.Die Idee wurde Ende 2024 umgesetzt und hat zum Ziel auch den Einstieg oder Umstieg auf Linux für jeden Anwender verständlich zu machen. Als Basis dient Debian und der Desktop Cinnamon. Viele der installierbaren Programme haben wir aus langjähriger Erfahrung ausgewählt und unser Ziel ist GuideOS mit euch gemeinsam weiter zu entwickeln. Du hast Lust ein Teil dieser Community zu sein, dann schaue doch mal bei https://forum.linuxguides.de vorbei. Dort kannst du dich auch registrieren und Fragen und Ideen los werden.\n\nWir freuen uns auf jeden, der GuideOS nutzt und auch über jede neue Idee!"""
 
         # Label für die Willkommensnachricht erstellen
         self.welcome_text_label = ttk.Label(self, text=welcome_text_message,wraplength=800,justify="center")
@@ -49,6 +58,39 @@ class WelcomeTab(ttk.Frame):
         # LabelFrame für Autostart-Optionen erstellen
         self.autostart_frame = ttk.Labelframe(self, text="Autostart")
         self.autostart_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
+
+
+        def check_nvidia_driver():
+            try:
+                driver_info = subprocess.check_output("nvidia-smi --query-gpu=driver_version --format=csv,noheader", shell=True, text=True)
+                print("NVIDIA Treiber Version:", driver_info.strip())
+                return True
+            except subprocess.CalledProcessError:
+                print("NVIDIA-Treiber nicht installiert, möglicherweise läuft der Nouveau-Treiber.")
+                return False
+
+        def check_nvidia_gpu():
+            try:
+                result = subprocess.check_output("lspci | grep NVIDIA", shell=True, text=True)
+
+                if "NVIDIA Corporation" in result:
+                    return True
+                else:
+                    return False
+            except subprocess.CalledProcessError as e:
+                print("Error running 'lspci'")
+                return False
+
+
+        def get_nvidia_gpu_model():
+            try:
+                model_info = subprocess.check_output("nvidia-smi --query-gpu=name --format=csv,noheader", shell=True, text=True)
+                model = model_info.strip()
+                print("NVIDIA GPU Modell:", model)
+                return model
+            except subprocess.CalledProcessError:
+                print("Fehler beim Abrufen des NVIDIA-GPU-Modells. Bitte überprüfen Sie, ob 'nvidia-smi' installiert ist.")
+                return None
 
         def open_software_properties_tab():
             #hide_apt_frame()
@@ -62,25 +104,39 @@ class WelcomeTab(ttk.Frame):
             self.master.wait_window(custom_installer)
 
 
+        def driver_recognition():
+            if check_nvidia_gpu():
+                print("NVIDIA-GPU erkannt.")
+                if check_nvidia_driver():
+                    get_nvidia_gpu_model()  # Modell der GPU abrufen und ausgeben
+                else:
+                    self.nvidia_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
+            else:
+                print("Keine NVIDIA-GPU erkannt.")
+
+        driver_recognition()
+
+
+
 
 
         # LabelFrame für Autostart-Optionen erstellen
-        self.nvidia_frame = ttk.Labelframe(self, text="BAUSTELLE!!!!!!! BAUSTELLE!!!!!!! BAUSTELLE!!!!!!! BAUSTELLE!!!!!!!")
-        self.nvidia_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
+        self.nvidia_frame = ttk.Labelframe(self, text="NVIDIA-Treiber")
+        #self.nvidia_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
 
-        nvidia_text_message = """Dieser Bereich wird in der fertigen Version nur Angezeigt, wenn du deinen Nvidia-Teiber nicht installiert hast. JUNGE!"""
+        nvidia_text_message = """Das System hat erkannt das noch kein Treiber für die Eingebaue Grafikarte installiert ist."""
 
         # Label für die Willkommensnachricht erstellen
-        self.nvidia_text_label = ttk.Label(self.nvidia_frame, text=nvidia_text_message,wraplength=800,justify="center")
-        self.nvidia_text_label.pack(pady=10)
+        self.nvidia_text_label = ttk.Label(self.nvidia_frame, text=nvidia_text_message,image=self.nvidia_icon, wraplength=800,justify="center",compound="left")
+        self.nvidia_text_label.pack(pady=10,padx=10,fill="x")
 
         self.drivers_button = ttk.Button(
                 self.nvidia_frame,
                 text="Nvidia Treiber installieren",
                 command=open_software_properties_tab,
-                style="Custom.TButton",
+                style="Accent.TButton",
             )
-        self.drivers_button.pack(pady=10)
+        self.drivers_button.pack(pady=10,padx=10,fill="x")
 
 
 

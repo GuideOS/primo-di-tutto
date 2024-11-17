@@ -56,6 +56,15 @@ class DashTab(ttk.Frame):
         self.distro_guide_logo_img = ImageTk.PhotoImage(
             Image.open(f"{application_path}/images/icons/guideos_logo_dash.png")
         )
+        if "dark" in theme_name or "Dark" in theme_name:
+            self.system_icon = ImageTk.PhotoImage(
+                Image.open(f"{application_path}/images/icons/pigro_icons/primo-logo-dark.png")
+            )
+        else:
+
+            self.system_icon = ImageTk.PhotoImage(
+                Image.open(f"{application_path}/images/icons/pigro_icons/primo-logo-light.png")
+            )
 
 
         # Open the /proc/device-tree/model file for reading
@@ -160,12 +169,10 @@ class DashTab(ttk.Frame):
         self.useage_container.grid_rowconfigure(0, weight=0)
         self.useage_container.grid_rowconfigure(1, weight=0)
 
-        self.system_icon = ImageTk.PhotoImage(
-            Image.open(f"{application_path}/images/icons/pigro_icons/test.png")
-        )
 
-        label1 = ttk.Label(self, image=self.system_icon)
-        label1.pack()
+
+        primo_logo_label = ttk.Label(self, image=self.system_icon)
+        primo_logo_label.pack()
 
         self.os_info_frame = ttk.LabelFrame(
             self,
