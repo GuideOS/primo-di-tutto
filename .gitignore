@@ -1,1 +1,5 @@
-.DS_Store
+/primo-di-tutto/.vscode
+/primo-di-tutto/__pycache__
+/primo-di-tutto/src/tabs/__pycache__
+*.log
+*.pyc
