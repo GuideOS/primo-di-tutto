@@ -172,7 +172,7 @@ class UpdateTab(ttk.Frame):
             if text == "Update":
                 command = (
                     f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e "
-                    "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'apt update -y && apt upgrade -y && apt autoremove -y && flatpak update -y && flatpak uninstall --unused -y && snap refresh' | lolcat && "
+                    "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'apt update -y && apt upgrade -y && apt autoremove -y && flatpak update -y && flatpak uninstall --unused -y' | lolcat && "
                     "sleep 5 && exit; exec bash\""
                 )
                 
