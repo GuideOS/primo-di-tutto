@@ -14,6 +14,7 @@ from tabs.pop_ups import *
 from tabs.system_tab_check import *
 import json
 from tabs.system_tab_check import check_papirus
+import shutil
 
 
 class LookTab(ttk.Frame):
@@ -77,6 +78,21 @@ class LookTab(ttk.Frame):
             self.devil_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/devil_thumb_light.png"
             )
+
+        def copy_file(source, destination):
+            try:
+                # Sicherstellen, dass das Zielverzeichnis existiert
+                destination_dir = os.path.dirname(destination)
+                os.makedirs(destination_dir, exist_ok=True)
+                
+                # Datei kopieren
+                shutil.copy2(source, destination)
+                print(f"Datei erfolgreich kopiert: {source} -> {destination}")
+            except Exception as e:
+                print(f"Fehler beim Kopieren der Datei: {e}")
+
+
+
 
         def copy_guide_menu(application_path):
             """
@@ -199,6 +215,18 @@ class LookTab(ttk.Frame):
                 # Führe den gsettings-Befehl aus
                 subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
 
+
+
+            # Quell- und Zielpfade
+            source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
+            destination_path = os.path.expanduser(
+                            "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
+                        )
+
+
+            # Funktion aufrufen
+            copy_file(source_path, destination_path)
+
         def set_classico_panel():
             popen("killall plank")
             subprocess.run(
@@ -285,6 +313,18 @@ class LookTab(ttk.Frame):
                 # Führe den gsettings-Befehl aus
                 subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
 
+            # Quell- und Zielpfade
+            source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
+            destination_path = os.path.expanduser(
+                            "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
+                        )
+
+
+            # Funktion aufrufen
+            copy_file(source_path, destination_path)
+
+
+
         def set_der_teufel_panel():
             popen("plank")
             subprocess.run(
@@ -309,8 +349,8 @@ class LookTab(ttk.Frame):
                     "panel2:right:1:temperature@fevimu:16",
                     "panel1:left:1:placesCenter@scollins:17",
                     "panel1:right:16:sessionManager@scollins:18",
-                    "panel1:right:12:weather@mockturtl:19",
-                    "panel1:right:13:calendar@cinnamon.org:20",
+                    "panel1:center:1:weather@mockturtl:19",
+                    "panel1:center:0:calendar@cinnamon.org:20",
                     "panel1:right:0:expo@cinnamon.org:22",
                 ],
                 "enabled-desklets": [],
@@ -343,6 +383,17 @@ class LookTab(ttk.Frame):
                     )  # Ersetze einfache Anführungszeichen mit doppelten
                 # Führe den gsettings-Befehl aus
                 subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
+
+            # Quell- und Zielpfade
+            source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
+            destination_path = os.path.expanduser(
+                            "~/.config/cinnamon/spices/calendar@cinnamon.org/20.json"
+                        )
+
+
+            # Funktion aufrufen
+            copy_file(source_path, destination_path)
+
 
         def set_upside_down_panel():
             popen("killall plank")
@@ -404,6 +455,18 @@ class LookTab(ttk.Frame):
                     )  # Ersetze einfache Anführungszeichen mit doppelten
                 # Führe den gsettings-Befehl aus
                 subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
+
+            # Quell- und Zielpfade
+            source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
+            destination_path = os.path.expanduser(
+                            "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
+                        )
+
+
+            # Funktion aufrufen
+            copy_file(source_path, destination_path)
+
+
 
         self.desktop_layout_set = ttk.LabelFrame(self, text="Layout", padding=10)
         self.desktop_layout_set.pack(pady=20, padx=40, fill="x", anchor="n")
@@ -610,6 +673,9 @@ class LookTab(ttk.Frame):
                     set_gsettings_value(schema, key, selected_theme)
                     print(f"{schema}.{key} wurde auf {selected_theme} gesetzt.")
                 done_message_0()
+
+
+
 
         def set_icon():
             selected_icon = icon_combobox.get()
