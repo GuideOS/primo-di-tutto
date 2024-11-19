@@ -21,7 +21,7 @@ Path=/opt/primo-di-tutto/
 EOL
 
 # Erstellen der Autostart .desktop-Datei
-cat > debian/primo-di-tutto/usr/share/applications/autostart/primo-di-tutto-autostart.desktop <<EOL
+cat > debian/primo-di-tutto/etc/xdg/autostart/primo-di-tutto.desktop <<EOL
 [Desktop Entry]
 Version=2.1
 Exec=primo-di-tutto

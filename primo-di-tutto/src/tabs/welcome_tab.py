@@ -174,7 +174,7 @@ class WelcomeTab(ttk.Frame):
     def check_autostart_status(self):
         """Überprüft den aktuellen Autostart-Status anhand der .desktop-Datei."""
         autostart_file = Path(
-            os.path.expanduser("~/.config/autostart/primo-di-tutto-autostart.desktop")
+            os.path.expanduser("~/.config/autostart/primo-di-tutto.desktop")
         )
 
         # Setzt den Checkbutton-Status basierend auf der .desktop-Datei
