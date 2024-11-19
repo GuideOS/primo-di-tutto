@@ -2,7 +2,7 @@
 
 # Sicherstellen, dass die Verzeichnisse existieren
 mkdir -p debian/primo-di-tutto/usr/share/applications
-mkdir -p debian/primo-di-tutto/usr/share/applications/autostart
+mkdir -p debian/primo-di-tutto/etc/xdg/autostart
 
 # Erstellen der ersten .desktop-Datei
 cat > debian/primo-di-tutto/usr/share/applications/primo-di-tutto.desktop <<EOL
@@ -35,4 +35,23 @@ Categories=System
 Icon=primo-di-tutto-logo
 Path=/opt/primo-di-tutto/
 X-GNOME-Autostart-enabled=true
+EOL
+
+
+# Erstellen der Autostart .desktop-Datei
+cat > debian/primo-di-tutto/etc/xdg/autostart/plank.desktop <<EOL
+[Desktop Entry]
+Name=Plank
+GenericName=Dock
+Categories=Utility;
+Type=Application
+Exec=plank
+Icon=plank
+Terminal=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=false
+Hidden=false
+Name[de_DE]=Plank
+Comment[de_DE]=Lächerlich einfach.
+X-GNOME-Autostart-Delay=0
 EOL
