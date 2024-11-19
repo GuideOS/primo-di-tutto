@@ -192,7 +192,7 @@ class WelcomeTab(ttk.Frame):
         # Pfad zur Konfigurationsdatei
         config_file_path = Path(os.path.expanduser("~/.primo/primo.conf"))
         autostart_file_path = Path(
-            os.path.expanduser("~/.config/autostart/primo-di-tutto-autostart.desktop")
+            os.path.expanduser("~/.config/autostart/primo-di-tutto.desktop")
         )
 
         # 1. Konfigurationsdatei bearbeiten (firstrun auf 'no' setzen)
