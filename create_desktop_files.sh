@@ -20,6 +20,22 @@ Icon=primo-di-tutto-logo
 Path=/opt/primo-di-tutto/
 EOL
 
+# Erstellen der ersten .desktop-Datei
+cat > debian/primo-di-tutto/usr/share/applications/gos-menu.desktop <<EOL
+[Desktop Entry]
+Name=gosmenu
+GenericName=Application Launcher
+Comment=Lightweight, look nice and powerful application launcher
+Categories=GNOME;GTK;Utility;
+Exec=com.github.libredeb.lightpad
+Icon=cinnamon-symbolic
+Terminal=false
+Type=Application
+NoDisplay=false
+StartupNotify=false
+EOL
+
+
 # Erstellen der Autostart .desktop-Datei
 cat > debian/primo-di-tutto/etc/xdg/autostart/primo-di-tutto.desktop <<EOL
 [Desktop Entry]
