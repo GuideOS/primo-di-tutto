@@ -79,20 +79,86 @@ class LookTab(ttk.Frame):
                 file=f"{application_path}/images/icons/pigro_icons/devil_thumb_light.png"
             )
 
+        def check_plank_autostart():
+            # Pfad zur Datei
+            path = os.path.expanduser("~/.config/autostart/plank.desktop")
+
+            # Prüfen, ob die Datei existiert
+            if os.path.exists(path):
+                try:
+                    # Datei löschen
+                    os.remove(path)
+                    print(f"Die Datei {path} wurde gelöscht.")
+                except Exception as e:
+                    print(f"Fehler beim Löschen der Datei: {e}")
+            else:
+                print(f"Die Datei {path} existiert nicht.")
+
+        def copy_dockitems():
+            # Definiere Quell- und Zielverzeichnisse
+            src = f"{application_path}/scripts/"
+            dest = os.path.expanduser("~/.config/plank/dock1/launchers")
+
+            # Prüfe, ob das Quellverzeichnis existiert
+            if not os.path.exists(src):
+                print(f"Quellverzeichnis {src} existiert nicht.")
+                return
+
+            # Erstelle das Zielverzeichnis, falls es nicht existiert
+            if not os.path.exists(dest):
+                os.makedirs(dest)
+                print(f"Zielverzeichnis {dest} wurde erstellt.")
+
+            # Kopiere alle .dockitem-Dateien
+            for file_name in os.listdir(src):
+                if file_name.endswith(".dockitem"):
+                    src_file = os.path.join(src, file_name)
+                    dest_file = os.path.join(dest, file_name)
+                    try:
+                        shutil.copy2(src_file, dest_file)
+                        print(f"{src_file} wurde nach {dest_file} kopiert.")
+                    except Exception as e:
+                        print(f"Fehler beim Kopieren von {src_file}: {e}")
+
+        # Funktion ausführen
+
+        def plank_values():
+            """Schreibt vorgegebene Werte in dconf."""
+            dconf_data = {
+                "/net/launchpad/plank/docks/dock1/alignment": "'fill'",
+                "/net/launchpad/plank/docks/dock1/dock-items": "['gos-menu.dockitem', 'nemo.dockitem','firefox.dockitem']",
+                "/net/launchpad/plank/docks/dock1/hide-mode": "'none'",
+                "/net/launchpad/plank/docks/dock1/offset": "100",
+                "/net/launchpad/plank/docks/dock1/position": "'left'",
+                "/net/launchpad/plank/docks/dock1/theme": "'Transparent'",
+            }
+
+            for path, value in dconf_data.items():
+                try:
+                    subprocess.run(["dconf", "write", path, value], check=True)
+                    print(f"Erfolgreich geschrieben: {path} -> {value}")
+                except subprocess.CalledProcessError as e:
+                    print(f"Fehler beim Schreiben: {path} -> {value}")
+                    print(e)
+
+            # Quell- und Zielpfade
+            source_path = f"{application_path}/scripts/plank.desktop"
+            destination_path = os.path.expanduser("~/.config/autostart/plank.desktop")
+
+            # Funktion aufrufen
+            copy_file(source_path, destination_path)
+
         def copy_file(source, destination):
             try:
                 # Sicherstellen, dass das Zielverzeichnis existiert
                 destination_dir = os.path.dirname(destination)
                 os.makedirs(destination_dir, exist_ok=True)
-                
+
                 # Datei kopieren
                 shutil.copy2(source, destination)
                 print(f"Datei erfolgreich kopiert: {source} -> {destination}")
             except Exception as e:
                 print(f"Fehler beim Kopieren der Datei: {e}")
-
-
-
 
         def copy_guide_menu(application_path):
             """
@@ -156,6 +222,7 @@ class LookTab(ttk.Frame):
 
         def set_elfi_panel():
             popen("killall plank")
+            check_plank_autostart()
             subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
@@ -215,20 +282,18 @@ class LookTab(ttk.Frame):
                 # Führe den gsettings-Befehl aus
                 subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
 
-
-
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
             destination_path = os.path.expanduser(
-                            "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
-                        )
-
+                "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
+            )
 
             # Funktion aufrufen
             copy_file(source_path, destination_path)
 
         def set_classico_panel():
             popen("killall plank")
+            check_plank_autostart()
             subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
@@ -316,14 +381,11 @@ class LookTab(ttk.Frame):
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
             destination_path = os.path.expanduser(
-                            "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
-                        )
-
+                "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
+            )
 
             # Funktion aufrufen
             copy_file(source_path, destination_path)
-
-
 
         def set_der_teufel_panel():
             popen("plank")
@@ -387,15 +449,16 @@ class LookTab(ttk.Frame):
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
             destination_path = os.path.expanduser(
-                            "~/.config/cinnamon/spices/calendar@cinnamon.org/20.json"
-                        )
-
-
+                "~/.config/cinnamon/spices/calendar@cinnamon.org/20.json"
+            )
             # Funktion aufrufen
             copy_file(source_path, destination_path)
 
+            plank_values()
+            copy_dockitems()
 
         def set_upside_down_panel():
+            check_plank_autostart()
             popen("killall plank")
             subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
@@ -459,14 +522,11 @@ class LookTab(ttk.Frame):
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
             destination_path = os.path.expanduser(
-                            "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
-                        )
-
+                "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
+            )
 
             # Funktion aufrufen
             copy_file(source_path, destination_path)
-
-
 
         self.desktop_layout_set = ttk.LabelFrame(self, text="Layout", padding=10)
         self.desktop_layout_set.pack(pady=20, padx=40, fill="x", anchor="n")
@@ -673,9 +733,6 @@ class LookTab(ttk.Frame):
                     set_gsettings_value(schema, key, selected_theme)
                     print(f"{schema}.{key} wurde auf {selected_theme} gesetzt.")
                 done_message_0()
-
-
-
 
         def set_icon():
             selected_icon = icon_combobox.get()
