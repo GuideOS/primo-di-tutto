@@ -86,7 +86,16 @@ class BootLoaderTab(ttk.Frame):
 
         def set_grub_timeout(timeout):
             grub_config_path = "/etc/default/grub"
-            command = f"pkexec bash -c 'sed -i \"s/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT={timeout}/\" {grub_config_path} && update-grub'"
+            command = f"""
+            pkexec bash -c '
+            if grep -q "^GRUB_TIMEOUT=" {grub_config_path}; then
+                sed -i "s/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT={timeout}/" {grub_config_path};
+            else
+                echo "GRUB_TIMEOUT={timeout}" >> {grub_config_path};
+            fi
+            update-grub'
+            """
+            os.system(command)
 
             try:
                 result = subprocess.run(
