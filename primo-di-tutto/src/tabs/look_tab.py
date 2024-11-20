@@ -79,6 +79,77 @@ class LookTab(ttk.Frame):
                 file=f"{application_path}/images/icons/pigro_icons/devil_thumb_light.png"
             )
 
+        def backup_grouped_config():
+            # Verzeichnis mit der JSON-Datei
+            config_dir = os.path.expanduser("~/.config/cinnamon/spices/grouped-window-list@cinnamon.org")
+            
+            # Prüfen, ob das Verzeichnis existiert
+            if not os.path.exists(config_dir):
+                print(f"Das Verzeichnis {config_dir} wurde nicht gefunden.")
+                return False
+
+            # Datei mit dem Suchmuster finden
+            try:
+                json_file = next(
+                    (f for f in os.listdir(config_dir) if f.endswith(".json")),
+                    None
+                )
+            except Exception as e:
+                print(f"Fehler beim Lesen des Verzeichnisses: {e}")
+                return False
+
+            if not json_file:
+                print("Keine JSON-Datei gefunden.")
+                return False
+            
+            # Pfad zur Originaldatei
+            file_path = os.path.join(config_dir, json_file)
+            # Backup-Dateipfad
+            backup_file_path = os.path.join(config_dir, "69.bak")
+            
+            try:
+                # Datei kopieren
+                shutil.copy(file_path, backup_file_path)
+                print(f"Backup erfolgreich erstellt: {backup_file_path}")
+                return True
+            except Exception as e:
+                print(f"Fehler beim Erstellen des Backups: {e}")
+                return False
+
+        # Funktion aufrufen
+        backup_grouped_config()
+        def restore_cinnamon_config(file_number):
+            # Verzeichnis mit der JSON-Datei
+            config_dir = os.path.expanduser("~/.config/cinnamon/spices/grouped-window-list@cinnamon.org")
+            
+            # Prüfen, ob das Verzeichnis existiert
+            if not os.path.exists(config_dir):
+                print(f"Das Verzeichnis {config_dir} wurde nicht gefunden.")
+                return False
+
+            # Pfad zur Backup-Datei
+            backup_file_path = os.path.join(config_dir, "69.bak")
+            
+            # Prüfen, ob die Backup-Datei existiert
+            if not os.path.exists(backup_file_path):
+                print(f"Das Backup {backup_file_path} wurde nicht gefunden.")
+                return False
+
+            # Ziel-JSON-Dateiname basierend auf der Zahl
+            restored_file_name = f"{file_number}.json"
+            restored_file_path = os.path.join(config_dir, restored_file_name)
+            
+            try:
+                # Backup zurückkopieren
+                shutil.copy(backup_file_path, restored_file_path)
+                print(f"Backup erfolgreich wiederhergestellt als: {restored_file_path}")
+                return True
+            except Exception as e:
+                print(f"Fehler beim Wiederherstellen des Backups: {e}")
+                return False
+
+
+
         def check_plank_autostart():
             # Pfad zur Datei
             path = os.path.expanduser("~/.config/autostart/plank.desktop")
@@ -234,7 +305,7 @@ class LookTab(ttk.Frame):
                 "desktop-layout": "",
                 "enabled-applets": [
                     "panel1:center:0:menu@cinnamon.org:0",
-                    "panel1:center:2:grouped-window-list@cinnamon.org:2",
+                    "panel1:center:2:grouped-window-list@cinnamon.org:69",
                     "panel1:right:1:systray@cinnamon.org:3",
                     "panel1:right:2:xapp-status@cinnamon.org:4",
                     "panel1:right:3:notifications@cinnamon.org:5",
@@ -290,6 +361,7 @@ class LookTab(ttk.Frame):
 
             # Funktion aufrufen
             copy_file(source_path, destination_path)
+            restore_cinnamon_config(69)
 
         def set_classico_panel():
             popen("killall plank")
@@ -338,7 +410,7 @@ class LookTab(ttk.Frame):
                 "date-format": "'%a, %h %d %Y%l:%M %p'",
                 "enabled-applets": [
                     "panel1:left:0:menu@cinnamon.org:0",
-                    "panel1:left:2:grouped-window-list@cinnamon.org:2",
+                    "panel1:left:2:grouped-window-list@cinnamon.org:69",
                     "panel1:right:2:systray@cinnamon.org:3",
                     "panel1:right:3:xapp-status@cinnamon.org:4",
                     "panel1:right:4:notifications@cinnamon.org:5",
@@ -386,6 +458,7 @@ class LookTab(ttk.Frame):
 
             # Funktion aufrufen
             copy_file(source_path, destination_path)
+            restore_cinnamon_config(69)
 
         def set_der_teufel_panel():
             popen("plank")
@@ -469,7 +542,7 @@ class LookTab(ttk.Frame):
                 "date-format": "%a, %h %d %Y %l:%M %p",
                 "enabled-applets": [
                     "panel1:left:0:menu@cinnamon.org:0",
-                    "panel1:left:2:grouped-window-list@cinnamon.org:2",
+                    "panel1:left:2:grouped-window-list@cinnamon.org:69",
                     "panel1:right:2:systray@cinnamon.org:3",
                     "panel1:right:3:xapp-status@cinnamon.org:4",
                     "panel1:right:4:notifications@cinnamon.org:5",
@@ -527,6 +600,7 @@ class LookTab(ttk.Frame):
 
             # Funktion aufrufen
             copy_file(source_path, destination_path)
+            restore_cinnamon_config(69)
 
         self.desktop_layout_set = ttk.LabelFrame(self, text="Layout", padding=10)
         self.desktop_layout_set.pack(pady=20, padx=40, fill="x", anchor="n")
