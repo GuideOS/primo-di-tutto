@@ -602,7 +602,7 @@ class LookTab(ttk.Frame):
             copy_file(source_path, destination_path)
             restore_cinnamon_config(69)
 
-        self.desktop_layout_set = ttk.LabelFrame(self, text="Layout", padding=10)
+        self.desktop_layout_set = ttk.LabelFrame(self, text="Layout-Vorlagen", padding=10)
         self.desktop_layout_set.pack(pady=20, padx=40, fill="x", anchor="n")
         self.desktop_layout_set.grid_columnconfigure(0, weight=1)
         self.desktop_layout_set.grid_columnconfigure(1, weight=1)
@@ -685,7 +685,7 @@ class LookTab(ttk.Frame):
                 ]
                 themes.sort()
                 theme_combobox["values"] = themes
-                theme_combobox.set("Select Theme")
+                theme_combobox.set("Theme wählen")
             except Exception as e:
                 theme_combobox.set("Error: " + str(e))
 
@@ -698,7 +698,7 @@ class LookTab(ttk.Frame):
                 ]
                 icons.sort()
                 icon_combobox["values"] = icons
-                icon_combobox.set("Select Icons")
+                icon_combobox.set("Symbole wählen")
             except Exception as e:
                 icon_combobox.set("Error: " + str(e))
 
@@ -718,7 +718,7 @@ class LookTab(ttk.Frame):
                 ]
 
                 cursor_combobox["values"] = cursor_themes
-                cursor_combobox.set("Select Cursor")
+                cursor_combobox.set("Cursor wählen")
             except Exception as e:
                 cursor_combobox.set("Error: " + str(e))
 
@@ -788,7 +788,7 @@ class LookTab(ttk.Frame):
         def set_theme():
             selected_theme = theme_combobox.get()
 
-            if selected_theme != "Press Refresh":
+            if selected_theme != "Bitte aktualisieren":
                 # Liste der GSettings-Schlüssel und deren Pfade
                 settings_keys = [
                     ("org.gnome.desktop.interface", "gtk-theme"),
@@ -811,7 +811,7 @@ class LookTab(ttk.Frame):
         def set_icon():
             selected_icon = icon_combobox.get()
 
-            if selected_icon != "Press Refresh":
+            if selected_icon != "Bitte aktualisieren":
                 subprocess.run(
                     [
                         "gsettings",
@@ -826,7 +826,7 @@ class LookTab(ttk.Frame):
         def set_cursor():
             selected_cursor = cursor_combobox.get()
 
-            if selected_cursor != "Press Refresh":
+            if selected_cursor != "Bitte aktualisieren":
                 subprocess.run(
                     [
                         "gsettings",
@@ -848,23 +848,23 @@ class LookTab(ttk.Frame):
         theme_combobox.grid(
             row=1, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
         )
-        theme_combobox.set("Press Refresh")
+        theme_combobox.set("Bitte aktualisieren")
 
         icon_combobox = ttk.Combobox(self.pixel_set, state="readonly")
         icon_combobox.grid(
             row=2, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
         )
-        icon_combobox.set("Press Refresh")
+        icon_combobox.set("Bitte aktualisieren")
 
         cursor_combobox = ttk.Combobox(self.pixel_set, state="readonly")
         cursor_combobox.grid(
             row=3, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
         )
-        cursor_combobox.set("Press Refresh")
+        cursor_combobox.set("Bitte aktualisieren")
 
         theme_button = ttk.Button(
             self.pixel_set,
-            text="Set Theme",
+            text="Theme anwenden",
             compound="left",
             image=self.theme_folder_icon,
             command=set_theme,
@@ -874,7 +874,7 @@ class LookTab(ttk.Frame):
 
         icon_button = ttk.Button(
             self.pixel_set,
-            text="Set Icon",
+            text="Symbole anwenden",
             compound="left",
             image=self.icon_folder_icon,
             command=set_icon,
@@ -884,7 +884,7 @@ class LookTab(ttk.Frame):
 
         cursor_button = ttk.Button(
             self.pixel_set,
-            text="Set Cursor",
+            text="Cursor anwenden",
             compound="left",
             image=self.cursor_folder_icon,
             command=set_cursor,
@@ -894,7 +894,7 @@ class LookTab(ttk.Frame):
 
         theme_refresh_button = ttk.Button(
             self.pixel_set,
-            text="Refresh",
+            text="Aktualisieren",
             compound="left",
             image=self.refresh_icon,
             command=update_theme_combobox,
@@ -907,7 +907,7 @@ class LookTab(ttk.Frame):
 
         theme_folder_button = ttk.Button(
             self.pixel_set,
-            text="Theme Folder",
+            text="Theme-Ordner",
             image=self.folder_icon,
             compound="left",
             command=open_theme_folder,
@@ -917,7 +917,7 @@ class LookTab(ttk.Frame):
 
         icon_folder_button = ttk.Button(
             self.pixel_set,
-            text="Icon Folder",
+            text="Symbol-Ordner",
             compound="left",
             image=self.folder_icon,
             command=open_icon_folder,
@@ -927,7 +927,7 @@ class LookTab(ttk.Frame):
 
         cursor_folder_button = ttk.Button(
             self.pixel_set,
-            text="Cursor Folder",
+            text="Cursor-Ordner",
             compound="left",
             image=self.folder_icon,
             command=open_icon_folder,
