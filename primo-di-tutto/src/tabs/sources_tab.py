@@ -42,11 +42,11 @@ class SourcesTab(ttk.Frame):
 
         def open_source_f_d():
 
-            popen(f"pkexec nemo /etc/apt/sources.list.d")
+            popen(f"software-properties-gtk")
 
         self.open_source_folder = ttk.Button(
             self.added_repositories,
-            text="Open sources.list.d",
+            text="Quellen bearbeiten",
             command=open_source_f_d,
             style="Custom.TButton",
         )
