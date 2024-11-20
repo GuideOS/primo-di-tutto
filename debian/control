@@ -3,12 +3,12 @@ Section: misc
 Priority: optional
 Maintainer: Timo Westphal <xxx@gmail.com>
 Build-Depends: debhelper (>= 9), python3-all, python3-setuptools, rsync
-Standards-Version: 0.5.3
+Standards-Version: 0.5.4
 Homepage: https://rueegger.me
 
 Package: primo-di-tutto
 Architecture: all
-Depends: ${misc:Depends}, python3
+Depends: ${misc:Depends}, python3, plank
 Description: A system control tool for Linux Guide OS
  Primo Di Tutto is a system configuration tool inspired by openSUSE's YaST
  but designed with the user-friendliness of Linux Mint in mind.
