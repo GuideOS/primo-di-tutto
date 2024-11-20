@@ -23,12 +23,12 @@ EOL
 # Erstellen der ersten .desktop-Datei
 cat > debian/primo-di-tutto/usr/share/applications/gos-menu.desktop <<EOL
 [Desktop Entry]
-Name=gosmenu
+Name=gos-menu
 GenericName=Application Launcher
 Comment=Lightweight, look nice and powerful application launcher
 Categories=GNOME;GTK;Utility;
 Exec=com.github.libredeb.lightpad
-Icon=cinnamon-symbolic
+Icon=guide-os-logo-symbolic-dark
 Terminal=false
 Type=Application
 NoDisplay=false
