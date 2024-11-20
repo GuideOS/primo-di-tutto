@@ -16,6 +16,13 @@ class ContribTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
 
+        def open_website():
+            webbrowser.open("https://guideos.de")
+
+        def open_board():
+            webbrowser.open("https://forum.linuxguides.de/core/index.php?dashboard/")
+
+
         self.take_part_frame = ttk.LabelFrame(self, text="Mach mit !", padding=20)
         self.take_part_frame.pack(padx=20, pady=20, fill="both", expand=True)
 
@@ -27,12 +34,11 @@ class ContribTab(ttk.Frame):
         take_part_message.pack(fill="x")
 
         go_home = ttk.Button(
-            self.take_part_frame, text="pgOS Website", style="Custom.TButton"
+            self.take_part_frame, text="GuideOS Website", style="Custom.TButton", command=open_website
         )
         go_home.pack(fill="x", expand=True, pady=5)
 
-        def open_board():
-            webbrowser.open("https://forum.linuxguides.de/core/index.php?dashboard/")
+
 
         go_board = ttk.Button(
             self.take_part_frame,
@@ -46,9 +52,12 @@ class ContribTab(ttk.Frame):
         def open_gitlab():
             webbrowser.open("https://gitlab.pgos.net/")
 
+        def open_ticket():
+            popen("guideos-ticket-tool")
+
         go_git = ttk.Button(
             self.take_part_frame,
-            text="pgOS auf GitLab",
+            text="GuideOS auf GitLab",
             style="Custom.TButton",
             command=open_gitlab,
         )
@@ -58,7 +67,7 @@ class ContribTab(ttk.Frame):
             self.take_part_frame,
             text="Melde einen Fehler oder ein Problem",
             style="Custom.TButton",
-            command=open_gitlab,
+            command=open_ticket,
         )
         send_error.pack(fill="x", expand=True, pady=5)
 
@@ -85,7 +94,9 @@ class ContribTab(ttk.Frame):
         text_box.config(yscrollcommand=scrollbar.set)
 
         # Text in die Textbox einfügen
-        text_box.insert(tk.END, "@Toadie @StephanR @stryvyr @maik3531 @Bulvai @GF-S15")
+        text_box.insert(
+            tk.END, "@Bulvai @DenalB @evilware666 @GF-S15 @Gonzo-3004 @Hammer20l @harihegen @kim88 @KTT73 @maik3531 @Mastertac @Nightworker @Perval @Stardenver @Stephan @StephanR @stryvyr @Toadie"
+        )
 
         # Textbox für Eingaben sperren (read-only)
         text_box.config(state=tk.DISABLED)
