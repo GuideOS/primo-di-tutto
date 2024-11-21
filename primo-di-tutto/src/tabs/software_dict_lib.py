@@ -290,13 +290,13 @@ class SoftwareCommunication:
         },
         "com_1": {
             "Name": "Firefox",
-            "Package": "Snap",
+            "Package": "Debian-Paket",
             "Description": "Ein flexibler und datenschutzorientierter Browser von Mozilla. Unterstützt zahlreiche Add-ons und bietet eine hohe Anpassungsfähigkeit. Verfügbar auf allen gängigen Plattformen.",
             "Icon": f"{application_path}/images/apps/org.mozilla.firefox-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.mozilla.firefox-thumb.png",
-            "Install": "pkexec apt install firefox-esr",
-            "Uninstall": "pkexec apt remove firefox-esr",
-            "Path": "firefox-esr",
+            "Install": "pkexec apt install firefox",
+            "Uninstall": "pkexec apt remove firefox",
+            "Path": "firefox",
         },
         "com_2": {
             "Name": "Vivaldi",
@@ -310,7 +310,7 @@ class SoftwareCommunication:
         },
         "com_3": {
             "Name": "LibreWolf",
-            "Package": "AppImage",
+            "Package": "Debian-Paket",
             "Description": "Ein auf Firefox basierender Browser mit Fokus auf Datenschutz und Sicherheit. Entfernt Telemetrie und Werbe-Tracking. Unterstützt Firefox-Add-ons und regelmäßige Updates.",
             "Icon": f"{application_path}/images/apps/io.gitlab.librewolf-community-icon.png",
             "Thumbnail": f"{application_path}/images/apps/io.gitlab.librewolf-community-thumb.png",
@@ -320,12 +320,12 @@ class SoftwareCommunication:
         },
         "com_4": {
             "Name": "Chromium",
-            "Package": "Snap",
+            "Package": "Debian-Paket",
             "Description": "Der Open-Source-Browser von Google, der die Basis für Google Chrome bildet. Enthält keine proprietären Google-Komponenten. Wird oft von Entwicklern für Tests genutzt.",
             "Icon": f"{application_path}/images/apps/org.chromium.Chromium-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.chromium.Chromium-thumb.png",
-            "Install": "snap install chromium",
-            "Uninstall": "snap remove chromium",
+            "Install": "apt install chromium",
+            "Uninstall": "apt remove chromium",
             "Path": "chromium",
         },
         "com_5": {
@@ -341,7 +341,7 @@ class SoftwareCommunication:
         # E-Mail und Messaging
         "com_6": {
             "Name": "Thunderbird",
-            "Package": "Snap",
+            "Package": "Debian-Paket",
             "Description": "Ein leistungsfähiger E-Mail-Client von Mozilla mit Kalender- und Aufgabenfunktion. Unterstützt POP3 und IMAP sowie RSS-Feeds. Plattformübergreifend verfügbar.",
             "Icon": f"{application_path}/images/apps/org.mozilla.Thunderbird-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.mozilla.Thunderbird-thumb.png",
