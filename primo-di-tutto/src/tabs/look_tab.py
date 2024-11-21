@@ -329,6 +329,7 @@ class LookTab(ttk.Frame):
                 "favorite-apps": [
                     "cinnamon-settings.desktop",
                     "nemo.desktop",
+                    "primo-di-tutto.desktop",
                     "org.gnome.Software.desktop",
                     "system-config-printer.desktop",
                     "org.gnome.DejaDup.desktop",
@@ -429,6 +430,14 @@ class LookTab(ttk.Frame):
                     "panel2:center:1:weather@mockturtl:19",
                     "panel1:right:0:expo@cinnamon.org:22",
                 ],
+                "favorite-apps": [
+                    "cinnamon-settings.desktop",
+                    "nemo.desktop",
+                    "primo-di-tutto.desktop",
+                    "org.gnome.Software.desktop",
+                    "system-config-printer.desktop",
+                    "org.gnome.DejaDup.desktop",
+                ],                
                 "enabled-extensions": "['opacify@anish.org', 'transparent-panels@germanfr']",
                 "panel-zone-icon-sizes": '\'[{"panelId": 1, "left": 0, "center": 0, "right": 22}, {"left": 0, "center": 0, "right": 0, "panelId": 2}]\'',
                 "panel-zone-symbolic-icon-sizes": '\'[{"panelId": 1, "left": 22, "center": 28, "right": 18}, {"left": 28, "center": 17, "right": 28, "panelId": 2}]\'',
@@ -568,6 +577,7 @@ class LookTab(ttk.Frame):
                 "favorite-apps": [
                     "cinnamon-settings.desktop",
                     "nemo.desktop",
+                    "primo-di-tutto.desktop",
                     "org.gnome.Software.desktop",
                     "system-config-printer.desktop",
                     "org.gnome.DejaDup.desktop",
