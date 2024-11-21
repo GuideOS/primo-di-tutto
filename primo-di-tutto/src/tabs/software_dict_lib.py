@@ -120,7 +120,7 @@ class SoftwareGame:
         "game_1": {
             "Name": "Lutris",
             "Package": "Debian-Paket",
-            "Description": "Lutris ist ein Programm, mit dem man Spiele aus verschiedenen Quellen verwalten und starten kann. Das geht auch (teilweise) mit Windows-Games.",
+            "Description": "Lutris ist ein Programm, mit dem man Spiele aus verschiedenen Quellen verwalten und starten kann. Das geht auch (teilweise) mit Windows-Games.\n\nDieser Installer installiert auch Wine, damit alles bereit zum spielen ist.",
             "Icon": f"{application_path}/images/apps/net.lutris.Lutris-icon.png",
             "Thumbnail": f"{application_path}/images/apps/net.lutris.Lutris-thumb.png",
             "Install": f"pkexec {application_path}/scripts/install_lutris",
