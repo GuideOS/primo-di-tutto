@@ -1,31 +1,16 @@
 #!/bin/bash
 
-# URL von der GitHub-API, um den neuesten Release zu finden
-API_URL="https://api.github.com/repos/lutris/lutris/releases/latest"
+echo 'deb http://download.opensuse.org/repositories/home:/strycore/Debian_12/ /' | sudo tee /etc/apt/sources.list.d/home:strycore.list
+curl -fsSL https://download.opensuse.org/repositories/home:strycore/Debian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_strycore.gpg > /dev/null
+sudo apt update
+sudo apt install -y lutris 
 
-# Hole die Informationen über den neuesten Release
-RELEASE_INFO=$(curl -s "$API_URL")
 
-# Extrahiere die URL zur .deb-Datei
-DEB_URL=$(echo "$RELEASE_INFO" | grep "browser_download_url" | grep ".deb" | cut -d '"' -f 4 | head -n 1)
+sudo dpkg --add-architecture i386
+sudo mkdir -pm755 /etc/apt/keyrings
+sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources
+sudo apt update
+sudo apt install -y --install-recommends winehq-stable
 
-# Überprüfe, ob die .deb-URL gefunden wurde
-if [ -n "$DEB_URL" ]; then
-    echo "Lade herunter: $DEB_URL"
-    
-    # Lade die .deb-Datei in /tmp herunter
-    TEMP_DEB_FILE="/tmp/$(basename "$DEB_URL")"
-    curl -L -o "$TEMP_DEB_FILE" "$DEB_URL"
-    
-    echo "Download abgeschlossen."
 
-    # Installiere Lutris und Wine in einem einzigen pkexec-Befehl
-    echo "Installiere Lutris und Wine..."
-    if pkexec bash -c "apt install -y $TEMP_DEB_FILE wine --install-recommends"; then
-        echo "Lutris und Wine wurden erfolgreich installiert."
-    else
-        echo "Fehler bei der Installation von Lutris oder Wine."
-    fi
-else
-    echo "Keine .deb-Datei gefunden."
-fi

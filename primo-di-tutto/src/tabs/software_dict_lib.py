@@ -123,7 +123,7 @@ class SoftwareGame:
             "Description": "Lutris ist ein Programm, mit dem man Spiele aus verschiedenen Quellen verwalten und starten kann. Das geht auch (teilweise) mit Windows-Games.",
             "Icon": f"{application_path}/images/apps/net.lutris.Lutris-icon.png",
             "Thumbnail": f"{application_path}/images/apps/net.lutris.Lutris-thumb.png",
-            "Install": f"{application_path}/scripts/install_lutris",
+            "Install": f"pkexec {application_path}/scripts/install_lutris",
             "Uninstall": "pkexec apt remove lutris -y",
             "Path": "lutris",
             "AppStream": "net.lutris.Lutris",
