@@ -38,19 +38,16 @@ EOL
 
 # Erstellen der Autostart .desktop-Datei
 cat > debian/primo-di-tutto/etc/xdg/autostart/primo-di-tutto.desktop <<EOL
+#!/usr/bin/env xdg-open
 [Desktop Entry]
-Version=2.1
-Exec=primo-di-tutto
-Name=Primo Di Tutto
-GenericName=Primo
-Encoding=UTF-8
-Terminal=false
-StartupWMClass=Primo
 Type=Application
-Categories=System
-Icon=primo-di-tutto-logo
-Path=/opt/primo-di-tutto/
+Exec=python3 /opt/primo-di-tutto/src/main.py
 X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[de_DE]=primo-di-tutto.desktop
+Comment[de_DE]=Keine Beschreibung
+X-GNOME-Autostart-Delay=0
 EOL
 
 

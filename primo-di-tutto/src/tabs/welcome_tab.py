@@ -169,7 +169,7 @@ class WelcomeTab(ttk.Frame):
         self.autostart_checkbutton.grid(row=0, column=1, padx=10, pady=10, sticky="e")
 
         # Check den aktuellen Autostart-Status und setze den Checkbutton korrekt
-        self.check_autostart_status()
+        #self.check_autostart_status()
 
     def check_autostart_status(self):
         """Überprüft den aktuellen Autostart-Status anhand der .desktop-Datei."""
@@ -246,16 +246,16 @@ class WelcomeTab(ttk.Frame):
                 file.write(
                     f"""[Desktop Entry]
 Version=2.1
-Exec=primo-di-tutto
-Name=Primo Di Tutto
-GenericName=Primo
-Encoding=UTF-8
-Terminal=false
-StartupWMClass=Primo
+#!/usr/bin/env xdg-open
+[Desktop Entry]
 Type=Application
-Categories=System
-Icon=primo-di-tutto-logo
-Path=/opt/primo-di-tutto/
+Exec=python3 /opt/primo-di-tutto/src/main.py
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[de_DE]=primo-di-tutto.desktop
+Comment[de_DE]=Keine Beschreibung
+X-GNOME-Autostart-Delay=0
 X-GNOME-Autostart-enabled={'true' if autostart_enabled else 'false'}
 """
                 )
