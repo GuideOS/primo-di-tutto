@@ -59,6 +59,16 @@ class WelcomeTab(ttk.Frame):
         self.autostart_frame = ttk.Labelframe(self, text="Autostart")
         self.autostart_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
 
+        def get_gpu_model_inxi():
+            try:
+                output = subprocess.check_output("inxi -G", shell=True, text=True)
+                gpu_model = output.strip()
+                #print("GPU Modell (über inxi):", gpu_model)
+                return gpu_model
+            except subprocess.CalledProcessError:
+                print("Fehler beim Auslesen des GPU-Modells über inxi.")
+                return None
+
 
         def check_nvidia_driver():
             try:
@@ -71,9 +81,7 @@ class WelcomeTab(ttk.Frame):
 
         def check_nvidia_gpu():
             try:
-                result = subprocess.check_output("lspci | grep NVIDIA", shell=True, text=True)
-
-                if "NVIDIA Corporation" in result:
+                if "NVIDIA" in get_gpu_model_inxi():
                     return True
                 else:
                     return False
