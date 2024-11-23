@@ -294,8 +294,8 @@ class SoftwareCommunication:
             "Description": "Ein flexibler und datenschutzorientierter Browser von Mozilla. Unterstützt zahlreiche Add-ons und bietet eine hohe Anpassungsfähigkeit. Verfügbar auf allen gängigen Plattformen.",
             "Icon": f"{application_path}/images/apps/org.mozilla.firefox-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.mozilla.firefox-thumb.png",
-            "Install": "pkexec apt install firefox",
-            "Uninstall": "pkexec apt remove firefox",
+            "Install": "pkexec apt install firefox -y",
+            "Uninstall": "pkexec apt remove firefox -y",
             "Path": "firefox",
         },
         "com_2": {
