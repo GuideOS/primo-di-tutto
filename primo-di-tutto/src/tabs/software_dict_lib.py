@@ -271,6 +271,18 @@ class SoftwareGame:
             "Path": "net.freerct.FreeRCT",
             "AppStream": "net.freerct.FreeRCT",
         },
+        "game_15": {
+            "Name": "Stone Kingdom",
+            "Package": "Flatpak",
+            "Description": "Erlebe den Nervenkitzel des mittelalterlichen Burgenbaus und der Zerstörung in unserem isometrischen, quelloffenen Strategiespiel – eine moderne Neuauflage des Klassikers 'Stronghold' von Firefly Studios. Tauche ein in eine Welt voller Strategie und taktischer Entscheidungen, während du deine eigenen Burgen im mittelalterlichen Europa entwirfst und verteidigst.",
+            "Icon": f"{application_path}/images/apps/io.gitlab.stone_kingdoms.StoneKingdoms-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/io.gitlab.stone_kingdoms.StoneKingdoms-thumb.png",
+            "Install": "flatpak install flathub io.gitlab.stone_kingdoms.StoneKingdoms -y",
+            "Uninstall": "flatpak remove io.gitlab.stone_kingdoms.StoneKingdoms -y",
+            "Path": "io.gitlab.stone_kingdoms.StoneKingdoms",
+            "AppStream": "io.gitlab.stone_kingdoms.StoneKingdoms",
+        },
+
     }
 
 
