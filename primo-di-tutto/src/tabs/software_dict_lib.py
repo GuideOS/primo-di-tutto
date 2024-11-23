@@ -282,7 +282,17 @@ class SoftwareGame:
             "Path": "io.gitlab.stone_kingdoms.StoneKingdoms",
             "AppStream": "io.gitlab.stone_kingdoms.StoneKingdoms",
         },
-
+        "game_16": {
+            "Name": "Pekka Kana 2",
+            "Package": "Flatpak",
+            "Description": "Pekka Kana 2 (Pekka the Rooster 2) ist ein Jump-'n'-Run-Spiel, das im Geiste klassischer Plattformspiele wie Super Mario, Sonic the Hedgehog, Jazz Jackrabbit, Super Frog und ähnlicher Titel entwickelt wurde.\n\nDas einfache Ziel in jedem Level besteht darin, das Ausgangsschild zu erreichen – was jedoch meist nicht so einfach ist, wie es klingt, da Gegner, Fallen und knifflige Rätsel den Weg erschweren.",
+            "Icon": f"{application_path}/images/apps/net.pistegamez.PekkaKana2-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/net.pistegamez.PekkaKana2-thumb.png",
+            "Install": "flatpak install flathub net.pistegamez.PekkaKana2 -y",
+            "Uninstall": "flatpak remove net.pistegamez.PekkaKana2 -y",
+            "Path": "net.pistegamez.PekkaKana2",
+            "AppStream": "net.pistegamez.PekkaKana2",
+        },
     }
 
 
