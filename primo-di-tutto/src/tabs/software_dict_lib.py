@@ -324,8 +324,8 @@ class SoftwareCommunication:
             "Description": "Der Open-Source-Browser von Google, der die Basis für Google Chrome bildet. Enthält keine proprietären Google-Komponenten. Wird oft von Entwicklern für Tests genutzt.",
             "Icon": f"{application_path}/images/apps/org.chromium.Chromium-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.chromium.Chromium-thumb.png",
-            "Install": "pkexec apt install chromium",
-            "Uninstall": "pkexec apt remove chromium",
+            "Install": "pkexec apt install chromium -y",
+            "Uninstall": "pkexec apt remove chromium -y",
             "Path": "chromium",
         },
         "com_5": {
@@ -345,8 +345,8 @@ class SoftwareCommunication:
             "Description": "Ein leistungsfähiger E-Mail-Client von Mozilla mit Kalender- und Aufgabenfunktion. Unterstützt POP3 und IMAP sowie RSS-Feeds. Plattformübergreifend verfügbar.",
             "Icon": f"{application_path}/images/apps/org.mozilla.Thunderbird-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.mozilla.Thunderbird-thumb.png",
-            "Install": "pkexec apt install thunderbird",
-            "Uninstall": "pkexec apt remove thunderbird",
+            "Install": "pkexec apt install thunderbird -y",
+            "Uninstall": "pkexec apt remove thunderbird -y",
             "Path": "thunderbird",
         },
         "com_7": {
@@ -454,7 +454,7 @@ class SoftwareAudioVideo:
             "Icon": f"{application_path}/images/apps/org.videolan.VLC-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.videolan.VLC-thumb.png",
             "Install": "pkexec apt install vlc  -y",
-            "Uninstall": "pkexec apt remove vlc ",
+            "Uninstall": "pkexec apt remove vlc -y ",
             "Path": "vlc",
         },
         "av_4": {

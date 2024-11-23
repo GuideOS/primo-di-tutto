@@ -1,3 +1,15 @@
+primo-di-tutto (0.5.8) unstable; urgency=medium
+
+  * Raisesd Version.
+  * Fixed: Thunderbird install
+  * Fixed: Chromium install
+  * Fixed: VLC install
+  * Fixed: Firefox install
+
+ -- Timo Westphal <xxx@gmail.com>  Thu, 23 Nov 2024 17:49:00 +0000
+
+
+
 primo-di-tutto (0.5.7) unstable; urgency=medium
 
   * Raisesd Version.
