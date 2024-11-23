@@ -324,8 +324,8 @@ class SoftwareCommunication:
             "Description": "Der Open-Source-Browser von Google, der die Basis für Google Chrome bildet. Enthält keine proprietären Google-Komponenten. Wird oft von Entwicklern für Tests genutzt.",
             "Icon": f"{application_path}/images/apps/org.chromium.Chromium-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.chromium.Chromium-thumb.png",
-            "Install": "apt install chromium",
-            "Uninstall": "apt remove chromium",
+            "Install": "pkexec apt install chromium",
+            "Uninstall": "pkexec apt remove chromium",
             "Path": "chromium",
         },
         "com_5": {
