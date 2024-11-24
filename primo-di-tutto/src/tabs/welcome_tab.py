@@ -252,18 +252,15 @@ class WelcomeTab(ttk.Frame):
             # Wenn die Datei nicht existiert, wird sie neu erstellt
             with open(autostart_file_path, "w") as file:
                 file.write(
-                    f"""[Desktop Entry]
-Version=2.1
-#!/usr/bin/env xdg-open
+                    f"""#!/usr/bin/env xdg-open
 [Desktop Entry]
 Type=Application
 Exec=python3 /opt/primo-di-tutto/src/main.py
-X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-enabled=false
 NoDisplay=false
 Hidden=false
 Name[de_DE]=primo-di-tutto.desktop
 Comment[de_DE]=Keine Beschreibung
 X-GNOME-Autostart-Delay=0
-X-GNOME-Autostart-enabled={'true' if autostart_enabled else 'false'}
 """
                 )
