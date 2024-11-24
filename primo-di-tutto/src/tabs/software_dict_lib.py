@@ -572,8 +572,8 @@ class SoftwareImageEditing:
             "Description": "Eine professionelle und kostenlose digitale Malsoftware, die sich besonders für Konzeptkunst, Texturen, Comics und Illustrationen eignet. Bietet eine intuitive Benutzeroberfläche und viele Malwerkzeuge.",
             "Icon": f"{application_path}/images/apps/org.kde.krita-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.kde.krita-thumb.png",
-            "Install": "pkexec apt install krita -y",
-            "Uninstall": "pkexec apt remove krita -y",
+            "Install": "pkexec apt install krita krita-l10n -y",
+            "Uninstall": "pkexec apt remove krita krita-l10n -y",
             "Path": "krita",
         },
         "img_2": {
