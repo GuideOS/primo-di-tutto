@@ -1,3 +1,17 @@
+primo-di-tutto (0.6.0) unstable; urgency=medium
+
+  * Changed: Title
+  * Fixed: Look refreshes on start
+  * Added: Test Translation
+  * Added: Proper Dependency-List
+  * Added: New In-App-Logo
+  * Changed: App-Height
+  * Changed: App-Icon
+  * Raised: Version
+
+ -- Timo Westphal <xxx@gmail.com>  Thu, 26 Nov 2024 00:32:00 +0000
+
+
 primo-di-tutto (0.5.9) unstable; urgency=medium
 
   * Raisesd Version.
