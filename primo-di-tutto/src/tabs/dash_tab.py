@@ -88,7 +88,7 @@ class DashTab(ttk.Frame):
             self,
             text="System Nutzung",
         )
-        self.usage_frame.pack(fill="x", expand=True, pady=20, padx=60)
+        self.usage_frame.pack(fill="x", pady=20, padx=60)
         # self.usage_frame.pack_propagate(0)
 
         # Create a frame to hold the progress bars
