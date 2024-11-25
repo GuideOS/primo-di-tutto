@@ -944,3 +944,5 @@ class LookTab(ttk.Frame):
             width=20,
         )
         cursor_folder_button.grid(row=3, column=4, padx=10, pady=5, sticky="ew")
+
+        update_theme_combobox()
