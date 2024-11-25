@@ -23,7 +23,7 @@ from tabs.boot_loader_tab import BootLoaderTab
 class MainApplication(tk.Tk):
     def __init__(self):
         super().__init__(className="Primo")
-        self.title("Primo Di Tutto (Ja, LOL ey! Closed BETA und so!)")
+        self.title("Primo")
         self.tk.call(
             "source", f"{application_path}/src/Azure-ttk-theme-2.1.0/azure.tcl"
         )
