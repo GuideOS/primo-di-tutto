@@ -21,6 +21,10 @@ from tabs.pop_ups import *
 from tabs.software_tab import Custom_Installer
 import subprocess
 import re
+import gettext
+lang = gettext.translation('messages', localedir=f"{application_path}/src/tabs/locale", languages=['de'])
+lang.install()
+_ = lang.gettext
 
 
 
@@ -43,13 +47,13 @@ class WelcomeTab(ttk.Frame):
         self.icon_label.pack(pady=20)
 
         # Willkommensnachricht definieren
-        welcome_message = """Willkommen"""
+        welcome_message = _("""Welcome""")
 
         # Label für die Willkommensnachricht erstellen
         self.welcome_label = ttk.Label(self, text=welcome_message, font=("Ubuntu",20))
         self.welcome_label.pack(pady=10)
                 # Willkommensnachricht definieren
-        welcome_text_message = """GuideOS ist eine Linux Distribution, dem sich Mitglieder des Forums https://linuxguides.de angenommen haben.Die Idee wurde Ende 2024 umgesetzt und hat zum Ziel auch den Einstieg oder Umstieg auf Linux für jeden Anwender verständlich zu machen. Als Basis dient Debian und der Desktop Cinnamon. Viele der installierbaren Programme haben wir aus langjähriger Erfahrung ausgewählt und unser Ziel ist GuideOS mit euch gemeinsam weiter zu entwickeln. Du hast Lust ein Teil dieser Community zu sein, dann schaue doch mal bei https://forum.linuxguides.de vorbei. Dort kannst du dich auch registrieren und Fragen und Ideen los werden.\n\nWir freuen uns auf jeden, der GuideOS nutzt und auch über jede neue Idee!"""
+        welcome_text_message = _("""GuideOS is a Linux distribution developed by members of the forum [https://linuxguides.de](https://linuxguides.de). The concept was realized at the end of 2024 and aims to make starting or switching to Linux understandable for every user. Based on Debian and featuring the Cinnamon desktop, we have selected many of the installable programs based on years of experience. Our goal is to further develop GuideOS together with you. Are you interested in becoming part of this community? Then check out [https://forum.linuxguides.de](https://forum.linuxguides.de). There, you can register, ask questions, and share your ideas. We look forward to everyone who uses GuideOS and welcome every new idea!""")
 
         # Label für die Willkommensnachricht erstellen
         self.welcome_text_label = ttk.Label(self, text=welcome_text_message,wraplength=800,justify="center")
@@ -155,10 +159,7 @@ class WelcomeTab(ttk.Frame):
         # Beschreibung für Autostart hinzufügen (nimmt die erste Spalte ein)
         self.autostart_description = ttk.Label(
             self.autostart_frame,
-            text=(
-                "Hier kannst du den Autostart dieses Programms deaktivieren. "
-                "Nach dem nächsten Start wird der Willkommensbildschirm entfernt "
-                "und Piazza wird zu einem System-Tool."
+            text=_("Here you can disable the autostart of this program. After the next startup, the welcome screen will be removed, and Piazza will become a system tool."
             ),
             wraplength=600,
         )
