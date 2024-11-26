@@ -108,7 +108,7 @@ class WelcomeTab(ttk.Frame):
             #hide_apt_frame()
             pigro_skript_task = "Installation von ..."
             pigro_skript_task_app = "Nvidia Treiber"
-            pigro_skript = f"{permit} apt install -y neofetch"
+            pigro_skript = f"{permit} apt install -y nvidia-driver"
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
                 pigro_skript_task, pigro_skript_task_app, pigro_skript
