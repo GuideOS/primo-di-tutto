@@ -15,7 +15,7 @@ class SoftwareStore:
             "Name": "Synaptic",  # Name
             "Package": "Debian-Paket",  # Paketformat
             "Icon": f"{application_path}/images/apps/synaptic_icon_36.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
-            "Open": "pkexec synaptic",
+            "Open": "synaptic-pkexec",
         },
     }
 
