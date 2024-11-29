@@ -340,18 +340,9 @@ class DashTab(ttk.Frame):
 
         self.distro_logo_label = Label(
             self.distro_label_frame,
-            image=self.distro_ubuntu_logo_img,
+            image=self.distro_guide_logo_img,
         )
         self.distro_logo_label.pack(fill=BOTH, expand=True)
-
-        if "Ubuntu" in nice_name:
-            self.distro_logo_label.config(image=self.distro_ubuntu_logo_img)
-        elif get_desktop_environment() == "lxde-pi-wayfire" or "lxde-pi" or "lxde":
-            self.distro_logo_label.config(image=self.distro_pi_logo_img)
-        elif "GuideOS" in nice_name:
-            self.distro_logo_label.config(image=self.distro_guide_logo_img)
-        else:
-            self.distro_logo_label.config(image=self.distro_debian_logo_img)
 
         self.update_labels()
 

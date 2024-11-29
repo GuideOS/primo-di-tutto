@@ -197,7 +197,7 @@ class LookTab(ttk.Frame):
             """Schreibt vorgegebene Werte in dconf."""
             dconf_data = {
                 "/net/launchpad/plank/docks/dock1/alignment": "'fill'",
-                "/net/launchpad/plank/docks/dock1/dock-items": "['gos-menu.dockitem', 'nemo.dockitem','firefox.dockitem']",
+                "/net/launchpad/plank/docks/dock1/dock-items": "['gos-menu.dockitem', 'nemo.dockitem', 'org.gnome.Software.dockitem', 'firefox.dockitem', 'thunderbird-1.dockitem', 'libreoffice-writer.dockitem']",
                 "/net/launchpad/plank/docks/dock1/hide-mode": "'none'",
                 "/net/launchpad/plank/docks/dock1/offset": "100",
                 "/net/launchpad/plank/docks/dock1/position": "'left'",
