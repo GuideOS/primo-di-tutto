@@ -123,7 +123,7 @@ class SoftwareTab(ttk.Frame):
         image_frame = ttk.Frame(self.inst_notebook)
         gaming_frame = ttk.Frame(self.inst_notebook)
         apt_frame = ttk.Frame(self.inst_notebook)
-        #flat_frame = ttk.Frame(self.inst_notebook)
+        flat_frame = ttk.Frame(self.inst_notebook)
 
 
         com_frame.pack(fill="both", expand=True)
@@ -132,7 +132,7 @@ class SoftwareTab(ttk.Frame):
         image_frame.pack(fill="both", expand=True)
         gaming_frame.pack(fill="both", expand=True)
         apt_frame.pack(fill="both", expand=True)
-        #flat_frame.pack(fill="both", expand=True)
+        flat_frame.pack(fill="both", expand=True)
 
 
         self.inst_notebook.add(com_frame, compound=LEFT, text="Kommunikation")
@@ -140,8 +140,8 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook.add(av_frame, compound=LEFT, text="Audio/Video")
         self.inst_notebook.add(image_frame, compound=LEFT, text="Bildbearbeitung")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Gaming")
-        self.inst_notebook.add(apt_frame, compound=LEFT, text="APT-Verwaltung")
-        #self.inst_notebook.add(flat_frame, compound=LEFT, text="Flatpak-Verwaltung")
+        self.inst_notebook.add(apt_frame, compound=LEFT, text="\nAPT Store\n")
+        self.inst_notebook.add(flat_frame, compound=LEFT, text="\nFlatpak Store\n")
 
 
         com_note_frame = ComPanel(com_frame)
@@ -162,8 +162,8 @@ class SoftwareTab(ttk.Frame):
         apt_search_panel = AptSearchPanel(apt_frame)
         apt_search_panel.pack(fill=tk.BOTH, expand=True)
 
-        #flatpack_search_panel = FlatpakSearchPanel(flat_frame)
-        #flatpack_search_panel.pack(fill=tk.BOTH, expand=True)
+        flatpack_search_panel = FlatpakSearchPanel(flat_frame)
+        flatpack_search_panel.pack(fill=tk.BOTH, expand=True)
 
 
 class OfficePanel(tk.Frame):
@@ -1136,7 +1136,7 @@ class AptSearchPanel(tk.Frame):
 
         def apt_install():
             hide_apt_frame()
-            pigro_skript_task = "Installing ..."
+            pigro_skript_task = "Installation ..."
             pigro_skript_task_app = f"{apt_entry.get()}"
             pigro_skript = f"{permit} apt install -y {apt_entry.get()}"
             custom_installer = Custom_Installer(master)
@@ -1147,7 +1147,7 @@ class AptSearchPanel(tk.Frame):
 
         def apt_uninstall():
             hide_apt_frame()
-            pigro_skript_task = "Removing From System"
+            pigro_skript_task = "Deinstalltion ..."
             pigro_skript_task_app = f"{apt_entry.get()}"
             pigro_skript = f"{permit} apt remove -y {apt_entry.get()}"
 
@@ -1525,7 +1525,6 @@ class AptSearchPanel(tk.Frame):
 class FlatpakSearchPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
-        #self["background"] = maincolor
         self.no_img = PhotoImage(file=f"{application_path}/images/apps/no_image.png")
 
         if "dark" in theme or "noir" in theme:
@@ -1563,22 +1562,18 @@ class FlatpakSearchPanel(tk.Frame):
 
         def hide_flatpak_frame():
             flatpak_info_frame.pack_forget()
-            flatpak_search_frame.pack(anchor="w", side=LEFT, pady=20, padx=10)
-            flatpak_info_throber_frame.pack(fill=BOTH, expand=True, pady=20, padx=10)
+            flatpak_search_frame.pack(
+                anchor="w", pady=20, padx=10, fill=BOTH, expand=True
+            )
+            flatpak_info_throber_frame.pack(fill="x", pady=20, padx=10)
 
         def flatpak_install():
             hide_flatpak_frame()
 
-            pigro_skript_task = "Installing ..."
+            pigro_skript_task = "Installation ..."
             pigro_skript_task_app = f"{flatpak_entry.get()}"
-            pigro_skript = [
-                f"flatpak",
-                "install",
-                "-y",
-                "flathub",
-                f"{Flat_remote_dict[flatpak_entry.get()]}",
-            ]
-
+            pigro_skript =f"flatpak install -y flathub {Flat_remote_dict[flatpak_entry.get()]}"
+            print({Flat_remote_dict[flatpak_entry.get()]})
             custom_installer = Custom_Installer(master)
 
             custom_installer.do_task(
@@ -1590,14 +1585,10 @@ class FlatpakSearchPanel(tk.Frame):
         def flatpak_uninstall():
             hide_flatpak_frame()
 
-            pigro_skript_task = "Removing From System"
+            pigro_skript_task = "Deinstallation ..."
             pigro_skript_task_app = f"{flatpak_entry.get()}"
-            pigro_skript = [
-                f"flatpak",
-                "uninstall",
-                "-y",
-                f"{Flat_remote_dict[flatpak_entry.get()]}",
-            ]
+            pigro_skript = f"flatpak uninstall {Flat_remote_dict[flatpak_entry.get()]} -y"
+            print({Flat_remote_dict[flatpak_entry.get()]})
 
             custom_installer = Custom_Installer(master)
 
@@ -1685,8 +1676,6 @@ class FlatpakSearchPanel(tk.Frame):
                         print("Command returned non-zero exit status again:", err)
                         flatpak_panel.config(self.no_img)
 
-
-
         def get_flatpak_description():
             url = f"https://flathub.org/apps/{Flat_remote_dict[flatpak_entry.get()]}"
 
@@ -1715,100 +1704,41 @@ class FlatpakSearchPanel(tk.Frame):
                 if flatpak_entry.get() in refresh_flatpak_installs().keys():
                     flatpak_pkg_inst.config(
                         text="Uninstall",
-                        #justify="left",
                         width=10,
-                        #background="#f04a50",
-                        #foreground=ext_btn_font,
-                        #font=font_10_b,
-                        #borderwidth=0,
-                        #highlightthickness=0,
                         command=flatpak_uninstall,
+                        style="Red.TButton",
                     )
                 else:
                     flatpak_pkg_inst.config(
                         text="Install",
-                        #justify="left",
                         width=10,
-                        #background="#6abd43",
-                        #foreground=ext_btn_font,
-                        #font=font_10,
-                        #borderwidth=0,
-                        #highlightthickness=0,
                         command=flatpak_install,
+                        style="Green.TButton",
                     )
 
         flatpak_inst_main_frame = Frame(self)
         flatpak_inst_main_frame.pack(fill="both", expand=True)
 
-        def install_flatpak_apt():
-            os.system(
-                f"x-terminal-emulator -e 'bash -c \"sudo apt install flatpak && flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo | bash; exec bash\"'"
-            )
-            rs_pigro = RestartPigroMass(self)
-            rs_pigro.grab_set()
-
-        if flatpak_path == False:
-            flatpak_inst_main_frame.pack_forget()
-
-            flat_not_installad_container = Frame(self, pady=200)
-            flat_not_installad_container.pack(fill=BOTH, expand=True)
-
-            flat_big_icon = Label(
-                flat_not_installad_container,
-                image=self.flatpak_big_icon,
-                font=font_10_b,
-                justify="left",
-                #foreground=main_font,
-            )
-            flat_big_icon.pack(anchor="center", pady=20)
-
-            flat_app_inst = Button(
-                flat_not_installad_container,
-                text="Install Flatpak",
-                justify="left",
-                width=20,
-                #background=ext_btn,
-                #foreground=ext_btn_font,
-                font=font_10_b,
-                borderwidth=0,
-                highlightthickness=0,
-                command=install_flatpak_apt,
-            )
-            flat_app_inst.pack()
-
         flatpak_search_frame = ttk.LabelFrame(
             flatpak_inst_main_frame,
             text="Search",
-            #font=font_16,
-            #foreground=label_frame_color,
-            #borderwidth=0,
-            #highlightthickness=0,
-            #relief=GROOVE,
-            padding=20
-            #background=frame_color,
+            padding=20,
         )
         flatpak_search_frame.pack(
-            anchor="w", pady=20, padx=10, fill="both", expand=True)
+            anchor="n", pady=20, padx=10, fill="both", expand=True, side=TOP
+        )
 
         flatpak_search_field = Frame(
             flatpak_search_frame,
             borderwidth=0,
             highlightthickness=0,
-            #background=frame_color,
         )
         flatpak_search_field.pack(fill="x", pady=5)
 
         flatpak_search_btn = Label(
             flatpak_search_field,
             image=self.search_btn,
-            #text="Select",
-            #bg=ext_btn,
-            #fg=main_font,
-            #borderwidth=0,
-            #highlightthickness=0,
-            # command=flatpak_show_infos,
         )
-        #flatpak_search_btn.pack(side="left", fill=BOTH)
 
         flatpak_entry = ttk.Entry(
             flatpak_search_field,
@@ -1831,8 +1761,7 @@ class FlatpakSearchPanel(tk.Frame):
         flatpak_list_scrollbar.pack(side=RIGHT, fill=Y)
         flatpak_list_box.config(yscrollcommand=flatpak_list_scrollbar.set)
         flatpak_list_scrollbar.config(command=flatpak_list_box.yview)
-
-        flatpak_list_box.pack(fill=BOTH,expand=True)
+        flatpak_list_box.pack(fill=BOTH, expand=True)
 
         update_flatpak(Flat_remote_dict.keys())
 
@@ -1840,152 +1769,9 @@ class FlatpakSearchPanel(tk.Frame):
 
         flatpak_entry.bind("<KeyRelease>", flatpak_search_check)
 
-        flatpak_info_throber_frame = Frame(
-            flatpak_inst_main_frame, 
-        )
-        flatpak_info_throber_frame.pack(fill=BOTH, pady=20, padx=10)
-
-        flatpak_info_frame = Frame(flatpak_inst_main_frame)
-
-        flatpak_exit = Button(
-            flatpak_info_frame,
-            text="Back",
-            image=self.exit_btn,
-            #background=nav2_color,
-            foreground="white",
-            borderwidth=0,
-            highlightthickness=0,
-            compound=LEFT,
-            font=font_10_b,
-            command=hide_flatpak_frame,
-            anchor="w",
-            padx=10,
-        )
-        flatpak_exit.pack(fill="x")
-
-        flatpak_pkg_info_frame = ttk.LabelFrame(
-            flatpak_info_frame,
-            padding=20
-            ##background=nav_color,
-        )
-        flatpak_pkg_info_frame.pack(anchor="n", fill="x")
-
-        flatpak_pkg_info_container = Frame(
-            flatpak_pkg_info_frame,
-            borderwidth=0,
-            highlightthickness=0,
-            ##background=nav_color,
-        )
-        flatpak_pkg_info_container.pack(fill="x")
-        flatpak_pkg_info_container.columnconfigure(1, weight=2)
-
-        flatpak_pkg_icon = Label(
-            flatpak_pkg_info_container,
-            image=self.debinstall_icon,
-            font=font_10_b,
-            justify="left",
-            #background=nav_color,
-            #foreground=main_font,
-            padx=10,
-        )
-        flatpak_pkg_icon.grid(row=0, rowspan=2, column=0)
-
-        flatpak_pkg_name = Label(
-            flatpak_pkg_info_container,
-            text="",
-            font=font_20,
-            justify="left",
-            ##background=nav_color,
-            #foreground=main_font,
-            anchor="w",
-            padx=20,
-        )
-        flatpak_pkg_name.grid(row=0, column=1, sticky="ew")
-
-        flatpak_pkg_status = Label(
-            flatpak_pkg_info_container,
-            text="",
-            font=font_8,
-            justify="left",
-            ##background=nav_color,
-            #foreground=main_font,
-            anchor="w",
-            padx=20,
-        )
-        flatpak_pkg_status.grid(row=1, column=1, sticky="ew")
-
-        flatpak_pkg_inst = Button(
-            flatpak_pkg_info_container,
-            text="Install",
-            #justify="left",
-            width=10,
-            #background="#6abd43",
-            #foreground=ext_btn_font,
-            #font=font_10,
-            #borderwidth=0,
-            #highlightthickness=0,
-            command=flatpak_install,
-        )
-        flatpak_pkg_inst.grid(row=0, column=2, sticky="e")
-
-        def on_configure_flatpak_canvas(event):
-            flatpak_canvas.configure(scrollregion=flatpak_canvas.bbox("all"))
-            update_flatpak_canvas()
-
-        def on_mousewheel_flatpak_canvas(event):
-            flatpak_canvas.yview_scroll(int(0 * (event.delta / 120)), "units")
-
-        def update_flatpak_canvas():
-            flatpak_canvas_width = flatpak_canvas.winfo_width()
-            frame_width = flatpak_canvas_frame.winfo_reqwidth()
-            x_offset = max((flatpak_canvas_width - frame_width) // 2, 0)
-            flatpak_canvas.coords("frame", x_offset, 0)
-
-        flatpak_canvas_container = Frame(
-            flatpak_info_frame, width=869
-        )
-        flatpak_canvas_container.pack(side=LEFT, fill="both", expand=True)
-
-        flatpak_canvas = tk.Canvas(
-            flatpak_canvas_container, highlightthickness=0
-        )
-        flatpak_canvas.pack(fill=BOTH, expand=True, side=RIGHT)
-        flatpak_canvas.pack_propagate(False)
-        flatpak_canvas_frame = tk.Frame(flatpak_canvas, padx=120)
-        flatpak_canvas.create_window(
-            (0, 0), window=flatpak_canvas_frame, anchor="n", tags="frame"
-        )
-
-        flatpak_panel = Label(
-            flatpak_canvas_frame, text="Apartment Panel"
-        )
-        flatpak_panel.pack(anchor="n", pady=20)
-
-        flatpak_description_text = Text(
-            flatpak_canvas_frame,
-            borderwidth=0,
-            highlightthickness=0,
-            #background=frame_color,
-            #foreground=main_font,
-            font=("Sans", 9),
-            height=100,
-            width=80,
-            wrap=WORD,
-        )
-        flatpak_description_text.pack(side=LEFT, fill=BOTH, expand=True, padx=20)
-
-        flatpak_scrollbar = ttk.Scrollbar(
-            flatpak_info_frame, orient=VERTICAL, command=flatpak_canvas.yview
-        )
-        flatpak_scrollbar.pack(side=RIGHT, fill=Y)
-        flatpak_canvas.config(yscrollcommand=flatpak_scrollbar.set)
-
-        flatpak_canvas_frame.bind("<Configure>", on_configure_flatpak_canvas)
-        flatpak_canvas_frame.bind_all("<MouseWheel>", on_mousewheel_flatpak_canvas)
-
-        def open_store(store_key):
-            popen(f"""{SoftwareStore.store_dict[store_key]["Open"]}""")
-
+        flatpak_info_throber_frame = Frame(flatpak_inst_main_frame)
+        flatpak_info_throber_frame.pack(fill="x", pady=20, padx=10)
+        # flatpak OneClicks
         self.store_btn0_icon = PhotoImage(
             file=SoftwareStore.store_dict["store_0"]["Icon"]
         )
@@ -1994,11 +1780,14 @@ class FlatpakSearchPanel(tk.Frame):
             file=SoftwareStore.store_dict["store_1"]["Icon"]
         )
 
-        # flatpak OneClicks
+        def open_store(store_key):
+            popen(f"""{SoftwareStore.store_dict[store_key]["Open"]}""")
+
+        # Create the button frame first
         store_btn_frame = ttk.LabelFrame(
             flatpak_info_throber_frame, text="Softwareverwaltung", padding=20
         )
-        store_btn_frame.pack(fill="x",side="bottom")
+        store_btn_frame.pack(fill="x")
 
         store_btn_frame.grid_columnconfigure(0, weight=1)
         store_btn_frame.grid_columnconfigure(1, weight=1)
@@ -2022,6 +1811,116 @@ class FlatpakSearchPanel(tk.Frame):
             style="Custom.TButton",
         )
         store1_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
+
+        flatpak_info_frame = ttk.Frame(flatpak_inst_main_frame, padding=20)
+        flatpak_info_frame.columnconfigure(0, weight=1)
+        flatpak_info_frame.rowconfigure(2, weight=1)
+
+        flatpak_exit = ttk.Button(
+            flatpak_info_frame,
+            text="Back",
+            command=hide_flatpak_frame,
+        )
+        flatpak_exit.grid(row=0, column=0, sticky="e")
+
+        flatpak_application_labelframe = ttk.LabelFrame(
+            flatpak_info_frame,
+            text="Application",
+            padding=20,
+        )
+        flatpak_application_labelframe.grid(row=1, column=0, sticky="ew")
+
+        flatpak_pkg_header_frame = Frame(
+            flatpak_application_labelframe,
+            borderwidth=0,
+            highlightthickness=0,
+        )
+        flatpak_pkg_header_frame.pack(fill="x")
+        flatpak_pkg_header_frame.columnconfigure(1, weight=2)
+
+        flatpak_pkg_icon = Label(
+            flatpak_pkg_header_frame,
+            image=self.debinstall_icon,
+            font=font_10_b,
+            justify="left",
+            padx=10,
+        )
+        flatpak_pkg_icon.grid(row=0, rowspan=2, column=0)
+
+        flatpak_pkg_name = Label(
+            flatpak_pkg_header_frame,
+            text="",
+            font=font_20,
+            justify="left",
+            anchor="w",
+            padx=20,
+        )
+        flatpak_pkg_name.grid(row=0, column=1, sticky="ew")
+
+        flatpak_pkg_status = Label(
+            flatpak_pkg_header_frame,
+            text="",
+            font=font_8,
+            justify="left",
+            anchor="w",
+            padx=20,
+        )
+        flatpak_pkg_status.grid(row=1, column=1, sticky="ew")
+
+        flatpak_pkg_inst = ttk.Button(
+            flatpak_pkg_header_frame,
+            text="Install",
+            command=flatpak_install,
+        )
+        flatpak_pkg_inst.grid(row=0, column=2, sticky="e")
+
+        flatpak_detail_frame = ttk.LabelFrame(
+            flatpak_info_frame, text="Details", padding=20
+        )
+        flatpak_detail_frame.grid(row=2, column=0, sticky="nsew")
+
+        flatpak_detail_frame.columnconfigure(0, weight=1)
+        flatpak_detail_frame.rowconfigure(0, weight=1)
+
+        flatpak_canvas = Canvas(
+            flatpak_detail_frame, borderwidth=0, highlightthickness=0
+        )
+        flatpak_canvas.grid(row=0, column=0, sticky="nsew")
+
+        flatpak_canvas_scrollbar = ttk.Scrollbar(
+            flatpak_detail_frame, orient="vertical", command=flatpak_canvas.yview
+        )
+        flatpak_canvas_scrollbar.grid(row=0, column=1, sticky="ns")
+
+        flatpak_canvas.configure(yscrollcommand=flatpak_canvas_scrollbar.set)
+
+        flatpak_canvas_frame = Frame(flatpak_canvas)
+        flatpak_canvas.create_window((0, 0), window=flatpak_canvas_frame, anchor="nw")
+
+        flatpak_canvas_frame.bind(
+            "<Configure>",
+            lambda e: flatpak_canvas.configure(scrollregion=flatpak_canvas.bbox("all")),
+        )
+
+        flatpak_panel = Label(flatpak_canvas_frame)
+        flatpak_panel.grid(row=0, column=0, columnspan=2, pady=20)
+
+        flatpak_description_text = Text(
+            flatpak_canvas_frame,
+            borderwidth=0,
+            highlightthickness=0,
+            font=("Sans", 9),
+            wrap=WORD,
+            padx=20,
+        )
+        flatpak_description_text.grid(row=1, column=0, sticky="nesw", padx=(20, 0))
+
+        flatpak_canvas_frame.columnconfigure(0, weight=1)
+        flatpak_canvas_frame.rowconfigure(1, weight=1)
+
+        flatpak_info_frame.columnconfigure(0, weight=1)
+        flatpak_info_frame.rowconfigure(2, weight=1)
+
 
 
 

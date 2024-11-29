@@ -1,3 +1,17 @@
+primo-di-tutto (0.6.1) unstable; urgency=medium
+
+  * Changed: Dash shown only gos-logo
+  * Fixed: Plank Settings/Ubuntu Like
+  * Fixed: synaptic not starting
+  * Fixed: Nvidia-Driver install
+  * Added: New In-App-Logo
+  * Changed: App-Height
+  * Changed: App-Icon
+  * Raised: Version
+
+ -- Timo Westphal <xxx@gmail.com>  Thu, 26 Nov 2024 00:32:00 +0000
+
+
 primo-di-tutto (0.6.0) unstable; urgency=medium
 
   * Changed: Title

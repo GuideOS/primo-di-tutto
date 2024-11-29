@@ -105,15 +105,9 @@ class WelcomeTab(ttk.Frame):
                 return None
 
         def open_software_properties_tab():
-            #hide_apt_frame()
-            pigro_skript_task = "Installation von ..."
-            pigro_skript_task_app = "Nvidia Treiber"
-            pigro_skript = f"{permit} apt install -y nvidia-driver"
-            custom_installer = Custom_Installer(master)
-            custom_installer.do_task(
-                pigro_skript_task, pigro_skript_task_app, pigro_skript
+            popen(
+                f"x-terminal-emulator -e 'bash -c \"pkexec apt install nvidia-driver-assistant && clear && nvidia-driver-assistant; exec bash\"'"
             )
-            self.master.wait_window(custom_installer)
 
 
         def driver_recognition():
