@@ -4,12 +4,9 @@ primo-di-tutto (0.6.1) unstable; urgency=medium
   * Fixed: Plank Settings/Ubuntu Like
   * Fixed: synaptic not starting
   * Fixed: Nvidia-Driver install
-  * Added: New In-App-Logo
-  * Changed: App-Height
-  * Changed: App-Icon
-  * Raised: Version
+  * Raised Version to 0.6.1
 
- -- Timo Westphal <xxx@gmail.com>  Thu, 26 Nov 2024 00:32:00 +0000
+ -- Timo Westphal <xxx@gmail.com>  Fri, 29 Nov 2024 18:39:00 +0000
 
 
 primo-di-tutto (0.6.0) unstable; urgency=medium
