@@ -14,8 +14,6 @@ from tabs.sources_tab import SourcesTab
 from tabs.system_tab import SystemTab
 from tabs.look_tab import LookTab
 from tabs.software_tab import *
-from tabs.links_tab import LinksTab
-from tabs.about_tab import AboutTab
 from tabs.contrib_tab import ContribTab
 from tabs.boot_loader_tab import BootLoaderTab
 
