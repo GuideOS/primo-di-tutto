@@ -230,13 +230,12 @@ class OfficePanel(tk.Frame):
 
             installed_apt = office_path in get_installed_apt_pkgs()
 
-            # Flatpak-Installationen abrufen und prüfen, ob der `com_path` in den Werten vorhanden ist
-            flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
+           
+            flatpak_installs = refresh_flatpak_installs()
             installed_flatpak = office_path in flatpak_installs.values()
             installed_snap = office_path in get_installed_snaps()
             print()
-            # self.master.wait_window(custom_installer)
-            # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
+          
             if installed_snap or installed_apt or installed_flatpak:
                 print(f"{office_name} is installed")
                 self.office_detail_inst.config(
@@ -260,15 +259,11 @@ class OfficePanel(tk.Frame):
             office_path = SoftwareOffice.office_dict[office_key]["Path"]
             office_thumb = SoftwareOffice.office_dict[office_key]["Thumbnail"]
 
-            # self.office_thumb = PhotoImage(file=office_thumb)
-            # self.office_icon = PhotoImage(file=office_icon_img)
 
-            # Öffnen und skalieren des Thumbnails
             thumb_img = Image.open(office_thumb)
             resized_thumb_img = resize700(thumb_img)
             self.office_thumb = ImageTk.PhotoImage(resized_thumb_img)
 
-            # Öffnen und skalieren des Icons
             icon_img = Image.open(office_icon_img)
             resized_icon_img = resize46(icon_img)
             self.office_icon = ImageTk.PhotoImage(resized_icon_img)
@@ -286,7 +281,6 @@ class OfficePanel(tk.Frame):
             hide_button_frame()
             office_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-            # print(get_installed_apt_pkgs())
             refresh_status(office_key)
 
         self.office_btn_icons = []
@@ -419,13 +413,11 @@ class ImageEditingPanel(tk.Frame):
 
             installed_apt = img_path in get_installed_apt_pkgs()
 
-            # Flatpak-Installationen abrufen und prüfen, ob der `com_path` in den Werten vorhanden ist
-            flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
+            flatpak_installs = refresh_flatpak_installs()
             installed_flatpak = img_path in flatpak_installs.values()
             installed_snap = img_path in get_installed_snaps()
             print()
-            # self.master.wait_window(custom_installer)
-            # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
+
             if installed_snap or installed_apt or installed_flatpak:
                 print(f"{img_name} is installed")
                 self.img_detail_inst.config(
@@ -449,15 +441,11 @@ class ImageEditingPanel(tk.Frame):
             img_path = SoftwareImageEditing.img_dict[img_key]["Path"]
             img_thumb = SoftwareImageEditing.img_dict[img_key]["Thumbnail"]
 
-            # self.img_thumb = PhotoImage(file=img_thumb)
-            # self.img_icon = PhotoImage(file=img_icon_img)
 
-            # Öffnen und skalieren des Thumbnails
             thumb_img = Image.open(img_thumb)
             resized_thumb_img = resize700(thumb_img)
             self.img_thumb = ImageTk.PhotoImage(resized_thumb_img)
 
-            # Öffnen und skalieren des Icons
             icon_img = Image.open(img_icon_img)
             resized_icon_img = resize46(icon_img)
             self.img_icon = ImageTk.PhotoImage(resized_icon_img)
@@ -475,7 +463,6 @@ class ImageEditingPanel(tk.Frame):
             hide_button_frame()
             img_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-            # print(get_installed_apt_pkgs())
             refresh_status(img_key)
 
         self.img_btn_icons = []
@@ -605,13 +592,11 @@ class GamingPanel(tk.Frame):
 
             installed_apt = game_path in get_installed_apt_pkgs()
 
-            # Flatpak-Installationen abrufen und prüfen, ob der `com_path` in den Werten vorhanden ist
-            flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
+            flatpak_installs = refresh_flatpak_installs()
             installed_flatpak = game_path in flatpak_installs.values()
             installed_snap = game_path in get_installed_snaps()
             print()
-            # self.master.wait_window(custom_installer)
-            # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
+
             if installed_snap or installed_apt or installed_flatpak:
                 print(f"{game_name} is installed")
                 self.game_detail_inst.config(
@@ -635,15 +620,11 @@ class GamingPanel(tk.Frame):
             game_path = SoftwareGame.game_dict[game_key]["Path"]
             game_thumb = SoftwareGame.game_dict[game_key]["Thumbnail"]
 
-            # self.game_thumb = PhotoImage(file=game_thumb)
-            # self.game_icon = PhotoImage(file=game_icon_img)
 
-            # Öffnen und skalieren des Thumbnails
             thumb_img = Image.open(game_thumb)
             resized_thumb_img = resize700(thumb_img)
             self.game_thumb = ImageTk.PhotoImage(resized_thumb_img)
 
-            # Öffnen und skalieren des Icons
             icon_img = Image.open(game_icon_img)
             resized_icon_img = resize46(icon_img)
             self.game_icon = ImageTk.PhotoImage(resized_icon_img)
@@ -661,7 +642,6 @@ class GamingPanel(tk.Frame):
             hide_button_frame()
             game_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-            # print(get_installed_apt_pkgs())
             refresh_status(game_key)
 
         self.game_btn_icons = []
@@ -791,13 +771,11 @@ class AVPanel(tk.Frame):
 
             installed_apt = av_path in get_installed_apt_pkgs()
 
-            # Flatpak-Installationen abrufen und prüfen, ob der `com_path` in den Werten vorhanden ist
-            flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
+            flatpak_installs = refresh_flatpak_installs()
             installed_flatpak = av_path in flatpak_installs.values()
             installed_snap = av_path in get_installed_snaps()
             print()
-            # self.master.wait_window(custom_installer)
-            # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
+
             if installed_snap or installed_apt or installed_flatpak:
                 print(f"{av_name} is installed")
                 self.av_detail_inst.config(
@@ -821,15 +799,10 @@ class AVPanel(tk.Frame):
             av_path = SoftwareAudioVideo.av_dict[av_key]["Path"]
             av_thumb = SoftwareAudioVideo.av_dict[av_key]["Thumbnail"]
 
-            # self.av_thumb = PhotoImage(file=av_thumb)
-            # self.av_icon = PhotoImage(file=av_icon_img)
-
-            # Öffnen und skalieren des Thumbnails
             thumb_img = Image.open(av_thumb)
             resized_thumb_img = resize700(thumb_img)
             self.av_thumb = ImageTk.PhotoImage(resized_thumb_img)
 
-            # Öffnen und skalieren des Icons
             icon_img = Image.open(av_icon_img)
             resized_icon_img = resize46(icon_img)
             self.av_icon = ImageTk.PhotoImage(resized_icon_img)
@@ -847,7 +820,6 @@ class AVPanel(tk.Frame):
             hide_button_frame()
             av_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-            # print(get_installed_apt_pkgs())
             refresh_status(av_key)
 
         self.av_btn_icons = []
@@ -977,13 +949,11 @@ class ComPanel(tk.Frame):
 
             installed_apt = com_path in get_installed_apt_pkgs()
 
-            # Flatpak-Installationen abrufen und prüfen, ob der `com_path` in den Werten vorhanden ist
-            flatpak_installs = refresh_flatpak_installs()  # Funktion korrekt aufrufen
+            flatpak_installs = refresh_flatpak_installs()
             installed_flatpak = com_path in flatpak_installs.values()
             installed_snap = com_path in get_installed_snaps()
             print()
-            # self.master.wait_window(custom_installer)
-            # Wenn das Spiel als APT-Paket oder Flatpak installiert ist
+
             if installed_snap or installed_apt or installed_flatpak:
                 print(f"{com_name} is installed")
                 self.com_detail_inst.config(
@@ -1007,12 +977,10 @@ class ComPanel(tk.Frame):
             com_path = SoftwareCommunication.com_dict[com_key]["Path"]
             com_thumb = SoftwareCommunication.com_dict[com_key]["Thumbnail"]
 
-            # Öffnen und skalieren des Thumbnails
             thumb_img = Image.open(com_thumb)
             resized_thumb_img = resize700(thumb_img)
             self.com_thumb = ImageTk.PhotoImage(resized_thumb_img)
 
-            # Öffnen und skalieren des Icons
             icon_img = Image.open(com_icon_img)
             resized_icon_img = resize46(icon_img)
             self.com_icon = ImageTk.PhotoImage(resized_icon_img)
@@ -1030,7 +998,6 @@ class ComPanel(tk.Frame):
             hide_button_frame()
             com_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-            # print(get_installed_apt_pkgs())
             refresh_status(com_key)
 
         self.com_btn_icons = []
@@ -1385,7 +1352,6 @@ class AptSearchPanel(tk.Frame):
         def open_store(store_key):
             popen(f"""{SoftwareStore.store_dict[store_key]["Open"]}""")
 
-        # Create the button frame first
         store_btn_frame = ttk.LabelFrame(
             apt_info_throber_frame, text="Softwareverwaltung", padding=20
         )
@@ -1771,7 +1737,7 @@ class FlatpakSearchPanel(tk.Frame):
 
         flatpak_info_throber_frame = Frame(flatpak_inst_main_frame)
         flatpak_info_throber_frame.pack(fill="x", pady=20, padx=10)
-        # flatpak OneClicks
+
         self.store_btn0_icon = PhotoImage(
             file=SoftwareStore.store_dict["store_0"]["Icon"]
         )
@@ -1783,7 +1749,6 @@ class FlatpakSearchPanel(tk.Frame):
         def open_store(store_key):
             popen(f"""{SoftwareStore.store_dict[store_key]["Open"]}""")
 
-        # Create the button frame first
         store_btn_frame = ttk.LabelFrame(
             flatpak_info_throber_frame, text="Softwareverwaltung", padding=20
         )
@@ -1929,7 +1894,6 @@ class Custom_Installer(tk.Toplevel):
 
     def __init__(self, parent):
         super().__init__(parent)
-        # self["background"] = maincolor
         self.icon = tk.PhotoImage(
             file="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png"
         )
@@ -1942,8 +1906,7 @@ class Custom_Installer(tk.Toplevel):
         x = (screen_width / 2) - (cust_app_width / 2)
         y = (screen_height / 2) - (cust_app_height / 2)
         self.geometry(f"{cust_app_width}x{cust_app_height}+{int(x)}+{int(y)}")
-        self.title("Software Manager")
-        # self.configure(bg=maincolor)
+        self.title("Primo")
 
         self.installer_main_frame = Frame(
             self,
@@ -1964,7 +1927,7 @@ class Custom_Installer(tk.Toplevel):
 
         self.icon_label = tk.Label(
             self.installer_main_frame,
-            image=self.boot_log_icon,  # bg=maincolor
+            image=self.boot_log_icon,
         )
 
         self.icon_label.grid(row=0, rowspan=3, column=0, sticky="w", padx=10, pady=10)
@@ -1972,8 +1935,6 @@ class Custom_Installer(tk.Toplevel):
             self.installer_main_frame,
             text="",
             font=("Helvetica", 16),
-            # bg=maincolor,
-            # fg=label_frame_color,
             justify="left",
             anchor="w",
         )
@@ -1982,20 +1943,15 @@ class Custom_Installer(tk.Toplevel):
             self.installer_main_frame,
             text="",
             font=("Helvetica", 16),
-            # bg=maincolor,
-            # fg=main_font,
             justify="left",
             anchor="w",
         )
         self.done_label2.grid(row=1, column=1, sticky="nw")
         self.text = tk.Text(
             self.installer_main_frame,
-            # bg=maincolor,
-            # fg=main_font,
             height=1,
             borderwidth=0,
             highlightthickness=0,
-            # highlightcolor=main_font,
         )
 
         self.text.grid(row=2, column=1, columnspan=3, sticky="ew")
@@ -2004,10 +1960,6 @@ class Custom_Installer(tk.Toplevel):
             self.installer_main_frame,
             text="Close",
             command=self.close_btn_command,
-            # borderwidth=0,
-            # highlightthickness=0,
-            # background=ext_btn,
-            # foreground=ext_btn_font,
             state=DISABLED,
             style="Accent.TButton",
         )
