@@ -4,33 +4,31 @@ import os
 
 
 class SoftwareStore:
-    # Descriptions by ????????????
     store_dict = {
         "store_0": {
-            "Name": "Gnome Software",  # Name
-            "Icon": f"{application_path}/images/apps/gnomesoftware_icon_36.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
+            "Name": "Gnome Software",
+            "Icon": f"{application_path}/images/apps/gnomesoftware_icon_36.png",
             "Open": "gnome-software",
         },
         "store_1": {
-            "Name": "Synaptic",  # Name
-            "Package": "Debian-Paket",  # Paketformat
-            "Icon": f"{application_path}/images/apps/synaptic_icon_36.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
+            "Name": "Synaptic",
+            "Package": "Debian-Paket",
+            "Icon": f"{application_path}/images/apps/synaptic_icon_36.png",
             "Open": "synaptic-pkexec",
         },
     }
 
 class FlatpakStore:
-    # Descriptions by ????????????
     flatpak_store_dict = {
         "store_0": {
-            "Name": "Gnome Software",  # Name
-            "Icon": f"{application_path}/images/apps/gnomesoftware_icon_36.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
+            "Name": "Gnome Software",
+            "Icon": f"{application_path}/images/apps/gnomesoftware_icon_36.png",
             "Open": "gnome-software",
         },
         "store_1": {
-            "Name": "Synaptic",  # Name
-            "Package": "Debian-Paket",  # Paketformat
-            "Icon": f"{application_path}/images/apps/synaptic_icon_36.png",  # Symbolpfad / 36x36 / PNG / offiziell o. Wikipedia
+            "Name": "Synaptic",
+            "Package": "Debian-Paket",
+            "Icon": f"{application_path}/images/apps/synaptic_icon_36.png",
             "Open": "pkexec synaptic",
         },
     }
@@ -297,9 +295,7 @@ class SoftwareGame:
 
 
 class SoftwareCommunication:
-    # Descriptions by ????????????
     com_dict = {
-        # Browser
         "com_0": {
             "Name": "Brave Browser",
             "Package": "Debian-Paket",
@@ -360,7 +356,6 @@ class SoftwareCommunication:
             "Uninstall": "flatpak remove com.google.Chrome -y",
             "Path": "com.google.Chrome",
         },
-        # E-Mail und Messaging
         "com_6": {
             "Name": "Thunderbird",
             "Package": "Debian-Paket",
@@ -435,9 +430,7 @@ class SoftwareCommunication:
 
 
 class SoftwareAudioVideo:
-    # Descriptions by AudioVideoDocumentationTeam
     av_dict = {
-        # Audio/Video Editing Tools
         "av_0": {
             "Name": "Audacity",
             "Package": "Debian-Paket",
@@ -468,7 +461,6 @@ class SoftwareAudioVideo:
             "Uninstall": "pkexec apt remove kdenlive -y",
             "Path": "kdenlive",
         },
-        # Audio/Video Player Tools
         "av_3": {
             "Name": "VLC Media Player",
             "Package": "Debian-Paket",
@@ -553,9 +545,7 @@ class SoftwareAudioVideo:
 
 
 class SoftwareImageEditing:
-    # Descriptions by ImageEditingDocumentationTeam
     img_dict = {
-        # Image Editing Tools
         "img_0": {
             "Name": "GIMP",
             "Package": "Debian-Paket",
