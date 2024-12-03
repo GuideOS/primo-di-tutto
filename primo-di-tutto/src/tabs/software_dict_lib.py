@@ -42,7 +42,7 @@ class SoftwareOffice:
             "Description": "LibreOffice ist eine leistungsstarke, freie und quelloffene Office-Suite, die Textverarbeitung, Tabellenkalkulation, Präsentationen, Diagramme und mehr unterstützt. Es ist mit Microsoft Office-Dateien kompatibel und bietet eine Vielzahl von Funktionen für professionelle und persönliche Nutzung. Die benutzerfreundliche Oberfläche und hohe Anpassbarkeit machen es zu einer beliebten Wahl für viele Anwender.",
             "Icon": f"{application_path}/images/apps/org.libreoffice.LibreOffice-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.libreoffice.LibreOffice-thumb.png",
-            "Install": "pkexec apt install -y libreoffice-base-core libreoffice-calc libreoffice-common libreoffice-core libreoffice-draw libreoffice-gnome libreoffice-gtk3 libreoffice-help-common libreoffice-help-de libreoffice-help-en-gb libreoffice-help-en-us libreoffice-impress libreoffice-l10n-de libreoffice-l10n-en-gb libreoffice-l10n-en-za libreoffice-math libreoffice-style-colibre libreoffice-style-elementary libreoffice-style-yaru libreoffice-uiconfig-calc libreoffice-uiconfig-common libreoffice-uiconfig-draw libreoffice-uiconfig-impress libreoffice-uiconfig-math libreoffice-uiconfig-writer libreoffice-writer",
+            "Install": "pkexec apt install -y libreoffice libreoffice-help-de libreoffice-l10n-de",
             "Uninstall": "pkexec apt autoremove --purge libreoffice* -y",
             "Path": "libreoffice-core",
         },
