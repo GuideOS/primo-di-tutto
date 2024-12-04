@@ -114,6 +114,24 @@ class SoftwareTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
 
+
+        if "dark" in theme_name or "Dark" in theme_name:
+            self.deb_nav = PhotoImage(
+                file=f"{application_path}/images/icons/nav_bar/debian_dark_24x24.png"
+            )
+
+            self.flatpak_nav = PhotoImage(
+                file=f"{application_path}/images/icons/nav_bar/flatpak_dark_24x24.png"
+            )
+
+        else:
+            self.deb_nav = PhotoImage(
+                file=f"{application_path}/images/icons/nav_bar/debian_light_24x24.png"
+            )
+
+            self.flatpak_nav = PhotoImage(
+                file=f"{application_path}/images/icons/nav_bar/flatpak_light_24x24.png"
+            )
         self.inst_notebook = ttk.Notebook(self)
         self.inst_notebook.pack(fill=BOTH, expand=True)
 
@@ -140,8 +158,8 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook.add(av_frame, compound=LEFT, text="Audio/Video")
         self.inst_notebook.add(image_frame, compound=LEFT, text="Bildbearbeitung")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Gaming")
-        self.inst_notebook.add(apt_frame, compound=LEFT, text="\nAPT Store\n")
-        self.inst_notebook.add(flat_frame, compound=LEFT, text="\nFlatpak Store\n")
+        self.inst_notebook.add(apt_frame, compound=LEFT, text="APT Store",image=self.deb_nav)
+        self.inst_notebook.add(flat_frame, compound=LEFT, text="Flatpak Store",image=self.flatpak_nav)
 
 
         com_note_frame = ComPanel(com_frame)
@@ -180,7 +198,7 @@ class OfficePanel(tk.Frame):
             office_btn_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
 
-        back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
+        back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
         office_btn_frame = ttk.LabelFrame(self, text="Textverarbeitung", padding=20)
         office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
@@ -363,7 +381,7 @@ class ImageEditingPanel(tk.Frame):
             img_btn_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
 
-        back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
+        back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
         img_btn_frame = ttk.LabelFrame(self, text="Bildbearbeitung", padding=20)
         img_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
@@ -542,7 +560,7 @@ class GamingPanel(tk.Frame):
             game_btn_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
 
-        back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
+        back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
         game_btn_frame = ttk.LabelFrame(self, text="Gaming", padding=20)
         game_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
@@ -721,7 +739,7 @@ class AVPanel(tk.Frame):
             av_btn_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
 
-        back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
+        back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
         av_btn_frame = ttk.LabelFrame(self, text="Audio/Video", padding=20)
         av_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
@@ -897,7 +915,7 @@ class ComPanel(tk.Frame):
             com_btn_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
 
-        back_button = ttk.Button(self, text="Zurück", command=show_button_frame)
+        back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
         com_btn_frame = ttk.LabelFrame(
             self, text="Kommunikation", padding=20
@@ -1386,12 +1404,13 @@ class AptSearchPanel(tk.Frame):
 
         apt_exit = ttk.Button(
             apt_info_container,
-            text="Back",
-            image=self.exit_btn,
+            text="Zurück",
+            #image=self.exit_btn,
+            style="Custom.TButton",
             compound=LEFT,
             command=hide_apt_frame,
         )
-        apt_exit.grid(row=0, column=0, sticky="ew")
+        apt_exit.grid(row=0, column=0, sticky="e")
 
         apt_pkg_header_1 = ttk.LabelFrame(
             apt_info_container, text="Application", padding=20
@@ -1687,7 +1706,7 @@ class FlatpakSearchPanel(tk.Frame):
 
         flatpak_search_frame = ttk.LabelFrame(
             flatpak_inst_main_frame,
-            text="Search",
+            text="Suche",
             padding=20,
         )
         flatpak_search_frame.pack(
@@ -1783,7 +1802,8 @@ class FlatpakSearchPanel(tk.Frame):
 
         flatpak_exit = ttk.Button(
             flatpak_info_frame,
-            text="Back",
+            text="Zurück",
+            style="Custom.TButton",
             command=hide_flatpak_frame,
         )
         flatpak_exit.grid(row=0, column=0, sticky="e")
