@@ -1,3 +1,12 @@
+primo-di-tutto (0.6.2) unstable; urgency=medium
+
+  * Changed: Code Cleaned: System-Tab
+  * Reworked: Update-Tab
+  * Fixed: LibreOffice not installing
+  * New: Update-Tab
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Fri, 06 Nov 2024 15:30:00 +0000
+
 primo-di-tutto (0.6.1) unstable; urgency=medium
 
   * Changed: Dash shown only gos-logo

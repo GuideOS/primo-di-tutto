@@ -26,7 +26,7 @@ ping_github()
 user = os.environ["USER"]
 
 
-current_version = "0.6.1"
+current_version = "0.6.2"
 
 print(f"[Info] You are using Primo Di Tutto {current_version}")
 
