@@ -229,7 +229,7 @@ class UpdateTab(ttk.Frame):
         self.apt_update_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Update"),
+            text=_("Liste aktualisieren"),
             image=self.up_icon,
             command=update_action,
             width=20,
@@ -240,7 +240,7 @@ class UpdateTab(ttk.Frame):
         self.apt_upgrade_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Update & Upgrade"),
+            text=_("Pakete aktualisieren"),
             image=self.gup_icon,
             command=upgrade_action,
             width=20,
@@ -251,7 +251,7 @@ class UpdateTab(ttk.Frame):
         self.apt_showupgrade_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Show Upgradeble"),
+            text=_("Verfügbare Updates"),
             image=self.up_icon,
             command=apt_showupgrade_action,
             width=20,
@@ -262,7 +262,7 @@ class UpdateTab(ttk.Frame):
         self.apt_autoremove_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Autoremove"),
+            text=_("Aufräumen"),
             image=self.arm_icon,
             command=apt_autremove_action,
             width=20,
@@ -273,7 +273,7 @@ class UpdateTab(ttk.Frame):
         self.apt_broken_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Fix Broken"),
+            text=_("Fehler beheben"),
             image=self.up_icon,
             command=apt_broken_action,
             width=20,
@@ -284,7 +284,7 @@ class UpdateTab(ttk.Frame):
         self.apt_missing_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Fix Missing"),
+            text=_("Fehlende Pakete laden"),
             image=self.confa_icon,
             command=apt_missing_action,
             width=20,
@@ -295,7 +295,7 @@ class UpdateTab(ttk.Frame):
         self.apt_cinfigure_a_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("dpkg --configure -a"),
+            text=_("Reparieren"),
             image=self.up_icon,
             command=apt_reconf_action,
             width=20,
@@ -312,7 +312,7 @@ class UpdateTab(ttk.Frame):
         self.flatpak_update_button = ttk.Button(
             self.flatpak_option_frame,
             compound="left",
-            text=_("Update"),
+            text=_("Aktualisieren"),
             image=self.up_icon,
             command=flatpak_update_action,
             width=20,
@@ -323,7 +323,7 @@ class UpdateTab(ttk.Frame):
         self.flatpak_clean_button = ttk.Button(
             self.flatpak_option_frame,
             compound="left",
-            text=_("uninstall --unused"),
+            text=_("Aufräumen"),
             image=self.arm_icon,
             command=flatpak_clean_action,
             width=20,

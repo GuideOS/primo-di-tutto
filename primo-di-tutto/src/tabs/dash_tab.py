@@ -77,7 +77,7 @@ class DashTab(ttk.Frame):
 
         except FileNotFoundError:
             print(
-                "The /proc/device-tree/model file does not exist. Are you running this on a Raspberry Pi?"
+                "The /proc/device-tree/model file does not exist. You are not using a Pi"
             )
             pi_model = "Dein Computer"
         except Exception as e:
@@ -86,7 +86,7 @@ class DashTab(ttk.Frame):
         # Create a frame to hold the progress bars
         self.usage_frame = ttk.LabelFrame(
             self,
-            text="System Nutzung",
+            text="Systemnutzung",
         )
         self.usage_frame.pack(fill="x", pady=20, padx=60)
         # self.usage_frame.pack_propagate(0)
@@ -112,23 +112,6 @@ class DashTab(ttk.Frame):
             font=font_20,
         )
         self.cpu_percent.grid(row=0, column=0, sticky="nsew")
-
-        # Create a label and progress bar for CPU usage
-        # cpu_temp_label = tk.Label(
-        #    self.useage_container,
-        #    text="CPU Temp",
-        #    font=font_12,
-        #
-        # )
-        # cpu_temp_label.grid(row=1, column=1, sticky="nsew")
-
-        # self.cpu_temp_percent = tk.Label(
-        #    self.useage_container,
-        #    text="0%",
-        #    font=font_20,
-
-        # )
-        # self.cpu_temp_percent.grid(row=0, column=1, sticky="nsew")
 
         # Create a label and progress bar for RAM usage
         ram_label = tk.Label(
@@ -197,7 +180,7 @@ class DashTab(ttk.Frame):
         self.info_frame_container.grid_rowconfigure(1, weight=0)
 
         # CPU Info Frame & Labels
-        self.cpu_info_frame = ttk.LabelFrame(self.info_frame_container, text="Cpu Info")
+        self.cpu_info_frame = ttk.LabelFrame(self.info_frame_container, text="CPU")
         self.cpu_info_frame.grid(column=0, row=0, sticky="nesw")
 
         self.cpu_model_label = tk.Label(self.cpu_info_frame, text="Model:")
@@ -215,7 +198,7 @@ class DashTab(ttk.Frame):
         # OS Info Frame & Labels
         self.os_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Operating System",
+            text="Betriebssystem",
         )
         self.os_label_frame.grid(
             column=0, row=1, rowspan=2, sticky="nesw"
@@ -257,7 +240,7 @@ class DashTab(ttk.Frame):
 
         self.mem_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Memory",
+            text="Arbeitsspeicher",
         )
         self.mem_label_frame.grid(column=1, row=2, sticky="nesw", padx=5)
 
@@ -281,7 +264,7 @@ class DashTab(ttk.Frame):
 
         self.net_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Network",
+            text="Netzwerk",
         )
         self.net_label_frame.grid(column=1, row=0, sticky="nesw", padx=5)
 
@@ -302,7 +285,7 @@ class DashTab(ttk.Frame):
 
         self.disk_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Disk",
+            text="Festplatte",
         )
         self.disk_label_frame.grid(column=1, row=1, sticky="nesw", padx=5)
 
@@ -317,7 +300,7 @@ class DashTab(ttk.Frame):
 
         self.pakage_count_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Packages Installed",
+            text="Pakete",
         )
         self.pakage_count_label_frame.grid(column=2, columnspan=2, row=0, sticky="nesw")
 
@@ -332,7 +315,7 @@ class DashTab(ttk.Frame):
 
         self.distro_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Distro Logo",
+            text="Distro-Logo",
         )
         self.distro_label_frame.grid(
             column=2, columnspan=2, row=1, rowspan=2, sticky="nesw"
@@ -407,9 +390,9 @@ class DashTab(ttk.Frame):
         """Update CPU-related labels."""
         self.cpu_percent["text"] = f"{cpu_usage}%"
         #self.cpu_temp_percent["text"] = f"{cpu_temp}°C"
-        self.cpu_model_label.configure(text=f"Model: {self.get_cpu_model_name()}")
+        self.cpu_model_label.configure(text=f"Modell: {self.get_cpu_model_name()}")
         self.cpu_max_label.configure(text=f"Max: {cpufreq.max:.0f} Mhz")
-        self.cpu_current_label.configure(text=f"Current: {cpufreq.current:.0f} Mhz")
+        self.cpu_current_label.configure(text=f"Aktuell: {cpufreq.current:.0f} Mhz")
         self.cpu_min_label.configure(text=f"Min: {cpufreq.min:.0f} Mhz")
         
 
@@ -418,20 +401,20 @@ class DashTab(ttk.Frame):
     def update_memory_labels(self, svmem, swap):
         """Update memory-related labels."""
         self.ram_percent["text"] = f"{svmem.percent}%"
-        self.ram_total_label.configure(text=f"Ram Total: {self.get_size(svmem.total)}")
-        self.ram_available_label.configure(text=f"Ram Available: {self.get_size(svmem.available)}")
-        self.ram_used_label.configure(text=f"Ram Used: {self.get_size(svmem.used)}")
-        self.swap_total_label.configure(text=f"Swap Total: {self.get_size(swap.total)}")
-        self.swap_free_label.configure(text=f"Swap Free: {self.get_size(swap.free)}")
-        self.swap_used_label.configure(text=f"Swap Used: {self.get_size(swap.used)}")
+        self.ram_total_label.configure(text=f"RAM | Total: {self.get_size(svmem.total)}")
+        self.ram_available_label.configure(text=f"RAM | Frei: {self.get_size(svmem.available)}")
+        self.ram_used_label.configure(text=f"RAM | Genutzt: {self.get_size(svmem.used)}")
+        self.swap_total_label.configure(text=f"Swap | Total: {self.get_size(swap.total)}")
+        self.swap_free_label.configure(text=f"Swap | Frei: {self.get_size(swap.free)}")
+        self.swap_used_label.configure(text=f"Swap | Genutzt: {self.get_size(swap.used)}")
 
     def update_disk_labels(self):
         """Update disk-related labels."""
         hdd_usage = psutil.disk_usage("/").percent
         obj_Disk = psutil.disk_usage("/")
-        self.total_size_label.configure(text=f"Total Size: {obj_Disk.total / (2**30):.2f} GB")
-        self.used_label.configure(text=f"Used: {obj_Disk.used / (2**30):.2f} GB")
-        self.free_label.configure(text=f"Free: {obj_Disk.free / (2**30):.2f} GB")
+        self.total_size_label.configure(text=f"Gesamtgröße: {obj_Disk.total / (2**30):.2f} GB")
+        self.used_label.configure(text=f"Genutzt: {obj_Disk.used / (2**30):.2f} GB")
+        self.free_label.configure(text=f"Frei: {obj_Disk.free / (2**30):.2f} GB")
         self.hdd_percent.configure(text=f"{hdd_usage}%")
     def get_network_info(self):
         """Get network-related information."""
@@ -442,26 +425,26 @@ class DashTab(ttk.Frame):
             net_io_counters = psutil.net_io_counters()
             down_rate = round(net_io_counters.bytes_recv / 1024 / 1024, 2)
             up_rate = round(net_io_counters.bytes_sent / 1024 / 1024, 2)
-            web_state = "Connected"
+            web_state = "Verbunden"
         except (socket.error, socket.gaierror) as e:
             print(f"[Info] Failed to determine local IP address: {e}")
             lan_ip = None
             down_rate = "-"
             up_rate = "-"
-            web_state = "Disconnected"
+            web_state = "Nicht verbunden"
 
         return lan_ip, down_rate, up_rate, web_state
 
     def update_os_labels(self, my_system):
         """Update OS-related labels."""
         self.distro_label.configure(text=f"Distro: {nice_name[13:-2]}")
-        self.architecture_label.configure(text=f"Architecture: {os_arch_output}")
+        self.architecture_label.configure(text=f"Architektur: {os_arch_output}")
         self.kernel_label.configure(text=f"Kernel: {my_system.release}")
         self.shell_label.configure(text=f"Shell: {os.environ['SHELL']}")
         self.desktop_label.configure(text=f"Desktop: {get_desktop_environment()}")
         self.window_manager_label.configure(text=f"Window Manager: {self.get_window_manager()}")
         self.session_label.configure(text=f"Session: {os.environ['XDG_SESSION_TYPE']}")
-        self.resolution_label.configure(text=f"Resolution: {self.winfo_screenwidth()}x{self.winfo_screenheight()}")
+        self.resolution_label.configure(text=f"Auflösung: {self.winfo_screenwidth()}x{self.winfo_screenheight()}")
         self.user_label.configure(text=f"User: {user}")
 
     def update_package_info(self):

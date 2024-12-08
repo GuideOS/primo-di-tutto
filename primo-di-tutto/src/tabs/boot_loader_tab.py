@@ -289,7 +289,7 @@ Viele Linux Distributionen verwenden GRUB als Standard Bootloader.
 * Anpassbare Auswahlmenüs (Farben, Hintergrundbilder, Aufbau/Struktur und deren Funktion)
 * Bootet automatisiert oder über ein Auswahlmenü Betriebssysteme
 * Betriebssysteme können von Festplatten, Disketten, CD- und DVD Medien, Imagedateien (ISO) und USB-Sticks gebootet
-* **Mulit-Boot** Support um mehrere Betriebssysteme auf einem Computer zu betreiben (z.B. Ubuntu und Windows)
+* **Multi-Boot** Support um mehrere Betriebssysteme auf einem Computer zu betreiben (z.B. Ubuntu und Windows)
 * GRUB kann mit einem Passwort versehen werden
 * Linux-Kernel können über eine Netzwerkverbindung geladen werden
 * GRUB kommt sowohl mit MBR und GPT Partitionstabellen zurecht

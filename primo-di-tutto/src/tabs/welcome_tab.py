@@ -153,7 +153,7 @@ class WelcomeTab(ttk.Frame):
         # Beschreibung für Autostart hinzufügen (nimmt die erste Spalte ein)
         self.autostart_description = ttk.Label(
             self.autostart_frame,
-            text=_("Here you can disable the autostart of this program. After the next startup, the welcome screen will be removed, and Piazza will become a system tool."
+            text=_("Hier kannst Du den Autostart dieses Programms deaktivieren. Nach dem nächsten Start wird der Willkommensbildschirm entfernt, und Primo wird zu einem Systemtool."
             ),
             wraplength=600,
         )
