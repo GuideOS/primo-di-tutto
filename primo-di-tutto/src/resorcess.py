@@ -30,6 +30,19 @@ current_version = "0.6.2"
 
 print(f"[Info] You are using Primo Di Tutto {current_version}")
 
+def create_plank_directories():
+    directories = [
+        os.path.expanduser("~/.local/share/plank/themes"),
+        os.path.expanduser("~/.config/plank")
+    ]
+    for directory in directories:
+        if not os.path.exists(directory):
+            os.makedirs(directory, exist_ok=True)
+            print(f"Verzeichnis erstellt: {directory}")
+        else:
+            print(f"Verzeichnis existiert bereits: {directory}")
+
+create_plank_directories()
 
 home = os.path.expanduser("~")
 
