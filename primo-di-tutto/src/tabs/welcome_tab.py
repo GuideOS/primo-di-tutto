@@ -33,9 +33,19 @@ class WelcomeTab(ttk.Frame):
         super().__init__(master)
 
         # Icon für den Willkommensbildschirm laden
-        self.welcome_icon = ImageTk.PhotoImage(
-            Image.open(f"{application_path}/images/icons/pigro_icons/test2.png")
-        )
+
+        if "dark" in theme_name or "Dark" in theme_name:
+            self.welcome_icon = ImageTk.PhotoImage(
+                Image.open(f"{application_path}/images/icons/pigro_icons/guideo_font_logo_dark.png")
+            )
+        else:
+            self.welcome_icon = ImageTk.PhotoImage(
+                Image.open(f"{application_path}/images/icons/pigro_icons/guideo_font_logo_light.png")
+            )
+
+
+
+
         self.nvidia_icon = ImageTk.PhotoImage(
             Image.open(f"{application_path}/images/icons/nvidia-attentione.png")
         )

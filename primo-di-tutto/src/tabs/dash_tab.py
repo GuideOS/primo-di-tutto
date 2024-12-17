@@ -53,19 +53,22 @@ class DashTab(ttk.Frame):
         self.distro_debian_logo_img = ImageTk.PhotoImage(
             Image.open(f"{application_path}/images/icons/debian_logo_dash.png")
         )
-        self.distro_guide_logo_img = ImageTk.PhotoImage(
-            Image.open(f"{application_path}/images/icons/guideos_logo_dash.png")
-        )
+
         if "dark" in theme_name or "Dark" in theme_name:
             self.system_icon = ImageTk.PhotoImage(
                 Image.open(f"{application_path}/images/icons/pigro_icons/primo-logo-dark.png")
+            )
+            self.distro_guide_logo_img = ImageTk.PhotoImage(
+                Image.open(f"{application_path}/images/icons/guideos_logo_dash_dark.png")
             )
         else:
 
             self.system_icon = ImageTk.PhotoImage(
                 Image.open(f"{application_path}/images/icons/pigro_icons/primo-logo-light.png")
             )
-
+            self.distro_guide_logo_img = ImageTk.PhotoImage(
+                Image.open(f"{application_path}/images/icons/guideos_logo_dash_light.png")
+            )
 
         # Open the /proc/device-tree/model file for reading
         try:
