@@ -59,6 +59,9 @@ class UpdateTab(ttk.Frame):
             self.inst_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/debinst_s.png"
             )
+            self.term_logo = PhotoImage(
+                file=f"{application_path}/images/icons/papirus/goterminal.png"
+            )
 
         else:
             self.folder_icon = PhotoImage(
@@ -91,11 +94,11 @@ class UpdateTab(ttk.Frame):
             self.inst_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/debinst_s_light.png"
             )
+            self.term_logo = PhotoImage(
+                file=f"{application_path}/images/icons/papirus/goterminal_light.png"
+            )
 
 
-        self.term_logo = PhotoImage(
-            file=f"{application_path}/images/icons/papirus/goterminal.png"
-        )
 
         def all_up_action():
             """Passes commands for auto-generated buttons"""
