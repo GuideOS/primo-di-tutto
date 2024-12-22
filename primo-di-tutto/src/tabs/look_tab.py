@@ -291,6 +291,36 @@ class LookTab(ttk.Frame):
             except Exception as e:
                 print(f"Fehler beim Kopieren der Datei: {e}")
 
+
+
+        # Beispielaufruf der Funktion
+        def create_cinnamenu_conf():
+            """
+            Kopiert die Datei 68.json vom application_path/scripts-Pfad
+            zum Zielpfad des Nutzers ~/.config/cinnamon/spices/Cinnamenu@json/68.json
+
+            :param application_path: Der Pfad zur Anwendung.
+            :param user: Der Benutzername oder der Benutzerpfad.
+            """
+            source_path = os.path.join(application_path, 'scripts', '68.json')
+            target_dir = os.path.expanduser('~/.config/cinnamon/spices/Cinnamenu@json')
+            target_path = os.path.join(target_dir, '68.json')
+
+            # Sicherstellen, dass das Zielverzeichnis existiert
+            os.makedirs(target_dir, exist_ok=True)
+
+            try:
+                # Datei kopieren
+                shutil.copy(source_path, target_path)
+                print(f"Datei wurde erfolgreich nach {target_path} kopiert.")
+            except FileNotFoundError:
+                print(f"Die Datei {source_path} wurde nicht gefunden.")
+            except PermissionError:
+                print(f"Zugriffsrechte fehlen, um die Datei zu kopieren.")
+            except Exception as e:
+                print(f"Ein Fehler ist aufgetreten: {e}")
+
+
         def set_elfi_panel():
             popen("killall plank")
             check_plank_autostart()
@@ -298,13 +328,21 @@ class LookTab(ttk.Frame):
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
             copy_guide_menu(application_path)
+            
+            cin_menu_source_path = f"{application_path}/scripts/68.json"
+            cin_menu_destination_path = os.path.expanduser(
+                "~/.config/cinnamon/spices/Cinnamenu@json/68.json"
+            )
+
+            #copy_file(cin_menu_source_path, cin_menu_destination_path)
+
             gsettings_11_config = {
                 "app-menu-icon-name": "ubuntucinnamon-symbolic",
                 "app-menu-label": "Menu",
                 "date-format": "'%a, %h %d %Y%l:%M %p'",
                 "desktop-layout": "",
                 "enabled-applets": [
-                    "panel1:center:0:menu@cinnamon.org:0",
+                    "panel1:center:1:Cinnamenu@json:68",
                     "panel1:center:2:grouped-window-list@cinnamon.org:69",
                     "panel1:right:1:systray@cinnamon.org:3",
                     "panel1:right:2:xapp-status@cinnamon.org:4",
@@ -360,9 +398,13 @@ class LookTab(ttk.Frame):
                 "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
             )
 
+
+
+            #create_cinnamenu_conf()
             # Funktion aufrufen
             copy_file(source_path, destination_path)
             restore_cinnamon_config(69)
+            create_cinnamenu_conf()
 
         def set_classico_panel():
             popen("killall plank")

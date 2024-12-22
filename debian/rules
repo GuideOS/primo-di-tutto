@@ -13,6 +13,7 @@ override_dh_install:
 	mkdir -p debian/$(PACKAGE)/usr/share/metainfo
 	mkdir -p debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)
 	mkdir -p debian/$(PACKAGE)/usr/share/applications/autostart
+	mkdir -p debian/$(PACKAGE)/usr/share/cinnamon/applets
 	mkdir -p debian/$(PACKAGE)/opt/primo-di-tutto
 	mkdir -p debian/$(PACKAGE)/usr/bin
 	mkdir -p debian/$(PACKAGE)/etc/xdg/autostart
@@ -20,6 +21,7 @@ override_dh_install:
 	# Kopieren der Dateien
 	cp primo-di-tutto-logo.png debian/$(PACKAGE)/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png
 	cp primo-di-tutto-logo.svg debian/$(PACKAGE)/usr/share/icons/hicolor/scalable/apps/primo-di-tutto-logo.svg
+	cp -r Cinnamenu@json debian/$(PACKAGE)/usr/share/cinnamon/applets/
 	cp io.github.actionschnitzel.primo-di-tutto.appdata.xml debian/$(PACKAGE)/usr/share/metainfo/io.github.actionschnitzel.primo-di-tutto.appdata.xml
 	cp LICENSE debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)/LICENSE
 
