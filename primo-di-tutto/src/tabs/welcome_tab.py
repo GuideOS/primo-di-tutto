@@ -139,7 +139,7 @@ class WelcomeTab(ttk.Frame):
         # LabelFrame für Autostart-Optionen erstellen
         self.nvidia_frame = ttk.Labelframe(self, text="NVIDIA-Treiber")
         #self.nvidia_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
-        driver_recognition()
+        #driver_recognition()
         nvidia_text_message = """Das System hat erkannt das noch kein Treiber für die Eingebaue Grafikarte installiert ist."""
 
         # Label für die Willkommensnachricht erstellen
