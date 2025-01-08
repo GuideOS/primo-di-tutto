@@ -377,7 +377,7 @@ class LookTab(ttk.Frame):
                 "panel-zone-text-sizes": '[{"panelId":1,"left":0,"center":0,"right":0}]',
                 "panels-autohide": ["1:false"],
                 "panels-enabled": ["1:0:bottom"],
-                "panels-height": ["1:38", "2:21"],
+                "panels-height": ["1:46", "2:21"],
                 "panels-hide-delay": ["1:0", "2:0"],
                 "panels-show-delay": ["1:0", "2:0"],
             }
