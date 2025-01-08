@@ -106,7 +106,7 @@ class SoftwareGame:
     game_dict = {
         "game_0": {
             "Name": "Steam",
-            "Package": "DEB",
+            "Package": "Debian-Paket",
             "Description": "Steam ist eine Plattform zum Herunterladen, Kaufen und Spielen von Spielen.",
             "Icon": f"{application_path}/images/apps/com.valvesoftware.Steam-icon.png",
             "Thumbnail": f"{application_path}/images/apps/com.valvesoftware.Steam-thumb.png",
@@ -131,7 +131,7 @@ class SoftwareGame:
             "Package": "Flatpak",
             "Description": "Der Heroic-Game-Launcher ist ein Programm zum Starten, Verwalten und Spielen von Epic- und GOG-Games.",
             "Icon": f"{application_path}/images/apps/com.heroicgameslauncher.hgl-icon.png",
-            "Install": "flatpak install flathub com.heroicgameslauncher.hgl -y",
+            "Install": f"pkexec {application_path}/scripts/install_heroic",
             "Thumbnail": f"{application_path}/images/apps/com.heroicgameslauncher.hgl-thumb.png",
             "Uninstall": "flatpak remove com.heroicgameslauncher.hgl -y",
             "Path": "com.heroicgameslauncher.hgl",
@@ -291,7 +291,19 @@ class SoftwareGame:
             "Path": "net.pistegamez.PekkaKana2",
             "AppStream": "net.pistegamez.PekkaKana2",
         },
+        "game_17": {
+            "Name": "Wine",
+            "Package": "Debian-Paket",
+            "Description": "Wine ist eine Kompatibilitätsschicht, die es ermöglicht, Windows-Programme unter Linux auszuführen. Es ist besonders nützlich für Spiele und Anwendungen, die nicht nativ für Linux verfügbar sind. Wine bietet eine Vielzahl von Konfigurationsoptionen und unterstützt eine breite Palette von Windows-Software." ,
+            "Icon": f"{application_path}/images/apps/wine-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/wine-thumb.png",
+            "Install": f"pkexec {application_path}/scripts/install_wine",
+            "Uninstall": f"pkexec {application_path}/scripts/uninstall_wine",
+            "Path": "winehq-stable",
+            "AppStream": "winehq-stable",
+        },
     }
+
 
 
 class SoftwareCommunication:
