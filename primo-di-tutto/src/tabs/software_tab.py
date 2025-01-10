@@ -191,12 +191,23 @@ class OfficePanel(tk.Frame):
 
         def show_button_frame():
             office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+            office_ttp_frame.pack(pady=20, padx=20, fill="x", expand=TRUE)
             back_button.pack_forget()
             office_detail_frame.pack_forget()
 
         def hide_button_frame():
             office_btn_frame.pack_forget()
+            office_ttp_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
+
+        # Funktion für das Hover-Ereignis
+        def on_hover( event, key):
+            office_ttp_label.configure(text=SoftwareOffice.office_dict[key]["Description"])
+
+        # Funktion für das Verlassen des Buttons
+        def on_leave( event):
+            office_ttp_label.configure(text="")
+
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
@@ -208,6 +219,16 @@ class OfficePanel(tk.Frame):
         office_btn_frame.grid_columnconfigure(2, weight=1)
         office_btn_frame.grid_columnconfigure(3, weight=1)
         office_btn_frame.grid_columnconfigure(4, weight=1)
+
+        office_ttp_frame = ttk.LabelFrame(
+            self, text="Beschreibung"
+        )
+        office_ttp_frame.pack(pady=10, padx=20, fill="x")
+
+        office_ttp_label = ttk.Label(
+            office_ttp_frame, text="\n\n", padding=20, wraplength=700
+        )
+        office_ttp_label.pack(fill="x")
 
         def run_installation(office_key):
             primo_skript_task = "Installation ..."
@@ -328,6 +349,8 @@ class OfficePanel(tk.Frame):
                 style="Custom.TButton",
             )
             office_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
+            office_button.bind("<Enter>", lambda event, key=office_key: on_hover(event, key))
+            office_button.bind("<Leave>", on_leave)
 
         office_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
 
@@ -374,12 +397,22 @@ class ImageEditingPanel(tk.Frame):
 
         def show_button_frame():
             img_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+            img_ttp_frame.pack(pady=20, padx=20, fill="x", expand=TRUE)
             back_button.pack_forget()
             img_detail_frame.pack_forget()
 
         def hide_button_frame():
             img_btn_frame.pack_forget()
+            img_ttp_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
+
+        # Funktion für das Hover-Ereignis
+        def on_hover( event, key):
+            img_ttp_label.configure(text=SoftwareImageEditing.img_dict[key]["Description"])
+
+        # Funktion für das Verlassen des Buttons
+        def on_leave( event):
+            img_ttp_label.configure(text="")
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
@@ -391,6 +424,17 @@ class ImageEditingPanel(tk.Frame):
         img_btn_frame.grid_columnconfigure(2, weight=1)
         img_btn_frame.grid_columnconfigure(3, weight=1)
         img_btn_frame.grid_columnconfigure(4, weight=1)
+
+        img_ttp_frame = ttk.LabelFrame(
+            self, text="Beschreibung"
+        )
+        img_ttp_frame.pack(pady=10, padx=20, fill="x")
+
+        img_ttp_label = ttk.Label(
+            img_ttp_frame, text="\n\n", padding=20, wraplength=750
+        )
+        img_ttp_label.pack(fill="x")
+
 
         def run_installation(img_key):
             primo_skript_task = "Installation ..."
@@ -507,6 +551,8 @@ class ImageEditingPanel(tk.Frame):
                 width=20,
             )
             img_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
+            img_button.bind("<Enter>", lambda event, key=img_key: on_hover(event, key))
+            img_button.bind("<Leave>", on_leave)
 
         img_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
 
@@ -553,12 +599,22 @@ class GamingPanel(tk.Frame):
 
         def show_button_frame():
             game_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+            game_ttp_frame.pack(pady=20, padx=20, fill="x", expand=TRUE)
             back_button.pack_forget()
             game_detail_frame.pack_forget()
 
         def hide_button_frame():
             game_btn_frame.pack_forget()
+            game_ttp_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
+
+        # Funktion für das Hover-Ereignis
+        def on_hover( event, key):
+            game_ttp_label.configure(text=SoftwareGame.game_dict[key]["Description"])
+
+        # Funktion für das Verlassen des Buttons
+        def on_leave( event):
+            game_ttp_label.configure(text="")
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
@@ -570,6 +626,16 @@ class GamingPanel(tk.Frame):
         game_btn_frame.grid_columnconfigure(2, weight=1)
         game_btn_frame.grid_columnconfigure(3, weight=1)
         game_btn_frame.grid_columnconfigure(4, weight=1)
+
+        game_ttp_frame = ttk.LabelFrame(
+            self, text="Beschreibung"
+        )
+        game_ttp_frame.pack(pady=10, padx=20, fill="x")
+
+        game_ttp_label = ttk.Label(
+            game_ttp_frame, text="\n\n", padding=20, wraplength=750
+        )
+        game_ttp_label.pack(fill="x")
 
         def run_installation(game_key):
             primo_skript_task = "Installation ..."
@@ -686,6 +752,8 @@ class GamingPanel(tk.Frame):
                 width=20,
             )
             game_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
+            game_button.bind("<Enter>", lambda event, key=game_key: on_hover(event, key))
+            game_button.bind("<Leave>", on_leave)
 
         game_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
 
@@ -732,12 +800,22 @@ class AVPanel(tk.Frame):
 
         def show_button_frame():
             av_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+            av_ttp_frame.pack(pady=20, padx=20, fill="x", expand=TRUE)
             back_button.pack_forget()
             av_detail_frame.pack_forget()
 
         def hide_button_frame():
             av_btn_frame.pack_forget()
+            av_ttp_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
+
+        # Funktion für das Hover-Ereignis
+        def on_hover( event, key):
+            av_ttp_label.configure(text=SoftwareAudioVideo.av_dict[key]["Description"])
+
+        # Funktion für das Verlassen des Buttons
+        def on_leave( event):
+            av_ttp_label.configure(text="")
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
@@ -749,6 +827,16 @@ class AVPanel(tk.Frame):
         av_btn_frame.grid_columnconfigure(2, weight=1)
         av_btn_frame.grid_columnconfigure(3, weight=1)
         av_btn_frame.grid_columnconfigure(4, weight=1)
+
+        av_ttp_frame = ttk.LabelFrame(
+            self, text="Beschreibung"
+        )
+        av_ttp_frame.pack(pady=10, padx=20, fill="x")
+
+        av_ttp_label = ttk.Label(
+            av_ttp_frame, text="\n\n", padding=20, wraplength=750
+        )
+        av_ttp_label.pack(fill="x")
 
         def run_installation(av_key):
             primo_skript_task = "Installation ..."
@@ -864,6 +952,8 @@ class AVPanel(tk.Frame):
                 width=20,
             )
             av_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
+            av_button.bind("<Enter>", lambda event, key=av_key: on_hover(event, key))
+            av_button.bind("<Leave>", on_leave)
 
         av_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
 
@@ -908,12 +998,23 @@ class ComPanel(tk.Frame):
 
         def show_button_frame():
             com_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+            com_ttp_frame.pack(pady=20, padx=20, fill="x", expand=TRUE)
             back_button.pack_forget()
             com_detail_frame.pack_forget()
 
         def hide_button_frame():
             com_btn_frame.pack_forget()
+            com_ttp_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
+
+        # Funktion für das Hover-Ereignis
+        def on_hover( event, key):
+            com_ttp_label.configure(text=SoftwareCommunication.com_dict[key]["Description"])
+
+        # Funktion für das Verlassen des Buttons
+        def on_leave( event):
+            com_ttp_label.configure(text="")
+
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
@@ -921,6 +1022,17 @@ class ComPanel(tk.Frame):
             self, text="Kommunikation", padding=20
         )
         com_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+
+        com_ttp_frame = ttk.LabelFrame(
+            self, text="Beschreibung"
+        )
+        com_ttp_frame.pack(pady=10, padx=20, fill="x")
+
+        com_ttp_label = ttk.Label(
+            com_ttp_frame, text="\n\n", padding=20, wraplength=750
+        )
+        com_ttp_label.pack(fill="x")
+
 
         com_btn_frame.grid_columnconfigure(0, weight=1)
         com_btn_frame.grid_columnconfigure(1, weight=1)
@@ -1043,6 +1155,9 @@ class ComPanel(tk.Frame):
             )
             com_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
 
+            com_button.bind("<Enter>", lambda event, key=com_key: on_hover(event, key))
+            com_button.bind("<Leave>", on_leave)
+
         com_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
 
         com_detail_frame.grid_columnconfigure(1, weight=1)
@@ -1079,6 +1194,7 @@ class ComPanel(tk.Frame):
 
         global com_wid
         com_wid = self.termf.winfo_id()
+
 
 
 class AptSearchPanel(tk.Frame):
