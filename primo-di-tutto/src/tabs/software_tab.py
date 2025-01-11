@@ -431,7 +431,7 @@ class ImageEditingPanel(tk.Frame):
         img_ttp_frame.pack(pady=10, padx=20, fill="x")
 
         img_ttp_label = ttk.Label(
-            img_ttp_frame, text="\n\n", padding=20, wraplength=750
+            img_ttp_frame, text="\n\n", padding=20, wraplength=700
         )
         img_ttp_label.pack(fill="x")
 
@@ -633,7 +633,7 @@ class GamingPanel(tk.Frame):
         game_ttp_frame.pack(pady=10, padx=20, fill="x")
 
         game_ttp_label = ttk.Label(
-            game_ttp_frame, text="\n\n", padding=20, wraplength=750
+            game_ttp_frame, text="\n", padding=20, wraplength=700
         )
         game_ttp_label.pack(fill="x")
 
@@ -834,7 +834,7 @@ class AVPanel(tk.Frame):
         av_ttp_frame.pack(pady=10, padx=20, fill="x")
 
         av_ttp_label = ttk.Label(
-            av_ttp_frame, text="\n\n", padding=20, wraplength=750
+            av_ttp_frame, text="\n\n", padding=20, wraplength=700
         )
         av_ttp_label.pack(fill="x")
 
@@ -1029,7 +1029,7 @@ class ComPanel(tk.Frame):
         com_ttp_frame.pack(pady=10, padx=20, fill="x")
 
         com_ttp_label = ttk.Label(
-            com_ttp_frame, text="\n\n", padding=20, wraplength=750
+            com_ttp_frame, text="\n\n", padding=20, wraplength=700
         )
         com_ttp_label.pack(fill="x")
 

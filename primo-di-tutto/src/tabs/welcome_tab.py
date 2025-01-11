@@ -57,16 +57,27 @@ class WelcomeTab(ttk.Frame):
         self.icon_label.pack(pady=20)
 
         # Willkommensnachricht definieren
-        welcome_message = _("""Welcome""")
+        welcome_message = _("""Welcome""") + f" {user.upper()}" + "!"
 
         # Label für die Willkommensnachricht erstellen
         self.welcome_label = ttk.Label(self, text=welcome_message, font=("Ubuntu",20))
         self.welcome_label.pack(pady=10)
                 # Willkommensnachricht definieren
-        welcome_text_message = _("""GuideOS is a Linux distribution developed by members of the forum [https://linuxguides.de](https://linuxguides.de). The concept was realized at the end of 2024 and aims to make starting or switching to Linux understandable for every user. Based on Debian and featuring the Cinnamon desktop, we have selected many of the installable programs based on years of experience. Our goal is to further develop GuideOS together with you. Are you interested in becoming part of this community? Then check out [https://forum.linuxguides.de](https://forum.linuxguides.de). There, you can register, ask questions, and share your ideas. We look forward to everyone who uses GuideOS and welcome every new idea!""")
+        welcome_text_message = """Dein einfacher Einstieg in die Welt von Linux
 
+GuideOS ist eine Linux-Distribution, die von Mitgliedern des Linux Guides Forums ins Leben gerufen wurde. Sie wurde Ende 2024 entwickelt, um mit der Community gemeinsam einen Weg in die Welt von Linux zu finden. Unser Ziel ist es nicht nur, ein Betriebssystem zu schaffen, sondern vor allem den gemeinsamen Entwicklungsprozess zu erleben. Der Weg ist das Ziel!
+
+
+- Solide Basis: GuideOS basiert auf Spiral Linux und somit Debian, einer bewährten und stabilen Linux-Distribution.
+
+- Intuitive Oberfläche: Als Desktop-Umgebung setzen wir auf Cinnamon, das eine moderne und anpassbare Benutzererfahrung bietet.
+
+- Sorgfältige Programmauswahl: Die vorinstallierten Programme wurden aus langjähriger Erfahrung ausgewählt, um den Bedürfnissen unterschiedlicher Nutzer gerecht zu werden – egal ob für Office-Arbeiten, Internet, Multimedia oder Gaming.
+
+GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle Interessierten ein, mitzuwirken – auch ohne Programmierkenntnisse. Jeder kann etwas beitragen, sei es durch das Testen neuer Funktionen, das Einbringen von Ideen oder das Teilen von Erfahrungen. Der Schwerpunkt liegt aktuell darauf, zu schauen, ob wir gemeinsam mit der Community eine solche Distribution erfolgreich auf die Beine stellen können. Ob du Fragen hast, Ideen einbringen oder einfach nur Teil dieser wachsenden Gemeinschaft werden möchtest – besuche uns im Forum unter forum.linuxguides.de. Wir freuen uns über jeden, der GuideOS nutzt und mitgestaltet!
+"""
         # Label für die Willkommensnachricht erstellen
-        self.welcome_text_label = ttk.Label(self, text=welcome_text_message,wraplength=800,justify="center")
+        self.welcome_text_label = ttk.Label(self, text=welcome_text_message,wraplength=800,justify="left")
         self.welcome_text_label.pack(pady=10)
 
         # LabelFrame für Autostart-Optionen erstellen
