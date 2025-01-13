@@ -54,19 +54,18 @@ class WelcomeTab(ttk.Frame):
 
         # Label für das Icon erstellen und im Fenster platzieren
         self.icon_label = ttk.Label(self, image=self.welcome_icon)
-        self.icon_label.pack(pady=20)
+        self.icon_label.pack(pady=10)
 
         # Willkommensnachricht definieren
         welcome_message = _("""Welcome""") + f" {user.upper()}" + "!"
 
         # Label für die Willkommensnachricht erstellen
         self.welcome_label = ttk.Label(self, text=welcome_message, font=("Ubuntu",20))
-        self.welcome_label.pack(pady=10)
+        self.welcome_label.pack(pady=5)
                 # Willkommensnachricht definieren
         welcome_text_message = """Dein einfacher Einstieg in die Welt von Linux
 
 GuideOS ist eine Linux-Distribution, die von Mitgliedern des Linux Guides Forums ins Leben gerufen wurde. Sie wurde Ende 2024 entwickelt, um mit der Community gemeinsam einen Weg in die Welt von Linux zu finden. Unser Ziel ist es nicht nur, ein Betriebssystem zu schaffen, sondern vor allem den gemeinsamen Entwicklungsprozess zu erleben. Der Weg ist das Ziel!
-
 
 - Solide Basis: GuideOS basiert auf Spiral Linux und somit Debian, einer bewährten und stabilen Linux-Distribution.
 
@@ -75,6 +74,9 @@ GuideOS ist eine Linux-Distribution, die von Mitgliedern des Linux Guides Forums
 - Sorgfältige Programmauswahl: Die vorinstallierten Programme wurden aus langjähriger Erfahrung ausgewählt, um den Bedürfnissen unterschiedlicher Nutzer gerecht zu werden – egal ob für Office-Arbeiten, Internet, Multimedia oder Gaming.
 
 GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle Interessierten ein, mitzuwirken – auch ohne Programmierkenntnisse. Jeder kann etwas beitragen, sei es durch das Testen neuer Funktionen, das Einbringen von Ideen oder das Teilen von Erfahrungen. Der Schwerpunkt liegt aktuell darauf, zu schauen, ob wir gemeinsam mit der Community eine solche Distribution erfolgreich auf die Beine stellen können. Ob du Fragen hast, Ideen einbringen oder einfach nur Teil dieser wachsenden Gemeinschaft werden möchtest – besuche uns im Forum unter forum.linuxguides.de. Wir freuen uns über jeden, der GuideOS nutzt und mitgestaltet!
+
+*** NVIDIA-Nutzer können über 'Werkzeuge' den passenden Treiber installieren. ***
+
 """
         # Label für die Willkommensnachricht erstellen
         self.welcome_text_label = ttk.Label(self, text=welcome_text_message,wraplength=800,justify="left")
