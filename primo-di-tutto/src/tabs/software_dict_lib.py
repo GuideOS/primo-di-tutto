@@ -334,9 +334,9 @@ class SoftwareCommunication:
             "Description": "Ein anpassbarer Browser mit Fokus auf Produktivität und Privatsphäre. Enthält viele integrierte Werkzeuge wie Notizen und Screenshots. Basiert auf der Chromium-Engine.",
             "Icon": f"{application_path}/images/apps/com.vivaldi.Vivaldi-icon.png",
             "Thumbnail": f"{application_path}/images/apps/com.vivaldi.Vivaldi-thumb.png",
-            "Install": "flatpak install flathub com.vivaldi.Vivaldi -y",
-            "Uninstall": "flatpak remove com.vivaldi.Vivaldi -y",
-            "Path": "com.vivaldi.Vivaldi",
+            "Install": f"pkexec {application_path}/scripts/install_vivaldi",
+            "Uninstall": f"pkexec {application_path}/scripts/uninstall_vivaldi",
+            "Path": "vivaldi-stable",
         },
         "com_3": {
             "Name": "LibreWolf",
