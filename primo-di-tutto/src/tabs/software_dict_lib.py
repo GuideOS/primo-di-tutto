@@ -96,7 +96,16 @@ class SoftwareOffice:
             "Uninstall": "flatpak remove work.openpaper.Paperwork -y",
             "Path": "work.openpaper.Paperwork",
         },
-
+        "office_6": {
+            "Name": "FreeOffice",
+            "Package": "Debian-Paket",
+            "Description": "SoftMaker FreeOffice ist eine kostenlose Bürosoftware-Suite, die von der deutschen Firma SoftMaker entwickelt wurde. Sie bietet Programme, die mit den bekannten Microsoft Office-Anwendungen kompatibel sind, und umfasst folgende Komponenten:\n\nTextMaker, PlanMaker, Presentations\n\n Diese Installation bindet das offizielle Repository von SoftMaker ein, um Updates zu erhalten.",
+            "Icon": f"{application_path}/images/apps/freeoffice-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/freeoffice-thumb.png",
+            "Install": f"pkexec {application_path}/scripts/install_freeoffice",
+            "Uninstall": f"pkexec {application_path}/scripts/uninstall_freeoffice",
+            "Path": "softmaker-freeoffice-2024",
+        },
     }
 
 

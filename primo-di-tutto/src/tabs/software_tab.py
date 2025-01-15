@@ -153,9 +153,9 @@ class SoftwareTab(ttk.Frame):
         flat_frame.pack(fill="both", expand=True)
 
 
-        self.inst_notebook.add(com_frame, compound=LEFT, text="Kommunikation")
-        self.inst_notebook.add(office_frame, compound=LEFT, text="Textverarbeitung")
-        self.inst_notebook.add(av_frame, compound=LEFT, text="Audio/Video")
+        self.inst_notebook.add(com_frame, compound=LEFT, text="Web & Chat")
+        self.inst_notebook.add(office_frame, compound=LEFT, text="Büro")
+        self.inst_notebook.add(av_frame, compound=LEFT, text="Audio & Video")
         self.inst_notebook.add(image_frame, compound=LEFT, text="Bildbearbeitung")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Gaming")
         self.inst_notebook.add(apt_frame, compound=LEFT, text="APT Store",image=self.deb_nav)
@@ -191,7 +191,7 @@ class OfficePanel(tk.Frame):
 
         def show_button_frame():
             office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-            office_ttp_frame.pack(pady=20, padx=20, fill="x", expand=TRUE)
+            office_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
             back_button.pack_forget()
             office_detail_frame.pack_forget()
 
@@ -206,7 +206,7 @@ class OfficePanel(tk.Frame):
 
         # Funktion für das Verlassen des Buttons
         def on_leave( event):
-            office_ttp_label.configure(text="")
+            office_ttp_label.configure(text="\n\n\n")
 
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
@@ -223,12 +223,12 @@ class OfficePanel(tk.Frame):
         office_ttp_frame = ttk.LabelFrame(
             self, text="Beschreibung"
         )
-        office_ttp_frame.pack(pady=10, padx=20, fill="x")
+        office_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
 
         office_ttp_label = ttk.Label(
-            office_ttp_frame, text="\n\n", padding=20, wraplength=700
+            office_ttp_frame, text="\n\n\n", padding=20, wraplength=700
         )
-        office_ttp_label.pack(fill="x")
+        office_ttp_label.pack(fill="x", side="bottom")
 
         def run_installation(office_key):
             primo_skript_task = "Installation ..."
@@ -397,7 +397,7 @@ class ImageEditingPanel(tk.Frame):
 
         def show_button_frame():
             img_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-            img_ttp_frame.pack(pady=20, padx=20, fill="x", expand=TRUE)
+            img_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
             back_button.pack_forget()
             img_detail_frame.pack_forget()
 
@@ -412,7 +412,7 @@ class ImageEditingPanel(tk.Frame):
 
         # Funktion für das Verlassen des Buttons
         def on_leave( event):
-            img_ttp_label.configure(text="")
+            img_ttp_label.configure(text="\n\n\n")
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
@@ -428,12 +428,12 @@ class ImageEditingPanel(tk.Frame):
         img_ttp_frame = ttk.LabelFrame(
             self, text="Beschreibung"
         )
-        img_ttp_frame.pack(pady=10, padx=20, fill="x")
+        img_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
 
         img_ttp_label = ttk.Label(
             img_ttp_frame, text="\n\n", padding=20, wraplength=700
         )
-        img_ttp_label.pack(fill="x")
+        img_ttp_label.pack(fill="x", side="bottom")
 
 
         def run_installation(img_key):
@@ -599,7 +599,7 @@ class GamingPanel(tk.Frame):
 
         def show_button_frame():
             game_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-            game_ttp_frame.pack(pady=20, padx=20, fill="x", expand=TRUE)
+            game_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
             back_button.pack_forget()
             game_detail_frame.pack_forget()
 
@@ -614,7 +614,7 @@ class GamingPanel(tk.Frame):
 
         # Funktion für das Verlassen des Buttons
         def on_leave( event):
-            game_ttp_label.configure(text="")
+            game_ttp_label.configure(text="\n\n\n")
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
@@ -630,12 +630,12 @@ class GamingPanel(tk.Frame):
         game_ttp_frame = ttk.LabelFrame(
             self, text="Beschreibung"
         )
-        game_ttp_frame.pack(pady=10, padx=20, fill="x")
+        game_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
 
         game_ttp_label = ttk.Label(
-            game_ttp_frame, text="\n", padding=20, wraplength=700
+            game_ttp_frame, text="\n\n\n", padding=20, wraplength=700
         )
-        game_ttp_label.pack(fill="x")
+        game_ttp_label.pack(fill="x", side="bottom")
 
         def run_installation(game_key):
             primo_skript_task = "Installation ..."
@@ -800,7 +800,7 @@ class AVPanel(tk.Frame):
 
         def show_button_frame():
             av_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-            av_ttp_frame.pack(pady=20, padx=20, fill="x", expand=TRUE)
+            av_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
             back_button.pack_forget()
             av_detail_frame.pack_forget()
 
@@ -815,7 +815,7 @@ class AVPanel(tk.Frame):
 
         # Funktion für das Verlassen des Buttons
         def on_leave( event):
-            av_ttp_label.configure(text="")
+            av_ttp_label.configure(text="\n\n\n")
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
@@ -831,12 +831,12 @@ class AVPanel(tk.Frame):
         av_ttp_frame = ttk.LabelFrame(
             self, text="Beschreibung"
         )
-        av_ttp_frame.pack(pady=10, padx=20, fill="x")
+        av_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
 
         av_ttp_label = ttk.Label(
-            av_ttp_frame, text="\n\n", padding=20, wraplength=700
+            av_ttp_frame, text="\n\n\n", padding=20, wraplength=700
         )
-        av_ttp_label.pack(fill="x")
+        av_ttp_label.pack(fill="x", side="bottom")
 
         def run_installation(av_key):
             primo_skript_task = "Installation ..."
@@ -998,7 +998,7 @@ class ComPanel(tk.Frame):
 
         def show_button_frame():
             com_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-            com_ttp_frame.pack(pady=20, padx=20, fill="x", expand=TRUE)
+            com_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
             back_button.pack_forget()
             com_detail_frame.pack_forget()
 
@@ -1013,7 +1013,7 @@ class ComPanel(tk.Frame):
 
         # Funktion für das Verlassen des Buttons
         def on_leave( event):
-            com_ttp_label.configure(text="")
+            com_ttp_label.configure(text="\n\n\n")
 
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
@@ -1026,12 +1026,12 @@ class ComPanel(tk.Frame):
         com_ttp_frame = ttk.LabelFrame(
             self, text="Beschreibung"
         )
-        com_ttp_frame.pack(pady=10, padx=20, fill="x")
+        com_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
 
         com_ttp_label = ttk.Label(
-            com_ttp_frame, text="\n\n", padding=20, wraplength=700
+            com_ttp_frame, text="\n\n\n", padding=20, wraplength=700
         )
-        com_ttp_label.pack(fill="x")
+        com_ttp_label.pack(fill="x", side="bottom")
 
 
         com_btn_frame.grid_columnconfigure(0, weight=1)

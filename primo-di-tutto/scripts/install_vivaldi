@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt update && sudo apt upgrade
+sudo apt update && sudo apt upgrade -y
 
 sudo apt install software-properties-common apt-transport-https curl ca-certificates -y
 
@@ -8,6 +8,6 @@ curl -fsSL https://repo.vivaldi.com/archive/linux_signing_key.pub | gpg --dearmo
 
 echo deb [arch=amd64,armhf signed-by=/usr/share/keyrings/vivaldi.gpg] https://repo.vivaldi.com/archive/deb/ stable main | sudo tee /etc/apt/sources.list.d/vivaldi.list
 
-sudo apt update
+sudo apt update -y
 
-sudo apt install vivaldi-stable
+sudo apt install vivaldi-stable -y

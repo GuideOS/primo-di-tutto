@@ -1,0 +1,10 @@
+#!/bin/bash
+
+sudo apt remove -y softmaker-freeoffice-2024
+
+
+sudo rm -f \
+    /etc/apt/sources.list.d/softmaker.list \
+    /usr/share/keyrings/softmaker.gpg \
+
+
