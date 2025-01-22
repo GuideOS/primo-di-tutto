@@ -26,6 +26,7 @@ class UpdateTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
         self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
         if "dark" in theme_name or "Dark" in theme_name:
@@ -62,6 +63,8 @@ class UpdateTab(ttk.Frame):
             self.term_logo = PhotoImage(
                 file=f"{application_path}/images/icons/papirus/goterminal.png"
             )
+            x_bg = "Grey19"
+            x_fg = "White"
 
         else:
             self.folder_icon = PhotoImage(
@@ -97,8 +100,8 @@ class UpdateTab(ttk.Frame):
             self.term_logo = PhotoImage(
                 file=f"{application_path}/images/icons/papirus/goterminal_light.png"
             )
-
-
+            x_bg =  "White"
+            x_fg = "Black"
 
         def all_up_action():
             """Passes commands for auto-generated buttons"""
@@ -106,8 +109,8 @@ class UpdateTab(ttk.Frame):
             frame_height = self.termf.winfo_height()
 
             command = (
-                f"xterm -into {wid} -bg Grey11 -geometry {frame_height}x{frame_width} -e "
-                "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'apt update -y && apt upgrade -y && apt autoremove -y && flatpak update -y && flatpak uninstall --unused -y' | lolcat && "
+                f"xterm -into {wid} -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "
+                "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'nala upgrade -y && nala autopurge -y && flatpak update -y && flatpak uninstall --unused -y' && "
                 'sleep 5 && exit; exec bash"'
             )
 
@@ -141,7 +144,7 @@ class UpdateTab(ttk.Frame):
         def update_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            os.popen(f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} apt update -y |lolcat && sleep 5 && exit ; exec bash"'
+            os.popen(f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} nala update && sleep 5 && exit ; exec bash"'
                     % wid
                 )
 
@@ -149,8 +152,8 @@ class UpdateTab(ttk.Frame):
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
             command = (
-                f"xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "
-                "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'apt update -y && apt upgrade -y' | lolcat && "
+                f"xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "
+                "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'nala upgrade -y' && "
                 'sleep 5 && exit; exec bash"' % wid
             )
             os.popen(command)
@@ -159,7 +162,7 @@ class UpdateTab(ttk.Frame):
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
             os.popen(
-                f"xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "
+                f"xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "
                 "\"apt list --upgradable |lolcat && read -p 'Press Enter to exit.' && exit; exec bash\""
                 % wid
             )
@@ -168,14 +171,14 @@ class UpdateTab(ttk.Frame):
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
             os.popen(
-                f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} apt autoremove -y |lolcat && sleep 5 && exit ; exec bash"'
+                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} nala autopurge -y && sleep 5 && exit ; exec bash"'
                 % wid
             )
         def apt_broken_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
             os.popen(
-                f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} apt --fix-broken install |lolcat && sleep 5 && exit; exec bash"'
+                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} apt --fix-broken install && sleep 5 && exit; exec bash"'
                 % wid
             )
 
@@ -183,7 +186,7 @@ class UpdateTab(ttk.Frame):
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
             os.popen(
-                f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} apt install --fix-missing |lolcat && sleep 5 && exit; exec bash"'
+                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} apt install --fix-missing && sleep 5 && exit; exec bash"'
                 % wid
             )
 
@@ -191,27 +194,28 @@ class UpdateTab(ttk.Frame):
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
             os.popen(
-                f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "{permit} dpkg --configure -a |lolcat && sleep 5 && exit; exec bash"'
+                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} dpkg --configure -a && sleep 5 && exit; exec bash"'
                 % wid
             )
         def flatpak_update_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
             os.popen(
-                f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "flatpak update -y && sleep 5 && exit ; exec bash"'
+                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "flatpak update -y && sleep 5 && exit ; exec bash"'
                 % wid
             )
         def flatpak_clean_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
             os.popen(
-                f'xterm -into %d -bg Grey11 -geometry {frame_height}x{frame_width} -e "flatpak uninstall --unused -y && sleep 5 && exit; exec bash"'
+                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "flatpak uninstall --unused -y && sleep 5 && exit; exec bash"'
                 % wid
             )
 
 
         self.update_button_frame = ttk.Frame(self, padding=20)
         self.update_button_frame.grid(row=0, column=0, sticky="ns")
+
 
         self.all_up_button = ttk.Button(
             self.update_button_frame,
@@ -334,15 +338,17 @@ class UpdateTab(ttk.Frame):
 
         self.flatpak_clean_button.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
 
-        ######################
         self.update_term_frame = ttk.LabelFrame(self, text=_("Prozess"))
         self.update_term_frame.grid(row=0, column=1, sticky="nesw", padx=20, pady=20)
+
+
+
 
         self.termf = ttk.Frame(self.update_term_frame)
 
         self.term_logo_label = Label(
             self.termf,
-            image=self.term_logo,  # background=frame_color
+            image=self.term_logo,
         )
         self.term_logo_label.pack(fill=BOTH, expand=True)
 
@@ -351,14 +357,14 @@ class UpdateTab(ttk.Frame):
         global wid
         wid = self.termf.winfo_id()
 
-        ########################
-        self.update_info_frame = ttk.LabelFrame(self, text="Info",padding=20)
+        self.update_info_frame = ttk.LabelFrame(self, text="Info")
         self.update_info_frame.grid(
-            row=1, column=0, columnspan=2, sticky="ew", padx=20, pady=20
+            row=1, column=0, columnspan=2, sticky="nesw", padx=20, pady=20
         )
 
-        self.update_info_label = ttk.Label(self.update_info_frame)
-        self.update_info_label.pack(anchor="w")
+
+        self.update_info_label = ttk.Label(self.update_info_frame, text="",justify="left",wraplength=900)
+        self.update_info_label.pack(anchor="nw", fill="x", padx=10, pady=5)
 
         self.all_up_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Aktualisiert das gesammte Betriebsystem inklusive Flatpak-Anwendungen."))
         self.all_up_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
@@ -375,13 +381,13 @@ class UpdateTab(ttk.Frame):
         self.apt_autoremove_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Pakete oder Abhängikeiten, die zurückgeblieben sind werden entfernt."))
         self.apt_autoremove_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
 
-        self.apt_broken_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Der Befehl 'apt --fix-broken install' repariert fehlerhafte oder unvollständige Paketinstallationen, indem fehlende\nAbhängigkeiten installiert oder beschädigte Pakete korrigiert werden."))
+        self.apt_broken_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Der Befehl 'apt --fix-broken install' repariert fehlerhafte oder unvollständige Paketinstallationen, indem fehlende Abhängigkeiten installiert oder beschädigte Pakete korrigiert werden."))
         self.apt_broken_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
 
-        self.apt_missing_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Der Befehl 'apt install --fix-missing' lädt fehlende Paketdateien nach, falls sie beim ersten Versuch\nnicht heruntergeladen wurden, und setzt die Installation fort."))
+        self.apt_missing_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Der Befehl 'apt install --fix-missing' lädt fehlende Paketdateien nach, falls sie beim ersten Versuch nicht heruntergeladen wurden, und setzt die Installation fort."))
         self.apt_missing_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
 
-        self.apt_cinfigure_a_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Der Befehl 'dpkg --configure -a' richtet alle Pakete ein, die heruntergeladen, aber noch nicht\nvollständig konfiguriert wurden, und behebt so Installationsprobleme."))
+        self.apt_cinfigure_a_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Der Befehl 'dpkg --configure -a' richtet alle Pakete ein, die heruntergeladen, aber noch nicht vollständig konfiguriert wurden, und behebt so Installationsprobleme."))
         self.apt_cinfigure_a_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
 
         self.flatpak_update_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Es werden alle installierten Flatpak-Programme aktualisiert."))

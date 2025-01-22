@@ -10,12 +10,12 @@ from flatpak_alias_list import *
 from tabs.welcome_tab import WelcomeTab
 from tabs.dash_tab import DashTab
 from tabs.update_tab import UpdateTab
-from tabs.sources_tab import SourcesTab
 from tabs.system_tab import SystemTab
 from tabs.look_tab import LookTab
 from tabs.software_tab import *
 from tabs.contrib_tab import ContribTab
-from tabs.boot_loader_tab import BootLoaderTab
+from tabs.expert_tools import ExpertTab
+from azure_ttk import *
 
 
 class MainApplication(tk.Tk):
@@ -23,7 +23,7 @@ class MainApplication(tk.Tk):
         super().__init__(className="Primo")
         self.title("Primo")
         self.tk.call(
-            "source", f"{application_path}/src/Azure-ttk-theme-2.1.0/azure.tcl"
+            "source", TCL_THEME_FILE_PATH
         )
 
         # self["background"] = maincolor
@@ -149,11 +149,10 @@ class MainApplication(tk.Tk):
         self.willkommen_tab = WelcomeTab(self.notebook)
         self.dash_tab = DashTab(self.notebook)
         self.update_tab = UpdateTab(self.notebook)
-        self.sources_tab = SourcesTab(self.notebook)
-        self.system_tab = SystemTab(self.notebook)
-        self.look_tab = LookTab(self.notebook)
         self.software_tab = SoftwareTab(self.notebook)
-        self.boot_loader_tab = BootLoaderTab(self.notebook)
+        self.system_tab = SystemTab(self.notebook)
+        self.expert_tools_tab = ExpertTab(self.notebook)
+        self.look_tab = LookTab(self.notebook)
         self.contrib_tab = ContribTab(self.notebook)
 
         if get_first_run() == "yes":
@@ -161,16 +160,12 @@ class MainApplication(tk.Tk):
 
         self.notebook.add(self.dash_tab, compound=LEFT, text="Übersicht")
         self.notebook.add(self.update_tab, compound=LEFT, text="Aktualisierung")
-
+        self.notebook.add(self.software_tab, compound=LEFT, text="Software")
         self.notebook.add(self.system_tab, compound=LEFT, text="Werkzeuge")
+        self.notebook.add(self.expert_tools_tab, compound=LEFT, text="Expertenwerkzeuge")
         self.notebook.add(self.look_tab, compound=LEFT, text="Erscheinungsbild")
 
-        self.notebook.add(self.software_tab, compound=LEFT, text="Software")
-        self.notebook.add(self.sources_tab, compound=LEFT, text="Quellen")
-        self.notebook.add(self.boot_loader_tab, compound=LEFT, text="Bootloader")
         self.notebook.add(self.contrib_tab, compound=LEFT, text="Mitmachen")
-
-
 
         # Notebook Theming
         global noteStyler
@@ -193,6 +188,7 @@ class MainApplication(tk.Tk):
         noteStyler.configure("TButton", justify="left", anchor="w")
 
         noteStyler.configure("Custom.TButton", justify="center", anchor="center")
+        noteStyler.configure("Accent2.TButton", justify="center", anchor="center", font=font_12)
 
 
 if __name__ == "__main__":

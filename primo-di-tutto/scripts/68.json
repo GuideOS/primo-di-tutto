@@ -150,13 +150,14 @@
             "Internet",
             "Multimedia",
             "Other",
+            "Games",
             "Accessories",
             "Preferences",
             "Administration",
             "places",
             "recents",
-            "emoji:",
-            "/home/schnitzel"
+            "/home/schnitzel",
+            "favorite_apps"
         ]
     },
     "custom-menu-width": {
@@ -262,7 +263,7 @@
         "default": true,
         "description": "Show bookmarks and places",
         "tooltip": "Show bookmarks and places category in the menu",
-        "value": false
+        "value": true
     },
     "show-recents-category": {
         "dependency": "show-categories",
@@ -278,7 +279,7 @@
         "default": false,
         "description": "Show favorite apps category",
         "tooltip": "Show your favorite apps category in the menu",
-        "value": false
+        "value": true
     },
     "show-home-folder-category": {
         "dependency": "show-categories",
@@ -286,7 +287,7 @@
         "default": true,
         "description": "Show home folder",
         "tooltip": "Show home folder category in the menu",
-        "value": false
+        "value": true
     },
     "show-emoji-category": {
         "dependency": "show-categories",
@@ -330,7 +331,7 @@
         "default": false,
         "description": "Use menu animations",
         "tooltip": "Animate the menu on open and close",
-        "value": false
+        "value": true
     },
     "category-click": {
         "dependency": "show-categories",
@@ -360,7 +361,7 @@
         "default": true,
         "description": "Enable autoscrolling",
         "tooltip": "Autoscroll the application list on mouse hover",
-        "value": true
+        "value": false
     },
     "show-hidden-files": {
         "dependency": "show-categories",
@@ -397,14 +398,14 @@
             "Qwant": 12
         },
         "tooltip": "Show an internet search option in search results",
-        "value": 6
+        "value": 1
     },
     "web-suggestions": {
         "type": "checkbox",
         "default": false,
         "description": "Web search suggestions",
         "tooltip": "With web search option, also show search suggestions. (Note: Search suggestions are provided by DuckDuckGo)",
-        "value": true
+        "value": false
     },
     "enable-home-folder-search": {
         "type": "checkbox",
@@ -418,21 +419,21 @@
         "default": false,
         "description": "Web history search",
         "tooltip": "When searching, also search my browser's history (Google Chrome, Chromium, Opera, Vivaldi, Brave)\nNote: Firefox history is not currently supported.",
-        "value": true
+        "value": false
     },
     "enable-web-bookmarks-search": {
         "type": "checkbox",
         "default": false,
         "description": "Web bookmarks search",
         "tooltip": "When searching, also search my browser's web bookmarks (Google Chrome, Firefox, Chromium, Opera, Vivaldi, Brave)\nNote: To search Firefox bookmarks you will need to install package gir1.2-gda-5.0 (Debian based distributions inc. Ubuntu & Linux Mint) or package libgda (Arch based distributions) and restart your computer.",
-        "value": true
+        "value": false
     },
     "enable-wikipedia-search": {
         "type": "checkbox",
         "default": false,
         "description": "Wikipedia search",
         "tooltip": "Show some Wikipedia results",
-        "value": true
+        "value": false
     },
     "wikipedia-language": {
         "type": "combobox",
@@ -512,7 +513,7 @@
             "မြန်မာဘာသာ": "my"
         },
         "tooltip": "Wikipedia language",
-        "value": "de"
+        "value": "en"
     },
     "search-help": {
         "type": "label",
@@ -599,7 +600,7 @@
         "description": "Panel icon size (pixels)",
         "dependency": "menu-icon-size-custom",
         "tooltip": "Choose a custom size for the panel icon",
-        "value": 31.0
+        "value": 31
     },
     "menu-label": {
         "type": "entry",
@@ -633,14 +634,14 @@
     },
     "apps-grid-icon-size": {
         "type": "spinbutton",
-        "default": 64,
+        "default": 48,
         "min": 0,
         "max": 256,
         "step": 1,
         "units": "",
         "description": "Applications grid icon size (pixels)",
         "tooltip": "Applications grid icon size (pixels)",
-        "value": 64
+        "value": 40
     },
     "sidebar-icon-size": {
         "dependency": "show-sidebar",
@@ -685,5 +686,5 @@
         "type": "label",
         "description": "\n• Additional key options:\nctrl-p — Open launcher properties dialogue of currently highlighted application.\nctrl-d — Open .desktop file of currently highlighted app in default text editor.\n"
     },
-    "__md5__": "62b92075665ccc7ae0df69254b05278c"
+    "__md5__": "37b96bcbdbbb2e3be4e1a9d16282d89a"
 }

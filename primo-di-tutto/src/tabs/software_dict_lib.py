@@ -46,6 +46,16 @@ class SoftwareOffice:
             "Uninstall": "pkexec apt autoremove --purge libreoffice* -y",
             "Path": "libreoffice-core",
         },
+        "office_6": {
+            "Name": "FreeOffice",
+            "Package": "Debian-Paket",
+            "Description": "SoftMaker FreeOffice ist eine kostenlose Bürosoftware-Suite, die von der deutschen Firma SoftMaker entwickelt wurde. Sie bietet Programme, die mit den bekannten Microsoft Office-Anwendungen kompatibel sind, und umfasst folgende Komponenten:\n\nTextMaker (Word-Alternative), PlanMaker (Excel-Alternative), Presentations (PowerPoint-Alternative)",
+            "Icon": f"{application_path}/images/apps/freeoffice-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/freeoffice-thumb.png",
+            "Install": f"pkexec {application_path}/scripts/install_freeoffice",
+            "Uninstall": f"pkexec {application_path}/scripts/uninstall_freeoffice",
+            "Path": "softmaker-freeoffice-2024",
+        },
         "office_1": {
             "Name": "AbiWord",
             "Package": "Debian-Paket",
@@ -96,16 +106,7 @@ class SoftwareOffice:
             "Uninstall": "flatpak remove work.openpaper.Paperwork -y",
             "Path": "work.openpaper.Paperwork",
         },
-        "office_6": {
-            "Name": "FreeOffice",
-            "Package": "Debian-Paket",
-            "Description": "SoftMaker FreeOffice ist eine kostenlose Bürosoftware-Suite, die von der deutschen Firma SoftMaker entwickelt wurde. Sie bietet Programme, die mit den bekannten Microsoft Office-Anwendungen kompatibel sind, und umfasst folgende Komponenten:\n\nTextMaker, PlanMaker, Presentations\n\n Diese Installation bindet das offizielle Repository von SoftMaker ein, um Updates zu erhalten.",
-            "Icon": f"{application_path}/images/apps/freeoffice-icon.png",
-            "Thumbnail": f"{application_path}/images/apps/freeoffice-thumb.png",
-            "Install": f"pkexec {application_path}/scripts/install_freeoffice",
-            "Uninstall": f"pkexec {application_path}/scripts/uninstall_freeoffice",
-            "Path": "softmaker-freeoffice-2024",
-        },
+
     }
 
 
@@ -116,7 +117,7 @@ class SoftwareGame:
         "game_0": {
             "Name": "Steam",
             "Package": "Debian-Paket",
-            "Description": "Steam ist eine Plattform zum Herunterladen, Kaufen und Spielen von Spielen.",
+            "Description": "Steam ist eine Plattform zum Herunterladen, Kaufen und Spielen von Spielen.\n\nINFO: Beim Erststart von Steam öffnet sich ein Terminal. Lese aufmerksam und bestätige immer mit 'Y' bzw. 'J' oder 'Enter'. Nach der Installation muss in den Einstellungen SteamPlay aktivert werden.",
             "Icon": f"{application_path}/images/apps/com.valvesoftware.Steam-icon.png",
             "Thumbnail": f"{application_path}/images/apps/com.valvesoftware.Steam-thumb.png",
             "Install": f"{application_path}/scripts/install_steam",
@@ -447,6 +448,16 @@ class SoftwareCommunication:
             "Uninstall": "flatpak remove org.ferdium.Ferdium -y",
             "Path": "org.ferdium.Ferdium",
         },
+        "com_13": {
+            "Name": "Webapps",
+            "Package": "Debian-Paket",
+            "Description": "Ein praktisches Tool zum Erstellen von Web-Apps für den Desktop. Ermöglicht das Hinzufügen von Websites zu Ihrem Anwendungsstarter und das Ausführen als eigenständige Anwendung.",
+            "Icon": f"{application_path}/images/apps/webapp-manager-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/webapp-manager-thumb.png",
+            "Install": "pkexec apt install webapp-manager -y",
+            "Uninstall": "pkexec apt remove webapp-manager -y",
+            "Path": "webapp-manager",
+        },
     }
 
 
@@ -561,6 +572,16 @@ class SoftwareAudioVideo:
             "Install": "flatpak install flathub io.freetubeapp.FreeTube -y",
             "Uninstall": "flatpak remove io.freetubeapp.FreeTube -y",
             "Path": "io.freetubeapp.FreeTube",
+        },
+        "av_11": {
+            "Name": "Hypnotix",
+            "Package": "Debian-Paket",
+            "Description": "Hypnotix ist ein IPTV-Player, der den Zugriff auf eine Vielzahl von Fernsehsendern und Live-Streams ermöglicht. Die App bietet eine einfache Benutzeroberfläche und eine umfangreiche Senderliste, die regelmäßig aktualisiert wird. Ideal für Benutzer, die Live-Fernsehen auf ihrem Computer genießen möchten.",
+            "Icon": f"{application_path}/images/apps/hypnotix-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/hypnotix-thumb.png",
+            "Install": "pkexec apt install hypnotix -y",
+            "Uninstall": "pkexec apt remove hypnotix -y",
+            "Path": "hypnotix",
         },
     }
 

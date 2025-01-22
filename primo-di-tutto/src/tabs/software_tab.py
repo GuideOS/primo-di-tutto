@@ -132,6 +132,7 @@ class SoftwareTab(ttk.Frame):
             self.flatpak_nav = PhotoImage(
                 file=f"{application_path}/images/icons/nav_bar/flatpak_light_24x24.png"
             )
+
         self.inst_notebook = ttk.Notebook(self)
         self.inst_notebook.pack(fill=BOTH, expand=True)
 
@@ -140,8 +141,8 @@ class SoftwareTab(ttk.Frame):
         av_frame = ttk.Frame(self.inst_notebook)
         image_frame = ttk.Frame(self.inst_notebook)
         gaming_frame = ttk.Frame(self.inst_notebook)
-        apt_frame = ttk.Frame(self.inst_notebook)
-        flat_frame = ttk.Frame(self.inst_notebook)
+        #apt_frame = ttk.Frame(self.inst_notebook)
+        #flat_frame = ttk.Frame(self.inst_notebook)
 
 
         com_frame.pack(fill="both", expand=True)
@@ -149,8 +150,8 @@ class SoftwareTab(ttk.Frame):
         av_frame.pack(fill="both", expand=True)
         image_frame.pack(fill="both", expand=True)
         gaming_frame.pack(fill="both", expand=True)
-        apt_frame.pack(fill="both", expand=True)
-        flat_frame.pack(fill="both", expand=True)
+        #apt_frame.pack(fill="both", expand=True)
+        #flat_frame.pack(fill="both", expand=True)
 
 
         self.inst_notebook.add(com_frame, compound=LEFT, text="Web & Chat")
@@ -158,8 +159,8 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook.add(av_frame, compound=LEFT, text="Audio & Video")
         self.inst_notebook.add(image_frame, compound=LEFT, text="Bildbearbeitung")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Gaming")
-        self.inst_notebook.add(apt_frame, compound=LEFT, text="APT Store",image=self.deb_nav)
-        self.inst_notebook.add(flat_frame, compound=LEFT, text="Flatpak Store",image=self.flatpak_nav)
+        #self.inst_notebook.add(apt_frame, compound=LEFT, text="APT Store",image=self.deb_nav)
+        #self.inst_notebook.add(flat_frame, compound=LEFT, text="Flatpak Store",image=self.flatpak_nav)
 
 
         com_note_frame = ComPanel(com_frame)
@@ -177,11 +178,11 @@ class SoftwareTab(ttk.Frame):
         gaming_note_frame = GamingPanel(gaming_frame)
         gaming_note_frame.pack(fill=tk.BOTH, expand=True)
 
-        apt_search_panel = AptSearchPanel(apt_frame)
-        apt_search_panel.pack(fill=tk.BOTH, expand=True)
+        #apt_search_panel = AptSearchPanel(apt_frame)
+        #apt_search_panel.pack(fill=tk.BOTH, expand=True)
 
-        flatpack_search_panel = FlatpakSearchPanel(flat_frame)
-        flatpack_search_panel.pack(fill=tk.BOTH, expand=True)
+        #flatpack_search_panel = FlatpakSearchPanel(flat_frame)
+        #flatpack_search_panel.pack(fill=tk.BOTH, expand=True)
 
 
 class OfficePanel(tk.Frame):
@@ -190,12 +191,14 @@ class OfficePanel(tk.Frame):
         self.update_interval = 1000
 
         def show_button_frame():
+            self.software_store.pack(padx=20,pady=5,fill="x")
             office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
             office_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
             back_button.pack_forget()
             office_detail_frame.pack_forget()
 
         def hide_button_frame():
+            self.software_store.pack_forget()
             office_btn_frame.pack_forget()
             office_ttp_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
@@ -208,10 +211,19 @@ class OfficePanel(tk.Frame):
         def on_leave( event):
             office_ttp_label.configure(text="\n\n\n")
 
+        def open_gnome_software():
+            subprocess.Popen("env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY gnome-software", shell=True)
+
+        self.gnome_software_icon = PhotoImage(
+            file=f"{application_path}/images/icons/papirus/64x64/gnome-software.png"
+        )
+
+        self.software_store = ttk.Button(self, text="Software-Center öffnen", compound="left",image=self.gnome_software_icon, style="Accent2.TButton", command=open_gnome_software)
+        self.software_store.pack(padx=20,pady=5,fill="x")
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
-        office_btn_frame = ttk.LabelFrame(self, text="Textverarbeitung", padding=20)
+        office_btn_frame = ttk.LabelFrame(self, text="Büro | Empfehlungen", padding=20)
         office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         office_btn_frame.grid_columnconfigure(0, weight=1)
@@ -396,12 +408,14 @@ class ImageEditingPanel(tk.Frame):
         self.update_interval = 1000
 
         def show_button_frame():
+            self.software_store.pack(padx=20,pady=5,fill="x")
             img_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
             img_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
             back_button.pack_forget()
             img_detail_frame.pack_forget()
 
         def hide_button_frame():
+            self.software_store.pack_forget()
             img_btn_frame.pack_forget()
             img_ttp_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
@@ -414,9 +428,19 @@ class ImageEditingPanel(tk.Frame):
         def on_leave( event):
             img_ttp_label.configure(text="\n\n\n")
 
+        def open_gnome_software():
+            subprocess.Popen("gnome-software", shell=True)
+
+        self.gnome_software_icon = PhotoImage(
+            file=f"{application_path}/images/icons/papirus/64x64/gnome-software.png"
+        )
+
+        self.software_store = ttk.Button(self, text="Software-Center öffnen", compound="left",image=self.gnome_software_icon, style="Accent2.TButton", command=open_gnome_software)
+        self.software_store.pack(padx=20,pady=5,fill="x")
+
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
-        img_btn_frame = ttk.LabelFrame(self, text="Bildbearbeitung", padding=20)
+        img_btn_frame = ttk.LabelFrame(self, text="Bildbearbeitung | Empfehlungen", padding=20)
         img_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         img_btn_frame.grid_columnconfigure(0, weight=1)
@@ -598,12 +622,14 @@ class GamingPanel(tk.Frame):
         self.update_interval = 1000
 
         def show_button_frame():
+            self.software_store.pack(padx=20,pady=5,fill="x")
             game_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
             game_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
             back_button.pack_forget()
             game_detail_frame.pack_forget()
 
         def hide_button_frame():
+            self.software_store.pack_forget()
             game_btn_frame.pack_forget()
             game_ttp_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
@@ -616,9 +642,19 @@ class GamingPanel(tk.Frame):
         def on_leave( event):
             game_ttp_label.configure(text="\n\n\n")
 
+        def open_gnome_software():
+            subprocess.Popen("gnome-software", shell=True)
+
+        self.gnome_software_icon = PhotoImage(
+            file=f"{application_path}/images/icons/papirus/64x64/gnome-software.png"
+        )
+
+        self.software_store = ttk.Button(self, text="Software-Center öffnen", compound="left",image=self.gnome_software_icon, style="Accent2.TButton", command=open_gnome_software)
+        self.software_store.pack(padx=20,pady=5,fill="x")
+
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
-        game_btn_frame = ttk.LabelFrame(self, text="Gaming", padding=20)
+        game_btn_frame = ttk.LabelFrame(self, text="Gaming | Empfehlungen", padding=20)
         game_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         game_btn_frame.grid_columnconfigure(0, weight=1)
@@ -630,12 +666,12 @@ class GamingPanel(tk.Frame):
         game_ttp_frame = ttk.LabelFrame(
             self, text="Beschreibung"
         )
-        game_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
+        game_ttp_frame.pack(pady=20, padx=20,fill="x")
 
         game_ttp_label = ttk.Label(
             game_ttp_frame, text="\n\n\n", padding=20, wraplength=700
         )
-        game_ttp_label.pack(fill="x", side="bottom")
+        game_ttp_label.pack(fill="x")
 
         def run_installation(game_key):
             primo_skript_task = "Installation ..."
@@ -799,12 +835,14 @@ class AVPanel(tk.Frame):
         self.update_interval = 1000
 
         def show_button_frame():
+            self.software_store.pack(padx=20,pady=5,fill="x")
             av_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
             av_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
             back_button.pack_forget()
             av_detail_frame.pack_forget()
 
         def hide_button_frame():
+            self.software_store.pack_forget()
             av_btn_frame.pack_forget()
             av_ttp_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
@@ -817,9 +855,20 @@ class AVPanel(tk.Frame):
         def on_leave( event):
             av_ttp_label.configure(text="\n\n\n")
 
+        def open_gnome_software():
+            subprocess.Popen("gnome-software", shell=True)
+
+        self.gnome_software_icon = PhotoImage(
+            file=f"{application_path}/images/icons/papirus/64x64/gnome-software.png"
+        )
+
+        self.software_store = ttk.Button(self, text="Software-Center öffnen", compound="left",image=self.gnome_software_icon, style="Accent2.TButton", command=open_gnome_software)
+        self.software_store.pack(padx=20,pady=5,fill="x")
+
+
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
-        av_btn_frame = ttk.LabelFrame(self, text="Audio/Video", padding=20)
+        av_btn_frame = ttk.LabelFrame(self, text="Audio/Video | Empfehlungen", padding=20)
         av_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         av_btn_frame.grid_columnconfigure(0, weight=1)
@@ -997,12 +1046,14 @@ class ComPanel(tk.Frame):
         self.update_interval = 1000
 
         def show_button_frame():
+            self.software_store.pack(padx=20,pady=5,fill="x")
             com_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
             com_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
             back_button.pack_forget()
             com_detail_frame.pack_forget()
 
         def hide_button_frame():
+            self.software_store.pack_forget()
             com_btn_frame.pack_forget()
             com_ttp_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
@@ -1015,11 +1066,20 @@ class ComPanel(tk.Frame):
         def on_leave( event):
             com_ttp_label.configure(text="\n\n\n")
 
+        def open_gnome_software():
+            subprocess.Popen("gnome-software", shell=True)
+
+        self.gnome_software_icon = PhotoImage(
+            file=f"{application_path}/images/icons/papirus/64x64/gnome-software.png"
+        )
+
+        self.software_store = ttk.Button(self, text="Software-Center öffnen", compound="left",image=self.gnome_software_icon, style="Accent2.TButton", command=open_gnome_software)
+        self.software_store.pack(padx=20,pady=5,fill="x")
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
         com_btn_frame = ttk.LabelFrame(
-            self, text="Kommunikation", padding=20
+            self, text="Web & Chat | Empfehlungen", padding=20
         )
         com_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
@@ -2031,7 +2091,7 @@ class Custom_Installer(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.icon = tk.PhotoImage(
-            file="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png"
+            file=f"{application_path}/images/icons/pigro_icons/unpack.png"
         )
         self.tk.call("wm", "iconphoto", self._w, self.icon)
         self.resizable(0, 0)
@@ -2094,7 +2154,7 @@ class Custom_Installer(tk.Toplevel):
 
         self.install_button = ttk.Button(
             self.installer_main_frame,
-            text="Close",
+            text="Schließen",
             command=self.close_btn_command,
             state=DISABLED,
             style="Accent.TButton",

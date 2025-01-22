@@ -372,7 +372,7 @@ class LookTab(ttk.Frame):
                     "system-config-printer.desktop",
                     "org.gnome.DejaDup.desktop",
                 ],
-                "panel-zone-icon-sizes": '[{"panelId":1,"left":0,"center":0,"right":22}]',
+                "panel-zone-icon-sizes": '[{"panelId":1,"left":0,"center":0,"right":16}]',
                 "panel-zone-symbolic-icon-sizes": '[{"panelId":1,"left":22,"center":28,"right":18}]',
                 "panel-zone-text-sizes": '[{"panelId":1,"left":0,"center":0,"right":0}]',
                 "panels-autohide": ["1:false"],
@@ -843,9 +843,9 @@ class LookTab(ttk.Frame):
             if selected_theme != "Bitte aktualisieren":
                 # Liste der GSettings-Schlüssel und deren Pfade
                 settings_keys = [
-                    ("org.gnome.desktop.interface", "gtk-theme"),
+                    #("org.gnome.desktop.interface", "gtk-theme"),
                     ("org.cinnamon.desktop.wm.preferences", "theme"),
-                    ("org.gnome.desktop.wm.preferences", "theme"),
+                    #("org.gnome.desktop.wm.preferences", "theme"),
                     ("org.cinnamon.desktop.interface", "gtk-theme"),
                     ("org.cinnamon.theme", "name"),
                 ]
@@ -853,6 +853,15 @@ class LookTab(ttk.Frame):
                 # Funktion zum Setzen eines GSettings-Werts
                 def set_gsettings_value(schema, key, value):
                     subprocess.run(["gsettings", "set", schema, key, value], check=True)
+
+                    if "dark" in value or "Dark" in value:
+                        # /org/gnome/desktop/interface/color-scheme
+                        subprocess.Popen(["gsettings", "set", "org.gnome.desktop.interface", "color-scheme", "'prefer-dark'"])
+                        #os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'")
+
+                    else:
+                        subprocess.Popen(["gsettings", "set", "org.gnome.desktop.interface", "color-scheme", "'prefer-light'"])
+                        #os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'")
 
                 # Für jeden Schlüssel den Wert setzen
                 for schema, key in settings_keys:
