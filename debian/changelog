@@ -1,3 +1,9 @@
+primo-di-tutto (0.6.6) unstable; urgency=medium
+
+  * Fixed: gnome-theme-bug
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Thu, 23 Jan 2025 00:36:52 +0100
+
 primo-di-tutto (0.6.5-2) unstable; urgency=medium
 
   * Fixed: Wind-Menu
