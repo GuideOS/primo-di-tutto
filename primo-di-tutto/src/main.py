@@ -16,15 +16,20 @@ from tabs.software_tab import *
 from tabs.contrib_tab import ContribTab
 from tabs.expert_tools import ExpertTab
 from azure_ttk import *
+from utils import scaling  # Import the scaling variable
 
 
 class MainApplication(tk.Tk):
     def __init__(self):
         super().__init__(className="Primo")
         self.title("Primo")
+
         self.tk.call(
             "source", TCL_THEME_FILE_PATH
         )
+        #self.tk.call('tk', 'scaling', scaling)
+
+
 
         # self["background"] = maincolor
         app_width = 1200
@@ -34,12 +39,14 @@ class MainApplication(tk.Tk):
         screen_height = self.winfo_screenheight()
         x = (screen_width / 2) - (app_width / 2)
         y = (screen_height / 2) - (app_height / 2)
+        
         # self.icon is still needed for some DEs
         self.icon = tk.PhotoImage(
             file=f"/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png"
         )
         self.tk.call("wm", "iconphoto", self._w, self.icon)
-        self.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
+        self.geometry(f"{app_width}x{app_height}")
+        
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         # Notebook Icons
@@ -143,7 +150,7 @@ class MainApplication(tk.Tk):
                 file=f"{application_path}/images/icons/nav_bar/sources_light_16x16.png"
             )
 
-        self.notebook = ttk.Notebook(self, width=app_width, height=app_height)
+        self.notebook = ttk.Notebook(self)#, width=app_width, height=app_height)
         self.notebook.grid(row=0, column=0, sticky="nsew")
 
         self.willkommen_tab = WelcomeTab(self.notebook)
@@ -190,6 +197,9 @@ class MainApplication(tk.Tk):
         noteStyler.configure("Custom.TButton", justify="center", anchor="center")
         noteStyler.configure("Accent2.TButton", justify="center", anchor="center", font=font_12)
 
+        
+
+        
 
 if __name__ == "__main__":
     app = MainApplication()

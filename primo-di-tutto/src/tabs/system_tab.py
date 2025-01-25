@@ -32,7 +32,7 @@ class SystemTab(ttk.Frame):
         def sys_btn_action(sys_key):
             # SoftwareSys.sys_dict[sys_key]["Action"]
             command = SoftwareSys.sys_dict[sys_key]["Action"]
-            subprocess.run(command, shell=True, check=True, text=True, capture_output=True)
+            subprocess.Popen(command)
 
         self.sys_btn_icons = []
 

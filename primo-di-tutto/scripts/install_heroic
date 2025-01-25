@@ -10,6 +10,8 @@ if ! command -v wine &> /dev/null; then
     sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources
     sudo apt update
     sudo apt install -y --install-recommends winehq-stable
+    sudo apt install -y mono-complete
+
 else
     echo "Wine ist bereits installiert."
 fi
