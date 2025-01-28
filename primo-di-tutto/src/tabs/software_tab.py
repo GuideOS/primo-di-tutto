@@ -35,6 +35,7 @@ from snap_manage import *
 from flatpak_manage import flatpak_path
 from flatpak_manage import Flat_remote_dict
 from flatpak_manage import refresh_flatpak_installs
+from software import InstallableAppFactory, InstallableApp
 
 
 def resize700(img):
@@ -242,86 +243,71 @@ class OfficePanel(tk.Frame):
         )
         office_ttp_label.pack(fill="x", side="bottom")
 
-        def run_installation(office_key):
+        def run_installation(app):
             primo_skript_task = "Installation ..."
-            primo_skript_task_app = SoftwareOffice.office_dict[office_key]["Name"]
-            primo_skript = SoftwareOffice.office_dict[office_key]["Install"]
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                primo_skript_task, primo_skript_task_app, primo_skript
+                primo_skript_task, app.get_name(), app.get_install_command()
             )
             self.master.wait_window(custom_installer)
             self.office_detail_inst.config(text="Deinstallieren")
 
-            refresh_status(office_key)
+            refresh_status(app)
 
-        def run_uninstall(office_key):
+        def run_uninstall(app):
             primo_skript_task = "Deinstallation ..."
-            primo_skript_task_app = SoftwareOffice.office_dict[office_key]["Name"]
-            primo_skript = SoftwareOffice.office_dict[office_key]["Uninstall"]
-
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                primo_skript_task, primo_skript_task_app, primo_skript
+                primo_skript_task, app.get_name(), app.get_uninstall_command()
             )
             self.master.wait_window(custom_installer)
             self.office_detail_inst.config(text="Installieren")
 
-            refresh_status(office_key)
+            refresh_status(app)
 
         def open_website(office_key):
             path = SoftwareOffice.office_dict[office_key]["Path"]
             subprocess.run(f'xdg-open "{path}"', shell=True)
 
-        def refresh_status(office_key):
-            office_name = SoftwareOffice.office_dict[office_key]["Name"]
-            office_pakage = SoftwareOffice.office_dict[office_key]["Package"]
-            office_disc = SoftwareOffice.office_dict[office_key]["Description"]
-            office_path = SoftwareOffice.office_dict[office_key]["Path"]
-
-            installed_apt = office_path in get_installed_apt_pkgs()
-
-           
-            flatpak_installs = refresh_flatpak_installs()
-            installed_flatpak = office_path in flatpak_installs.values()
-            installed_snap = office_path in get_installed_snaps()
-          
-            if installed_snap or installed_apt or installed_flatpak:
-                logger.info(f"{office_name} is installed")
+        def refresh_status(app):
+            if (app.is_installed()):
                 self.office_detail_inst.config(
                     text="Deinstallieren",
-                    command=lambda: run_uninstall(office_key),
+                    command=lambda: run_uninstall(app),
                     style="Red.TButton",
                 )
             else:
-                logger.info(f"{office_name} is not installed")
                 self.office_detail_inst.config(
                     text="Installieren",
-                    command=lambda: run_installation(office_key),
+                    command=lambda: run_installation(app),
                     style="Green.TButton",
                 )
 
         def office_btn_action(office_key):
-            office_icon_img = SoftwareOffice.office_dict[office_key]["Icon"]
-            office_name = SoftwareOffice.office_dict[office_key]["Name"]
-            office_pakage = SoftwareOffice.office_dict[office_key]["Package"]
-            office_disc = SoftwareOffice.office_dict[office_key]["Description"]
-            office_path = SoftwareOffice.office_dict[office_key]["Path"]
-            office_thumb = SoftwareOffice.office_dict[office_key]["Thumbnail"]
+            app = InstallableAppFactory.create(
+                type=SoftwareOffice.office_dict[office_key]["Package"],
+                name=SoftwareOffice.office_dict[office_key]["Name"],
+                icon=SoftwareOffice.office_dict[office_key]["Icon"],
+                description=SoftwareOffice.office_dict[office_key]["Description"],
+                path=SoftwareOffice.office_dict[office_key]["Path"],
+                thumbnail=SoftwareOffice.office_dict[office_key]["Thumbnail"],
+                install_command=SoftwareOffice.office_dict[office_key]["Install"],
+                uninstall_command=SoftwareOffice.office_dict[office_key]["Uninstall"],
+            )
 
 
-            thumb_img = Image.open(office_thumb)
+            thumb_img = Image.open(app.get_thumbnail())
             resized_thumb_img = resize700(thumb_img)
             self.office_thumb = ImageTk.PhotoImage(resized_thumb_img)
 
-            icon_img = Image.open(office_icon_img)
+            icon_img = Image.open(app.get_icon())
             resized_icon_img = resize46(icon_img)
             self.office_icon = ImageTk.PhotoImage(resized_icon_img)
 
             self.office_detail_icon.configure(image=self.office_icon)
-            self.office_detail_name.config(text=f"{office_name}")
-            self.office_detail_pak.config(text=f"{office_pakage}")
-            self.office_detail_desc.config(text=f"\n{office_disc}")
+            self.office_detail_name.config(text=f"{app.get_name()}")
+            self.office_detail_pak.config(text=f"{app.get_type()}")
+            self.office_detail_desc.config(text=f"\n{app.get_description()}")
 
             self.office_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
             self.termf.grid(column=0, columnspan=3, row=3)
@@ -331,7 +317,7 @@ class OfficePanel(tk.Frame):
             hide_button_frame()
             office_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-            refresh_status(office_key)
+            refresh_status(app)
 
         self.office_btn_icons = []
 
@@ -492,7 +478,7 @@ class ImageEditingPanel(tk.Frame):
 
         def refresh_status(img_key):
             img_name = SoftwareImageEditing.img_dict[img_key]["Name"]
-            img_pakage = SoftwareImageEditing.img_dict[img_key]["Package"]
+            img_pakage = SoftwareImageEditing.img_dict[img_key]["Package"].value
             img_disc = SoftwareImageEditing.img_dict[img_key]["Description"]
             img_path = SoftwareImageEditing.img_dict[img_key]["Path"]
 
@@ -520,7 +506,7 @@ class ImageEditingPanel(tk.Frame):
         def img_btn_action(img_key):
             img_icon_img = SoftwareImageEditing.img_dict[img_key]["Icon"]
             img_name = SoftwareImageEditing.img_dict[img_key]["Name"]
-            img_pakage = SoftwareImageEditing.img_dict[img_key]["Package"]
+            img_pakage = SoftwareImageEditing.img_dict[img_key]["Package"].value
             img_disc = SoftwareImageEditing.img_dict[img_key]["Description"]
             img_path = SoftwareImageEditing.img_dict[img_key]["Path"]
             img_thumb = SoftwareImageEditing.img_dict[img_key]["Thumbnail"]
@@ -704,7 +690,7 @@ class GamingPanel(tk.Frame):
 
         def refresh_status(game_key):
             game_name = SoftwareGame.game_dict[game_key]["Name"]
-            game_pakage = SoftwareGame.game_dict[game_key]["Package"]
+            game_pakage = SoftwareGame.game_dict[game_key]["Package"].value
             game_disc = SoftwareGame.game_dict[game_key]["Description"]
             game_path = SoftwareGame.game_dict[game_key]["Path"]
 
@@ -730,9 +716,11 @@ class GamingPanel(tk.Frame):
                 )
 
         def game_btn_action(game_key):
+            logger.info("game_btn_action", game_key)
+
             game_icon_img = SoftwareGame.game_dict[game_key]["Icon"]
             game_name = SoftwareGame.game_dict[game_key]["Name"]
-            game_pakage = SoftwareGame.game_dict[game_key]["Package"]
+            game_pakage = SoftwareGame.game_dict[game_key]["Package"].value
             game_disc = SoftwareGame.game_dict[game_key]["Description"]
             game_path = SoftwareGame.game_dict[game_key]["Path"]
             game_thumb = SoftwareGame.game_dict[game_key]["Thumbnail"]
@@ -917,7 +905,7 @@ class AVPanel(tk.Frame):
 
         def refresh_status(av_key):
             av_name = SoftwareAudioVideo.av_dict[av_key]["Name"]
-            av_pakage = SoftwareAudioVideo.av_dict[av_key]["Package"]
+            av_pakage = SoftwareAudioVideo.av_dict[av_key]["Package"].value
             av_disc = SoftwareAudioVideo.av_dict[av_key]["Description"]
             av_path = SoftwareAudioVideo.av_dict[av_key]["Path"]
 
@@ -945,7 +933,7 @@ class AVPanel(tk.Frame):
         def av_btn_action(av_key):
             av_icon_img = SoftwareAudioVideo.av_dict[av_key]["Icon"]
             av_name = SoftwareAudioVideo.av_dict[av_key]["Name"]
-            av_pakage = SoftwareAudioVideo.av_dict[av_key]["Package"]
+            av_pakage = SoftwareAudioVideo.av_dict[av_key]["Package"].value
             av_disc = SoftwareAudioVideo.av_dict[av_key]["Description"]
             av_path = SoftwareAudioVideo.av_dict[av_key]["Path"]
             av_thumb = SoftwareAudioVideo.av_dict[av_key]["Thumbnail"]
@@ -1129,7 +1117,7 @@ class ComPanel(tk.Frame):
 
         def refresh_status(com_key):
             com_name = SoftwareCommunication.com_dict[com_key]["Name"]
-            com_pakage = SoftwareCommunication.com_dict[com_key]["Package"]
+            com_pakage = SoftwareCommunication.com_dict[com_key]["Package"].value
             com_disc = SoftwareCommunication.com_dict[com_key]["Description"]
             com_path = SoftwareCommunication.com_dict[com_key]["Path"]
 
@@ -1157,7 +1145,7 @@ class ComPanel(tk.Frame):
         def com_btn_action(com_key):
             com_icon_img = SoftwareCommunication.com_dict[com_key]["Icon"]
             com_name = SoftwareCommunication.com_dict[com_key]["Name"]
-            com_pakage = SoftwareCommunication.com_dict[com_key]["Package"]
+            com_pakage = SoftwareCommunication.com_dict[com_key]["Package"].value
             com_disc = SoftwareCommunication.com_dict[com_key]["Description"]
             com_path = SoftwareCommunication.com_dict[com_key]["Path"]
             com_thumb = SoftwareCommunication.com_dict[com_key]["Thumbnail"]
