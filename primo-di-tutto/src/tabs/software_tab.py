@@ -445,85 +445,73 @@ class ImageEditingPanel(tk.Frame):
         img_ttp_label.pack(fill="x", side="bottom")
 
 
-        def run_installation(img_key):
+        def run_installation(app):
             primo_skript_task = "Installation ..."
-            primo_skript_task_app = SoftwareImageEditing.img_dict[img_key]["Name"]
-            primo_skript = SoftwareImageEditing.img_dict[img_key]["Install"]
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                primo_skript_task, primo_skript_task_app, primo_skript
+                primo_skript_task, app.get_name(), app.get_install_command()
             )
             self.master.wait_window(custom_installer)
             self.img_detail_inst.config(text="Deinstallieren")
 
-            refresh_status(img_key)
+            refresh_status(app)
 
-        def run_uninstall(img_key):
+        def run_uninstall(app):
             primo_skript_task = "Deinstallation ..."
-            primo_skript_task_app = SoftwareImageEditing.img_dict[img_key]["Name"]
-            primo_skript = SoftwareImageEditing.img_dict[img_key]["Uninstall"]
-
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                primo_skript_task, primo_skript_task_app, primo_skript
+                primo_skript_task, app.get_name(), app.get_uninstall_command()
             )
             self.master.wait_window(custom_installer)
             self.img_detail_inst.config(text="Installieren")
 
-            refresh_status(img_key)
+            refresh_status(app)
 
         def open_website(img_key):
             path = SoftwareImageEditing.img_dict[img_key]["Path"]
             subprocess.run(f'xdg-open "{path}"', shell=True)
 
-        def refresh_status(img_key):
-            img_name = SoftwareImageEditing.img_dict[img_key]["Name"]
-            img_pakage = SoftwareImageEditing.img_dict[img_key]["Package"].value
-            img_disc = SoftwareImageEditing.img_dict[img_key]["Description"]
-            img_path = SoftwareImageEditing.img_dict[img_key]["Path"]
-
-            installed_apt = img_path in get_installed_apt_pkgs()
-
-            flatpak_installs = refresh_flatpak_installs()
-            installed_flatpak = img_path in flatpak_installs.values()
-            installed_snap = img_path in get_installed_snaps()
-
-            if installed_snap or installed_apt or installed_flatpak:
-                logger.info(f"{img_name} is installed")
+        def refresh_status(app):
+            if (app.is_installed()):
+                logger.info(f"{app.get_name()} is installed")
                 self.img_detail_inst.config(
                     text="Deinstallieren",
-                    command=lambda: run_uninstall(img_key),
+                    command=lambda: run_uninstall(app),
                     style="Red.TButton",
                 )
             else:
-                logger.info(f"{img_name} is not installed")
+                logger.info(f"{app.get_name()} is not installed")
                 self.img_detail_inst.config(
                     text="Installieren",
-                    command=lambda: run_installation(img_key),
+                    command=lambda: run_installation(app),
                     style="Green.TButton",
                 )
 
         def img_btn_action(img_key):
-            img_icon_img = SoftwareImageEditing.img_dict[img_key]["Icon"]
-            img_name = SoftwareImageEditing.img_dict[img_key]["Name"]
-            img_pakage = SoftwareImageEditing.img_dict[img_key]["Package"].value
-            img_disc = SoftwareImageEditing.img_dict[img_key]["Description"]
-            img_path = SoftwareImageEditing.img_dict[img_key]["Path"]
-            img_thumb = SoftwareImageEditing.img_dict[img_key]["Thumbnail"]
+            app = InstallableAppFactory.create(
+                type=SoftwareImageEditing.img_dict[img_key]["Package"],
+                name=SoftwareImageEditing.img_dict[img_key]["Name"],
+                icon=SoftwareImageEditing.img_dict[img_key]["Icon"],
+                description=SoftwareImageEditing.img_dict[img_key]["Description"],
+                path=SoftwareImageEditing.img_dict[img_key]["Path"],
+                thumbnail=SoftwareImageEditing.img_dict[img_key]["Thumbnail"],
+                install_command=SoftwareImageEditing.img_dict[img_key]["Install"],
+                uninstall_command=SoftwareImageEditing.img_dict[img_key]["Uninstall"],
+            )
 
 
-            thumb_img = Image.open(img_thumb)
+            thumb_img = Image.open(app.get_thumbnail())
             resized_thumb_img = resize700(thumb_img)
             self.img_thumb = ImageTk.PhotoImage(resized_thumb_img)
 
-            icon_img = Image.open(img_icon_img)
+            icon_img = Image.open(app.get_icon())
             resized_icon_img = resize46(icon_img)
             self.img_icon = ImageTk.PhotoImage(resized_icon_img)
 
             self.img_detail_icon.configure(image=self.img_icon)
-            self.img_detail_name.config(text=f"{img_name}")
-            self.img_detail_pak.config(text=f"{img_pakage}")
-            self.img_detail_desc.config(text=f"\n{img_disc}")
+            self.img_detail_name.config(text=f"{app.get_name()}")
+            self.img_detail_pak.config(text=f"{app.get_type()}")
+            self.img_detail_desc.config(text=f"\n{app.get_description()}")
 
             self.img_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
             self.termf.grid(column=0, columnspan=3, row=3)
@@ -533,7 +521,7 @@ class ImageEditingPanel(tk.Frame):
             hide_button_frame()
             img_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-            refresh_status(img_key)
+            refresh_status(app)
 
         self.img_btn_icons = []
 
