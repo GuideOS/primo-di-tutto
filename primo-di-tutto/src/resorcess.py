@@ -5,6 +5,7 @@ from os import popen
 import os.path
 import distro
 import subprocess
+from subprocess import TimeoutExpired
 from tabs.system_tab_check import check_pipanel
 import requests
 import platform
@@ -123,10 +124,21 @@ def run_command(command):
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            timeout=300, # 5 Minutes Timeout
             text=True,
         )
         return True, result.stdout.strip()
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as e:
+        logger.error("Fehler bei der Ausführung des Befehls", e)
+        return False, None
+    except TimeoutExpired as e:
+        logger.error("Timeout bei der Ausführung des Befehls", e)
+        return False, None
+    except PermissionError as e:
+        logger.error("Fehlende Berechtigungen", e)
+        return False, None
+    except Exception as e:
+        logger.exception("Unbekannter Fehler", e)
         return False, None
 
 
