@@ -125,9 +125,9 @@ def run_command(command):
             stderr=subprocess.PIPE,
             text=True,
         )
-        return result.stdout.strip()
+        return True, result.stdout.strip()
     except subprocess.CalledProcessError:
-        return None
+        return False, None
 
 
 def get_desktop_environment():
@@ -196,34 +196,34 @@ def get_theme():
     if "KDE" in de or "PLASMA" in de:
         kde_config_file = os.path.expanduser("~/.config/kdeglobals")
         if os.path.exists(kde_config_file):
-            kde_theme = run_command(f"grep 'Name=' {kde_config_file}")
+            success, kde_theme = run_command(f"grep 'Name=' {kde_config_file}")
             if kde_theme:
                 return kde_theme.split("=")[-1].strip().strip("'")
         return "KDE theme not found."
 
     elif "CINNAMON" in de:
-        theme = run_command("gsettings get org.cinnamon.desktop.interface gtk-theme")
+        success, theme = run_command("gsettings get org.cinnamon.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
     elif "UNITY" in de:
-        theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
+        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
 
     elif "GNOME" in de:
-        theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
+        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
 
     elif "BUDGIE" in de:
-        theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
+        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
 
     elif "PI-WAYFIRE" in de:
-        theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
+        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
     elif "MATE" in de:
-        theme = run_command("gsettings get org.mate.interface gtk-theme")
+        success, theme = run_command("gsettings get org.mate.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
     elif "XFCE" in de:
-        theme = run_command("xfconf-query -c xsettings -p /Net/ThemeName")
+        success, theme = run_command("xfconf-query -c xsettings -p /Net/ThemeName")
         return theme.strip("'") if theme else "Theme not found."
     elif "LXDE" in de or "LXDE-PI" in de:
         return get_lxde_theme_name()
