@@ -73,7 +73,7 @@ def get_app_summary(appstream_id):
         )
         return result.stdout.strip()
     except subprocess.CalledProcessError as e:
-        print(f"Error executing the command: {e.stderr}")
+        logger.error(f"Error executing the command: {e.stderr}")
         return ""
 
 
@@ -102,11 +102,11 @@ def build_screenshot_url():
 
     screenshot_url = extract_default_screenshot_url(app_id)
     if screenshot_url:
-        print("Standard-Screenshot-URL für {}:".format(app_id))
-        print(screenshot_url)
+        logger.info("Standard-Screenshot-URL für {}:".format(app_id))
+        logger.info(screenshot_url)
 
     else:
-        print("Kein Standard-Screenshot gefunden für {}.".format(app_id))
+        logger.warning("Kein Standard-Screenshot gefunden für {}.".format(app_id))
 
 
 class SoftwareTab(ttk.Frame):
@@ -285,17 +285,16 @@ class OfficePanel(tk.Frame):
             flatpak_installs = refresh_flatpak_installs()
             installed_flatpak = office_path in flatpak_installs.values()
             installed_snap = office_path in get_installed_snaps()
-            print()
           
             if installed_snap or installed_apt or installed_flatpak:
-                print(f"{office_name} is installed")
+                logger.info(f"{office_name} is installed")
                 self.office_detail_inst.config(
                     text="Deinstallieren",
                     command=lambda: run_uninstall(office_key),
                     style="Red.TButton",
                 )
             else:
-                print(f"{office_name} is not installed")
+                logger.info(f"{office_name} is not installed")
                 self.office_detail_inst.config(
                     text="Installieren",
                     command=lambda: run_installation(office_key),
@@ -502,17 +501,16 @@ class ImageEditingPanel(tk.Frame):
             flatpak_installs = refresh_flatpak_installs()
             installed_flatpak = img_path in flatpak_installs.values()
             installed_snap = img_path in get_installed_snaps()
-            print()
 
             if installed_snap or installed_apt or installed_flatpak:
-                print(f"{img_name} is installed")
+                logger.info(f"{img_name} is installed")
                 self.img_detail_inst.config(
                     text="Deinstallieren",
                     command=lambda: run_uninstall(img_key),
                     style="Red.TButton",
                 )
             else:
-                print(f"{img_name} is not installed")
+                logger.info(f"{img_name} is not installed")
                 self.img_detail_inst.config(
                     text="Installieren",
                     command=lambda: run_installation(img_key),
@@ -715,17 +713,16 @@ class GamingPanel(tk.Frame):
             flatpak_installs = refresh_flatpak_installs()
             installed_flatpak = game_path in flatpak_installs.values()
             installed_snap = game_path in get_installed_snaps()
-            print()
 
             if installed_snap or installed_apt or installed_flatpak:
-                print(f"{game_name} is installed")
+                logger.info(f"{game_name} is installed")
                 self.game_detail_inst.config(
                     text="Deinstallieren",
                     command=lambda: run_uninstall(game_key),
                     style="Red.TButton",
                 )
             else:
-                print(f"{game_name} is not installed")
+                logger.info(f"{game_name} is not installed")
                 self.game_detail_inst.config(
                     text="Installieren",
                     command=lambda: run_installation(game_key),
@@ -929,17 +926,16 @@ class AVPanel(tk.Frame):
             flatpak_installs = refresh_flatpak_installs()
             installed_flatpak = av_path in flatpak_installs.values()
             installed_snap = av_path in get_installed_snaps()
-            print()
 
             if installed_snap or installed_apt or installed_flatpak:
-                print(f"{av_name} is installed")
+                logger.info(f"{av_name} is installed")
                 self.av_detail_inst.config(
                     text="Deinstallieren",
                     command=lambda: run_uninstall(av_key),
                     style="Red.TButton",
                 )
             else:
-                print(f"{av_name} is not installed")
+                logger.info(f"{av_name} is not installed")
                 self.av_detail_inst.config(
                     text="Installieren",
                     command=lambda: run_installation(av_key),
@@ -1142,17 +1138,16 @@ class ComPanel(tk.Frame):
             flatpak_installs = refresh_flatpak_installs()
             installed_flatpak = com_path in flatpak_installs.values()
             installed_snap = com_path in get_installed_snaps()
-            print()
 
             if installed_snap or installed_apt or installed_flatpak:
-                print(f"{com_name} is installed")
+                logger.info(f"{com_name} is installed")
                 self.com_detail_inst.config(
                     text="Deinstallieren",
                     command=lambda: run_uninstall(com_key),
                     style="Red.TButton",
                 )
             else:
-                print(f"{com_name} is not installed")
+                logger.info(f"{com_name} is not installed")
                 self.com_detail_inst.config(
                     text="Installieren",
                     command=lambda: run_installation(com_key),
@@ -1355,7 +1350,7 @@ class AptSearchPanel(tk.Frame):
                     self.deban_navbar_icon = ImageTk.PhotoImage(self.deban_navbar_icon)
                     apt_pkg_icon.config(image=self.deban_navbar_icon)
                 except urllib.error.HTTPError as e:
-                    print(f"{e}")
+                    logger.error(f"{e}")
                     apt_pkg_icon.config(image=self.debinstall_icon)
             else:
                 apt_pkg_icon.config(image=self.debinstall_icon)
@@ -1380,16 +1375,16 @@ class AptSearchPanel(tk.Frame):
                 self.app_img = ImageTk.PhotoImage(self.app_img)
                 apt_panel.config(image=self.app_img)
             except IndexError as e:
-                print(f"{e}")
+                logger.error(f"{e}")
                 if apt_entry.get() in apt_flatpak_matches:
                     try:
                         app_id = Flat_remote_dict[flatpak_entry.get()]
                         screenshot_url = extract_default_screenshot_url(app_id)
                         if screenshot_url:
-                            print("Screenshot-URL {}:".format(app_id))
-                            print(screenshot_url)
+                            logger.info("Screenshot-URL {}:".format(app_id))
+                            logger.info(screenshot_url)
                         else:
-                            print("No Screenshot Found {}.".format(app_id))
+                            logger.warning("No Screenshot Found {}.".format(app_id))
 
                         with urlopen(screenshot_url) as url_output:
                             self.img = Image.open(url_output)
@@ -1398,20 +1393,20 @@ class AptSearchPanel(tk.Frame):
                         apt_panel.config(image=self.img)
 
                     except requests.exceptions.RequestException as e:
-                        print("Error fetching URL:", e)
+                        logger.error("Error fetching URL:", e)
                         apt_panel.config(self.no_img)
 
                     except subprocess.CalledProcessError as err:
-                        print("Command returned non-zero exit status:", err)
+                        logger.error("Command returned non-zero exit status:", err)
                         if "returned non-zero exit status 4" in str(err):
                             try:
                                 app_id += ".desktop"
                                 screenshot_url = extract_default_screenshot_url(app_id)
                                 if screenshot_url:
-                                    print("Screenshot-URL {}:".format(app_id))
-                                    print(screenshot_url)
+                                    logger.info("Screenshot-URL {}:".format(app_id))
+                                    logger.info(screenshot_url)
                                 else:
-                                    print("No Screenshot Found {}.".format(app_id))
+                                    logger.warning("No Screenshot Found {}.".format(app_id))
 
                                 with urlopen(screenshot_url) as url_output:
                                     self.img = Image.open(url_output)
@@ -1420,7 +1415,7 @@ class AptSearchPanel(tk.Frame):
                                 apt_panel.config(image=self.img)
 
                             except subprocess.CalledProcessError as err:
-                                print(
+                                logger.error(
                                     "Command returned non-zero exit status again:", err
                                 )
                                 apt_panel.config(self.no_img)
@@ -1734,7 +1729,7 @@ class FlatpakSearchPanel(tk.Frame):
             pigro_skript_task = "Installation ..."
             pigro_skript_task_app = f"{flatpak_entry.get()}"
             pigro_skript =f"flatpak install -y flathub {Flat_remote_dict[flatpak_entry.get()]}"
-            print({Flat_remote_dict[flatpak_entry.get()]})
+            logger.info({Flat_remote_dict[flatpak_entry.get()]})
             custom_installer = Custom_Installer(master)
 
             custom_installer.do_task(
@@ -1749,7 +1744,7 @@ class FlatpakSearchPanel(tk.Frame):
             pigro_skript_task = "Deinstallation ..."
             pigro_skript_task_app = f"{flatpak_entry.get()}"
             pigro_skript = f"flatpak uninstall {Flat_remote_dict[flatpak_entry.get()]} -y"
-            print({Flat_remote_dict[flatpak_entry.get()]})
+            logger.info({Flat_remote_dict[flatpak_entry.get()]})
 
             custom_installer = Custom_Installer(master)
 
@@ -1800,10 +1795,10 @@ class FlatpakSearchPanel(tk.Frame):
                 app_id = Flat_remote_dict[flatpak_entry.get()]
                 screenshot_url = extract_default_screenshot_url(app_id)
                 if screenshot_url:
-                    print("Screenshot-URL {}:".format(app_id))
-                    print(screenshot_url)
+                    logger.info("Screenshot-URL {}:".format(app_id))
+                    logger.info(screenshot_url)
                 else:
-                    print("No Screenshot Found {}.".format(app_id))
+                    logger.error("No Screenshot Found {}.".format(app_id))
 
                 with urlopen(screenshot_url) as url_output:
                     self.img = Image.open(url_output)
@@ -1812,20 +1807,20 @@ class FlatpakSearchPanel(tk.Frame):
                 flatpak_panel.config(image=self.img)
 
             except requests.exceptions.RequestException as e:
-                print("Error fetching URL:", e)
+                logger.error("Error fetching URL:", e)
                 flatpak_panel.config(self.no_img)
 
             except subprocess.CalledProcessError as err:
-                print("Command returned non-zero exit status:", err)
+                logger.error("Command returned non-zero exit status:", err)
                 if "returned non-zero exit status 4" in str(err):
                     try:
                         app_id += ".desktop"
                         screenshot_url = extract_default_screenshot_url(app_id)
                         if screenshot_url:
-                            print("Screenshot-URL {}:".format(app_id))
-                            print(screenshot_url)
+                            logger.info("Screenshot-URL {}:".format(app_id))
+                            logger.info(screenshot_url)
                         else:
-                            print("No Screenshot Found {}.".format(app_id))
+                            logger.warning("No Screenshot Found {}.".format(app_id))
 
                         with urlopen(screenshot_url) as url_output:
                             self.img = Image.open(url_output)
@@ -1834,7 +1829,7 @@ class FlatpakSearchPanel(tk.Frame):
                         flatpak_panel.config(image=self.img)
 
                     except subprocess.CalledProcessError as err:
-                        print("Command returned non-zero exit status again:", err)
+                        logger.error("Command returned non-zero exit status again:", err)
                         flatpak_panel.config(self.no_img)
 
         def get_flatpak_description():
@@ -2195,4 +2190,4 @@ class Custom_Installer(tk.Toplevel):
         Custom_Installer.destroy(self)
 
     def on_thread_finished(self):
-        print("Thread beendet")
+        logger.info("Thread beendet")

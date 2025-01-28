@@ -3,8 +3,10 @@ import json
 import subprocess
 import socket
 import platform
-
 from resorcess import home
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 
 def count_flatpaks():
@@ -31,7 +33,7 @@ def is_internet_available():
 def refresh_flatpak_installs():
     command = "flatpak list --columns=name --columns=application --app"
     output = subprocess.check_output(command, shell=True, text=True)
-    # print(output)
+    logger.debug(output)
 
     lines = output.strip().split("\n")
     data = {}
@@ -43,7 +45,7 @@ def refresh_flatpak_installs():
                 name, application = split_values
                 data[name] = application
             elif line.strip():
-                print(f"Warnung: Unerwartetes Format in Zeile '{line}'")
+                logger.error(f"Warnung: Unerwartetes Format in Zeile '{line}'")
 
     json_file_path = f"{home}/.primo/flatpak_installed.json"
     expanded_json_file_path = os.path.expanduser(json_file_path)
@@ -54,7 +56,7 @@ def refresh_flatpak_installs():
     with open(expanded_json_file_path, "r") as json_file:
         flat_uninstalled_dict = json.load(json_file)
 
-    #print(flat_uninstalled_dict)
+    logger.debug(flat_uninstalled_dict)
     return flat_uninstalled_dict
 
 
@@ -63,7 +65,7 @@ flatpak_path = os.path.exists("/bin/flatpak")
 
 
 if flatpak_path:
-    print("[Info] Flatpak is installed. List will be added")
+    logger.info("Flatpak is installed. List will be added")
 
     home = os.path.expanduser("~")
     json_file_path = f"{home}/.primo/flat_remote_data.json"
@@ -92,7 +94,7 @@ if flatpak_path:
             json.dump(flat_remote_dict, json_file, indent=2)
 
         Flat_remote_dict = flat_remote_dict
-        print(f"Added Flatpak cache.")
+        logger.info(f"Added Flatpak cache.")
     else:
         if os.path.exists(expanded_json_file_path):
             with open(expanded_json_file_path, "r") as json_file:
@@ -102,7 +104,7 @@ if flatpak_path:
 
     refresh_flatpak_installs()
 else:
-    print("[Info] Flatpak is not installed")
+    logger.info("Flatpak is not installed")
     Flat_remote_dict = {}
     flat_counted = "-"
 

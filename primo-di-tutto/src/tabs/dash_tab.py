@@ -16,6 +16,9 @@ from flatpak_manage import count_flatpaks
 from flatpak_alias_list import *
 from tabs.pop_ups import *
 from tool_tipps import CreateToolTip
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 
 class DashTab(ttk.Frame):
@@ -76,15 +79,15 @@ class DashTab(ttk.Frame):
                 # Read and print the model information
                 global pi_model
                 pi_model = model_file.read().strip()
-                print(f"[Info] Raspberry Pi Model: {pi_model}")
+                logger.info(f"Raspberry Pi Model: {pi_model}")
 
         except FileNotFoundError:
-            print(
+            logger.info(
                 "The /proc/device-tree/model file does not exist. You are not using a Pi"
             )
             pi_model = "Dein Computer"
         except Exception as e:
-            print("An error occurred:", str(e))
+            logger.error("An error occurred:", str(e))
 
         # Create a frame to hold the progress bars
         self.usage_frame = ttk.LabelFrame(
@@ -430,7 +433,7 @@ class DashTab(ttk.Frame):
             up_rate = round(net_io_counters.bytes_sent / 1024 / 1024, 2)
             web_state = "Verbunden"
         except (socket.error, socket.gaierror) as e:
-            print(f"[Info] Failed to determine local IP address: {e}")
+            logger.error(f"Failed to determine local IP address: {e}")
             lan_ip = None
             down_rate = "-"
             up_rate = "-"
@@ -484,6 +487,6 @@ class DashTab(ttk.Frame):
                 if line.startswith("Name: "):
                     return line.split("Name: ")[1]
         except subprocess.CalledProcessError as e:
-            print(f"Error running wmctrl: {e}")
+            logger.error(f"Error running wmctrl: {e}")
         
         return None

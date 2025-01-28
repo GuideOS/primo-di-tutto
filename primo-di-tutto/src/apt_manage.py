@@ -2,13 +2,15 @@ import apt
 import os
 from os import popen
 import subprocess
+from logger_config import setup_logger
 
+logger = setup_logger(__name__)
 
 # Counts installed .DEBs
 deb_count = popen("dpkg --list | wc --lines")
 deb_counted = deb_count.read()
 deb_count.close()
-print(f"[Info] {deb_counted[:-1]} .deb Packages Installed")
+logger.info(f"{deb_counted[:-1]} .deb Packages Installed")
 
 
 def get_installed_apt_pkgs():
@@ -19,7 +21,8 @@ def get_installed_apt_pkgs():
     for package in cache:
         if package.is_installed:
             apt_installed_content.append(package.name)
-    #print(apt_installed_content)
+    
+    logger.debug(apt_installed_content)
     return apt_installed_content
 
 

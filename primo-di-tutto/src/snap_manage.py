@@ -1,6 +1,8 @@
 import os
 import subprocess
+from logger_config import setup_logger
 
+logger = setup_logger(__name__)
 
 def is_snap_installed():
     return os.path.exists("/bin/snap")
@@ -18,14 +20,14 @@ def count_installed_snap_packages():
 if is_snap_installed():
     snap_package_count = count_installed_snap_packages()
     if snap_package_count != -1:
-        print(
-            f"[Info] Snap is installed, and there are {snap_package_count} packages installed."
+        logger.info(
+            f"Snap is installed, and there are {snap_package_count} packages installed."
         )
     else:
-        print("[Info] Failed to list installed packages using Snap.")
+        logger.warning("Failed to list installed packages using Snap.")
         snap_package_count = "-"
 else:
-    print("[Info] Snap is not installed on your system.")
+    logger.info("Snap is not installed on your system.")
     snap_package_count = "-"
 
 

@@ -15,6 +15,9 @@ from tool_tipps import TipsText
 from tabs.pop_ups import *
 from tabs.text_dict_lib import Update_Tab_Buttons
 from resorcess import pi_identify
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 
 class UpdateTab(ttk.Frame):
@@ -66,7 +69,7 @@ class UpdateTab(ttk.Frame):
             frame_width = self.termf.winfo_width()
 
             frame_height = self.termf.winfo_height()
-            print(
+            logger.info(
                 "The width & height of the label is:",
                 frame_width,
                 frame_height,
@@ -162,7 +165,7 @@ class UpdateTab(ttk.Frame):
             """Passes commands for auto-generated buttons"""
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            print(
+            logger.info(
                 "The width & height of the label is:",
                 frame_width,
                 frame_height,
@@ -179,11 +182,11 @@ class UpdateTab(ttk.Frame):
                 # Ausführung des Befehls und Statusüberprüfung
                 try:
                     result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    print("Update erfolgreich ausgeführt!")
+                    logger.info("Update erfolgreich ausgeführt!")
                     send_notification(title="Primo Di Tutto", message="Update erfolgreich ausgeführt!", icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png", urgency="critical")
                 except subprocess.CalledProcessError as e:
                     send_notification(title="Primo Di Tutto", message="Update war nicht erfolgreich !", icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png", urgency="critical")
-                    print(f"Fehlermeldung: {e.stderr.decode()}")
+                    logger.error(f"Fehlermeldung: {e.stderr.decode()}")
                 # Beispielaufruf mit Icon und hoher Dringlichkeit
                 
 
@@ -290,7 +293,7 @@ class UpdateTab(ttk.Frame):
             """Passes commands for auto-generated buttons"""
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            print(
+            logger.info(
                 "The width & height of the label is:",
                 frame_width,
                 frame_height,
@@ -375,7 +378,7 @@ class UpdateTab(ttk.Frame):
             """Passes commands for auto-generated buttons"""
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            print(
+            logger.info(
                 "The width & height of the label is:",
                 frame_width,
                 frame_height,

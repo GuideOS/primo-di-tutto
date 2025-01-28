@@ -22,6 +22,10 @@ from tabs.software_tab import Custom_Installer
 import subprocess
 import re
 import gettext
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
+
 lang = gettext.translation('messages', localedir=f"{application_path}/src/tabs/locale", languages=['de'])
 lang.install()
 _ = lang.gettext
@@ -94,20 +98,20 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
             try:
                 output = subprocess.check_output("inxi -G", shell=True, text=True)
                 gpu_model = output.strip()
-                #print("GPU Modell (über inxi):", gpu_model)
+                logger.debug("GPU Modell (über inxi):", gpu_model)
                 return gpu_model
             except subprocess.CalledProcessError:
-                print("Fehler beim Auslesen des GPU-Modells über inxi.")
+                logger.error("Fehler beim Auslesen des GPU-Modells über inxi.")
                 return None
 
 
         def check_nvidia_driver():
             try:
                 driver_info = subprocess.check_output("nvidia-smi --query-gpu=driver_version --format=csv,noheader", shell=True, text=True)
-                print("NVIDIA Treiber Version:", driver_info.strip())
+                logger.info("NVIDIA Treiber Version:", driver_info.strip())
                 return True
             except subprocess.CalledProcessError:
-                print("NVIDIA-Treiber nicht installiert, möglicherweise läuft der Nouveau-Treiber.")
+                logger.info("NVIDIA-Treiber nicht installiert, möglicherweise läuft der Nouveau-Treiber.")
                 return False
 
         def check_nvidia_gpu():
@@ -117,7 +121,7 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
                 else:
                     return False
             except subprocess.CalledProcessError as e:
-                print("Error running 'lspci'")
+                logger.error("Error running 'lspci'")
                 return False
 
 
@@ -125,10 +129,10 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
             try:
                 model_info = subprocess.check_output("nvidia-smi --query-gpu=name --format=csv,noheader", shell=True, text=True)
                 model = model_info.strip()
-                print("NVIDIA GPU Modell:", model)
+                logger.info("NVIDIA GPU Modell:", model)
                 return model
             except subprocess.CalledProcessError:
-                print("Fehler beim Abrufen des NVIDIA-GPU-Modells. Bitte überprüfen Sie, ob 'nvidia-smi' installiert ist.")
+                logger.info("Fehler beim Abrufen des NVIDIA-GPU-Modells. Bitte überprüfen Sie, ob 'nvidia-smi' installiert ist.")
                 return None
 
         def open_software_properties_tab():
@@ -139,13 +143,13 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
 
         def driver_recognition():
             if check_nvidia_gpu():
-                print("NVIDIA-GPU erkannt.")
+                logger.info("NVIDIA-GPU erkannt.")
                 if check_nvidia_driver():
                     get_nvidia_gpu_model()  # Modell der GPU abrufen und ausgeben
                 else:
                     self.nvidia_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
             else:
-                print("Keine NVIDIA-GPU erkannt.")
+                logger.info("Keine NVIDIA-GPU erkannt.")
 
 
 

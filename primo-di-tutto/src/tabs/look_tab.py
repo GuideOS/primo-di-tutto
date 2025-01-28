@@ -15,6 +15,9 @@ from tabs.system_tab_check import *
 import json
 from tabs.system_tab_check import check_papirus
 import shutil
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 
 class LookTab(ttk.Frame):
@@ -85,7 +88,7 @@ class LookTab(ttk.Frame):
             
             # Prüfen, ob das Verzeichnis existiert
             if not os.path.exists(config_dir):
-                print(f"Das Verzeichnis {config_dir} wurde nicht gefunden.")
+                logger.error(f"Das Verzeichnis {config_dir} wurde nicht gefunden.")
                 return False
 
             # Datei mit dem Suchmuster finden
@@ -95,11 +98,11 @@ class LookTab(ttk.Frame):
                     None
                 )
             except Exception as e:
-                print(f"Fehler beim Lesen des Verzeichnisses: {e}")
+                logger.error(f"Fehler beim Lesen des Verzeichnisses: {e}")
                 return False
 
             if not json_file:
-                print("Keine JSON-Datei gefunden.")
+                logger.error("Keine JSON-Datei gefunden.")
                 return False
             
             # Pfad zur Originaldatei
@@ -110,10 +113,10 @@ class LookTab(ttk.Frame):
             try:
                 # Datei kopieren
                 shutil.copy(file_path, backup_file_path)
-                print(f"Backup erfolgreich erstellt: {backup_file_path}")
+                logger.info(f"Backup erfolgreich erstellt: {backup_file_path}")
                 return True
             except Exception as e:
-                print(f"Fehler beim Erstellen des Backups: {e}")
+                logger.error(f"Fehler beim Erstellen des Backups: {e}")
                 return False
 
         # Funktion aufrufen
@@ -124,7 +127,7 @@ class LookTab(ttk.Frame):
             
             # Prüfen, ob das Verzeichnis existiert
             if not os.path.exists(config_dir):
-                print(f"Das Verzeichnis {config_dir} wurde nicht gefunden.")
+                logger.error(f"Das Verzeichnis {config_dir} wurde nicht gefunden.")
                 return False
 
             # Pfad zur Backup-Datei
@@ -132,7 +135,7 @@ class LookTab(ttk.Frame):
             
             # Prüfen, ob die Backup-Datei existiert
             if not os.path.exists(backup_file_path):
-                print(f"Das Backup {backup_file_path} wurde nicht gefunden.")
+                logger.error(f"Das Backup {backup_file_path} wurde nicht gefunden.")
                 return False
 
             # Ziel-JSON-Dateiname basierend auf der Zahl
@@ -142,10 +145,10 @@ class LookTab(ttk.Frame):
             try:
                 # Backup zurückkopieren
                 shutil.copy(backup_file_path, restored_file_path)
-                print(f"Backup erfolgreich wiederhergestellt als: {restored_file_path}")
+                logger.info(f"Backup erfolgreich wiederhergestellt als: {restored_file_path}")
                 return True
             except Exception as e:
-                print(f"Fehler beim Wiederherstellen des Backups: {e}")
+                logger.error(f"Fehler beim Wiederherstellen des Backups: {e}")
                 return False
 
 
@@ -159,11 +162,11 @@ class LookTab(ttk.Frame):
                 try:
                     # Datei löschen
                     os.remove(path)
-                    print(f"Die Datei {path} wurde gelöscht.")
+                    logger.info(f"Die Datei {path} wurde gelöscht.")
                 except Exception as e:
-                    print(f"Fehler beim Löschen der Datei: {e}")
+                    logger.error(f"Fehler beim Löschen der Datei: {e}")
             else:
-                print(f"Die Datei {path} existiert nicht.")
+                logger.warning(f"Die Datei {path} existiert nicht.")
 
         def copy_dockitems():
             # Definiere Quell- und Zielverzeichnisse
@@ -172,13 +175,13 @@ class LookTab(ttk.Frame):
 
             # Prüfe, ob das Quellverzeichnis existiert
             if not os.path.exists(src):
-                print(f"Quellverzeichnis {src} existiert nicht.")
+                logger.warning(f"Quellverzeichnis {src} existiert nicht.")
                 return
 
             # Erstelle das Zielverzeichnis, falls es nicht existiert
             if not os.path.exists(dest):
                 os.makedirs(dest)
-                print(f"Zielverzeichnis {dest} wurde erstellt.")
+                logger.info(f"Zielverzeichnis {dest} wurde erstellt.")
 
             # Kopiere alle .dockitem-Dateien
             for file_name in os.listdir(src):
@@ -187,9 +190,9 @@ class LookTab(ttk.Frame):
                     dest_file = os.path.join(dest, file_name)
                     try:
                         shutil.copy2(src_file, dest_file)
-                        print(f"{src_file} wurde nach {dest_file} kopiert.")
+                        logger.info(f"{src_file} wurde nach {dest_file} kopiert.")
                     except Exception as e:
-                        print(f"Fehler beim Kopieren von {src_file}: {e}")
+                        logger.error(f"Fehler beim Kopieren von {src_file}: {e}")
 
         # Funktion ausführen
 
@@ -207,10 +210,10 @@ class LookTab(ttk.Frame):
             for path, value in dconf_data.items():
                 try:
                     subprocess.run(["dconf", "write", path, value], check=True)
-                    print(f"Erfolgreich geschrieben: {path} -> {value}")
+                    logger.info(f"Erfolgreich geschrieben: {path} -> {value}")
                 except subprocess.CalledProcessError as e:
-                    print(f"Fehler beim Schreiben: {path} -> {value}")
-                    print(e)
+                    logger.error(f"Fehler beim Schreiben: {path} -> {value}")
+                    logger.error(e)
 
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/plank.desktop"
@@ -227,9 +230,9 @@ class LookTab(ttk.Frame):
 
                 # Datei kopieren
                 shutil.copy2(source, destination)
-                print(f"Datei erfolgreich kopiert: {source} -> {destination}")
+                logger.info(f"Datei erfolgreich kopiert: {source} -> {destination}")
             except Exception as e:
-                print(f"Fehler beim Kopieren der Datei: {e}")
+                logger.error(f"Fehler beim Kopieren der Datei: {e}")
 
         def copy_guide_menu(application_path):
             """
@@ -257,9 +260,9 @@ class LookTab(ttk.Frame):
                 with open(destination_file, "w") as dst:
                     dst.write(content)
 
-                print(f"Datei erfolgreich nach {destination_file} kopiert.")
+                logger.info(f"Datei erfolgreich nach {destination_file} kopiert.")
             except Exception as e:
-                print(f"Fehler beim Kopieren der Datei: {e}")
+                logger.error(f"Fehler beim Kopieren der Datei: {e}")
 
         def copy_guide_menu_up(application_path):
             """
@@ -287,9 +290,9 @@ class LookTab(ttk.Frame):
                 with open(destination_file, "w") as dst:
                     dst.write(content)
 
-                print(f"Datei erfolgreich nach {destination_file} kopiert.")
+                logger.info(f"Datei erfolgreich nach {destination_file} kopiert.")
             except Exception as e:
-                print(f"Fehler beim Kopieren der Datei: {e}")
+                logger.error(f"Fehler beim Kopieren der Datei: {e}")
 
 
 
@@ -312,13 +315,13 @@ class LookTab(ttk.Frame):
             try:
                 # Datei kopieren
                 shutil.copy(source_path, target_path)
-                print(f"Datei wurde erfolgreich nach {target_path} kopiert.")
+                logger.info(f"Datei wurde erfolgreich nach {target_path} kopiert.")
             except FileNotFoundError:
-                print(f"Die Datei {source_path} wurde nicht gefunden.")
+                logger.error(f"Die Datei {source_path} wurde nicht gefunden.")
             except PermissionError:
-                print(f"Zugriffsrechte fehlen, um die Datei zu kopieren.")
+                logger.error(f"Zugriffsrechte fehlen, um die Datei zu kopieren.")
             except Exception as e:
-                print(f"Ein Fehler ist aufgetreten: {e}")
+                logger.error(f"Ein Fehler ist aufgetreten: {e}")
 
 
         def set_elfi_panel():
@@ -866,7 +869,7 @@ class LookTab(ttk.Frame):
                 # Für jeden Schlüssel den Wert setzen
                 for schema, key in settings_keys:
                     set_gsettings_value(schema, key, selected_theme)
-                    print(f"{schema}.{key} wurde auf {selected_theme} gesetzt.")
+                    logger.info(f"{schema}.{key} wurde auf {selected_theme} gesetzt.")
                 done_message_0()
 
         def set_icon():
