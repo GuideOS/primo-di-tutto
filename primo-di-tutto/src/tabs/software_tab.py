@@ -1048,84 +1048,72 @@ class ComPanel(tk.Frame):
         com_btn_frame.grid_columnconfigure(3, weight=1)
         com_btn_frame.grid_columnconfigure(4, weight=1)
 
-        def run_installation(com_key):
+        def run_installation(app: InstallableApp):
             primo_skript_task = "Installation ..."
-            primo_skript_task_app = SoftwareCommunication.com_dict[com_key]["Name"]
-            primo_skript = SoftwareCommunication.com_dict[com_key]["Install"]
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                primo_skript_task, primo_skript_task_app, primo_skript
+                primo_skript_task, app.get_name(), app.get_install_command()
             )
             self.master.wait_window(custom_installer)
             self.com_detail_inst.config(text="Deinstallieren")
 
-            refresh_status(com_key)
+            refresh_status(app)
 
-        def run_uninstall(com_key):
+        def run_uninstall(app: InstallableApp):
             primo_skript_task = "Deinstallation ..."
-            primo_skript_task_app = SoftwareCommunication.com_dict[com_key]["Name"]
-            primo_skript = SoftwareCommunication.com_dict[com_key]["Uninstall"]
-
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                primo_skript_task, primo_skript_task_app, primo_skript
+                primo_skript_task, app.get_name(), app.get_uninstall_command()
             )
             self.master.wait_window(custom_installer)
             self.com_detail_inst.config(text="Installieren")
 
-            refresh_status(com_key)
+            refresh_status(app)
 
         def open_website(com_key):
             path = SoftwareCommunication.com_dict[com_key]["Path"]
             subprocess.run(f'xdg-open "{path}"', shell=True)
 
-        def refresh_status(com_key):
-            com_name = SoftwareCommunication.com_dict[com_key]["Name"]
-            com_pakage = SoftwareCommunication.com_dict[com_key]["Package"].value
-            com_disc = SoftwareCommunication.com_dict[com_key]["Description"]
-            com_path = SoftwareCommunication.com_dict[com_key]["Path"]
-
-            installed_apt = com_path in get_installed_apt_pkgs()
-
-            flatpak_installs = refresh_flatpak_installs()
-            installed_flatpak = com_path in flatpak_installs.values()
-            installed_snap = com_path in get_installed_snaps()
-
-            if installed_snap or installed_apt or installed_flatpak:
-                logger.info(f"{com_name} is installed")
+        def refresh_status(app: InstallableApp):
+            if (app.is_installed()):
+                logger.info(f"{app.get_name()} is installed")
                 self.com_detail_inst.config(
                     text="Deinstallieren",
-                    command=lambda: run_uninstall(com_key),
+                    command=lambda: run_uninstall(app),
                     style="Red.TButton",
                 )
             else:
-                logger.info(f"{com_name} is not installed")
+                logger.info(f"{app.get_name()} is not installed")
                 self.com_detail_inst.config(
                     text="Installieren",
-                    command=lambda: run_installation(com_key),
+                    command=lambda: run_installation(app),
                     style="Green.TButton",
                 )
 
         def com_btn_action(com_key):
-            com_icon_img = SoftwareCommunication.com_dict[com_key]["Icon"]
-            com_name = SoftwareCommunication.com_dict[com_key]["Name"]
-            com_pakage = SoftwareCommunication.com_dict[com_key]["Package"].value
-            com_disc = SoftwareCommunication.com_dict[com_key]["Description"]
-            com_path = SoftwareCommunication.com_dict[com_key]["Path"]
-            com_thumb = SoftwareCommunication.com_dict[com_key]["Thumbnail"]
+            app = InstallableAppFactory.create(
+                type=SoftwareCommunication.com_dict[com_key]["Package"],
+                name=SoftwareCommunication.com_dict[com_key]["Name"],
+                icon=SoftwareCommunication.com_dict[com_key]["Icon"],
+                description=SoftwareCommunication.com_dict[com_key]["Description"],
+                path=SoftwareCommunication.com_dict[com_key]["Path"],
+                thumbnail=SoftwareCommunication.com_dict[com_key]["Thumbnail"],
+                install_command=SoftwareCommunication.com_dict[com_key]["Install"],
+                uninstall_command=SoftwareCommunication.com_dict[com_key]["Uninstall"],
+            );
 
-            thumb_img = Image.open(com_thumb)
+            thumb_img = Image.open(app.get_thumbnail())
             resized_thumb_img = resize700(thumb_img)
             self.com_thumb = ImageTk.PhotoImage(resized_thumb_img)
 
-            icon_img = Image.open(com_icon_img)
+            icon_img = Image.open(app.get_icon())
             resized_icon_img = resize46(icon_img)
             self.com_icon = ImageTk.PhotoImage(resized_icon_img)
 
             self.com_detail_icon.configure(image=self.com_icon)
-            self.com_detail_name.config(text=f"{com_name}")
-            self.com_detail_pak.config(text=f"{com_pakage}")
-            self.com_detail_desc.config(text=f"\n{com_disc}")
+            self.com_detail_name.config(text=f"{app.get_name()}")
+            self.com_detail_pak.config(text=f"{app.get_type()}")
+            self.com_detail_desc.config(text=f"\n{app.get_description()}")
 
             self.com_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
             self.termf.grid(column=0, columnspan=3, row=3)
@@ -1135,7 +1123,7 @@ class ComPanel(tk.Frame):
             hide_button_frame()
             com_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-            refresh_status(com_key)
+            refresh_status(app)
 
         self.com_btn_icons = []
 
