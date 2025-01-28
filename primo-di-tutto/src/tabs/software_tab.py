@@ -848,84 +848,72 @@ class AVPanel(tk.Frame):
         )
         av_ttp_label.pack(fill="x", side="bottom")
 
-        def run_installation(av_key):
+        def run_installation(app: InstallableApp):
             primo_skript_task = "Installation ..."
-            primo_skript_task_app = SoftwareAudioVideo.av_dict[av_key]["Name"]
-            primo_skript = SoftwareAudioVideo.av_dict[av_key]["Install"]
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                primo_skript_task, primo_skript_task_app, primo_skript
+                primo_skript_task, app.get_name(), app.get_install_command()
             )
             self.master.wait_window(custom_installer)
             self.av_detail_inst.config(text="Deinstallieren")
 
-            refresh_status(av_key)
+            refresh_status(app)
 
-        def run_uninstall(av_key):
+        def run_uninstall(app: InstallableApp):
             primo_skript_task = "Deinstallation ..."
-            primo_skript_task_app = SoftwareAudioVideo.av_dict[av_key]["Name"]
-            primo_skript = SoftwareAudioVideo.av_dict[av_key]["Uninstall"]
-
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                primo_skript_task, primo_skript_task_app, primo_skript
+                primo_skript_task, app.get_name(), app.get_uninstall_command()
             )
             self.master.wait_window(custom_installer)
             self.av_detail_inst.config(text="Installieren")
 
-            refresh_status(av_key)
+            refresh_status(app)
 
         def open_website(av_key):
             path = SoftwareAudioVideo.av_dict[av_key]["Path"]
             subprocess.run(f'xdg-open "{path}"', shell=True)
 
-        def refresh_status(av_key):
-            av_name = SoftwareAudioVideo.av_dict[av_key]["Name"]
-            av_pakage = SoftwareAudioVideo.av_dict[av_key]["Package"].value
-            av_disc = SoftwareAudioVideo.av_dict[av_key]["Description"]
-            av_path = SoftwareAudioVideo.av_dict[av_key]["Path"]
-
-            installed_apt = av_path in get_installed_apt_pkgs()
-
-            flatpak_installs = refresh_flatpak_installs()
-            installed_flatpak = av_path in flatpak_installs.values()
-            installed_snap = av_path in get_installed_snaps()
-
-            if installed_snap or installed_apt or installed_flatpak:
-                logger.info(f"{av_name} is installed")
+        def refresh_status(app: InstallableApp):
+            if app.is_installed():
+                logger.info(f"{app.get_name()} is installed")
                 self.av_detail_inst.config(
                     text="Deinstallieren",
-                    command=lambda: run_uninstall(av_key),
+                    command=lambda: run_uninstall(app),
                     style="Red.TButton",
                 )
             else:
-                logger.info(f"{av_name} is not installed")
+                logger.info(f"{app.get_name()} is not installed")
                 self.av_detail_inst.config(
                     text="Installieren",
-                    command=lambda: run_installation(av_key),
+                    command=lambda: run_installation(app),
                     style="Green.TButton",
                 )
 
         def av_btn_action(av_key):
-            av_icon_img = SoftwareAudioVideo.av_dict[av_key]["Icon"]
-            av_name = SoftwareAudioVideo.av_dict[av_key]["Name"]
-            av_pakage = SoftwareAudioVideo.av_dict[av_key]["Package"].value
-            av_disc = SoftwareAudioVideo.av_dict[av_key]["Description"]
-            av_path = SoftwareAudioVideo.av_dict[av_key]["Path"]
-            av_thumb = SoftwareAudioVideo.av_dict[av_key]["Thumbnail"]
+            app = InstallableAppFactory.create(
+                type=SoftwareAudioVideo.av_dict[av_key]["Package"],
+                name=SoftwareAudioVideo.av_dict[av_key]["Name"],
+                icon=SoftwareAudioVideo.av_dict[av_key]["Icon"],
+                description=SoftwareAudioVideo.av_dict[av_key]["Description"],
+                path=SoftwareAudioVideo.av_dict[av_key]["Path"],
+                thumbnail=SoftwareAudioVideo.av_dict[av_key]["Thumbnail"],
+                install_command=SoftwareAudioVideo.av_dict[av_key]["Install"],
+                uninstall_command=SoftwareAudioVideo.av_dict[av_key]["Uninstall"],
+            )
 
-            thumb_img = Image.open(av_thumb)
+            thumb_img = Image.open(app.get_thumbnail())
             resized_thumb_img = resize700(thumb_img)
             self.av_thumb = ImageTk.PhotoImage(resized_thumb_img)
 
-            icon_img = Image.open(av_icon_img)
+            icon_img = Image.open(app.get_icon())
             resized_icon_img = resize46(icon_img)
             self.av_icon = ImageTk.PhotoImage(resized_icon_img)
 
             self.av_detail_icon.configure(image=self.av_icon)
-            self.av_detail_name.config(text=f"{av_name}")
-            self.av_detail_pak.config(text=f"{av_pakage}")
-            self.av_detail_desc.config(text=f"\n{av_disc}")
+            self.av_detail_name.config(text=f"{app.get_name()}")
+            self.av_detail_pak.config(text=f"{app.get_type()}")
+            self.av_detail_desc.config(text=f"\n{app.get_description()}")
 
             self.av_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
             self.termf.grid(column=0, columnspan=3, row=3)
@@ -935,7 +923,7 @@ class AVPanel(tk.Frame):
             hide_button_frame()
             av_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-            refresh_status(av_key)
+            refresh_status(app)
 
         self.av_btn_icons = []
 
