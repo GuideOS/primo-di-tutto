@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python3 ~/primo-di-tutto/primo-di-tutto/src/main.py
+python3 $(pwd)/src/main.py
 
 
 
