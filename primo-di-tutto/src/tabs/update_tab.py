@@ -108,12 +108,9 @@ class UpdateTab(ttk.Frame):
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
 
-            command = (
-                f"xterm -into {wid} -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "
-                "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'nala upgrade -y && nala autopurge -y && flatpak update -y && flatpak uninstall --unused -y' && "
-                'sleep 5 && exit; exec bash"'
-            )
-
+            command = (f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} {application_path}/scripts/all_up && exit ; exec bash"'''
+                    % wid
+                )
             # Ausführung des Befehls und Statusüberprüfung
             try:
                 result = subprocess.run(
@@ -144,74 +141,69 @@ class UpdateTab(ttk.Frame):
         def update_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            os.popen(f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} nala update && sleep 5 && exit ; exec bash"'
+            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} {application_path}/scripts/nala_update_wrap && exit ; exec bash"'''
                     % wid
                 )
 
         def upgrade_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            command = (
-                f"xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "
-                "\"pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY bash -c 'nala upgrade -y' && "
-                'sleep 5 && exit; exec bash"' % wid
-            )
-            os.popen(command)
+
+            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} {application_path}/scripts/nala_upgrade_wrap && exit ; exec bash"'''
+                    % wid
+                )
 
         def apt_showupgrade_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            os.popen(
-                f"xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "
-                "\"apt list --upgradable |lolcat && read -p 'Press Enter to exit.' && exit; exec bash\""
-                % wid
-            )
+
+            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{application_path}/scripts/apt_list_upgradeble_wrap && exit ; exec bash"'''
+                    % wid
+                )
+
 
         def apt_autremove_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            os.popen(
-                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} nala autopurge -y && sleep 5 && exit ; exec bash"'
-                % wid
-            )
+            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "pkexec {application_path}/scripts/nala_autopurge_wrap && exit ; exec bash"'''
+                    % wid
+                )
+            
         def apt_broken_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            os.popen(
-                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} apt --fix-broken install && sleep 5 && exit; exec bash"'
+            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "pkexec {application_path}/scripts/apt_fix_broken_wrap && exit ; exec bash"'''
                 % wid
             )
 
         def apt_missing_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            os.popen(
-                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} apt install --fix-missing && sleep 5 && exit; exec bash"'
+            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "pkexec {application_path}/scripts/apt_fix_missing_wrap && exit ; exec bash"'''
                 % wid
             )
 
         def apt_reconf_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            os.popen(
-                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} dpkg --configure -a && sleep 5 && exit; exec bash"'
+
+            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "pkexec {application_path}/scripts/conf-a_wrap && exit ; exec bash"'''
                 % wid
             )
+
         def flatpak_update_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            os.popen(
-                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "flatpak update -y && sleep 5 && exit ; exec bash"'
+            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{application_path}/scripts/flatpak_update_wrap && exit ; exec bash"'''
                 % wid
             )
         def flatpak_clean_action():
             frame_width = self.termf.winfo_width()
             frame_height = self.termf.winfo_height()
-            os.popen(
-                f'xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "flatpak uninstall --unused -y && sleep 5 && exit; exec bash"'
+
+            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{application_path}/scripts/flatpak_clean_wrap && exit ; exec bash"'''
                 % wid
             )
-
 
         self.update_button_frame = ttk.Frame(self, padding=20)
         self.update_button_frame.grid(row=0, column=0, sticky="ns")
