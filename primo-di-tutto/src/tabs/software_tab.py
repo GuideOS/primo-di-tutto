@@ -645,87 +645,75 @@ class GamingPanel(tk.Frame):
         )
         game_ttp_label.pack(fill="x")
 
-        def run_installation(game_key):
+        def run_installation(app: InstallableApp):
             primo_skript_task = "Installation ..."
-            primo_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
-            primo_skript = SoftwareGame.game_dict[game_key]["Install"]
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                primo_skript_task, primo_skript_task_app, primo_skript
+                primo_skript_task, app.get_name(), app.get_install_command()
             )
             self.master.wait_window(custom_installer)
             self.game_detail_inst.config(text="Deinstallieren")
 
-            refresh_status(game_key)
+            refresh_status(app)
 
-        def run_uninstall(game_key):
+        def run_uninstall(app: InstallableApp):
             primo_skript_task = "Deinstallation ..."
-            primo_skript_task_app = SoftwareGame.game_dict[game_key]["Name"]
-            primo_skript = SoftwareGame.game_dict[game_key]["Uninstall"]
-
             custom_installer = Custom_Installer(master)
             custom_installer.do_task(
-                primo_skript_task, primo_skript_task_app, primo_skript
+                primo_skript_task, app.get_name(), app.get_uninstall_command()
             )
             self.master.wait_window(custom_installer)
             self.game_detail_inst.config(text="Installieren")
 
-            refresh_status(game_key)
+            refresh_status(app)
 
         def open_website(game_key):
             path = SoftwareGame.game_dict[game_key]["Path"]
             subprocess.run(f'xdg-open "{path}"', shell=True)
 
-        def refresh_status(game_key):
-            game_name = SoftwareGame.game_dict[game_key]["Name"]
-            game_pakage = SoftwareGame.game_dict[game_key]["Package"].value
-            game_disc = SoftwareGame.game_dict[game_key]["Description"]
-            game_path = SoftwareGame.game_dict[game_key]["Path"]
-
-            installed_apt = game_path in get_installed_apt_pkgs()
-
-            flatpak_installs = refresh_flatpak_installs()
-            installed_flatpak = game_path in flatpak_installs.values()
-            installed_snap = game_path in get_installed_snaps()
-
-            if installed_snap or installed_apt or installed_flatpak:
-                logger.info(f"{game_name} is installed")
+        def refresh_status(app: InstallableApp):
+            if (app.is_installed()):
+                logger.info(f"{app.get_name()} is installed")
                 self.game_detail_inst.config(
                     text="Deinstallieren",
-                    command=lambda: run_uninstall(game_key),
+                    command=lambda: run_uninstall(app),
                     style="Red.TButton",
                 )
             else:
-                logger.info(f"{game_name} is not installed")
+                logger.info(f"{app.get_name()} is not installed")
                 self.game_detail_inst.config(
                     text="Installieren",
-                    command=lambda: run_installation(game_key),
+                    command=lambda: run_installation(app),
                     style="Green.TButton",
                 )
 
         def game_btn_action(game_key):
             logger.info("game_btn_action", game_key)
 
-            game_icon_img = SoftwareGame.game_dict[game_key]["Icon"]
-            game_name = SoftwareGame.game_dict[game_key]["Name"]
-            game_pakage = SoftwareGame.game_dict[game_key]["Package"].value
-            game_disc = SoftwareGame.game_dict[game_key]["Description"]
-            game_path = SoftwareGame.game_dict[game_key]["Path"]
-            game_thumb = SoftwareGame.game_dict[game_key]["Thumbnail"]
+            app = InstallableAppFactory.create(
+                type=SoftwareGame.game_dict[game_key]["Package"],
+                name=SoftwareGame.game_dict[game_key]["Name"],
+                icon=SoftwareGame.game_dict[game_key]["Icon"],
+                description=SoftwareGame.game_dict[game_key]["Description"],
+                path=SoftwareGame.game_dict[game_key]["Path"],
+                thumbnail=SoftwareGame.game_dict[game_key]["Thumbnail"],
+                install_command=SoftwareGame.game_dict[game_key]["Install"],
+                uninstall_command=SoftwareGame.game_dict[game_key]["Uninstall"],
+            )
 
 
-            thumb_img = Image.open(game_thumb)
+            thumb_img = Image.open(app.get_thumbnail())
             resized_thumb_img = resize700(thumb_img)
             self.game_thumb = ImageTk.PhotoImage(resized_thumb_img)
 
-            icon_img = Image.open(game_icon_img)
+            icon_img = Image.open(app.get_icon())
             resized_icon_img = resize46(icon_img)
             self.game_icon = ImageTk.PhotoImage(resized_icon_img)
 
             self.game_detail_icon.configure(image=self.game_icon)
-            self.game_detail_name.config(text=f"{game_name}")
-            self.game_detail_pak.config(text=f"{game_pakage}")
-            self.game_detail_desc.config(text=f"\n{game_disc}")
+            self.game_detail_name.config(text=f"{app.get_name()}")
+            self.game_detail_pak.config(text=f"{app.get_type()}")
+            self.game_detail_desc.config(text=f"\n{app.get_description()}")
 
             self.game_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
             self.termf.grid(column=0, columnspan=3, row=3)
@@ -735,7 +723,7 @@ class GamingPanel(tk.Frame):
             hide_button_frame()
             game_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-            refresh_status(game_key)
+            refresh_status(app)
 
         self.game_btn_icons = []
 
