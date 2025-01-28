@@ -125,17 +125,13 @@ class UpdateTab(ttk.Frame):
                 )
                 print(_("Update erfolgreich ausgeführt!"))
                 send_notification(
-                    "Primo Di Tutto",
-                    _("Update erfolgreich ausgeführt!"),
-                    icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png",
-                    urgency="critical",
+                    message=_("Update erfolgreich ausgeführt!"),
+                    urgency=NotificationUrgency.CRITICAL,
                 )
             except subprocess.CalledProcessError as e:
                 send_notification(
-                    "Primo Di Tutto",
-                    _("Update war nichterfolgreich !"),
-                    icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png",
-                    urgency="critical",
+                    message=_("Update war nicht erfolgreich!"),
+                    urgency=NotificationUrgency.CRITICAL,
                 )
                 print(f"Fehlermeldung: {e.stderr.decode()}")
             # Beispielaufruf mit Icon und hoher Dringlichkeit

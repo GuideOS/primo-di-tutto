@@ -8,6 +8,7 @@ import subprocess
 from tabs.system_tab_check import check_pipanel
 import requests
 import platform
+from constants import NotificationUrgency
 
 
 def ping_github():
@@ -101,7 +102,8 @@ if machiene_arch == "x86_64" and architecture_arch == "64bit":
 if machiene_arch == "aarch64" and architecture_arch == "64bit":
     os_arch_output = "arm64"
 
-def send_notification(title, message, icon_path=None, urgency="normal"):
+
+def send_notification(message: str, title="Primo Di Tutto", icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png", urgency: str = NotificationUrgency.NORMAL):
     command = ["notify-send", title, message, "-u", urgency]
     if icon_path:
         command.extend(["-i", icon_path])
