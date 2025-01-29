@@ -163,20 +163,94 @@ class SoftwareTab(ttk.Frame):
         #self.inst_notebook.add(apt_frame, compound=LEFT, text="APT Store",image=self.deb_nav)
         #self.inst_notebook.add(flat_frame, compound=LEFT, text="Flatpak Store",image=self.flatpak_nav)
 
+        # Com Panel
+        com_apps = [];
+        for i, (key, info) in enumerate(SoftwareCommunication.com_dict.items()):
+            app = InstallableAppFactory.create(
+                type=SoftwareCommunication.com_dict[key]["Package"],
+                name=SoftwareCommunication.com_dict[key]["Name"],
+                icon=SoftwareCommunication.com_dict[key]["Icon"],
+                description=SoftwareCommunication.com_dict[key]["Description"],
+                path=SoftwareCommunication.com_dict[key]["Path"],
+                thumbnail=SoftwareCommunication.com_dict[key]["Thumbnail"],
+                install_command=SoftwareCommunication.com_dict[key]["Install"],
+                uninstall_command=SoftwareCommunication.com_dict[key]["Uninstall"],
+            )
+            com_apps.append(app)
 
-        com_note_frame = ComPanel(com_frame)
+        com_note_frame = AppCollectionPanel(category_title="Web & Chat", apps=com_apps, master=com_frame)
         com_note_frame.pack(fill=tk.BOTH, expand=True)
 
-        office_note_frame = OfficePanel(office_frame)
+        # Office Panel
+        office_apps = [];
+        for i, (key, info) in enumerate(SoftwareOffice.office_dict.items()):
+            app = InstallableAppFactory.create(
+                type=SoftwareOffice.office_dict[key]["Package"],
+                name=SoftwareOffice.office_dict[key]["Name"],
+                icon=SoftwareOffice.office_dict[key]["Icon"],
+                description=SoftwareOffice.office_dict[key]["Description"],
+                path=SoftwareOffice.office_dict[key]["Path"],
+                thumbnail=SoftwareOffice.office_dict[key]["Thumbnail"],
+                install_command=SoftwareOffice.office_dict[key]["Install"],
+                uninstall_command=SoftwareOffice.office_dict[key]["Uninstall"],
+            )
+            office_apps.append(app)
+
+        office_note_frame = AppCollectionPanel(category_title="Büro", apps=office_apps, master=office_frame)
         office_note_frame.pack(fill=tk.BOTH, expand=True)
 
-        av_note_frame = AVPanel(av_frame)
+        # A/V Panel
+        av_apps = [];
+        for i, (key, info) in enumerate(SoftwareAudioVideo.av_dict.items()):
+            app = InstallableAppFactory.create(
+                type=SoftwareAudioVideo.av_dict[key]["Package"],
+                name=SoftwareAudioVideo.av_dict[key]["Name"],
+                icon=SoftwareAudioVideo.av_dict[key]["Icon"],
+                description=SoftwareAudioVideo.av_dict[key]["Description"],
+                path=SoftwareAudioVideo.av_dict[key]["Path"],
+                thumbnail=SoftwareAudioVideo.av_dict[key]["Thumbnail"],
+                install_command=SoftwareAudioVideo.av_dict[key]["Install"],
+                uninstall_command=SoftwareAudioVideo.av_dict[key]["Uninstall"],
+            )
+            av_apps.append(app)
+
+        av_note_frame = AppCollectionPanel(category_title="Audio/Video", apps=av_apps, master=av_frame)
         av_note_frame.pack(fill=tk.BOTH, expand=True)
 
-        image_note_frame = ImageEditingPanel(image_frame)
+        # Image Editing Panel
+        image_apps = [];
+        for i, (key, info) in enumerate(SoftwareImageEditing.img_dict.items()):
+            app = InstallableAppFactory.create(
+                type=SoftwareImageEditing.img_dict[key]["Package"],
+                name=SoftwareImageEditing.img_dict[key]["Name"],
+                icon=SoftwareImageEditing.img_dict[key]["Icon"],
+                description=SoftwareImageEditing.img_dict[key]["Description"],
+                path=SoftwareImageEditing.img_dict[key]["Path"],
+                thumbnail=SoftwareImageEditing.img_dict[key]["Thumbnail"],
+                install_command=SoftwareImageEditing.img_dict[key]["Install"],
+                uninstall_command=SoftwareImageEditing.img_dict[key]["Uninstall"],
+            )
+            image_apps.append(app)
+
+        image_note_frame = AppCollectionPanel(category_title="Bildbearbeitung", apps=image_apps, master=image_frame)
         image_note_frame.pack(fill=tk.BOTH, expand=True)
 
-        gaming_note_frame = GamingPanel(gaming_frame)
+        # Gaming Panel
+        gaming_apps = [];
+        for i, (key, info) in enumerate(SoftwareGame.game_dict.items()):
+            app = InstallableAppFactory.create(
+                type=SoftwareGame.game_dict[key]["Package"],
+                name=SoftwareGame.game_dict[key]["Name"],
+                icon=SoftwareGame.game_dict[key]["Icon"],
+                description=SoftwareGame.game_dict[key]["Description"],
+                path=SoftwareGame.game_dict[key]["Path"],
+                thumbnail=SoftwareGame.game_dict[key]["Thumbnail"],
+                install_command=SoftwareGame.game_dict[key]["Install"],
+                uninstall_command=SoftwareGame.game_dict[key]["Uninstall"],
+            )
+            gaming_apps.append(app)
+
+        gaming_note_frame = AppCollectionPanel(category_title="Gaming", apps=gaming_apps, master=gaming_frame)
         gaming_note_frame.pack(fill=tk.BOTH, expand=True)
 
         #apt_search_panel = AptSearchPanel(apt_frame)
@@ -185,465 +259,35 @@ class SoftwareTab(ttk.Frame):
         #flatpack_search_panel = FlatpakSearchPanel(flat_frame)
         #flatpack_search_panel.pack(fill=tk.BOTH, expand=True)
 
-
-class OfficePanel(tk.Frame):
-    def __init__(self, master=None, **kwargs):
+class AppCollectionPanel(tk.Frame):
+    def __init__(self, category_title: str, apps, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.update_interval = 1000
+        self.button_icons = []
+        self.apps = apps
 
         def show_button_frame():
             self.software_store.pack(padx=20,pady=5,fill="x")
-            office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-            office_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
+            btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+            ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
             back_button.pack_forget()
-            office_detail_frame.pack_forget()
+            detail_frame.pack_forget()
 
         def hide_button_frame():
             self.software_store.pack_forget()
-            office_btn_frame.pack_forget()
-            office_ttp_frame.pack_forget()
+            btn_frame.pack_forget()
+            ttp_frame.pack_forget()
             back_button.pack(pady=20, padx=20, anchor="w")
-
-        # Funktion für das Hover-Ereignis
-        def on_hover( event, key):
-            office_ttp_label.configure(text=SoftwareOffice.office_dict[key]["Description"])
-
-        # Funktion für das Verlassen des Buttons
-        def on_leave( event):
-            office_ttp_label.configure(text="\n\n\n")
-
-        def open_gnome_software():
-            subprocess.Popen("env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY gnome-software", shell=True)
-
-        self.gnome_software_icon = PhotoImage(
-            file=f"{application_path}/images/icons/papirus/64x64/gnome-software.png"
-        )
-
-        self.software_store = ttk.Button(self, text="Software-Center öffnen", compound="left",image=self.gnome_software_icon, style="Accent2.TButton", command=open_gnome_software)
-        self.software_store.pack(padx=20,pady=5,fill="x")
-
-        back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
-
-        office_btn_frame = ttk.LabelFrame(self, text="Büro | Empfehlungen", padding=20)
-        office_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-
-        office_btn_frame.grid_columnconfigure(0, weight=1)
-        office_btn_frame.grid_columnconfigure(1, weight=1)
-        office_btn_frame.grid_columnconfigure(2, weight=1)
-        office_btn_frame.grid_columnconfigure(3, weight=1)
-        office_btn_frame.grid_columnconfigure(4, weight=1)
-
-        office_ttp_frame = ttk.LabelFrame(
-            self, text="Beschreibung"
-        )
-        office_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
-
-        office_ttp_label = ttk.Label(
-            office_ttp_frame, text="\n\n\n", padding=20, wraplength=700
-        )
-        office_ttp_label.pack(fill="x", side="bottom")
-
-        def run_installation(app):
-            primo_skript_task = "Installation ..."
-            custom_installer = Custom_Installer(master)
-            custom_installer.do_task(
-                primo_skript_task, app.get_name(), app.get_install_command()
-            )
-            self.master.wait_window(custom_installer)
-            self.office_detail_inst.config(text="Deinstallieren")
-
-            refresh_status(app)
-
-        def run_uninstall(app):
-            primo_skript_task = "Deinstallation ..."
-            custom_installer = Custom_Installer(master)
-            custom_installer.do_task(
-                primo_skript_task, app.get_name(), app.get_uninstall_command()
-            )
-            self.master.wait_window(custom_installer)
-            self.office_detail_inst.config(text="Installieren")
-
-            refresh_status(app)
-
-        def open_website(office_key):
-            path = SoftwareOffice.office_dict[office_key]["Path"]
-            subprocess.run(f'xdg-open "{path}"', shell=True)
-
-        def refresh_status(app):
-            if (app.is_installed()):
-                self.office_detail_inst.config(
-                    text="Deinstallieren",
-                    command=lambda: run_uninstall(app),
-                    style="Red.TButton",
-                )
-            else:
-                self.office_detail_inst.config(
-                    text="Installieren",
-                    command=lambda: run_installation(app),
-                    style="Green.TButton",
-                )
-
-        def office_btn_action(office_key):
-            app = InstallableAppFactory.create(
-                type=SoftwareOffice.office_dict[office_key]["Package"],
-                name=SoftwareOffice.office_dict[office_key]["Name"],
-                icon=SoftwareOffice.office_dict[office_key]["Icon"],
-                description=SoftwareOffice.office_dict[office_key]["Description"],
-                path=SoftwareOffice.office_dict[office_key]["Path"],
-                thumbnail=SoftwareOffice.office_dict[office_key]["Thumbnail"],
-                install_command=SoftwareOffice.office_dict[office_key]["Install"],
-                uninstall_command=SoftwareOffice.office_dict[office_key]["Uninstall"],
-            )
-
-
-            thumb_img = Image.open(app.get_thumbnail())
-            resized_thumb_img = resize700(thumb_img)
-            self.office_thumb = ImageTk.PhotoImage(resized_thumb_img)
-
-            icon_img = Image.open(app.get_icon())
-            resized_icon_img = resize46(icon_img)
-            self.office_icon = ImageTk.PhotoImage(resized_icon_img)
-
-            self.office_detail_icon.configure(image=self.office_icon)
-            self.office_detail_name.config(text=f"{app.get_name()}")
-            self.office_detail_pak.config(text=f"{app.get_type()}")
-            self.office_detail_desc.config(text=f"\n{app.get_description()}")
-
-            self.office_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
-            self.termf.grid(column=0, columnspan=3, row=3)
-            self.thumb_lbl.configure(image=self.office_thumb)
-            self.thumb_lbl.pack()
-
-            hide_button_frame()
-            office_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
-
-            refresh_status(app)
-
-        self.office_btn_icons = []
-
-        for i, (office_key, office_info) in enumerate(
-            SoftwareOffice.office_dict.items()
-        ):
-            img = Image.open(office_info["Icon"])
-            resized_img = resize46(img)
-            icon = ImageTk.PhotoImage(resized_img)
-            self.office_btn_icons.append(icon)
-
-        max_columns = 5
-
-        for i, (office_key, office_info) in enumerate(
-            SoftwareOffice.office_dict.items()
-        ):
-            row = i // max_columns
-            column = i % max_columns
-
-            office_button = ttk.Button(
-                office_btn_frame,
-                text=office_info["Name"],
-                image=self.office_btn_icons[i],
-                command=lambda key=office_key: office_btn_action(key),
-                compound=tk.TOP,
-                style="Custom.TButton",
-            )
-            office_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
-            office_button.bind("<Enter>", lambda event, key=office_key: on_hover(event, key))
-            office_button.bind("<Leave>", on_leave)
-
-        office_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
-
-        office_detail_frame.grid_columnconfigure(1, weight=1)
-        office_detail_frame.grid_rowconfigure(3, weight=1)
-
-        self.office_detail_icon = Label(
-            office_detail_frame,
-        )
-        self.office_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
-
-        self.office_detail_name = Label(
-            office_detail_frame, text="", justify="left", anchor="w", font=font_16
-        )
-        self.office_detail_name.grid(column=1, row=0, sticky="w")
-
-        self.office_detail_pak = Label(
-            office_detail_frame, text="", justify="left", anchor="w"
-        )
-        self.office_detail_pak.grid(column=1, row=1, sticky="we")
-
-        self.office_detail_desc = Label(
-            office_detail_frame, text="", justify="left", anchor="w", wraplength=750
-        )
-        self.office_detail_desc.grid(column=0, row=2, columnspan=3, sticky="ew")
-
-        self.office_detail_inst = ttk.Button(
-            office_detail_frame, text="Install", style="Custom.TButton"
-        )
-
-        self.termf = Frame(
-            office_detail_frame,
-        )
-        self.thumb_lbl = Label(self.termf)
-
-        global office_wid
-        office_wid = self.termf.winfo_id()
-
-
-class ImageEditingPanel(tk.Frame):
-    def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
-        self.update_interval = 1000
-
-        def show_button_frame():
-            self.software_store.pack(padx=20,pady=5,fill="x")
-            img_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-            img_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
-            back_button.pack_forget()
-            img_detail_frame.pack_forget()
-
-        def hide_button_frame():
-            self.software_store.pack_forget()
-            img_btn_frame.pack_forget()
-            img_ttp_frame.pack_forget()
-            back_button.pack(pady=20, padx=20, anchor="w")
-
-        # Funktion für das Hover-Ereignis
-        def on_hover( event, key):
-            img_ttp_label.configure(text=SoftwareImageEditing.img_dict[key]["Description"])
-
-        # Funktion für das Verlassen des Buttons
-        def on_leave( event):
-            img_ttp_label.configure(text="\n\n\n")
 
         def open_gnome_software():
             subprocess.Popen("gnome-software", shell=True)
 
-        self.gnome_software_icon = PhotoImage(
-            file=f"{application_path}/images/icons/papirus/64x64/gnome-software.png"
-        )
-
-        self.software_store = ttk.Button(self, text="Software-Center öffnen", compound="left",image=self.gnome_software_icon, style="Accent2.TButton", command=open_gnome_software)
-        self.software_store.pack(padx=20,pady=5,fill="x")
-
-        back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
-
-        img_btn_frame = ttk.LabelFrame(self, text="Bildbearbeitung | Empfehlungen", padding=20)
-        img_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-
-        img_btn_frame.grid_columnconfigure(0, weight=1)
-        img_btn_frame.grid_columnconfigure(1, weight=1)
-        img_btn_frame.grid_columnconfigure(2, weight=1)
-        img_btn_frame.grid_columnconfigure(3, weight=1)
-        img_btn_frame.grid_columnconfigure(4, weight=1)
-
-        img_ttp_frame = ttk.LabelFrame(
-            self, text="Beschreibung"
-        )
-        img_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
-
-        img_ttp_label = ttk.Label(
-            img_ttp_frame, text="\n\n", padding=20, wraplength=700
-        )
-        img_ttp_label.pack(fill="x", side="bottom")
-
-
-        def run_installation(app):
-            primo_skript_task = "Installation ..."
-            custom_installer = Custom_Installer(master)
-            custom_installer.do_task(
-                primo_skript_task, app.get_name(), app.get_install_command()
-            )
-            self.master.wait_window(custom_installer)
-            self.img_detail_inst.config(text="Deinstallieren")
-
-            refresh_status(app)
-
-        def run_uninstall(app):
-            primo_skript_task = "Deinstallation ..."
-            custom_installer = Custom_Installer(master)
-            custom_installer.do_task(
-                primo_skript_task, app.get_name(), app.get_uninstall_command()
-            )
-            self.master.wait_window(custom_installer)
-            self.img_detail_inst.config(text="Installieren")
-
-            refresh_status(app)
-
-        def open_website(img_key):
-            path = SoftwareImageEditing.img_dict[img_key]["Path"]
-            subprocess.run(f'xdg-open "{path}"', shell=True)
-
-        def refresh_status(app):
-            if (app.is_installed()):
-                logger.info(f"{app.get_name()} is installed")
-                self.img_detail_inst.config(
-                    text="Deinstallieren",
-                    command=lambda: run_uninstall(app),
-                    style="Red.TButton",
-                )
-            else:
-                logger.info(f"{app.get_name()} is not installed")
-                self.img_detail_inst.config(
-                    text="Installieren",
-                    command=lambda: run_installation(app),
-                    style="Green.TButton",
-                )
-
-        def img_btn_action(img_key):
-            app = InstallableAppFactory.create(
-                type=SoftwareImageEditing.img_dict[img_key]["Package"],
-                name=SoftwareImageEditing.img_dict[img_key]["Name"],
-                icon=SoftwareImageEditing.img_dict[img_key]["Icon"],
-                description=SoftwareImageEditing.img_dict[img_key]["Description"],
-                path=SoftwareImageEditing.img_dict[img_key]["Path"],
-                thumbnail=SoftwareImageEditing.img_dict[img_key]["Thumbnail"],
-                install_command=SoftwareImageEditing.img_dict[img_key]["Install"],
-                uninstall_command=SoftwareImageEditing.img_dict[img_key]["Uninstall"],
-            )
-
-
-            thumb_img = Image.open(app.get_thumbnail())
-            resized_thumb_img = resize700(thumb_img)
-            self.img_thumb = ImageTk.PhotoImage(resized_thumb_img)
-
-            icon_img = Image.open(app.get_icon())
-            resized_icon_img = resize46(icon_img)
-            self.img_icon = ImageTk.PhotoImage(resized_icon_img)
-
-            self.img_detail_icon.configure(image=self.img_icon)
-            self.img_detail_name.config(text=f"{app.get_name()}")
-            self.img_detail_pak.config(text=f"{app.get_type()}")
-            self.img_detail_desc.config(text=f"\n{app.get_description()}")
-
-            self.img_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
-            self.termf.grid(column=0, columnspan=3, row=3)
-            self.thumb_lbl.configure(image=self.img_thumb)
-            self.thumb_lbl.pack()
-
-            hide_button_frame()
-            img_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
-
-            refresh_status(app)
-
-        self.img_btn_icons = []
-
-        for i, (img_key, img_info) in enumerate(SoftwareImageEditing.img_dict.items()):
-            img = Image.open(img_info["Icon"])
-            resized_img = resize46(img)
-            icon = ImageTk.PhotoImage(resized_img)
-            self.img_btn_icons.append(icon)
-
-        max_columns = 5
-
-        for i, (img_key, img_info) in enumerate(SoftwareImageEditing.img_dict.items()):
-            row = i // max_columns
-            column = i % max_columns
-
-            img_button = ttk.Button(
-                img_btn_frame,
-                text=img_info["Name"],
-                image=self.img_btn_icons[i],
-                command=lambda key=img_key: img_btn_action(key),
-                compound=tk.TOP,
-                style="Custom.TButton",
-                width=20,
-            )
-            img_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
-            img_button.bind("<Enter>", lambda event, key=img_key: on_hover(event, key))
-            img_button.bind("<Leave>", on_leave)
-
-        img_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
-
-        img_detail_frame.grid_columnconfigure(1, weight=1)
-        img_detail_frame.grid_rowconfigure(3, weight=1)
-
-        self.img_detail_icon = Label(
-            img_detail_frame,
-        )
-        self.img_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
-
-        self.img_detail_name = Label(
-            img_detail_frame, text="", justify="left", anchor="w", font=font_16
-        )
-        self.img_detail_name.grid(column=1, row=0, sticky="w")
-
-        self.img_detail_pak = Label(
-            img_detail_frame, text="", justify="left", anchor="w"
-        )
-        self.img_detail_pak.grid(column=1, row=1, sticky="we")
-
-        self.img_detail_desc = Label(
-            img_detail_frame, text="", justify="left", anchor="w", wraplength=750
-        )
-        self.img_detail_desc.grid(column=0, row=2, columnspan=3, sticky="ew")
-
-        self.img_detail_inst = ttk.Button(
-            img_detail_frame, text="Install", style="Custom.TButton"
-        )
-
-        self.termf = Frame(
-            img_detail_frame,
-        )
-        self.thumb_lbl = Label(self.termf)
-
-        global img_wid
-        img_wid = self.termf.winfo_id()
-
-
-class GamingPanel(tk.Frame):
-    def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
-        self.update_interval = 1000
-
-        def show_button_frame():
-            self.software_store.pack(padx=20,pady=5,fill="x")
-            game_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-            game_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
-            back_button.pack_forget()
-            game_detail_frame.pack_forget()
-
-        def hide_button_frame():
-            self.software_store.pack_forget()
-            game_btn_frame.pack_forget()
-            game_ttp_frame.pack_forget()
-            back_button.pack(pady=20, padx=20, anchor="w")
-
-        # Funktion für das Hover-Ereignis
-        def on_hover( event, key):
-            game_ttp_label.configure(text=SoftwareGame.game_dict[key]["Description"])
+        def on_hover( event, app: InstallableApp):
+            ttp_label.configure(text=app.get_description())
 
         # Funktion für das Verlassen des Buttons
         def on_leave( event):
-            game_ttp_label.configure(text="\n\n\n")
-
-        def open_gnome_software():
-            subprocess.Popen("gnome-software", shell=True)
-
-        self.gnome_software_icon = PhotoImage(
-            file=f"{application_path}/images/icons/papirus/64x64/gnome-software.png"
-        )
-
-        self.software_store = ttk.Button(self, text="Software-Center öffnen", compound="left",image=self.gnome_software_icon, style="Accent2.TButton", command=open_gnome_software)
-        self.software_store.pack(padx=20,pady=5,fill="x")
-
-        back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
-
-        game_btn_frame = ttk.LabelFrame(self, text="Gaming | Empfehlungen", padding=20)
-        game_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-
-        game_btn_frame.grid_columnconfigure(0, weight=1)
-        game_btn_frame.grid_columnconfigure(1, weight=1)
-        game_btn_frame.grid_columnconfigure(2, weight=1)
-        game_btn_frame.grid_columnconfigure(3, weight=1)
-        game_btn_frame.grid_columnconfigure(4, weight=1)
-
-        game_ttp_frame = ttk.LabelFrame(
-            self, text="Beschreibung"
-        )
-        game_ttp_frame.pack(pady=20, padx=20,fill="x")
-
-        game_ttp_label = ttk.Label(
-            game_ttp_frame, text="\n\n\n", padding=20, wraplength=700
-        )
-        game_ttp_label.pack(fill="x")
+            ttp_label.configure(text="\n\n\n")
 
         def run_installation(app: InstallableApp):
             primo_skript_task = "Installation ..."
@@ -652,7 +296,7 @@ class GamingPanel(tk.Frame):
                 primo_skript_task, app.get_name(), app.get_install_command()
             )
             self.master.wait_window(custom_installer)
-            self.game_detail_inst.config(text="Deinstallieren")
+            self.detail_inst.config(text="Deinstallieren")
 
             refresh_status(app)
 
@@ -663,359 +307,51 @@ class GamingPanel(tk.Frame):
                 primo_skript_task, app.get_name(), app.get_uninstall_command()
             )
             self.master.wait_window(custom_installer)
-            self.game_detail_inst.config(text="Installieren")
+            self.detail_inst.config(text="Installieren")
 
             refresh_status(app)
-
-        def open_website(game_key):
-            path = SoftwareGame.game_dict[game_key]["Path"]
-            subprocess.run(f'xdg-open "{path}"', shell=True)
 
         def refresh_status(app: InstallableApp):
             if (app.is_installed()):
                 logger.info(f"{app.get_name()} is installed")
-                self.game_detail_inst.config(
+                self.detail_inst.config(
                     text="Deinstallieren",
                     command=lambda: run_uninstall(app),
                     style="Red.TButton",
                 )
             else:
                 logger.info(f"{app.get_name()} is not installed")
-                self.game_detail_inst.config(
+                self.detail_inst.config(
                     text="Installieren",
                     command=lambda: run_installation(app),
                     style="Green.TButton",
                 )
 
-        def game_btn_action(game_key):
-            logger.info("game_btn_action", game_key)
-
-            app = InstallableAppFactory.create(
-                type=SoftwareGame.game_dict[game_key]["Package"],
-                name=SoftwareGame.game_dict[game_key]["Name"],
-                icon=SoftwareGame.game_dict[game_key]["Icon"],
-                description=SoftwareGame.game_dict[game_key]["Description"],
-                path=SoftwareGame.game_dict[game_key]["Path"],
-                thumbnail=SoftwareGame.game_dict[game_key]["Thumbnail"],
-                install_command=SoftwareGame.game_dict[game_key]["Install"],
-                uninstall_command=SoftwareGame.game_dict[game_key]["Uninstall"],
-            )
-
+        def app_btn_action(app):
+            logger.info(f"btn_action {app.get_name()}")
 
             thumb_img = Image.open(app.get_thumbnail())
             resized_thumb_img = resize700(thumb_img)
-            self.game_thumb = ImageTk.PhotoImage(resized_thumb_img)
+            self.thumb = ImageTk.PhotoImage(resized_thumb_img)
 
             icon_img = Image.open(app.get_icon())
             resized_icon_img = resize46(icon_img)
-            self.game_icon = ImageTk.PhotoImage(resized_icon_img)
+            self.icon = ImageTk.PhotoImage(resized_icon_img)
 
-            self.game_detail_icon.configure(image=self.game_icon)
-            self.game_detail_name.config(text=f"{app.get_name()}")
-            self.game_detail_pak.config(text=f"{app.get_type()}")
-            self.game_detail_desc.config(text=f"\n{app.get_description()}")
+            self.detail_icon.configure(image=self.icon)
+            self.detail_name.config(text=f"{app.get_name()}")
+            self.detail_pak.config(text=f"{app.get_type()}")
+            self.detail_desc.config(text=f"\n{app.get_description()}")
 
-            self.game_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
+            self.detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
             self.termf.grid(column=0, columnspan=3, row=3)
-            self.thumb_lbl.configure(image=self.game_thumb)
+            self.thumb_lbl.configure(image=self.thumb)
             self.thumb_lbl.pack()
 
             hide_button_frame()
-            game_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
+            detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
             refresh_status(app)
-
-        self.game_btn_icons = []
-
-        for i, (game_key, game_info) in enumerate(SoftwareGame.game_dict.items()):
-            img = Image.open(game_info["Icon"])
-            resized_img = resize46(img)
-            icon = ImageTk.PhotoImage(resized_img)
-            self.game_btn_icons.append(icon)
-
-        max_columns = 5
-
-        for i, (game_key, game_info) in enumerate(SoftwareGame.game_dict.items()):
-            row = i // max_columns
-            column = i % max_columns
-
-            game_button = ttk.Button(
-                game_btn_frame,
-                text=game_info["Name"],
-                image=self.game_btn_icons[i],
-                command=lambda key=game_key: game_btn_action(key),
-                compound=tk.TOP,
-                style="Custom.TButton",
-                width=20,
-            )
-            game_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
-            game_button.bind("<Enter>", lambda event, key=game_key: on_hover(event, key))
-            game_button.bind("<Leave>", on_leave)
-
-        game_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
-
-        game_detail_frame.grid_columnconfigure(1, weight=1)
-        game_detail_frame.grid_rowconfigure(3, weight=1)
-
-        self.game_detail_icon = Label(
-            game_detail_frame,
-        )
-        self.game_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
-
-        self.game_detail_name = Label(
-            game_detail_frame, text="", justify="left", anchor="w", font=font_16
-        )
-        self.game_detail_name.grid(column=1, row=0, sticky="w")
-
-        self.game_detail_pak = Label(
-            game_detail_frame, text="", justify="left", anchor="w"
-        )
-        self.game_detail_pak.grid(column=1, row=1, sticky="we")
-
-        self.game_detail_desc = Label(
-            game_detail_frame, text="", justify="left", anchor="w", wraplength=750
-        )
-        self.game_detail_desc.grid(column=0, row=2, columnspan=3, sticky="ew")
-
-        self.game_detail_inst = ttk.Button(
-            game_detail_frame, text="Install", style="Custom.TButton"
-        )
-
-        self.termf = Frame(
-            game_detail_frame,
-        )
-        self.thumb_lbl = Label(self.termf)
-
-        global game_wid
-        game_wid = self.termf.winfo_id()
-
-
-class AVPanel(tk.Frame):
-    def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
-        self.update_interval = 1000
-
-        def show_button_frame():
-            self.software_store.pack(padx=20,pady=5,fill="x")
-            av_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-            av_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
-            back_button.pack_forget()
-            av_detail_frame.pack_forget()
-
-        def hide_button_frame():
-            self.software_store.pack_forget()
-            av_btn_frame.pack_forget()
-            av_ttp_frame.pack_forget()
-            back_button.pack(pady=20, padx=20, anchor="w")
-
-        # Funktion für das Hover-Ereignis
-        def on_hover( event, key):
-            av_ttp_label.configure(text=SoftwareAudioVideo.av_dict[key]["Description"])
-
-        # Funktion für das Verlassen des Buttons
-        def on_leave( event):
-            av_ttp_label.configure(text="\n\n\n")
-
-        def open_gnome_software():
-            subprocess.Popen("gnome-software", shell=True)
-
-        self.gnome_software_icon = PhotoImage(
-            file=f"{application_path}/images/icons/papirus/64x64/gnome-software.png"
-        )
-
-        self.software_store = ttk.Button(self, text="Software-Center öffnen", compound="left",image=self.gnome_software_icon, style="Accent2.TButton", command=open_gnome_software)
-        self.software_store.pack(padx=20,pady=5,fill="x")
-
-
-        back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
-
-        av_btn_frame = ttk.LabelFrame(self, text="Audio/Video | Empfehlungen", padding=20)
-        av_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-
-        av_btn_frame.grid_columnconfigure(0, weight=1)
-        av_btn_frame.grid_columnconfigure(1, weight=1)
-        av_btn_frame.grid_columnconfigure(2, weight=1)
-        av_btn_frame.grid_columnconfigure(3, weight=1)
-        av_btn_frame.grid_columnconfigure(4, weight=1)
-
-        av_ttp_frame = ttk.LabelFrame(
-            self, text="Beschreibung"
-        )
-        av_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
-
-        av_ttp_label = ttk.Label(
-            av_ttp_frame, text="\n\n\n", padding=20, wraplength=700
-        )
-        av_ttp_label.pack(fill="x", side="bottom")
-
-        def run_installation(app: InstallableApp):
-            primo_skript_task = "Installation ..."
-            custom_installer = Custom_Installer(master)
-            custom_installer.do_task(
-                primo_skript_task, app.get_name(), app.get_install_command()
-            )
-            self.master.wait_window(custom_installer)
-            self.av_detail_inst.config(text="Deinstallieren")
-
-            refresh_status(app)
-
-        def run_uninstall(app: InstallableApp):
-            primo_skript_task = "Deinstallation ..."
-            custom_installer = Custom_Installer(master)
-            custom_installer.do_task(
-                primo_skript_task, app.get_name(), app.get_uninstall_command()
-            )
-            self.master.wait_window(custom_installer)
-            self.av_detail_inst.config(text="Installieren")
-
-            refresh_status(app)
-
-        def open_website(av_key):
-            path = SoftwareAudioVideo.av_dict[av_key]["Path"]
-            subprocess.run(f'xdg-open "{path}"', shell=True)
-
-        def refresh_status(app: InstallableApp):
-            if app.is_installed():
-                logger.info(f"{app.get_name()} is installed")
-                self.av_detail_inst.config(
-                    text="Deinstallieren",
-                    command=lambda: run_uninstall(app),
-                    style="Red.TButton",
-                )
-            else:
-                logger.info(f"{app.get_name()} is not installed")
-                self.av_detail_inst.config(
-                    text="Installieren",
-                    command=lambda: run_installation(app),
-                    style="Green.TButton",
-                )
-
-        def av_btn_action(av_key):
-            app = InstallableAppFactory.create(
-                type=SoftwareAudioVideo.av_dict[av_key]["Package"],
-                name=SoftwareAudioVideo.av_dict[av_key]["Name"],
-                icon=SoftwareAudioVideo.av_dict[av_key]["Icon"],
-                description=SoftwareAudioVideo.av_dict[av_key]["Description"],
-                path=SoftwareAudioVideo.av_dict[av_key]["Path"],
-                thumbnail=SoftwareAudioVideo.av_dict[av_key]["Thumbnail"],
-                install_command=SoftwareAudioVideo.av_dict[av_key]["Install"],
-                uninstall_command=SoftwareAudioVideo.av_dict[av_key]["Uninstall"],
-            )
-
-            thumb_img = Image.open(app.get_thumbnail())
-            resized_thumb_img = resize700(thumb_img)
-            self.av_thumb = ImageTk.PhotoImage(resized_thumb_img)
-
-            icon_img = Image.open(app.get_icon())
-            resized_icon_img = resize46(icon_img)
-            self.av_icon = ImageTk.PhotoImage(resized_icon_img)
-
-            self.av_detail_icon.configure(image=self.av_icon)
-            self.av_detail_name.config(text=f"{app.get_name()}")
-            self.av_detail_pak.config(text=f"{app.get_type()}")
-            self.av_detail_desc.config(text=f"\n{app.get_description()}")
-
-            self.av_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
-            self.termf.grid(column=0, columnspan=3, row=3)
-            self.thumb_lbl.configure(image=self.av_thumb)
-            self.thumb_lbl.pack()
-
-            hide_button_frame()
-            av_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
-
-            refresh_status(app)
-
-        self.av_btn_icons = []
-
-        for i, (av_key, av_info) in enumerate(SoftwareAudioVideo.av_dict.items()):
-            img = Image.open(av_info["Icon"])
-            resized_img = resize46(img)
-            icon = ImageTk.PhotoImage(resized_img)
-            self.av_btn_icons.append(icon)
-
-        max_columns = 5
-
-        for i, (av_key, av_info) in enumerate(SoftwareAudioVideo.av_dict.items()):
-            row = i // max_columns
-            column = i % max_columns
-
-            av_button = ttk.Button(
-                av_btn_frame,
-                text=av_info["Name"],
-                image=self.av_btn_icons[i],
-                command=lambda key=av_key: av_btn_action(key),
-                compound=tk.TOP,
-                style="Custom.TButton",
-                width=20,
-            )
-            av_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
-            av_button.bind("<Enter>", lambda event, key=av_key: on_hover(event, key))
-            av_button.bind("<Leave>", on_leave)
-
-        av_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
-
-        av_detail_frame.grid_columnconfigure(1, weight=1)
-        av_detail_frame.grid_rowconfigure(3, weight=1)
-
-        self.av_detail_icon = Label(
-            av_detail_frame,
-        )
-        self.av_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
-
-        self.av_detail_name = Label(
-            av_detail_frame, text="", justify="left", anchor="w", font=font_16
-        )
-        self.av_detail_name.grid(column=1, row=0, sticky="w")
-
-        self.av_detail_pak = Label(av_detail_frame, text="", justify="left", anchor="w")
-        self.av_detail_pak.grid(column=1, row=1, sticky="we")
-
-        self.av_detail_desc = Label(
-            av_detail_frame, text="", justify="left", anchor="w", wraplength=750
-        )
-        self.av_detail_desc.grid(column=0, row=2, columnspan=3, sticky="ew")
-
-        self.av_detail_inst = ttk.Button(
-            av_detail_frame, text="Install", style="Custom.TButton"
-        )
-
-        self.termf = Frame(
-            av_detail_frame,
-        )
-        self.thumb_lbl = Label(self.termf)
-
-        global av_wid
-        av_wid = self.termf.winfo_id()
-
-
-class ComPanel(tk.Frame):
-    def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
-        self.update_interval = 1000
-
-        def show_button_frame():
-            self.software_store.pack(padx=20,pady=5,fill="x")
-            com_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-            com_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
-            back_button.pack_forget()
-            com_detail_frame.pack_forget()
-
-        def hide_button_frame():
-            self.software_store.pack_forget()
-            com_btn_frame.pack_forget()
-            com_ttp_frame.pack_forget()
-            back_button.pack(pady=20, padx=20, anchor="w")
-
-        # Funktion für das Hover-Ereignis
-        def on_hover( event, key):
-            com_ttp_label.configure(text=SoftwareCommunication.com_dict[key]["Description"])
-
-        # Funktion für das Verlassen des Buttons
-        def on_leave( event):
-            com_ttp_label.configure(text="\n\n\n")
-
-        def open_gnome_software():
-            subprocess.Popen("gnome-software", shell=True)
 
         self.gnome_software_icon = PhotoImage(
             file=f"{application_path}/images/icons/papirus/64x64/gnome-software.png"
@@ -1026,169 +362,84 @@ class ComPanel(tk.Frame):
 
         back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
 
-        com_btn_frame = ttk.LabelFrame(
-            self, text="Web & Chat | Empfehlungen", padding=20
-        )
-        com_btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
+        btn_frame = ttk.LabelFrame(self, text=f"{category_title} | Empfehlungen", padding=20)
+        btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
-        com_ttp_frame = ttk.LabelFrame(
+        btn_frame.grid_columnconfigure(0, weight=1)
+        btn_frame.grid_columnconfigure(1, weight=1)
+        btn_frame.grid_columnconfigure(2, weight=1)
+        btn_frame.grid_columnconfigure(3, weight=1)
+        btn_frame.grid_columnconfigure(4, weight=1)
+
+        ttp_frame = ttk.LabelFrame(
             self, text="Beschreibung"
         )
-        com_ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
+        ttp_frame.pack(pady=20, padx=20,fill="x")
 
-        com_ttp_label = ttk.Label(
-            com_ttp_frame, text="\n\n\n", padding=20, wraplength=700
+        ttp_label = ttk.Label(
+            ttp_frame, text="\n\n\n", padding=20, wraplength=700
         )
-        com_ttp_label.pack(fill="x", side="bottom")
-
-
-        com_btn_frame.grid_columnconfigure(0, weight=1)
-        com_btn_frame.grid_columnconfigure(1, weight=1)
-        com_btn_frame.grid_columnconfigure(2, weight=1)
-        com_btn_frame.grid_columnconfigure(3, weight=1)
-        com_btn_frame.grid_columnconfigure(4, weight=1)
-
-        def run_installation(app: InstallableApp):
-            primo_skript_task = "Installation ..."
-            custom_installer = Custom_Installer(master)
-            custom_installer.do_task(
-                primo_skript_task, app.get_name(), app.get_install_command()
-            )
-            self.master.wait_window(custom_installer)
-            self.com_detail_inst.config(text="Deinstallieren")
-
-            refresh_status(app)
-
-        def run_uninstall(app: InstallableApp):
-            primo_skript_task = "Deinstallation ..."
-            custom_installer = Custom_Installer(master)
-            custom_installer.do_task(
-                primo_skript_task, app.get_name(), app.get_uninstall_command()
-            )
-            self.master.wait_window(custom_installer)
-            self.com_detail_inst.config(text="Installieren")
-
-            refresh_status(app)
-
-        def open_website(com_key):
-            path = SoftwareCommunication.com_dict[com_key]["Path"]
-            subprocess.run(f'xdg-open "{path}"', shell=True)
-
-        def refresh_status(app: InstallableApp):
-            if (app.is_installed()):
-                logger.info(f"{app.get_name()} is installed")
-                self.com_detail_inst.config(
-                    text="Deinstallieren",
-                    command=lambda: run_uninstall(app),
-                    style="Red.TButton",
-                )
-            else:
-                logger.info(f"{app.get_name()} is not installed")
-                self.com_detail_inst.config(
-                    text="Installieren",
-                    command=lambda: run_installation(app),
-                    style="Green.TButton",
-                )
-
-        def com_btn_action(com_key):
-            app = InstallableAppFactory.create(
-                type=SoftwareCommunication.com_dict[com_key]["Package"],
-                name=SoftwareCommunication.com_dict[com_key]["Name"],
-                icon=SoftwareCommunication.com_dict[com_key]["Icon"],
-                description=SoftwareCommunication.com_dict[com_key]["Description"],
-                path=SoftwareCommunication.com_dict[com_key]["Path"],
-                thumbnail=SoftwareCommunication.com_dict[com_key]["Thumbnail"],
-                install_command=SoftwareCommunication.com_dict[com_key]["Install"],
-                uninstall_command=SoftwareCommunication.com_dict[com_key]["Uninstall"],
-            );
-
-            thumb_img = Image.open(app.get_thumbnail())
-            resized_thumb_img = resize700(thumb_img)
-            self.com_thumb = ImageTk.PhotoImage(resized_thumb_img)
-
-            icon_img = Image.open(app.get_icon())
-            resized_icon_img = resize46(icon_img)
-            self.com_icon = ImageTk.PhotoImage(resized_icon_img)
-
-            self.com_detail_icon.configure(image=self.com_icon)
-            self.com_detail_name.config(text=f"{app.get_name()}")
-            self.com_detail_pak.config(text=f"{app.get_type()}")
-            self.com_detail_desc.config(text=f"\n{app.get_description()}")
-
-            self.com_detail_inst.grid(column=2, row=0, rowspan=2, sticky="e")
-            self.termf.grid(column=0, columnspan=3, row=3)
-            self.thumb_lbl.configure(image=self.com_thumb)
-            self.thumb_lbl.pack(fill="x")
-
-            hide_button_frame()
-            com_detail_frame.pack(pady=20, padx=20, fill="both", expand=True)
-
-            refresh_status(app)
-
-        self.com_btn_icons = []
-
-        for i, (com_key, com_info) in enumerate(SoftwareCommunication.com_dict.items()):
-            img = Image.open(com_info["Icon"])
-            resized_img = resize46(img)
-            icon = ImageTk.PhotoImage(resized_img)
-            self.com_btn_icons.append(icon)
+        ttp_label.pack(fill="x")
 
         max_columns = 5
-
-        for i, (com_key, com_info) in enumerate(SoftwareCommunication.com_dict.items()):
+        for (i , app) in enumerate(self.apps):
             row = i // max_columns
             column = i % max_columns
 
-            com_button = ttk.Button(
-                com_btn_frame,
-                text=com_info["Name"],
-                image=self.com_btn_icons[i],
-                command=lambda key=com_key: com_btn_action(key),
+            img = Image.open(app.get_icon())
+            resized_img = resize46(img)
+            icon = ImageTk.PhotoImage(resized_img)
+            self.button_icons.append(icon)
+
+            button = ttk.Button(
+                btn_frame,
+                text=app.get_name(),
+                image=self.button_icons[i],
+                command=lambda key=i: app_btn_action(self.apps[key]),
                 compound=tk.TOP,
                 style="Custom.TButton",
                 width=20,
             )
-            com_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
+            button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
+            button.bind("<Enter>", lambda event, key=i: on_hover(event, self.apps[key]))
+            button.bind("<Leave>", on_leave)
 
-            com_button.bind("<Enter>", lambda event, key=com_key: on_hover(event, key))
-            com_button.bind("<Leave>", on_leave)
 
-        com_detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
+        detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
 
-        com_detail_frame.grid_columnconfigure(1, weight=1)
-        com_detail_frame.grid_rowconfigure(3, weight=1)
-
-        self.com_detail_icon = Label(
-            com_detail_frame,
+        detail_frame.grid_columnconfigure(1, weight=1)
+        detail_frame.grid_rowconfigure(3, weight=1)
+        self.detail_icon = Label(
+            detail_frame,
         )
-        self.com_detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
+        self.detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
 
-        self.com_detail_name = Label(
-            com_detail_frame, text="", justify="left", anchor="w", font=font_16
+        self.detail_name = Label(
+            detail_frame, text="", justify="left", anchor="w", font=font_16
         )
-        self.com_detail_name.grid(column=1, row=0, sticky="w")
+        self.detail_name.grid(column=1, row=0, sticky="w")
 
-        self.com_detail_pak = Label(
-            com_detail_frame, text="", justify="left", anchor="w"
+        self.detail_pak = Label(
+            detail_frame, text="", justify="left", anchor="w"
         )
-        self.com_detail_pak.grid(column=1, row=1, sticky="we")
+        self.detail_pak.grid(column=1, row=1, sticky="we")
 
-        self.com_detail_desc = Label(
-            com_detail_frame, text="", justify="left", anchor="w", wraplength=750
+        self.detail_desc = Label(
+            detail_frame, text="", justify="left", anchor="w", wraplength=750
         )
-        self.com_detail_desc.grid(column=0, row=2, columnspan=3, sticky="ew")
+        self.detail_desc.grid(column=0, row=2, columnspan=3, sticky="ew")
 
-        self.com_detail_inst = ttk.Button(
-            com_detail_frame, text="Install", style="Custom.TButton"
+        self.detail_inst = ttk.Button(
+            detail_frame, text="Install", style="Custom.TButton"
         )
 
         self.termf = Frame(
-            com_detail_frame,
+            detail_frame,
         )
         self.thumb_lbl = Label(self.termf)
 
-        global com_wid
-        com_wid = self.termf.winfo_id()
+        global wid
+        wid = self.termf.winfo_id()
 
 
 
