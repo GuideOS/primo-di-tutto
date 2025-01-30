@@ -5,9 +5,14 @@ from os import popen
 import os.path
 import distro
 import subprocess
+from subprocess import TimeoutExpired
 from tabs.system_tab_check import check_pipanel
 import requests
 import platform
+from constants import NotificationUrgency
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 
 def ping_github():
@@ -28,7 +33,7 @@ user = os.environ["USER"]
 
 current_version = "0.6.2"
 
-print(f"[Info] You are using Primo Di Tutto {current_version}")
+logger.info(f"You are using Primo Di Tutto {current_version}")
 
 def create_plank_directories():
     directories = [
@@ -38,9 +43,9 @@ def create_plank_directories():
     for directory in directories:
         if not os.path.exists(directory):
             os.makedirs(directory, exist_ok=True)
-            print(f"Verzeichnis erstellt: {directory}")
+            logger.info(f"Verzeichnis erstellt: {directory}")
         else:
-            print(f"Verzeichnis existiert bereits: {directory}")
+            logger.info(f"Verzeichnis existiert bereits: {directory}")
 
 create_plank_directories()
 
@@ -55,10 +60,10 @@ autostart_dir_path = f"{home}/.config/autostart/"
 if not os.path.exists(autostart_dir_path):
     os.makedirs(autostart_dir_path)
 
-    print(f"[Info] {autostart_dir_path} created successfully")
+    logger.info(f"{autostart_dir_path} created successfully")
 
 else:
-    print(f"[Info] {autostart_dir_path} already exists")
+    logger.info(f"{autostart_dir_path} already exists")
 
 
 primo_config_dir = f"{home}/.primo"
@@ -81,7 +86,7 @@ def get_first_run():
             if line.startswith("firstrun="):
                 # Den Wert nach dem Gleichheitszeichen extrahieren
                 firstrun_value = line.split("=")[1].strip()
-                print(f"[Info] firstrun: {firstrun_value}")
+                logger.info(f"firstrun: {firstrun_value}")
 
     return firstrun_value
 
@@ -92,16 +97,17 @@ nice_name = popen("egrep '^(PRETTY_NAME)=' /etc/os-release")
 nice_name = nice_name.read()
 
 machiene_arch = platform.machine()
-print(platform.machine())
+logger.info(platform.machine())
 architecture_arch = platform.architecture()[0]
-print(platform.architecture()[0])
+logger.info(platform.architecture()[0])
 
 if machiene_arch == "x86_64" and architecture_arch == "64bit":
     os_arch_output = "amd64"
 if machiene_arch == "aarch64" and architecture_arch == "64bit":
     os_arch_output = "arm64"
 
-def send_notification(title, message, icon_path=None, urgency="normal"):
+
+def send_notification(message: str, title="Primo Di Tutto", icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png", urgency: str = NotificationUrgency.NORMAL):
     command = ["notify-send", title, message, "-u", urgency]
     if icon_path:
         command.extend(["-i", icon_path])
@@ -118,11 +124,22 @@ def run_command(command):
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            timeout=300, # 5 Minutes Timeout
             text=True,
         )
-        return result.stdout.strip()
-    except subprocess.CalledProcessError:
-        return None
+        return True, result.stdout.strip()
+    except subprocess.CalledProcessError as e:
+        logger.error("Fehler bei der Ausführung des Befehls", e)
+        return False, None
+    except TimeoutExpired as e:
+        logger.error("Timeout bei der Ausführung des Befehls", e)
+        return False, None
+    except PermissionError as e:
+        logger.error("Fehlende Berechtigungen", e)
+        return False, None
+    except Exception as e:
+        logger.exception("Unbekannter Fehler", e)
+        return False, None
 
 
 def get_desktop_environment():
@@ -158,7 +175,7 @@ def get_lxde_theme_name():
 
     # Ensure ~/.config/lxsession/LXDE-pi/desktop.conf exists
     if not os.path.exists(directory_path):
-        print("Directory does not exist. Creating", directory_path)
+        logger.info("Directory does not exist. Creating", directory_path)
         os.makedirs(directory_path)
         with open(config_file_path, "w") as f:
             f.write(
@@ -191,34 +208,34 @@ def get_theme():
     if "KDE" in de or "PLASMA" in de:
         kde_config_file = os.path.expanduser("~/.config/kdeglobals")
         if os.path.exists(kde_config_file):
-            kde_theme = run_command(f"grep 'Name=' {kde_config_file}")
+            success, kde_theme = run_command(f"grep 'Name=' {kde_config_file}")
             if kde_theme:
                 return kde_theme.split("=")[-1].strip().strip("'")
         return "KDE theme not found."
 
     elif "CINNAMON" in de:
-        theme = run_command("gsettings get org.cinnamon.desktop.interface gtk-theme")
+        success, theme = run_command("gsettings get org.cinnamon.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
     elif "UNITY" in de:
-        theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
+        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
 
     elif "GNOME" in de:
-        theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
+        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
 
     elif "BUDGIE" in de:
-        theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
+        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
 
     elif "PI-WAYFIRE" in de:
-        theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
+        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
     elif "MATE" in de:
-        theme = run_command("gsettings get org.mate.interface gtk-theme")
+        success, theme = run_command("gsettings get org.mate.interface gtk-theme")
         return theme.strip("'") if theme else "Theme not found."
     elif "XFCE" in de:
-        theme = run_command("xfconf-query -c xsettings -p /Net/ThemeName")
+        success, theme = run_command("xfconf-query -c xsettings -p /Net/ThemeName")
         return theme.strip("'") if theme else "Theme not found."
     elif "LXDE" in de or "LXDE-PI" in de:
         return get_lxde_theme_name()
@@ -227,7 +244,7 @@ def get_theme():
 
 
 theme_name = get_theme()
-# print(f"Current theme: {theme_name}")
+# logger.debug(f"Current theme: {theme_name}")
 
 
 # Define Permission Method
