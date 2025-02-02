@@ -273,8 +273,7 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
             # Wenn die Datei nicht existiert, wird sie neu erstellt
             with open(autostart_file_path, "w") as file:
                 file.write(
-                    f"""#!/usr/bin/env xdg-open
-[Desktop Entry]
+                    f"""[Desktop Entry]
 Type=Application
 Exec=python3 /opt/primo-di-tutto/src/main.py
 X-GNOME-Autostart-enabled=false
