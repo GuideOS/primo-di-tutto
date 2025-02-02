@@ -327,73 +327,11 @@ class LookTab(ttk.Frame):
         def set_elfi_panel():
             popen("killall plank")
             check_plank_autostart()
-            subprocess.run(
-                ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
-            )
+
             copy_guide_menu(application_path)
             
-            cin_menu_source_path = f"{application_path}/scripts/68.json"
-            cin_menu_destination_path = os.path.expanduser(
-                "~/.config/cinnamon/spices/Cinnamenu@json/68.json"
-            )
-
-            #copy_file(cin_menu_source_path, cin_menu_destination_path)
-
-            gsettings_11_config = {
-                "app-menu-icon-name": "ubuntucinnamon-symbolic",
-                "app-menu-label": "Menu",
-                "date-format": "'%a, %h %d %Y%l:%M %p'",
-                "desktop-layout": "",
-                "enabled-applets": [
-                    "panel1:center:1:Cinnamenu@json:68",
-                    "panel1:center:2:grouped-window-list@cinnamon.org:69",
-                    "panel1:right:1:systray@cinnamon.org:3",
-                    "panel1:right:2:xapp-status@cinnamon.org:4",
-                    "panel1:right:3:notifications@cinnamon.org:5",
-                    "panel1:right:4:printers@cinnamon.org:6",
-                    "panel1:right:5:removable-drives@cinnamon.org:7",
-                    "panel1:right:6:keyboard@cinnamon.org:8",
-                    "panel1:right:7:favorites@cinnamon.org:9",
-                    "panel1:right:8:network@cinnamon.org:10",
-                    "panel1:right:12:sound@cinnamon.org:11",
-                    "panel1:right:9:power@cinnamon.org:12",
-                    "panel1:right:13:calendar@cinnamon.org:13",
-                    "panel1:right:11:trash@cinnamon.org:15",
-                    "panel1:left:0:weather@mockturtl:19",
-                    "panel1:right:0:expo@cinnamon.org:22",
-                ],
-                "enabled-desklets": [],
-                "enabled-extensions": [
-                    "opacify@anish.org",
-                    "transparent-panels@germanfr",
-                ],
-                "favorite-apps": [
-                    "cinnamon-settings.desktop",
-                    "nemo.desktop",
-                    "primo-di-tutto.desktop",
-                    "org.gnome.Software.desktop",
-                    "system-config-printer.desktop",
-                    "org.gnome.DejaDup.desktop",
-                ],
-                "panel-zone-icon-sizes": '[{"panelId":1,"left":0,"center":0,"right":16}]',
-                "panel-zone-symbolic-icon-sizes": '[{"panelId":1,"left":22,"center":28,"right":18}]',
-                "panel-zone-text-sizes": '[{"panelId":1,"left":0,"center":0,"right":0}]',
-                "panels-autohide": ["1:false"],
-                "panels-enabled": ["1:0:bottom"],
-                "panels-height": ["1:46", "2:21"],
-                "panels-hide-delay": ["1:0", "2:0"],
-                "panels-show-delay": ["1:0", "2:0"],
-            }
-
-            # Schleife durch jedes Schlüssel-Wert-Paar im Dictionary
-            for key, value in gsettings_11_config.items():
-                # Wenn der Wert eine Liste oder ein Dictionary ist, in eine Zeichenkette umwandeln
-                if isinstance(value, (list, dict)):
-                    value = str(value).replace(
-                        "'", '"'
-                    )  # Ersetze einfache Anführungszeichen mit doppelten
-                # Führe den gsettings-Befehl aus
-                subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
+            #subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
+            subprocess.run(f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_elf", shell=True, check=True)
 
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
@@ -449,60 +387,7 @@ class LookTab(ttk.Frame):
             with open(opacify_config_path, "w") as opacify_file:
                 json.dump(opacify_config, opacify_file, indent=4)
 
-            # Dictionary mit den GSettings-Konfigurationen
-            gsettings_config = {
-                "app-menu-icon-name": "ubuntucinnamon-symbolic",
-                "app-menu-label": "'Menu'",
-                "date-format": "'%a, %h %d %Y%l:%M %p'",
-                "enabled-applets": [
-                    "panel1:left:0:menu@cinnamon.org:0",
-                    "panel1:left:2:grouped-window-list@cinnamon.org:69",
-                    "panel1:right:2:systray@cinnamon.org:3",
-                    "panel1:right:3:xapp-status@cinnamon.org:4",
-                    "panel1:right:4:notifications@cinnamon.org:5",
-                    "panel1:right:5:printers@cinnamon.org:6",
-                    "panel1:right:6:removable-drives@cinnamon.org:7",
-                    "panel1:right:7:keyboard@cinnamon.org:8",
-                    "panel1:right:8:favorites@cinnamon.org:9",
-                    "panel1:right:9:network@cinnamon.org:10",
-                    "panel1:right:10:sound@cinnamon.org:11",
-                    "panel1:right:11:power@cinnamon.org:12",
-                    "panel2:center:0:calendar@cinnamon.org:13",
-                    "panel1:right:1:trash@cinnamon.org:15",
-                    "panel2:right:1:temperature@fevimu:16",
-                    "panel1:left:1:placesCenter@scollins:17",
-                    "panel1:right:13:sessionManager@scollins:18",
-                    "panel2:center:1:weather@mockturtl:19",
-                    "panel1:right:0:expo@cinnamon.org:22",
-                ],
-                "favorite-apps": [
-                    "cinnamon-settings.desktop",
-                    "nemo.desktop",
-                    "primo-di-tutto.desktop",
-                    "org.gnome.Software.desktop",
-                    "system-config-printer.desktop",
-                    "org.gnome.DejaDup.desktop",
-                ],                
-                "enabled-extensions": "['opacify@anish.org', 'transparent-panels@germanfr']",
-                "panel-zone-icon-sizes": '\'[{"panelId": 1, "left": 0, "center": 0, "right": 22}, {"left": 0, "center": 0, "right": 0, "panelId": 2}]\'',
-                "panel-zone-symbolic-icon-sizes": '\'[{"panelId": 1, "left": 22, "center": 28, "right": 18}, {"left": 28, "center": 17, "right": 28, "panelId": 2}]\'',
-                "panel-zone-text-sizes": '\'[{"panelId":1,"left":0,"center":0,"right":0},{"left":0,"center":0,"right":0,"panelId":2}]\'',
-                "panels-autohide": "['1:false', '2:intel']",
-                "panels-enabled": "['1:0:bottom', '2:0:top']",
-                "panels-height": "['1:38', '2:21']",
-                "panels-hide-delay": "['1:0', '2:0']",
-                "panels-show-delay": "['1:0', '2:0']",
-            }
-
-            # Schleife durch jedes Schlüssel-Wert-Paar im Dictionary
-            for key, value in gsettings_config.items():
-                # Wenn der Wert eine Liste oder ein Dictionary ist, in eine Zeichenkette umwandeln
-                if isinstance(value, (list, dict)):
-                    value = str(value).replace(
-                        "'", '"'
-                    )  # Ersetze einfache Anführungszeichen mit doppelten
-                # Führe den gsettings-Befehl aus
-                subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
+            subprocess.run(f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_classico", shell=True, check=True)
 
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
@@ -519,60 +404,7 @@ class LookTab(ttk.Frame):
             subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
-            gsettings_config = {
-                "app-menu-icon-name": "ubuntucinnamon-symbolic",
-                "app-menu-label": "Menu",
-                "date-format": "%a, %h %d %Y %l:%M %p",
-                "enabled-applets": [
-                    "panel1:right:2:systray@cinnamon.org:3",
-                    "panel1:right:3:xapp-status@cinnamon.org:4",
-                    "panel1:right:4:notifications@cinnamon.org:5",
-                    "panel1:right:5:printers@cinnamon.org:6",
-                    "panel1:right:6:removable-drives@cinnamon.org:7",
-                    "panel1:right:7:keyboard@cinnamon.org:8",
-                    "panel1:right:8:favorites@cinnamon.org:9",
-                    "panel1:right:9:network@cinnamon.org:10",
-                    "panel1:right:15:sound@cinnamon.org:11",
-                    "panel1:right:10:power@cinnamon.org:12",
-                    "panel1:right:14:trash@cinnamon.org:15",
-                    "panel2:right:1:temperature@fevimu:16",
-                    "panel1:left:1:placesCenter@scollins:17",
-                    "panel1:right:16:sessionManager@scollins:18",
-                    "panel1:center:1:weather@mockturtl:19",
-                    "panel1:center:0:calendar@cinnamon.org:20",
-                    "panel1:right:0:expo@cinnamon.org:22",
-                ],
-                "enabled-desklets": [],
-                "enabled-extensions": [],
-                "enabled-search-providers": [],
-                "extension-cache-updated": 0,
-                "favorite-apps": [
-                    "cinnamon-settings.desktop",
-                    "nemo.desktop",
-                    "org.gnome.Software.desktop",
-                    "system-config-printer.desktop",
-                    "org.gnome.DejaDup.desktop",
-                ],
-                "panel-zone-icon-sizes": '[{"panelId":1,"left":0,"center":0,"right":22}]',
-                "panel-zone-symbolic-icon-sizes": '[{"panelId":1,"left":22,"center":28,"right":18}]',
-                "panel-zone-text-sizes": '[{"panelId":1,"left":0,"center":0,"right":0}]',
-                "panels-autohide": ["1:false", "2:intel"],
-                "panels-enabled": ["1:0:top"],
-                "panels-height": ["1:38", "2:21"],
-                "panels-hide-delay": ["1:0", "2:0"],
-                "panels-show-delay": ["1:0", "2:0"],
-            }
-
-            # Schleife durch jedes Schlüssel-Wert-Paar im Dictionary
-            for key, value in gsettings_config.items():
-                # Wenn der Wert eine Liste oder ein Dictionary ist, in eine Zeichenkette umwandeln
-                if isinstance(value, (list, dict)):
-                    value = str(value).replace(
-                        "'", '"'
-                    )  # Ersetze einfache Anführungszeichen mit doppelten
-                # Führe den gsettings-Befehl aus
-                subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
-
+            subprocess.run(f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_ubuntu", shell=True, check=True)
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
             destination_path = os.path.expanduser(
@@ -590,62 +422,7 @@ class LookTab(ttk.Frame):
             subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
-            gsettings_config = {
-                "app-menu-icon-name": "ubuntucinnamon-symbolic",
-                "app-menu-label": "Menu",
-                "date-format": "%a, %h %d %Y %l:%M %p",
-                "enabled-applets": [
-                    "panel1:left:0:menu@cinnamon.org:0",
-                    "panel1:left:2:grouped-window-list@cinnamon.org:69",
-                    "panel1:right:2:systray@cinnamon.org:3",
-                    "panel1:right:3:xapp-status@cinnamon.org:4",
-                    "panel1:right:4:notifications@cinnamon.org:5",
-                    "panel1:right:5:printers@cinnamon.org:6",
-                    "panel1:right:6:removable-drives@cinnamon.org:7",
-                    "panel1:right:7:keyboard@cinnamon.org:8",
-                    "panel1:right:8:favorites@cinnamon.org:9",
-                    "panel1:right:9:network@cinnamon.org:10",
-                    "panel1:right:15:sound@cinnamon.org:11",
-                    "panel1:right:10:power@cinnamon.org:12",
-                    "panel1:right:14:trash@cinnamon.org:15",
-                    "panel2:right:1:temperature@fevimu:16",
-                    "panel1:left:1:placesCenter@scollins:17",
-                    "panel1:right:16:sessionManager@scollins:18",
-                    "panel1:right:12:weather@mockturtl:19",
-                    "panel1:right:13:calendar@cinnamon.org:20",
-                    "panel1:right:0:expo@cinnamon.org:22",
-                ],
-                "enabled-desklets": [],
-                "enabled-extensions": [],
-                "enabled-search-providers": [],
-                "extension-cache-updated": 0,
-                "favorite-apps": [
-                    "cinnamon-settings.desktop",
-                    "nemo.desktop",
-                    "primo-di-tutto.desktop",
-                    "org.gnome.Software.desktop",
-                    "system-config-printer.desktop",
-                    "org.gnome.DejaDup.desktop",
-                ],
-                "panel-zone-icon-sizes": '[{"panelId":1,"left":0,"center":0,"right":22}]',
-                "panel-zone-symbolic-icon-sizes": '[{"panelId":1,"left":22,"center":28,"right":18}]',
-                "panel-zone-text-sizes": '[{"panelId":1,"left":0,"center":0,"right":0}]',
-                "panels-autohide": ["1:false", "2:intel"],
-                "panels-enabled": ["1:0:top"],
-                "panels-height": ["1:38", "2:21"],
-                "panels-hide-delay": ["1:0", "2:0"],
-                "panels-show-delay": ["1:0", "2:0"],
-            }
-
-            # Schleife durch jedes Schlüssel-Wert-Paar im Dictionary
-            for key, value in gsettings_config.items():
-                # Wenn der Wert eine Liste oder ein Dictionary ist, in eine Zeichenkette umwandeln
-                if isinstance(value, (list, dict)):
-                    value = str(value).replace(
-                        "'", '"'
-                    )  # Ersetze einfache Anführungszeichen mit doppelten
-                # Führe den gsettings-Befehl aus
-                subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
+            subprocess.run(f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_spiegel", shell=True, check=True)
 
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
