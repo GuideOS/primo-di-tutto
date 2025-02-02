@@ -15,8 +15,10 @@ from tool_tipps import TipsText
 from tabs.pop_ups import *
 from tabs.text_dict_lib import Update_Tab_Buttons
 from resorcess import pi_identify
-
 import gettext
+from logger_config import setup_logger
+logger = setup_logger(__name__)
+
 lang = gettext.translation('messages', localedir=f"{application_path}/src/tabs/locale", languages=['de'])
 lang.install()
 _ = lang.gettext
@@ -120,21 +122,17 @@ class UpdateTab(ttk.Frame):
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                 )
-                print(_("Update erfolgreich ausgeführt!"))
+                logger.info(_("Update erfolgreich ausgeführt!"))
                 send_notification(
-                    "Primo Di Tutto",
-                    _("Update erfolgreich ausgeführt!"),
-                    icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png",
-                    urgency="critical",
+                    message=_("Update erfolgreich ausgeführt!"),
+                    urgency=NotificationUrgency.CRITICAL,
                 )
             except subprocess.CalledProcessError as e:
                 send_notification(
-                    "Primo Di Tutto",
-                    _("Update war nichterfolgreich !"),
-                    icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png",
-                    urgency="critical",
+                    message=_("Update war nicht erfolgreich!"),
+                    urgency=NotificationUrgency.CRITICAL,
                 )
-                print(f"Fehlermeldung: {e.stderr.decode()}")
+                logger.error(f"Fehlermeldung: {e.stderr.decode()}")
             # Beispielaufruf mit Icon und hoher Dringlichkeit
 
 

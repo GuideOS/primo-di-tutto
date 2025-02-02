@@ -12,6 +12,9 @@ import threading
 from PIL import Image, ImageTk
 import requests
 from io import BytesIO
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 
 class ExpertTab(ttk.Frame):
@@ -75,7 +78,7 @@ class BootloaderPanel(tk.Frame):
                         elif line.startswith("GRUB_TIMEOUT"):
                             timeout_value = line.split("=")[1].strip().strip('"')
                             if not timeout_value.isdigit():
-                                print(
+                                logger.error(
                                     f"Unerwarteter Wert für GRUB_TIMEOUT: '{timeout_value}'"
                                 )
                                 timeout_value = None
@@ -83,19 +86,19 @@ class BootloaderPanel(tk.Frame):
                 if timeout_value is not None and timeout_value.isdigit():
                     return int(timeout_value)
                 elif timeout_style == "menu":
-                    print(
+                    logger.warning(
                         "GRUB_TIMEOUT_STYLE ist auf 'menu' gesetzt. Verwende den Timeout-Wert dennoch."
                     )
                     return 11
                 else:
-                    print(
+                    logger.warning(
                         "GRUB_TIMEOUT_STYLE oder GRUB_TIMEOUT fehlen oder sind ungültig."
                     )
 
             except FileNotFoundError:
-                print("Die GRUB-Konfigurationsdatei wurde nicht gefunden.")
+                logger.error("Die GRUB-Konfigurationsdatei wurde nicht gefunden.")
             except Exception as e:
-                print(f"Ein Fehler ist aufgetreten: {e}")
+                logger.error(f"Ein Fehler ist aufgetreten: {e}")
 
             return 6
 
@@ -108,9 +111,9 @@ class BootloaderPanel(tk.Frame):
                         if line.startswith("GRUB_TIMEOUT_STYLE"):
                             return line.split("=")[1].strip().strip('"')
             except FileNotFoundError:
-                print("Die GRUB-Konfigurationsdatei wurde nicht gefunden.")
+                logger.error("Die GRUB-Konfigurationsdatei wurde nicht gefunden.")
             except Exception as e:
-                print(f"Ein Fehler ist aufgetreten: {e}")
+                logger.error(f"Ein Fehler ist aufgetreten: {e}")
 
             return "menu"
 
@@ -135,11 +138,11 @@ class BootloaderPanel(tk.Frame):
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                 )
-                print(f"GRUB-Timeout erfolgreich auf {timeout} gesetzt.")
-                print(result.stdout.decode("utf-8"))
+                logger.info(f"GRUB-Timeout erfolgreich auf {timeout} gesetzt.")
+                logger.info(result.stdout.decode("utf-8"))
             except subprocess.CalledProcessError as e:
-                print(f"Fehler beim Setzen des GRUB-Timeout: {e}")
-                print(e.stderr.decode("utf-8"))
+                logger.error(f"Fehler beim Setzen des GRUB-Timeout: {e}")
+                logger.error(e.stderr.decode("utf-8"))
 
         def set_grub_timeout_style(style):
             grub_config_path = "/etc/default/grub"
@@ -153,11 +156,11 @@ class BootloaderPanel(tk.Frame):
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                 )
-                print(f"GRUB_TIMEOUT_STYLE erfolgreich auf {style} gesetzt.")
-                print(result.stdout.decode("utf-8"))
+                logger.info(f"GRUB_TIMEOUT_STYLE erfolgreich auf {style} gesetzt.")
+                logger.info(result.stdout.decode("utf-8"))
             except subprocess.CalledProcessError as e:
-                print(f"Fehler beim Setzen des GRUB_TIMEOUT_STYLE: {e}")
-                print(e.stderr.decode("utf-8"))
+                logger.error(f"Fehler beim Setzen des GRUB_TIMEOUT_STYLE: {e}")
+                logger.error(e.stderr.decode("utf-8"))
 
         def update_grub_timeout():
             try:
@@ -166,7 +169,7 @@ class BootloaderPanel(tk.Frame):
                     raise ValueError("Das Timeout darf nicht negativ sein.")
                 set_grub_timeout(timeout)
             except ValueError as ve:
-                print(f"Ungültige Eingabe: {ve}")
+                logger.error(f"Ungültige Eingabe: {ve}")
 
         def update_grub_menu():
             if grub_state_toggle_var.get() == 1:
@@ -243,9 +246,9 @@ class BootloaderPanel(tk.Frame):
                     return "Standardwert"
 
             except FileNotFoundError:
-                print("Die GRUB-Konfigurationsdatei wurde nicht gefunden.")
+                logger.error("Die GRUB-Konfigurationsdatei wurde nicht gefunden.")
             except Exception as e:
-                print(f"Ein Fehler ist aufgetreten: {e}")
+                logger.error(f"Ein Fehler ist aufgetreten: {e}")
 
             return "Standardwert"
 
@@ -265,11 +268,11 @@ class BootloaderPanel(tk.Frame):
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                 )
-                print(f"GRUB GFXMODE erfolgreich auf {resolution} gesetzt.")
-                print(result.stdout.decode("utf-8"))
+                logger.info(f"GRUB GFXMODE erfolgreich auf {resolution} gesetzt.")
+                logger.info(result.stdout.decode("utf-8"))
             except subprocess.CalledProcessError as e:
-                print(f"Fehler beim Setzen des GRUB GFXMODE: {e}")
-                print(e.stderr.decode("utf-8"))
+                logger.error(f"Fehler beim Setzen des GRUB GFXMODE: {e}")
+                logger.error(e.stderr.decode("utf-8"))
 
         def update_gfxmode():
             resolution = grub_res_combobox.get()

@@ -13,6 +13,9 @@ from itertools import count, cycle
 from resorcess import *
 from apt_manage import *
 from flatpak_alias_list import *
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 
 class InstallNvidiaDrivers(tk.Toplevel):
@@ -41,7 +44,7 @@ class InstallNvidiaDrivers(tk.Toplevel):
     def populate_listbox(self):
         # Filter für Pakete, die mit 'nvidia-driver' beginnen
         filtered_pkgs = [pkg for pkg in get_apt_cache() if pkg.startswith("nvidia-driver")]
-        print(filtered_pkgs)
+        logger.info(filtered_pkgs)
         # Pakete zur Listbox hinzufügen
         for pkg in filtered_pkgs:
             self.listbox.insert(tk.END, pkg)
@@ -514,10 +517,10 @@ class Update_Pop(tk.Toplevel):
             result = compare_versions(current_version, github_release)
 
             if result >= 0:
-                print("[Info] PiGro is up to date.")
+                logger.info("PiGro is up to date.")
                 self.nothin_2_do_label.pack(pady=10)
             else:
-                print("[Info] An Update is available")
+                logger.info("An Update is available")
                 self.pigro_update_button.pack(pady=10)
 
         def pigro_github_update():

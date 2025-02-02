@@ -17,7 +17,9 @@ from tabs.contrib_tab import ContribTab
 from tabs.expert_tools import ExpertTab
 from azure_ttk import *
 from utils import scaling  # Import the scaling variable
+from logger_config import setup_logger
 
+logger = setup_logger(__name__)
 
 class MainApplication(tk.Tk):
     def __init__(self):
@@ -50,7 +52,7 @@ class MainApplication(tk.Tk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         # Notebook Icons
-        print(theme_name)
+        logger.info(theme_name)
         if "dark" in theme_name or "Dark" in theme_name:
             self.tk.call("set_theme", "dark")
 

@@ -1,5 +1,8 @@
 import json
 import os
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 application_path = os.path.dirname(script_dir)
@@ -10,4 +13,4 @@ with open(f"{application_path}/tabs/gaming.json", "r") as f:
 
 # Zugriff auf die Daten
 for game in games:
-    print(game["Name"], game["Package"])
+    logger.info(game["Name"], game["Package"])

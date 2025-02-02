@@ -1,6 +1,5 @@
 #!/bin/bash
 
-python3 ~/primo-di-tutto/primo-di-tutto/src/main.py
-
+LOG_LEVEL=INFO python3 $(pwd)/src/main.py
 
 
