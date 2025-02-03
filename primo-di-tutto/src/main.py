@@ -21,17 +21,14 @@ from logger_config import setup_logger
 
 logger = setup_logger(__name__)
 
+
 class MainApplication(tk.Tk):
     def __init__(self):
         super().__init__(className="Primo")
         self.title("Primo")
 
-        self.tk.call(
-            "source", TCL_THEME_FILE_PATH
-        )
-        #self.tk.call('tk', 'scaling', scaling)
-
-
+        self.tk.call("source", TCL_THEME_FILE_PATH)
+        # self.tk.call('tk', 'scaling', scaling)
 
         # self["background"] = maincolor
         app_width = 1200
@@ -41,14 +38,14 @@ class MainApplication(tk.Tk):
         screen_height = self.winfo_screenheight()
         x = (screen_width / 2) - (app_width / 2)
         y = (screen_height / 2) - (app_height / 2)
-        
+
         # self.icon is still needed for some DEs
         self.icon = tk.PhotoImage(
             file=f"/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png"
         )
         self.tk.call("wm", "iconphoto", self._w, self.icon)
         self.geometry(f"{app_width}x{app_height}")
-        
+
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         # Notebook Icons
@@ -152,7 +149,7 @@ class MainApplication(tk.Tk):
                 file=f"{application_path}/images/icons/nav_bar/sources_light_16x16.png"
             )
 
-        self.notebook = ttk.Notebook(self)#, width=app_width, height=app_height)
+        self.notebook = ttk.Notebook(self)
         self.notebook.grid(row=0, column=0, sticky="nsew")
 
         self.willkommen_tab = WelcomeTab(self.notebook)
@@ -171,15 +168,15 @@ class MainApplication(tk.Tk):
         self.notebook.add(self.update_tab, compound=LEFT, text="Aktualisierung")
         self.notebook.add(self.software_tab, compound=LEFT, text="Software")
         self.notebook.add(self.system_tab, compound=LEFT, text="Werkzeuge")
-        self.notebook.add(self.expert_tools_tab, compound=LEFT, text="Expertenwerkzeuge")
+        self.notebook.add(
+            self.expert_tools_tab, compound=LEFT, text="Expertenwerkzeuge"
+        )
         self.notebook.add(self.look_tab, compound=LEFT, text="Erscheinungsbild")
-
         self.notebook.add(self.contrib_tab, compound=LEFT, text="Mitmachen")
 
         # Notebook Theming
         global noteStyler
         noteStyler = ttk.Style(self)
-        # noteStyler.theme_use('yaru')
         noteStyler.configure(
             "TNotebook",
             borderwidth=0,
@@ -197,11 +194,10 @@ class MainApplication(tk.Tk):
         noteStyler.configure("TButton", justify="left", anchor="w")
 
         noteStyler.configure("Custom.TButton", justify="center", anchor="center")
-        noteStyler.configure("Accent2.TButton", justify="center", anchor="center", font=font_12)
+        noteStyler.configure(
+            "Accent2.TButton", justify="center", anchor="center", font=font_12
+        )
 
-        
-
-        
 
 if __name__ == "__main__":
     app = MainApplication()

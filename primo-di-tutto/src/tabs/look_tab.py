@@ -41,6 +41,12 @@ class LookTab(ttk.Frame):
             self.refresh_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/fresh_s.png"
             )
+            self.save_layout_icon = PhotoImage(
+                file=f"{application_path}/images/icons/nav_bar/document-save-light_24x24.png"
+            )
+            self.load_layout_icon = PhotoImage(
+                file=f"{application_path}/images/icons/nav_bar/draw-star_light_24x24.png"
+            )
             self.classico_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/classico_thumb.png"
             )
@@ -53,6 +59,7 @@ class LookTab(ttk.Frame):
             self.devil_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/devil_thumb.png"
             )
+
         else:
             self.folder_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/folder_s_light.png"
@@ -81,7 +88,12 @@ class LookTab(ttk.Frame):
             self.devil_thumb = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/devil_thumb_light.png"
             )
-
+            self.save_layout_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/document-save.png"
+            )
+            self.load_layout_icon = PhotoImage(
+                file=f"{application_path}/images/icons/nav_bar/draw-star_dark_24x24.png"
+            )
         def backup_grouped_config():
             # Verzeichnis mit der JSON-Datei
             config_dir = os.path.expanduser("~/.config/cinnamon/spices/grouped-window-list@cinnamon.org")
@@ -441,59 +453,64 @@ class LookTab(ttk.Frame):
         self.desktop_layout_set.grid_columnconfigure(2, weight=1)
         self.desktop_layout_set.grid_columnconfigure(3, weight=1)
 
+        layout_label = ttk.Label(self.desktop_layout_set, text="Wähle ein Layout aus und passe es an. Du kannst ein Backup davon erstellen und es zu einen späteren Zeitpunkt wiederherstellen.", anchor="w")
+        layout_label.grid(row=0, column=0, columnspan=4, padx=5, pady=5, sticky="nsew")
+
         classico_button = ttk.Button(
             self.desktop_layout_set,
-            # text="Classico\n(Standard)",
             compound="center",
             image=self.classico_thumb,
             command=set_classico_panel,
         )
-        classico_button.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+        classico_button.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
 
         classico_label = ttk.Label(
             self.desktop_layout_set, text="Standard", anchor="center"
         )
-        classico_label.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
+        classico_label.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
 
         upside_button = ttk.Button(
             self.desktop_layout_set,
-            # text="upside down",
             compound="center",
             image=self.upside_thumb,
             command=set_upside_down_panel,
         )
-        upside_button.grid(row=0, column=1, padx=5, pady=5, sticky="nesw")
+        upside_button.grid(row=1, column=1, padx=5, pady=5, sticky="nesw")
 
         upside_label = ttk.Label(
             self.desktop_layout_set, text="Spiegel", anchor="center"
         )
-        upside_label.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
+        upside_label.grid(row=2, column=1, padx=5, pady=5, sticky="nsew")
 
         elfi_button = ttk.Button(
             self.desktop_layout_set,
-            # text="elfi",
             compound="center",
             image=self.elfi_thumb,
             command=set_elfi_panel,
         )
-        elfi_button.grid(row=0, column=2, padx=5, pady=5, sticky="nesw")
+        elfi_button.grid(row=1, column=2, padx=5, pady=5, sticky="nesw")
 
         elfi_label = ttk.Label(self.desktop_layout_set, text="11", anchor="center")
-        elfi_label.grid(row=1, column=2, padx=5, pady=5, sticky="nsew")
+        elfi_label.grid(row=2, column=2, padx=5, pady=5, sticky="nsew")
 
         devil_button = ttk.Button(
             self.desktop_layout_set,
-            # text=" the devil",
             compound="center",
             image=self.devil_thumb,
             command=set_der_teufel_panel,
         )
-        devil_button.grid(row=0, column=3, padx=5, pady=5, sticky="nesw")
+        devil_button.grid(row=1, column=3, padx=5, pady=5, sticky="nesw")
 
         devil_label = ttk.Label(
             self.desktop_layout_set, text="Ubuntu-Like", anchor="center"
         )
-        devil_label.grid(row=1, column=3, padx=5, pady=5, sticky="nsew")
+        devil_label.grid(row=2, column=3, padx=5, pady=5, sticky="nsew")
+
+        save_layout = ttk.Button(self.desktop_layout_set, text="Mein Layout speichern",style="Custom.TButton", image=self.save_layout_icon,compound="left")
+        save_layout.grid(row=3, column=0, columnspan=4, padx=5, pady=5, sticky="nesw")
+
+        load_layout = ttk.Button(self.desktop_layout_set, text="Mein Layout laden",style="Custom.TButton",image=self.load_layout_icon, compound="left")
+        load_layout.grid(row=4, column=0, columnspan=4, padx=5, pady=5, sticky="nesw")
 
         self.pixel_set = ttk.LabelFrame(self, text="Farben und Formen", padding=10)
         self.pixel_set.pack(pady=20, padx=40, fill="x", anchor="n")

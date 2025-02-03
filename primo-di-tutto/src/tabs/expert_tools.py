@@ -312,21 +312,22 @@ class BootloaderPanel(tk.Frame):
         self.backup_frame.rowconfigure(0, weight=1)
 
         grub_info = """
-**GRUB** steht für **Grand Unified Bootloader** und dient zum Starten von Betriebssystemen wie Linux und Windows.
+Grub steht für Grand Unified Bootloader und dient zum Starten von Betriebssystemen wie Linux und Windows.
 Viele Linux Distributionen verwenden GRUB als Standard Bootloader.
 
-**Features**
-* Unterstützung für viele Dateisysteme, u.a.: ext2, ext3, ext4, btrfs, XFS, ZFS, FAT (und einige mehr)
-* Plattform und Architektur Unterstützung für x86, x64, PowerPC und ARM/ARM64
-* Integrierte Shell für Skripte und Befehle sowie Support für die Programmiersprache Lua
-* Anpassbare Auswahlmenüs (Farben, Hintergrundbilder, Aufbau/Struktur und deren Funktion)
-* Bootet automatisiert oder über ein Auswahlmenü Betriebssysteme
-* Betriebssysteme können von Festplatten, Disketten, CD- und DVD Medien, Imagedateien (ISO) und USB-Sticks gebootet
-* **Multi-Boot** Support um mehrere Betriebssysteme auf einem Computer zu betreiben (z.B. Ubuntu und Windows)
-* GRUB kann mit einem Passwort versehen werden
-* Linux-Kernel können über eine Netzwerkverbindung geladen werden
-* GRUB kommt sowohl mit MBR und GPT Partitionstabellen zurecht
-* GRUB verfügt über einen Rettungsmodus um Bootprobleme beheben zu können
+Features
+
+- Unterstützung für viele Dateisysteme, u.a.: ext2, ext3, ext4, btrfs, XFS, ZFS, FAT (und einige mehr)
+- Plattform und Architektur Unterstützung für x86, x64, PowerPC und ARM/ARM64
+- Integrierte Shell für Skripte und Befehle sowie Support für die Programmiersprache Lua
+- Anpassbare Auswahlmenüs (Farben, Hintergrundbilder, Aufbau/Struktur und deren Funktion)
+- Bootet automatisiert oder über ein Auswahlmenü Betriebssysteme
+- Betriebssysteme können von Festplatten, Disketten, CD- und DVD Medien, Imagedateien (ISO) und USB-Sticks gebootet
+- Multi-Boot Support um mehrere Betriebssysteme auf einem Computer zu betreiben (z.B. Ubuntu und Windows)
+- GRUB kann mit einem Passwort versehen werden
+- Linux-Kernel können über eine Netzwerkverbindung geladen werden
+- GRUB kommt sowohl mit MBR und GPT Partitionstabellen zurecht
+- GRUB verfügt über einen Rettungsmodus um Bootprobleme beheben zu können
 
 GRUB bietet mehrere Konfigurationsdateien um ihn an seine Wünsche anzupassen.
 Neben Farben, Schriften und Hintergrundbildern kann die Reihenfolge und Benennung der Menüeinträge angepasst werden. 
