@@ -110,11 +110,8 @@ class SoftwareOffice:
 
     }
 
-
-
-class SoftwareGame:
-    # Descriptions by @evilware666
-    game_dict = {
+class SoftwareGamingTools:
+    game_tool_dict = {
         "game_0": {
             "Name": "Steam",
             "Package": AppPackage.DEB,
@@ -140,7 +137,7 @@ class SoftwareGame:
         "game_2": {
             "Name": "Heroic",
             "Package": AppPackage.FLATPAK,
-            "Description": "Der Heroic-Game-Launcher ist ein Programm zum Starten, Verwalten und Spielen von Epic- und GOG-Games.",
+            "Description": "Der Heroic-Game-Launcher ist ein Programm zum Starten, Verwalten und Spielen von Epic- und GOG-Games.\n\nDieser Installer installiert auch Wine, damit alles bereit zum spielen ist.",
             "Icon": f"{application_path}/images/apps/com.heroicgameslauncher.hgl-icon.png",
             "Install": f"pkexec {application_path}/scripts/install_heroic",
             "Thumbnail": f"{application_path}/images/apps/com.heroicgameslauncher.hgl-thumb.png",
@@ -159,7 +156,14 @@ class SoftwareGame:
             "Path": "net.davidotek.pupgui2",
             "AppStream": "net.davidotek.pupgui2",
         },
-        "game_5": {
+    }
+
+
+
+class SoftwareGame:
+    # Descriptions by @evilware666
+    game_dict = {
+        "game_1": {
             "Name": "GZDoom",
             "Package": AppPackage.FLATPAK,
             "Description": "GZDoom ist ein moderner Source-Port, der aktuelle Hardware und Betriebssysteme unterstützt und eine Vielzahl an Einstellungsmöglichkeiten bietet. Neben Doom unterstützt GZDoom auch Heretic, Hexen, Strife, Chex Quest und von Fans erstellte Spiele wie Harmony und Hacx.",
@@ -170,7 +174,7 @@ class SoftwareGame:
             "Path": "org.zdoom.GZDoom",
             "AppStream": "org.zdoom.GZDoom",
         },
-        "game_6": {
+        "game_2": {
             "Name": "OpenRA",
             "Package": AppPackage.FLATPAK,
             "Description": "OpenRA ist ein Projekt, das die klassischen Command-&-Conquer-Echtzeit-Strategiespiele neu erschafft und modernisiert.",
@@ -181,7 +185,7 @@ class SoftwareGame:
             "Path": "net.openra.OpenRA",
             "AppStream": "net.openra.OpenRA",
         },
-        "game_7": {
+        "game_3": {
             "Name": "Xonotic",
             "Package": AppPackage.FLATPAK,
             "Description": "Xonotic ist ein kostenloser und rasantes First-Person-Shooter, der süchtig machendes Arena-Gameplay mit schneller Bewegung und einer großen Auswahl an Waffen kombiniert.",
@@ -192,7 +196,7 @@ class SoftwareGame:
             "Path": "org.xonotic.Xonotic",
             "AppStream": "org.xonotic.Xonotic",
         },
-        "game_8": {
+        "game_4": {
             "Name": "Frogatto & Friends",
             "Package": AppPackage.FLATPAK,
             "Description": "Ein Old-School-2D-Plattformspiel mit einem gewissen eigenwilligen Frosch in der Hauptrolle. *Frogatto* bietet wunderschöne, hochwertige Pixelgrafik, mitreißende Arcade-Soundtracks und das ganze Spielgefühl eines klassischen Konsolentitels. Renne und springe über Abgründe und Gegner. Greife Feinde mit deiner Zunge, verschlucke sie und spucke sie dann als Projektile auf andere Gegner!",
@@ -203,7 +207,7 @@ class SoftwareGame:
             "Path": "com.frogatto.Frogatto",
             "AppStream": "com.frogatto.Frogatto",
         },
-        "game_9": {
+        "game_5": {
             "Name": "Bombermaaan",
             "Package": AppPackage.FLATPAK,
             "Description": "Ein klassisches *Bomberman*-Spiel mit Mehrspielerunterstützung, inspiriert von den originalen SNES-Spielen.",
@@ -214,7 +218,7 @@ class SoftwareGame:
             "Path": "com.github.bjaraujo.Bombermaaan",
             "AppStream": "com.github.bjaraujo.Bombermaaan",
         },
-        "game_10": {
+        "game_6": {
             "Name": "Space Cadet Pinball",
             "Package": AppPackage.FLATPAK,
             "Description": "Reverse Engineering von '3D Pinball for Windows – Space Cadet', einem mit Windows gebündelten Spiel.",
@@ -225,7 +229,7 @@ class SoftwareGame:
             "Path": "com.github.k4zmu2a.spacecadetpinball",
             "AppStream": "com.github.k4zmu2a.spacecadetpinball",
         },
-        "game_11": {
+        "game_6": {
             "Name": "Total Chaos",
             "Package": AppPackage.FLATPAK,
             "Description": "Survival-Horror auf einer abgelegenen Insel namens Fort Oasis. Die Insel wurde einst von einer Gemeinschaft von Kohlearbeitern bewohnt, die eines Tages plötzlich verschwand und die verlassene Betonlandschaft zurückließ, um zu verfallen.Offensichtlich ist etwas furchtbar schiefgelaufen an diesem Ort. Bei deiner Ankunft in Fort Oasis empfängst du eine seltsame Funksendung. Jemand möchte gefunden werden. Überlebe in 6 Kapiteln, kämpfe gegen über 8 grausame Kreaturen und nutze dabei eine große Auswahl an Waffen.",
@@ -236,7 +240,7 @@ class SoftwareGame:
             "Path": "com.moddb.TotalChaos",
             "AppStream": "com.moddb.TotalChaos",
         },
-        "game_12": {
+        "game_8": {
             "Name": "Warzone 2100",
             "Package": AppPackage.FLATPAK,
             "Description": "Das klassische 3D-Echtzeit-Strategiespiel von 1999 wurde aktualisiert, aufgerüstet und für die neuesten Plattformen modernisiert! Befehlige die Streitkräfte des Projekts in einem Kampf, die Welt wiederaufzubauen, nachdem die Menschheit fast durch Atomraketen ausgelöscht wurde. Warzone 2100 bietet eine storybasierte Einzelspieler-Kampagne, Online-Multiplayer sowie Einzelspieler-Gefecht-Modi. Ein umfangreicher Technologiebaum mit über 400 verschiedenen Technologien, kombiniert mit einem Einheitendesign-System, ermöglicht eine große Vielfalt an möglichen Einheiten und Taktiken.",
@@ -247,7 +251,7 @@ class SoftwareGame:
             "Path": "net.wz2100.wz2100",
             "AppStream": "net.wz2100.wz2100",
         },
-        "game_13": {
+        "game_9": {
             "Name": "Alien Arena",
             "Package": AppPackage.FLATPAK,
             "Description": "Stehst du auf Old-School-Deathmatch mit modernen Features? Wie wäre es mit einer lebendigen, farbenfrohen Arcade-Atmosphäre? Oder vielleicht...Retro-Sci-Fi? Dann wirst du lieben, was Alien Arena für dich bereithält! Dieses Spiel vereint einige der besten Aspekte von Spielen wie Quake und Unreal und verpackt sie in ein Retro-Alien-Thema, während es eine Menge origineller Ideen hinzufügt, die das Spiel einzigartig machen.",
@@ -258,7 +262,7 @@ class SoftwareGame:
             "Path": "org.alienarena.alienarena",
             "AppStream": "org.alienarena.alienarena",
         },
-        "game_13": {
+        "game_10": {
             "Name": "AstroMenace",
             "Package": AppPackage.FLATPAK,
             "Description": "AstroMenace ist ein beeindruckender, knallharter Scroll-Shooter, in dem mutige Weltraumkrieger die perfekte Gelegenheit finden, ihre Kampffähigkeiten zu verbessern. Sammle während der Schlacht Geld, um dein Raumschiff in eine ultimative Massenvernichtungswaffe zu verwandeln und Horden von Feinden das Fürchten zu lehren. Genieße die wunderbar gestalteten 3D-Grafiken und hochqualitativen Spezialeffekte sowie die detaillierte Schwierigkeitsanpassung und das benutzerfreundliche Interface von AstroMenace.",
@@ -269,7 +273,7 @@ class SoftwareGame:
             "Path": "com.viewizard.AstroMenace",
             "AppStream": "com.viewizard.AstroMenace",
         },
-        "game_14": {
+        "game_11": {
             "Name": "FreeRCT",
             "Package": AppPackage.FLATPAK,
             "Description": "FreeRCT hat das Ziel, ein freies und quelloffenes Spiel zu sein, das das Aussehen, das Gefühl und das Gameplay der beliebten Spiele RollerCoaster Tycoon 1 und 2 einfängt. Das Spiel befindet sich noch in einem frühen Alpha-Zustand, ist aber bereits spielbar und bietet eine Vielzahl an Features.",
@@ -280,7 +284,7 @@ class SoftwareGame:
             "Path": "net.freerct.FreeRCT",
             "AppStream": "net.freerct.FreeRCT",
         },
-        "game_15": {
+        "game_12": {
             "Name": "Stone Kingdom",
             "Package": AppPackage.FLATPAK,
             "Description": "Erlebe den Nervenkitzel des mittelalterlichen Burgenbaus und der Zerstörung in unserem isometrischen, quelloffenen Strategiespiel – eine moderne Neuauflage des Klassikers 'Stronghold' von Firefly Studios. Tauche ein in eine Welt voller Strategie und taktischer Entscheidungen, während du deine eigenen Burgen im mittelalterlichen Europa entwirfst und verteidigst.",
@@ -291,7 +295,7 @@ class SoftwareGame:
             "Path": "io.gitlab.stone_kingdoms.StoneKingdoms",
             "AppStream": "io.gitlab.stone_kingdoms.StoneKingdoms",
         },
-        "game_16": {
+        "game_13": {
             "Name": "Pekka Kana 2",
             "Package": AppPackage.FLATPAK,
             "Description": "Pekka Kana 2 (Pekka the Rooster 2) ist ein Jump-'n'-Run-Spiel, das im Geiste klassischer Plattformspiele wie Super Mario, Sonic the Hedgehog, Jazz Jackrabbit, Super Frog und ähnlicher Titel entwickelt wurde.\n\nDas einfache Ziel in jedem Level besteht darin, das Ausgangsschild zu erreichen – was jedoch meist nicht so einfach ist, wie es klingt, da Gegner, Fallen und knifflige Rätsel den Weg erschweren.",
@@ -301,17 +305,6 @@ class SoftwareGame:
             "Uninstall": "flatpak remove net.pistegamez.PekkaKana2 -y",
             "Path": "net.pistegamez.PekkaKana2",
             "AppStream": "net.pistegamez.PekkaKana2",
-        },
-        "game_17": {
-            "Name": "Wine",
-            "Package": AppPackage.DEB,
-            "Description": "Wine ist eine Kompatibilitätsschicht, die es ermöglicht, Windows-Programme unter Linux auszuführen. Es ist besonders nützlich für Spiele und Anwendungen, die nicht nativ für Linux verfügbar sind. Wine bietet eine Vielzahl von Konfigurationsoptionen und unterstützt eine breite Palette von Windows-Software." ,
-            "Icon": f"{application_path}/images/apps/wine-icon.png",
-            "Thumbnail": f"{application_path}/images/apps/wine-thumb.png",
-            "Install": f"pkexec {application_path}/scripts/install_wine",
-            "Uninstall": f"pkexec {application_path}/scripts/uninstall_wine",
-            "Path": "winehq-stable",
-            "AppStream": "winehq-stable",
         },
     }
 
@@ -545,9 +538,9 @@ class SoftwareAudioVideo:
             "Path": "org.kde.amarok",
         },
         "av_8": {
-            "Name": "Cosy",
+            "Name": "Cozy",
             "Package": AppPackage.FLATPAK,
-            "Description": "Cosy ist ein moderner Hörbuch-Player, der speziell für Hörbücher entwickelt wurde. Die App bietet Funktionen wie Lesezeichen, Fortschrittsverfolgung und Sleep-Timer, um das Hörerlebnis zu verbessern. Ideal für Benutzer, die eine einfache und effektive Möglichkeit suchen, Hörbücher zu genießen.",
+            "Description": "Cozy ist ein moderner Hörbuch-Player, der speziell für Hörbücher entwickelt wurde. Die App bietet Funktionen wie Lesezeichen, Fortschrittsverfolgung und Sleep-Timer, um das Hörerlebnis zu verbessern. Ideal für Benutzer, die eine einfache und effektive Möglichkeit suchen, Hörbücher zu genießen.",
             "Icon": f"{application_path}/images/apps/com.github.geigi.cozy-icon.png",
             "Thumbnail": f"{application_path}/images/apps/com.github.geigi.cozy-thumb.png",
             "Install": "flatpak install flathub com.github.geigi.cozy -y",
