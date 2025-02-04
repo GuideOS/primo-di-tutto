@@ -508,10 +508,10 @@ class LookTab(ttk.Frame):
         devil_label.grid(row=2, column=3, padx=5, pady=5, sticky="nsew")
 
         save_layout = ttk.Button(self.desktop_layout_set, text="Mein Layout speichern",style="Custom.TButton", image=self.save_layout_icon,compound="left", command=backup_cinnamon_settings)
-        save_layout.grid(row=3, column=0, columnspan=4, padx=5, pady=5, sticky="nesw")
+        save_layout.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky="nesw")
 
         load_layout = ttk.Button(self.desktop_layout_set, text="Mein Layout laden",style="Custom.TButton",image=self.load_layout_icon, compound="left",command=restore_cinnamon_settings)
-        load_layout.grid(row=4, column=0, columnspan=4, padx=5, pady=5, sticky="nesw")
+        load_layout.grid(row=3, column=2, columnspan=2, padx=5, pady=5, sticky="nesw")
 
         self.pixel_set = ttk.LabelFrame(self, text="Farben und Formen", padding=10)
         self.pixel_set.pack(pady=20, padx=40, fill="x", anchor="n")
