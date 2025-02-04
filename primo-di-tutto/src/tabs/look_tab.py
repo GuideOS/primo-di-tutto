@@ -16,7 +16,8 @@ import json
 from tabs.system_tab_check import check_papirus
 import shutil
 from logger_config import setup_logger
-
+from back_my_cinnamon import *
+from restore_my_cinnamon import *
 logger = setup_logger(__name__)
 
 
@@ -506,10 +507,10 @@ class LookTab(ttk.Frame):
         )
         devil_label.grid(row=2, column=3, padx=5, pady=5, sticky="nsew")
 
-        save_layout = ttk.Button(self.desktop_layout_set, text="Mein Layout speichern",style="Custom.TButton", image=self.save_layout_icon,compound="left")
+        save_layout = ttk.Button(self.desktop_layout_set, text="Mein Layout speichern",style="Custom.TButton", image=self.save_layout_icon,compound="left", command=backup_cinnamon_settings)
         save_layout.grid(row=3, column=0, columnspan=4, padx=5, pady=5, sticky="nesw")
 
-        load_layout = ttk.Button(self.desktop_layout_set, text="Mein Layout laden",style="Custom.TButton",image=self.load_layout_icon, compound="left")
+        load_layout = ttk.Button(self.desktop_layout_set, text="Mein Layout laden",style="Custom.TButton",image=self.load_layout_icon, compound="left",command=restore_cinnamon_settings)
         load_layout.grid(row=4, column=0, columnspan=4, padx=5, pady=5, sticky="nesw")
 
         self.pixel_set = ttk.LabelFrame(self, text="Farben und Formen", padding=10)
@@ -520,10 +521,6 @@ class LookTab(ttk.Frame):
         def done_message_0():
             d_mass = Done_(self)
             d_mass.grab_set()
-
-        def why_message_0():
-            y_mass = Look_Disabled(self)
-            y_mass.grab_set()
 
         def update_theme_combobox():
             try:
