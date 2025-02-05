@@ -414,7 +414,7 @@ class SoftwareCommunication:
         },
         "com_10": {
             "Name": "Signal",
-            "Package": AppPackage.DEB,
+            "Package": AppPackage.FLATPAK,
             "Description": "Ein Open-Source-Messenger mit starker Ende-zu-Ende-Verschlüsselung für Nachrichten und Anrufe. Fokus auf Datenschutz und Sicherheit. Verfügbar auf Mobilgeräten und Desktop.",
             "Icon": f"{application_path}/images/apps/org.signal.Signal-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.signal.Signal-thumb.png",
