@@ -52,5 +52,4 @@ def restore_cinnamon_settings():
     
     print("Restore process completed.")
 
-if __name__ == "__main__":
-    restore_cinnamon_settings()
+    
