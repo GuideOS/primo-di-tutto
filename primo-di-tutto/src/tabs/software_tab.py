@@ -277,6 +277,7 @@ class AppCollectionPanel(tk.Frame):
         super().__init__(master, **kwargs)
         self.update_interval = 1000
         self.button_icons = []
+        self.buttons = []
         self.apps = apps
 
         def show_button_frame():
@@ -340,6 +341,9 @@ class AppCollectionPanel(tk.Frame):
                     style="Green.TButton",
                 )
 
+            index = self.apps.index(app)
+            update_button_icon(self.buttons[index], app, index)
+
         def app_btn_action(app):
             logger.info(f"btn_action {app.get_name()}")
 
@@ -395,19 +399,40 @@ class AppCollectionPanel(tk.Frame):
         ttp_label.pack(fill="x")
 
         max_columns = 5
+
+        def generate_app_button(app):
+            img = Image.open(app.get_icon())
+            resized_img = resize46(img)
+            combined_image = resized_img
+
+            # add indicator if app is already installed
+            if app.is_installed():
+                indicator = Image.open(f"{application_path}/images/icons/pigro_icons/installed.png").resize(resized_img.size)
+                combined_image = Image.alpha_composite(resized_img.convert("RGBA"), indicator.convert("RGBA"))
+
+            return combined_image
+
+        def update_button_icon(button, app, index):
+            combined_image = generate_app_button(app)
+
+            icon = ImageTk.PhotoImage(combined_image)
+            self.button_icons[index] = icon
+            button.config(image=icon)
+
         for (i , app) in enumerate(self.apps):
             row = i // max_columns
             column = i % max_columns
 
-            img = Image.open(app.get_icon())
-            resized_img = resize46(img)
-            icon = ImageTk.PhotoImage(resized_img)
+            combined_image = generate_app_button(app)
+
+
+            icon = ImageTk.PhotoImage(combined_image)
             self.button_icons.append(icon)
 
             button = ttk.Button(
                 btn_frame,
                 text=app.get_name(),
-                image=self.button_icons[i],
+                image=icon,
                 command=lambda key=i: app_btn_action(self.apps[key]),
                 compound=tk.TOP,
                 style="Custom.TButton",
@@ -416,6 +441,7 @@ class AppCollectionPanel(tk.Frame):
             button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
             button.bind("<Enter>", lambda event, key=i: on_hover(event, self.apps[key]))
             button.bind("<Leave>", on_leave)
+            self.buttons.append(button)
 
 
         detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
