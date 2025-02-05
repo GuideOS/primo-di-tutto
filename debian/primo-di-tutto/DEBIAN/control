@@ -1,0 +1,12 @@
+Package: primo-di-tutto
+Version: 0.6.7
+Architecture: all
+Maintainer: Actionschnitzel <actionschnitzel@guideos.de>
+Installed-Size: 35224
+Depends: python3, plank, synaptic, python3-dev, python3-psutil, python3-distro, python3-bs4, python3-requests, python3-pil, python3-pil.imagetk, xterm, mpg123, lolcat, wmctrl, gdebi, mousepad, appstream, pkexec | policykit-1, nala, guideos-azure-ttk
+Section: misc
+Priority: optional
+Homepage: https://guideos.de
+Description: A system control tool for Linux Guide OS
+ Primo Di Tutto is a system configuration tool inspired by openSUSE's YaST
+ but designed with the user-friendliness of Linux Mint in mind.

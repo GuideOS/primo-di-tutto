@@ -1,0 +1,10 @@
+#!/bin/bash
+
+sudo apt remove -y wine*
+
+
+sudo rm -f \
+    /etc/apt/sources.list.d/winehq-bookworm.sources \
+    /usr/share/keyrings/winehq-archive.key
+
+

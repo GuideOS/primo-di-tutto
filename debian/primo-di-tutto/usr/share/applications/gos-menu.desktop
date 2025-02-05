@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=gos-menu
+GenericName=Application Launcher
+Comment=Lightweight, look nice and powerful application launcher
+Categories=GNOME;GTK;Utility;
+Exec=com.github.libredeb.lightpad
+Icon=guide-os-logo-symbolic-dark
+Terminal=false
+Type=Application
+NoDisplay=false
+StartupNotify=false

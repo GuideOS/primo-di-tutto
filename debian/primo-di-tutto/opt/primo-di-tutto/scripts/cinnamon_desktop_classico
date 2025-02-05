@@ -1,0 +1,191 @@
+[/]
+allow-other-notification-handlers=false
+alttab-minimized-aware=false
+alttab-switcher-delay=100
+alttab-switcher-enforce-primary-monitor=false
+alttab-switcher-show-all-workspaces=false
+alttab-switcher-style='icons+thumbnails'
+alttab-switcher-warp-mouse-pointer=false
+app-menu-icon-name='ubuntucinnamon-symbolic'
+app-menu-label='Menu'
+applet-cache-updated=0
+bring-windows-to-current-workspace=false
+center-warped-pointer=true
+cinnamon-settings-advanced=false
+command-history=@as []
+date-format='%a, %h %d %Y%l:%M %p'
+demands-attention-ignored-wm-classes=@as []
+demands-attention-passthru-wm-classes=['gnome-screenshot', 'lxterminal', 'xfce4-terminal', 'firefox', 'libreoffice', 'soffice']
+desklet-cache-updated=0
+desklet-decorations=1
+desklet-snap=true
+desklet-snap-interval=25
+desktop-effects=true
+desktop-effects-change-size=true
+desktop-effects-close='traditional'
+desktop-effects-map='traditional'
+desktop-effects-minimize='traditional'
+desktop-effects-on-dialogs=true
+desktop-effects-on-menus=true
+desktop-effects-sizechange-effect='scale'
+desktop-effects-sizechange-time=100
+desktop-effects-sizechange-transition='easeInQuad'
+desktop-effects-workspace=true
+development-tools=true
+device-aliases=@as []
+disabled-open-search-providers=@as []
+edge-flip-delay=1000
+enable-app-monitoring=true
+enable-edge-flip=false
+enable-indicators=false
+enable-vfade=true
+enabled-applets=['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:2:grouped-window-list@cinnamon.org:69', 'panel1:right:2:systray@cinnamon.org:3', 'panel1:right:3:xapp-status@cinnamon.org:4', 'panel1:right:4:notifications@cinnamon.org:5', 'panel1:right:5:printers@cinnamon.org:6', 'panel1:right:6:removable-drives@cinnamon.org:7', 'panel1:right:7:keyboard@cinnamon.org:8', 'panel1:right:8:favorites@cinnamon.org:9', 'panel1:right:9:network@cinnamon.org:10', 'panel1:right:10:sound@cinnamon.org:11', 'panel1:right:11:power@cinnamon.org:12', 'panel2:center:0:calendar@cinnamon.org:13', 'panel1:right:1:trash@cinnamon.org:15', 'panel2:right:1:temperature@fevimu:16', 'panel1:left:1:placesCenter@scollins:17', 'panel1:right:13:sessionManager@scollins:18', 'panel2:center:1:weather@mockturtl:19', 'panel1:right:0:expo@cinnamon.org:22']
+enabled-desklets=@as []
+enabled-extensions=['opacify@anish.org', 'transparent-panels@germanfr']
+enabled-search-providers=@as []
+extension-cache-updated=0
+favorite-apps=['cinnamon-settings.desktop', 'nemo.desktop', 'primo-di-tutto.desktop', 'org.gnome.Software.desktop', 'system-config-printer.desktop', 'org.gnome.DejaDup.desktop']
+hotcorner-layout=['expo:false:0', 'scale:false:0', 'scale:false:0', 'desktop:false:0']
+hoverclick-action='single'
+hoverclick-layout='vertical::both'
+hoverclick-position=''
+lock-desklets=false
+looking-glass-history=@as []
+next-applet-id=26
+next-desklet-id=0
+no-adjacent-panel-barriers=false
+number-workspaces=0
+overview-corner=['DEPRECATED']
+panel-edit-mode=false
+panel-launchers=['DEPRECATED']
+panel-launchers-draggable=true
+panel-scale-text-icons=false
+panel-zone-icon-sizes='[{"panelId": 1, "left": 0, "center": 0, "right": 22}, {"left": 0, "center": 0, "right": 0, "panelId": 2}]'
+panel-zone-symbolic-icon-sizes='[{"panelId": 1, "left": 22, "center": 28, "right": 18}, {"left": 28, "center": 17, "right": 28, "panelId": 2}]'
+panel-zone-text-sizes='[{"panelId":1,"left":0,"center":0,"right":0},{"left":0,"center":0,"right":0,"panelId":2}]'
+panels-autohide=['1:false', '2:intel']
+panels-enabled=['1:0:bottom', '2:0:top']
+panels-height=['1:38', '2:21']
+panels-hide-delay=['1:0', '2:0']
+panels-show-delay=['1:0', '2:0']
+prevent-focus-stealing=false
+run-dialog-aliases=['<Super>r']
+run-dialog-show-completions=true
+saved-im-presence=1
+saved-session-presence=0
+show-media-keys-osd='medium'
+show-snap-osd=true
+show-tile-hud=true
+startup-animation=true
+startup-icon-name=''
+system-icon=''
+window-effect-speed=1
+workspace-expo-view-as-grid=false
+workspace-name-overrides=['DEPRECATED']
+workspace-osd-visible=true
+
+[cinnamon-session]
+quit-time-delay=60
+
+[desktop/applications/calculator]
+exec='gnome-calculator'
+
+[desktop/applications/terminal]
+exec='gnome-terminal'
+exec-arg='--'
+
+[desktop/background]
+picture-options='none'
+picture-uri='file:///usr/share/backgrounds/guideOS/Hagelschaden 2.jpg'
+primary-color='#35358484e4e4'
+
+[desktop/background/slideshow]
+delay=15
+image-source='xml:///usr/share/gnome-background-properties/guideOS.xml'
+
+[desktop/interface]
+cursor-blink-time=1200
+cursor-theme='Adwaita'
+gtk-theme='WhiteSur-Dark-solid'
+icon-theme='BigSur-dark'
+toolkit-accessibility=false
+
+[desktop/media-handling]
+autorun-never=false
+
+[desktop/notifications]
+notification-duration=4
+
+[desktop/peripherals/keyboard]
+delay=uint32 500
+numlock-state=false
+repeat-interval=uint32 30
+
+[desktop/privacy]
+remember-recent-files=false
+
+[desktop/screensaver]
+date-format=' %A%e. %B %Y '
+default-message='GuideOS macht pause'
+font-message='Ubuntu Ultra-Bold 60'
+use-custom-format=true
+
+[desktop/session]
+idle-delay=uint32 0
+
+[desktop/sound]
+event-sounds=false
+
+[desktop/wm/preferences]
+min-window-opacity=30
+theme='WhiteSur-Dark-solid'
+
+[gestures]
+enabled=true
+pinch-percent-threshold=uint32 40
+swipe-down-2='PUSH_TILE_DOWN::end'
+swipe-down-3='TOGGLE_OVERVIEW::end'
+swipe-down-4='VOLUME_DOWN::end'
+swipe-left-2='PUSH_TILE_LEFT::end'
+swipe-left-3='WORKSPACE_NEXT::end'
+swipe-left-4='WINDOW_WORKSPACE_PREVIOUS::end'
+swipe-percent-threshold=uint32 60
+swipe-right-2='PUSH_TILE_RIGHT::end'
+swipe-right-3='WORKSPACE_PREVIOUS::end'
+swipe-right-4='WINDOW_WORKSPACE_NEXT::end'
+swipe-up-2='PUSH_TILE_UP::end'
+swipe-up-3='TOGGLE_EXPO::end'
+swipe-up-4='VOLUME_UP::end'
+tap-3='MEDIA_PLAY_PAUSE::end'
+
+[launcher]
+check-frequency=300
+memory-limit=2048
+
+[muffin]
+draggable-border-width=10
+
+[settings-daemon/peripherals/keyboard]
+numlock-state='off'
+
+[settings-daemon/plugins/power]
+button-power='shutdown'
+sleep-display-ac=900
+sleep-inactive-ac-timeout=1800
+
+[sounds]
+login-enabled=true
+login-file='/usr/share/cinnamon/sounds/togglekeys-sound-on.ogg'
+logout-enabled=true
+logout-file='/usr/share/cinnamon/sounds/togglekeys-sound-off.ogg'
+notification-enabled=true
+notification-file='/usr/share/cinnamon/sounds/bell.ogg'
+plug-enabled=true
+plug-file='/usr/share/sounds/freedesktop/stereo/device-added.oga'
+switch-enabled=false
+switch-file='/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga'
+unplug-enabled=true
+unplug-file='/usr/share/sounds/freedesktop/stereo/device-removed.oga'
+
+[theme]
+name='WhiteSur-Dark-solid'

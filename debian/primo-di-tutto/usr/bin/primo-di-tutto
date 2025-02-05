@@ -1,0 +1,2 @@
+#!/bin/bash
+/opt/primo-di-tutto/src/main.py "override_dh_install"

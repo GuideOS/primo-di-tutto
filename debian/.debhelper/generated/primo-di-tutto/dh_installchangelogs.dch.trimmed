@@ -1,0 +1,183 @@
+primo-di-tutto (0.6.7) unstable; urgency=medium
+
+  * Added: Install status indicator @vizh
+  * Improved: Layouts
+  * Added Layout Save/Backup
+  * Split Games and Game Tool Tab
+  * Improved: Layout code
+  * Fixed: Xterm crashes when exit1
+  * Code revision @vizh
+
+
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Wed, 05 Feb 2025 17:01:50 +0100
+
+primo-di-tutto (0.6.6-1) unstable; urgency=medium
+
+  * Added mono to wine-install
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Thu, 23 Jan 2025 11:16:36 +0100
+
+primo-di-tutto (0.6.6) unstable; urgency=medium
+
+  * Fixed: gnome-theme-bug
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Thu, 23 Jan 2025 00:36:52 +0100
+
+primo-di-tutto (0.6.5-2) unstable; urgency=medium
+
+  * Fixed: Wind-Menu
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Mon, 20 Jan 2025 16:23:29 +0100
+
+primo-di-tutto (0.6.5-1) unstable; urgency=medium
+
+  * Added: webapp-manger
+  * Added: hypnotix
+  * Fixed: Typos
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 18 Jan 2025 15:44:12 +0100
+
+primo-di-tutto (0.6.5) unstable; urgency=medium
+
+  * Minor Fixes
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 18 Jan 2025 01:55:02 +0100
+
+primo-di-tutto (0.6.4-4) unstable; urgency=medium
+
+  * Fixed: Typos
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Thu, 16 Jan 2025 20:20:45 +0100
+
+primo-di-tutto (0.6.4-3) unstable; urgency=medium
+
+  * Minor Text Changes 
+  * Added: freeoffice
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Thu, 16 Jan 2025 10:29:17 +0100
+
+primo-di-tutto (0.6.4-1) unstable; urgency=medium
+
+  * Added: Contributor
+  * Added: Nvidia-Driver-Install to System
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Wed, 25 Nov 2024 13:08:00 +0000
+
+primo-di-tutto (0.6.4) unstable; urgency=medium
+
+  * Added: Icons & Cinnamenu
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sun, 22 Nov 2024 14:32:00 +0000
+
+primo-di-tutto (0.6.3) unstable; urgency=medium
+
+  * Fixed: Light & Dark Icons
+  * Added: Plank Folders will be created
+  * Fixed: Typos & Translation
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Thu, 17 Nov 2024 17:24:00 +0000
+
+primo-di-tutto (0.6.2) unstable; urgency=medium
+
+  * Changed: Code Cleaned: System-Tab
+  * Reworked: Update-Tab
+  * Fixed: LibreOffice not installing
+  * New: Update-Tab
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Fri, 06 Nov 2024 15:30:00 +0000
+
+primo-di-tutto (0.6.1) unstable; urgency=medium
+
+  * Changed: Dash shown only gos-logo
+  * Fixed: Plank Settings/Ubuntu Like
+  * Fixed: synaptic not starting
+  * Fixed: Nvidia-Driver install
+  * Raised Version to 0.6.1
+
+ -- Timo Westphal <xxx@gmail.com>  Fri, 29 Nov 2024 18:39:00 +0000
+
+
+primo-di-tutto (0.6.0) unstable; urgency=medium
+
+  * Changed: Title
+  * Fixed: Look refreshes on start
+  * Added: Test Translation
+  * Added: Proper Dependency-List
+  * Added: New In-App-Logo
+  * Changed: App-Height
+  * Changed: App-Icon
+  * Raised: Version
+
+ -- Timo Westphal <xxx@gmail.com>  Thu, 26 Nov 2024 00:32:00 +0000
+
+
+primo-di-tutto (0.5.9) unstable; urgency=medium
+
+  * Raisesd Version.
+  * Fixed: Autostart
+  * Added: Stone Kingdoms Game
+  * Added: Pekka Kana 2
+
+ -- Timo Westphal <xxx@gmail.com>  Sun, 24 Nov 2024 12:20:00 +0000
+
+
+
+primo-di-tutto (0.5.8) unstable; urgency=medium
+
+  * Raisesd Version.
+  * Fixed: Thunderbird install
+  * Fixed: Chromium install
+  * Fixed: VLC install
+  * Fixed: Firefox install
+
+ -- Timo Westphal <xxx@gmail.com>  Thu, 23 Nov 2024 17:49:00 +0000
+
+
+
+primo-di-tutto (0.5.7) unstable; urgency=medium
+
+  * Raisesd Version.
+  * Imporved autostart.
+  * Imporved layout.
+
+ -- Timo Westphal <xxx@gmail.com>  Thu, 23 Nov 2024 17:49:00 +0000
+
+primo-di-tutto (0.5.6) unstable; urgency=medium
+
+  * Raisesd Version.
+  * Imporved autostart.
+  * Imporved layout.
+
+ -- Timo Westphal <xxx@gmail.com>  Thu, 21 Nov 2024 16:58:00 +0000
+
+primo-di-tutto (0.5.5) unstable; urgency=medium
+
+  * Raisesd Version.
+  * Imporved autostart.
+  * Imporved layout.
+
+ -- Timo Westphal <xxx@gmail.com>  Thu, 20 Nov 2024 02:58:00 +0000
+
+
+primo-di-tutto (0.5.4) unstable; urgency=medium
+
+  * Raisesd Version.
+  * Imporved autostart.
+  * Imporved layout.
+
+ -- Timo Westphal <xxx@gmail.com>  Thu, 20 Nov 2024 01:29:00 +0000
+
+
+primo-di-tutto (0.5.3) unstable; urgency=medium
+
+  * Raisesd Version.
+
+ -- Timo Westphal <xxx@gmail.com>  Mon, 01 Jan 2023 00:00:00 +0000
+
+
+primo-di-tutto (0.4) unstable; urgency=medium
+
+  * Initial release.
+
+ -- Timo Westphal <xxx@gmail.com>  Mon, 01 Jan 2023 00:00:00 +0000

@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Schritt 1: Mit wget die Datei herunterladen
+wget -O QCDE_v3.0.tar.gz "https://qzandronum.com/builds/download/qcde/Linux%20amd64/"
+
+# Schritt 2: Den Ordner "~/Games" erstellen, falls er nicht existiert
+mkdir -p ~/Games/QCDE/
+
+# Schritt 3: Die Datei in den "~Games/" Ordner extrahieren
+tar -xvzf QCDE_v3.0.tar.gz -C ~/Games/QCDE/
+
+# Optional: Die heruntergeladene tar.gz Datei löschen (falls nicht mehr benötigt)
+rm QCDE_v3.0.tar.gz
+
+echo "Die Installation ist abgeschlossen und die Dateien wurden nach ~/Games/ extrahiert."
+
+
+#!/bin/bash
+
+# Schritt 1: Mit wget die Datei herunterladen
+wget -O QCDE_v3.0.tar.gz "https://qzandronum.com/builds/download/qcde/Linux%20amd64/"
+
+# Schritt 2: Den Ordner "~/Games" erstellen, falls er nicht existiert
+mkdir -p ~/Games/QCDE/
+
+# Schritt 3: Die Datei in den "~Games/" Ordner extrahieren
+tar -xvzf QCDE_v3.0.tar.gz -C~/Games/QCDE/
+
+# Schritt 4: Berechtigungen für die ausführbaren Dateien setzen
+chmod +x ~/Games/QCDE/Open_QCDE_Server_Browser.sh
+chmod +x ~/Games/QCDE/Play_QCDE_Single_Player.sh
+chmod +x ~/Games/QCDE/updater
+
+# Schritt 5: Eine .desktop-Datei für das Skript Play_QCDE_Single_Player.sh erstellen
+cat <<EOF > ~/.local/share/applications/QCDE_Single_Player.desktop
+[Desktop Entry]
+Name=QCDE Single Player
+Comment=Starte QCDE Single Player
+Exec=sh ~/Games/QCDE/Play_QCDE_Single_Player.sh
+Icon=~/Games/QCDE/qcde_icon.png  # Ersetze dies mit dem tatsächlichen Pfad, falls ein Icon vorhanden ist
+Terminal=false
+Type=Application
+Categories=Game;
+EOF
+
+# Optional: Die heruntergeladene tar.gz Datei löschen (falls nicht mehr benötigt)
+rm QCDE_v3.0.tar.gz
+
+echo "Die Installation ist abgeschlossen, und die ausführbaren Dateien wurden berechtigt. Die .desktop-Datei wurde erstellt."
