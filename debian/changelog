@@ -1,3 +1,17 @@
+primo-di-tutto (0.6.7) unstable; urgency=medium
+
+  * Added: Install status indicator @vizh
+  * Improved: Layouts
+  * Added Layout Save/Backup
+  * Split Games and Game Tool Tab
+  * Improved: Layout code
+  * Fixed: Xterm crashes when exit1
+  * Code revision @vizh
+
+
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Wed, 05 Feb 2025 17:01:50 +0100
+
 primo-di-tutto (0.6.6-1) unstable; urgency=medium
 
   * Added mono to wine-install
