@@ -5,8 +5,12 @@ import socket
 import platform
 from resorcess import home
 from logger_config import setup_logger
+import time
 
 logger = setup_logger(__name__)
+
+cache = {}
+cache_duration = 5 # 5 Seconds
 
 
 def count_flatpaks():
@@ -29,8 +33,18 @@ def is_internet_available():
         pass
     return False
 
-
 def refresh_flatpak_installs():
+    current_time = time.time()
+    if 'result' in cache and (current_time - cache['timestamp']) < cache_duration:
+        return cache['result']
+    else:
+        result = load_flatpak_installs()
+        cache['result'] = result
+        cache['timestamp'] = current_time
+        return result
+
+
+def load_flatpak_installs():
     command = "flatpak list --columns=name --columns=application --app"
     output = subprocess.check_output(command, shell=True, text=True)
     logger.debug(output)
