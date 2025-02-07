@@ -91,7 +91,7 @@ class LookTab(ttk.Frame):
                 file=f"{application_path}/images/icons/pigro_icons/devil_thumb_light.png"
             )
             self.save_layout_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/document-save.png"
+                file=f"{application_path}/images/icons/nav_bar/document-save.png"
             )
             self.load_layout_icon = PhotoImage(
                 file=f"{application_path}/images/icons/nav_bar/draw-star_dark_24x24.png"
