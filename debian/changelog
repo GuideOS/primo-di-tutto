@@ -1,3 +1,9 @@
+primo-di-tutto (0.6.7-1) unstable; urgency=medium
+
+  * Fixed: Tool not opening on subprocess
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Fri, 07 Feb 2025 01:43:54 +0100
+
 primo-di-tutto (0.6.7) unstable; urgency=medium
 
   * Added: Install status indicator @vizh
@@ -7,8 +13,6 @@ primo-di-tutto (0.6.7) unstable; urgency=medium
   * Improved: Layout code
   * Fixed: Xterm crashes when exit1
   * Code revision @vizh
-
-
 
  -- Actionschnitzel <actionschnitzel@guideos.de>  Wed, 05 Feb 2025 17:01:50 +0100
 
