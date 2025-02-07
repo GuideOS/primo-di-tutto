@@ -1,3 +1,9 @@
+primo-di-tutto (0.6.7-2) unstable; urgency=medium
+
+  * Fixed: Crash on theme change
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Fri, 07 Feb 2025 12:26:14 +0100
+
 primo-di-tutto (0.6.7-1) unstable; urgency=medium
 
   * Fixed: Tool not opening on subprocess
