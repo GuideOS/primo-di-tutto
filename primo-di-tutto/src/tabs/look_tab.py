@@ -18,6 +18,7 @@ import shutil
 from logger_config import setup_logger
 from back_my_cinnamon import *
 from restore_my_cinnamon import *
+
 logger = setup_logger(__name__)
 
 
@@ -95,10 +96,13 @@ class LookTab(ttk.Frame):
             self.load_layout_icon = PhotoImage(
                 file=f"{application_path}/images/icons/nav_bar/draw-star_dark_24x24.png"
             )
+
         def backup_grouped_config():
             # Verzeichnis mit der JSON-Datei
-            config_dir = os.path.expanduser("~/.config/cinnamon/spices/grouped-window-list@cinnamon.org")
-            
+            config_dir = os.path.expanduser(
+                "~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
+            )
+
             # Prüfen, ob das Verzeichnis existiert
             if not os.path.exists(config_dir):
                 logger.error(f"Das Verzeichnis {config_dir} wurde nicht gefunden.")
@@ -107,8 +111,7 @@ class LookTab(ttk.Frame):
             # Datei mit dem Suchmuster finden
             try:
                 json_file = next(
-                    (f for f in os.listdir(config_dir) if f.endswith(".json")),
-                    None
+                    (f for f in os.listdir(config_dir) if f.endswith(".json")), None
                 )
             except Exception as e:
                 logger.error(f"Fehler beim Lesen des Verzeichnisses: {e}")
@@ -117,12 +120,12 @@ class LookTab(ttk.Frame):
             if not json_file:
                 logger.error("Keine JSON-Datei gefunden.")
                 return False
-            
+
             # Pfad zur Originaldatei
             file_path = os.path.join(config_dir, json_file)
             # Backup-Dateipfad
             backup_file_path = os.path.join(config_dir, "69.bak")
-            
+
             try:
                 # Datei kopieren
                 shutil.copy(file_path, backup_file_path)
@@ -134,10 +137,13 @@ class LookTab(ttk.Frame):
 
         # Funktion aufrufen
         backup_grouped_config()
+
         def restore_cinnamon_config(file_number):
             # Verzeichnis mit der JSON-Datei
-            config_dir = os.path.expanduser("~/.config/cinnamon/spices/grouped-window-list@cinnamon.org")
-            
+            config_dir = os.path.expanduser(
+                "~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
+            )
+
             # Prüfen, ob das Verzeichnis existiert
             if not os.path.exists(config_dir):
                 logger.error(f"Das Verzeichnis {config_dir} wurde nicht gefunden.")
@@ -145,7 +151,7 @@ class LookTab(ttk.Frame):
 
             # Pfad zur Backup-Datei
             backup_file_path = os.path.join(config_dir, "69.bak")
-            
+
             # Prüfen, ob die Backup-Datei existiert
             if not os.path.exists(backup_file_path):
                 logger.error(f"Das Backup {backup_file_path} wurde nicht gefunden.")
@@ -154,17 +160,17 @@ class LookTab(ttk.Frame):
             # Ziel-JSON-Dateiname basierend auf der Zahl
             restored_file_name = f"{file_number}.json"
             restored_file_path = os.path.join(config_dir, restored_file_name)
-            
+
             try:
                 # Backup zurückkopieren
                 shutil.copy(backup_file_path, restored_file_path)
-                logger.info(f"Backup erfolgreich wiederhergestellt als: {restored_file_path}")
+                logger.info(
+                    f"Backup erfolgreich wiederhergestellt als: {restored_file_path}"
+                )
                 return True
             except Exception as e:
                 logger.error(f"Fehler beim Wiederherstellen des Backups: {e}")
                 return False
-
-
 
         def check_plank_autostart():
             # Pfad zur Datei
@@ -307,8 +313,6 @@ class LookTab(ttk.Frame):
             except Exception as e:
                 logger.error(f"Fehler beim Kopieren der Datei: {e}")
 
-
-
         # Beispielaufruf der Funktion
         def create_cinnamenu_conf():
             """
@@ -318,9 +322,9 @@ class LookTab(ttk.Frame):
             :param application_path: Der Pfad zur Anwendung.
             :param user: Der Benutzername oder der Benutzerpfad.
             """
-            source_path = os.path.join(application_path, 'scripts', '68.json')
-            target_dir = os.path.expanduser('~/.config/cinnamon/spices/Cinnamenu@json')
-            target_path = os.path.join(target_dir, '68.json')
+            source_path = os.path.join(application_path, "scripts", "68.json")
+            target_dir = os.path.expanduser("~/.config/cinnamon/spices/Cinnamenu@json")
+            target_path = os.path.join(target_dir, "68.json")
 
             # Sicherstellen, dass das Zielverzeichnis existiert
             os.makedirs(target_dir, exist_ok=True)
@@ -336,15 +340,18 @@ class LookTab(ttk.Frame):
             except Exception as e:
                 logger.error(f"Ein Fehler ist aufgetreten: {e}")
 
-
         def set_elfi_panel():
             popen("killall plank")
             check_plank_autostart()
 
             copy_guide_menu(application_path)
-            
-            #subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
-            subprocess.run(f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_elf", shell=True, check=True)
+
+            # subprocess.run(["gsettings", "set", "org.cinnamon", key, f"{value}"])
+            subprocess.run(
+                f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_elf",
+                shell=True,
+                check=True,
+            )
 
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
@@ -352,9 +359,7 @@ class LookTab(ttk.Frame):
                 "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
             )
 
-
-
-            #create_cinnamenu_conf()
+            # create_cinnamenu_conf()
             # Funktion aufrufen
             copy_file(source_path, destination_path)
             restore_cinnamon_config(69)
@@ -400,7 +405,11 @@ class LookTab(ttk.Frame):
             with open(opacify_config_path, "w") as opacify_file:
                 json.dump(opacify_config, opacify_file, indent=4)
 
-            subprocess.run(f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_classico", shell=True, check=True)
+            subprocess.run(
+                f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_classico",
+                shell=True,
+                check=True,
+            )
 
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
@@ -417,7 +426,11 @@ class LookTab(ttk.Frame):
             subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
-            subprocess.run(f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_ubuntu", shell=True, check=True)
+            subprocess.run(
+                f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_ubuntu",
+                shell=True,
+                check=True,
+            )
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
             destination_path = os.path.expanduser(
@@ -435,7 +448,11 @@ class LookTab(ttk.Frame):
             subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
             )
-            subprocess.run(f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_spiegel", shell=True, check=True)
+            subprocess.run(
+                f"dconf load /org/cinnamon/ < {application_path}/scripts/cinnamon_desktop_spiegel",
+                shell=True,
+                check=True,
+            )
 
             # Quell- und Zielpfade
             source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
@@ -447,14 +464,20 @@ class LookTab(ttk.Frame):
             copy_file(source_path, destination_path)
             restore_cinnamon_config(69)
 
-        self.desktop_layout_set = ttk.LabelFrame(self, text="Layout-Vorlagen", padding=10)
+        self.desktop_layout_set = ttk.LabelFrame(
+            self, text="Layout-Vorlagen", padding=10
+        )
         self.desktop_layout_set.pack(pady=20, padx=40, fill="x", anchor="n")
         self.desktop_layout_set.grid_columnconfigure(0, weight=1)
         self.desktop_layout_set.grid_columnconfigure(1, weight=1)
         self.desktop_layout_set.grid_columnconfigure(2, weight=1)
         self.desktop_layout_set.grid_columnconfigure(3, weight=1)
 
-        layout_label = ttk.Label(self.desktop_layout_set, text="Wähle ein Layout aus und passe es an. Du kannst ein Backup davon erstellen und es zu einen späteren Zeitpunkt wiederherstellen.", anchor="w")
+        layout_label = ttk.Label(
+            self.desktop_layout_set,
+            text="Wähle ein Layout aus und passe es an. Du kannst ein Backup davon erstellen und es zu einen späteren Zeitpunkt wiederherstellen.",
+            anchor="w",
+        )
         layout_label.grid(row=0, column=0, columnspan=4, padx=5, pady=5, sticky="nsew")
 
         classico_button = ttk.Button(
@@ -507,10 +530,24 @@ class LookTab(ttk.Frame):
         )
         devil_label.grid(row=2, column=3, padx=5, pady=5, sticky="nsew")
 
-        save_layout = ttk.Button(self.desktop_layout_set, text="Mein Layout speichern",style="Custom.TButton", image=self.save_layout_icon,compound="left", command=backup_cinnamon_settings)
+        save_layout = ttk.Button(
+            self.desktop_layout_set,
+            text="Mein Layout speichern",
+            style="Custom.TButton",
+            image=self.save_layout_icon,
+            compound="left",
+            command=backup_cinnamon_settings,
+        )
         save_layout.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky="nesw")
 
-        load_layout = ttk.Button(self.desktop_layout_set, text="Mein Layout laden",style="Custom.TButton",image=self.load_layout_icon, compound="left",command=restore_cinnamon_settings)
+        load_layout = ttk.Button(
+            self.desktop_layout_set,
+            text="Mein Layout laden",
+            style="Custom.TButton",
+            image=self.load_layout_icon,
+            compound="left",
+            command=restore_cinnamon_settings,
+        )
         load_layout.grid(row=3, column=2, columnspan=2, padx=5, pady=5, sticky="nesw")
 
         self.pixel_set = ttk.LabelFrame(self, text="Farben und Formen", padding=10)
@@ -530,6 +567,27 @@ class LookTab(ttk.Frame):
                     if os.path.isdir(os.path.join("/usr/share/themes", d))
                 ]
                 themes.sort()
+                themes = [
+                    x
+                    for x in themes
+                    if x
+                    not in [
+                        "Clearlooks",
+                        "Crux",
+                        "Default",
+                        "Emacs",
+                        "Industrial",
+                        "Mist",
+                        "Raleigh",
+                        "Redmond",
+                        "ThinIce",
+                        "WhiteSur-Dark-solid-hdpi",
+                        "WhiteSur-Dark-solid-xhdpi",
+                        "WhiteSur-Light-solid-hdpi",
+                        "WhiteSur-Light-solid-xhdpi",
+                    ]
+                ]
+
                 theme_combobox["values"] = themes
                 theme_combobox.set("Theme wählen")
             except Exception as e:
@@ -637,9 +695,9 @@ class LookTab(ttk.Frame):
             if selected_theme != "Bitte aktualisieren":
                 # Liste der GSettings-Schlüssel und deren Pfade
                 settings_keys = [
-                    #("org.gnome.desktop.interface", "gtk-theme"),
+                    # ("org.gnome.desktop.interface", "gtk-theme"),
                     ("org.cinnamon.desktop.wm.preferences", "theme"),
-                    #("org.gnome.desktop.wm.preferences", "theme"),
+                    # ("org.gnome.desktop.wm.preferences", "theme"),
                     ("org.cinnamon.desktop.interface", "gtk-theme"),
                     ("org.cinnamon.theme", "name"),
                 ]
@@ -650,12 +708,28 @@ class LookTab(ttk.Frame):
 
                     if "dark" in value or "Dark" in value:
                         # /org/gnome/desktop/interface/color-scheme
-                        subprocess.Popen(["gsettings", "set", "org.gnome.desktop.interface", "color-scheme", "'prefer-dark'"])
-                        #os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'")
+                        subprocess.Popen(
+                            [
+                                "gsettings",
+                                "set",
+                                "org.gnome.desktop.interface",
+                                "color-scheme",
+                                "'prefer-dark'",
+                            ]
+                        )
+                        # os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'")
 
                     else:
-                        subprocess.Popen(["gsettings", "set", "org.gnome.desktop.interface", "color-scheme", "'prefer-light'"])
-                        #os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'")
+                        subprocess.Popen(
+                            [
+                                "gsettings",
+                                "set",
+                                "org.gnome.desktop.interface",
+                                "color-scheme",
+                                "'prefer-light'",
+                            ]
+                        )
+                        # os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'")
 
                 # Für jeden Schlüssel den Wert setzen
                 for schema, key in settings_keys:
