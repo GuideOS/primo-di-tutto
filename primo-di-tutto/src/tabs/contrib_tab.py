@@ -95,7 +95,7 @@ class ContribTab(ttk.Frame):
 
         # Text in die Textbox einfügen
         text_box.insert(
-            tk.END, "@Bulvai @DenalB @evilware666 @Fhyrst @GF-S15 @Gonzo-3004 @Hammer20l @harihegen @kim88 @KTT73 @maik3531 @Mastertac @Nightworker @Perval @Ritchy @Stardenver @Stephan @StephanR @stryvyr @Toadie"
+            tk.END, "@Bulvai @DenalB @evilware666 @Fhyrst @GF-S15 @Gonzo-3004 @Hammer20l @harihegen @kim88 @KTT73 @maik3531 @Mastertac @Nightworker @Perval @Ritchy @Stardenver @Stephan @StephanR @stryvyr @Toadie @vizh"
         )
 
         # Textbox für Eingaben sperren (read-only)
