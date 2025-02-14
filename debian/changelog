@@ -1,3 +1,12 @@
+primo-di-tutto (0.6.8) UNRELEASED; urgency=medium
+
+  * Fixed: Layout loading times
+  * Merged feature/refactor-code @vizh
+  * Added: @vizh to Contrib
+  * Fixed: Layout changes background
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Fri, 14 Feb 2025 18:30:43 +0100
+
 primo-di-tutto (0.6.7-2) unstable; urgency=medium
 
   * Fixed: Crash on theme change
