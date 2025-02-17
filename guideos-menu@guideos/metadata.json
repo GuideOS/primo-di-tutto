@@ -1,0 +1,6 @@
+{
+    "uuid": "guideos-menu@guideos",
+    "name": "GuideOS Menu",
+    "description": "A starter for LightPad",
+    "max-instances": "-1"
+}
