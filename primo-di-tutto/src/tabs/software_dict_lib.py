@@ -47,7 +47,7 @@ class SoftwareOffice:
             "Uninstall": "pkexec apt autoremove --purge libreoffice* -y",
             "Path": "libreoffice-core",
         },
-        "office_6": {
+        "office_1": {
             "Name": "FreeOffice",
             "Package": AppPackage.DEB,
             "Description": "SoftMaker FreeOffice ist eine kostenlose Bürosoftware-Suite, die von der deutschen Firma SoftMaker entwickelt wurde. Sie bietet Programme, die mit den bekannten Microsoft Office-Anwendungen kompatibel sind, und umfasst folgende Komponenten:\n\nTextMaker (Word-Alternative), PlanMaker (Excel-Alternative), Presentations (PowerPoint-Alternative)",
@@ -57,7 +57,17 @@ class SoftwareOffice:
             "Uninstall": f"pkexec {application_path}/scripts/uninstall_freeoffice",
             "Path": "softmaker-freeoffice-2024",
         },
-        "office_1": {
+        "office_2": {
+            "Name": "OnlyOffice",
+            "Package": AppPackage.DEB,
+            "Description": "OnlyOffice ist eine umfassende Office-Suite, die Textverarbeitung, Tabellenkalkulation und Präsentationen in einer Anwendung vereint. Sie bietet eine Vielzahl von Funktionen für die Erstellung und Bearbeitung von Dokumenten, Tabellen und Präsentationen. OnlyOffice ist mit Microsoft Office-Dateiformaten kompatibel und bietet eine benutzerfreundliche Oberfläche für professionelle und persönliche Anwender.",
+            "Icon": f"{application_path}/images/apps/org.onlyoffice.desktopeditors-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/org.onlyoffice.desktopeditors-thumb.png",
+            "Install": f"pkexec {application_path}/scripts/install_onlyoffice",
+            "Uninstall": f"pkexec {application_path}/scripts/uninstall_onlyoffice",
+            "Path": "onlyoffice-desktopeditors",
+        },
+        "office_3": {
             "Name": "AbiWord",
             "Package": AppPackage.DEB,
             "Description": "AbiWord ist ein leichtgewichtiges Textverarbeitungsprogramm, das grundlegende Funktionen für die Erstellung und Bearbeitung von Dokumenten bietet. Es ist für einfache Textverarbeitungsaufgaben ideal und unterstützt eine Vielzahl von Dateiformaten, einschließlich Microsoft Word. Die kompakte Größe und Effizienz machen es zu einer guten Wahl für ältere oder ressourcenschwache Systeme.",
@@ -67,7 +77,7 @@ class SoftwareOffice:
             "Uninstall": "pkexec apt remove abiword -y",
             "Path": "abiword",
         },
-        "office_2": {
+        "office_4": {
             "Name": "Beaver Notes",
             "Package": AppPackage.FLATPAK,
             "Description": "Beaver Notes ist eine Notiz-App, die einfache und übersichtliche Notizfunktionen für den Alltag bietet. Sie ermöglicht das Erstellen, Organisieren und Suchen von Notizen auf eine intuitive Weise. Die App ist minimalistisch gestaltet und richtet sich an Nutzer, die eine fokussierte Umgebung für das Festhalten von Gedanken und Aufgaben wünschen.",
@@ -77,7 +87,7 @@ class SoftwareOffice:
             "Uninstall": "flatpak remove com.beavernotes.beavernotes -y",
             "Path": "com.beavernotes.beavernotes",
         },
-        "office_3": {
+        "office_5": {
             "Name": "Xournal++",
             "Package": AppPackage.FLATPAK,
             "Description": "Xournal++ ist ein digitales Notizbuch und ein Zeichenwerkzeug, das ideal für handschriftliche Notizen und Anmerkungen ist. Die Anwendung unterstützt Stifteingaben und bietet verschiedene Zeichenwerkzeuge, um ein papierähnliches Schreibgefühl zu simulieren. Perfekt für Notizen in Vorlesungen, Meetings oder zum Kommentieren von PDF-Dokumenten.",
@@ -87,7 +97,7 @@ class SoftwareOffice:
             "Uninstall": "flatpak remove com.github.xournalpp.xournalpp -y",
             "Path": "com.github.xournalpp.xournalpp",
         },
-        "office_4": {
+        "office_6": {
             "Name": "Apostrophe",
             "Package": AppPackage.FLATPAK,
             "Description": "Apostrophe ist ein minimalistischer Markdown-Editor, der speziell für fokussiertes Schreiben entwickelt wurde. Die App bietet eine ablenkungsfreie Oberfläche und unterstützt Markdown-Syntax für formatiertes Schreiben. Ideal für Autoren, die einfache und elegante Werkzeuge für Texte ohne viel Ablenkung bevorzugen.",
@@ -97,7 +107,7 @@ class SoftwareOffice:
             "Uninstall": "flatpak remove org.gnome.gitlab.somas.Apostrophe -y",
             "Path": "org.gnome.gitlab.somas.Apostrophe",
         },
-        "office_5": {
+        "office_7": {
             "Name": "Paperwork",
             "Package": AppPackage.FLATPAK,
             "Description": "Paperwork ist ein digitales Dokumentenmanagement-Tool, das Ihnen hilft, gescannte Dokumente und Notizen zu organisieren. Die Anwendung bietet eine integrierte Texterkennung und eine Suchfunktion, die das schnelle Auffinden von Dokumenten erleichtert. Ideal für Nutzer, die papierlose Ablagen und digitales Archivieren bevorzugen.",

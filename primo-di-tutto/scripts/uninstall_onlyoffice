@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo apt remove -y onlyoffice-desktopeditors
+
+
+sudo rm -f \
+    /etc/apt/sources.list.d/onlyoffice.list
