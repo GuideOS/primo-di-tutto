@@ -1,18 +1,13 @@
 #!/bin/bash
 
-# Farben definieren
-YELLOW="\033[1;33m"
-RESET="\033[0m"
-
 # Upgrade und Aufräumen mit nala und flatpak
+echo -e "\n\n#### APT-Update und -Upgrade #############\n"
 nala upgrade -y || { echo "ERROR: nala upgrade failed."; exit 1; }
+echo -e "\n\n#### APT-Autoremove ######################\n"
 nala autopurge -y || { echo "ERROR: nala autopurge failed."; exit 1; }
+echo -e "\n\n#### Flatpak-Update ######################\n"
 flatpak update -y || { echo "ERROR: flatpak update failed."; exit 1; }
+echo -e "\n\n#### Flatpak-Autoremove ##################\n"
 flatpak uninstall --unused -y || { echo "ERROR: flatpak uninstall failed."; exit 1; }
 
-# Erfolgreicher Abschluss
-echo "All commands completed successfully."
 
-# Terminal offen halten mit farbiger Meldung
-echo -e "${YELLOW}Press Enter to close.${RESET}"
-read -p ""

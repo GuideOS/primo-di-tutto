@@ -6,10 +6,3 @@ RESET="\033[0m"
 
 # Upgrade und Aufräumen mit nala und flatpak
 nala autopurge -y || { echo "ERROR: nala autopurge failed."; exit 1; }
-
-# Erfolgreicher Abschluss
-echo "All commands completed successfully."
-
-# Terminal offen halten mit farbiger Meldung
-echo -e "${YELLOW}Press Enter to close.${RESET}"
-read -p ""

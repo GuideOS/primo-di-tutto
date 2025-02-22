@@ -1,4 +1,11 @@
-primo-di-tutto (0.6.8) UNRELEASED; urgency=medium
+primo-di-tutto (0.6.8-1) unstable; urgency=medium
+
+  * Added: OnlyOffice
+  * Added: GuideOS Menu Spice
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Mon, 17 Feb 2025 18:37:20 +0100
+
+primo-di-tutto (0.6.8) unstable; urgency=medium
 
   * Fixed: Layout loading times
   * Merged feature/refactor-code @vizh

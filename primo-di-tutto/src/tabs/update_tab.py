@@ -16,12 +16,18 @@ from tabs.pop_ups import *
 from tabs.text_dict_lib import Update_Tab_Buttons
 from resorcess import pi_identify
 import gettext
+import threading
 from logger_config import setup_logger
+import subprocess
+
 logger = setup_logger(__name__)
 
-lang = gettext.translation('messages', localedir=f"{application_path}/src/tabs/locale", languages=['de'])
+lang = gettext.translation(
+    "messages", localedir=f"{application_path}/src/tabs/locale", languages=["de"]
+)
 lang.install()
 _ = lang.gettext
+
 
 class UpdateTab(ttk.Frame):
     def __init__(self, master):
@@ -65,9 +71,6 @@ class UpdateTab(ttk.Frame):
             self.term_logo = PhotoImage(
                 file=f"{application_path}/images/icons/papirus/goterminal.png"
             )
-            x_bg = "Grey19"
-            x_fg = "White"
-
         else:
             self.folder_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/folder_s_light.png"
@@ -102,110 +105,92 @@ class UpdateTab(ttk.Frame):
             self.term_logo = PhotoImage(
                 file=f"{application_path}/images/icons/papirus/goterminal_light.png"
             )
-            x_bg =  "White"
-            x_fg = "Black"
+
+
+        # kill_term soll % wid beenden
+
+        def execute_command(command, event=None):
+            self.term_logo_label.grid_forget()
+            self.terminal.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
+
+            self.terminal_scroll.grid(row=0, column=1, sticky="ns")
+            self.terminal.config(yscrollcommand=self.terminal_scroll.set)
+            if command.strip() == "":
+                return
+
+            # Starte den Befehl in einem separaten Thread, um das GUI nicht zu blockieren
+            thread = threading.Thread(target=run_command, args=(command,))
+            thread.start()
+
+        def run_command(command):
+            # Starte den Prozess mit Popen
+            process = subprocess.Popen(
+                command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+            )
+
+            # Lese Zeile für Zeile und aktualisiere das Text-Widget
+            for line in iter(process.stdout.readline, ""):
+                self.terminal.insert(tk.END, line)
+                self.terminal.see(tk.END)  # Auto-Scroll
+
+            process.stdout.close()
+            process.wait()
+            self.term_quit_button.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+
+        def kill_term():
+            self.terminal.delete(1.0, tk.END)
+            self.terminal.grid_forget()
+            self.terminal_scroll.grid_forget()
+            self.term_quit_button.grid_forget()
+            self.term_logo_label.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
         def all_up_action():
-            """Passes commands for auto-generated buttons"""
-            frame_width = self.termf.winfo_width()
-            frame_height = self.termf.winfo_height()
-
-            command = (f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} {application_path}/scripts/all_up && exit ; exec bash"'''
-                    % wid
-                )
-            # Ausführung des Befehls und Statusüberprüfung
-            try:
-                result = subprocess.run(
-                    command,
-                    shell=True,
-                    check=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                )
-                logger.info(_("Update erfolgreich ausgeführt!"))
-                send_notification(
-                    message=_("Update erfolgreich ausgeführt!"),
-                    urgency=NotificationUrgency.CRITICAL,
-                )
-            except subprocess.CalledProcessError as e:
-                send_notification(
-                    message=_("Update war nicht erfolgreich!"),
-                    urgency=NotificationUrgency.CRITICAL,
-                )
-                logger.error(f"Fehlermeldung: {e.stderr.decode()}")
-            # Beispielaufruf mit Icon und hoher Dringlichkeit
-
+            allup = f"{permit} {application_path}/scripts/all_up"
+            execute_command(allup)
 
         def update_action():
-            frame_width = self.termf.winfo_width()
-            frame_height = self.termf.winfo_height()
-            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} {application_path}/scripts/nala_update_wrap && exit ; exec bash"'''
-                    % wid
-                )
+            update_command = f"{permit} {application_path}/scripts/nala_update_wrap"
+            execute_command(update_command)
 
         def upgrade_action():
-            frame_width = self.termf.winfo_width()
-            frame_height = self.termf.winfo_height()
-
-            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{permit} {application_path}/scripts/nala_upgrade_wrap && exit ; exec bash"'''
-                    % wid
-                )
+            upgrade_command = f"{permit} {application_path}/scripts/nala_upgrade_wrap"
+            execute_command(upgrade_command)
 
         def apt_showupgrade_action():
-            frame_width = self.termf.winfo_width()
-            frame_height = self.termf.winfo_height()
-
-            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{application_path}/scripts/apt_list_upgradeble_wrap && exit ; exec bash"'''
-                    % wid
-                )
-
+            show_command = f"{application_path}/scripts/apt_list_upgradeble_wrap"
+            execute_command(show_command)
 
         def apt_autremove_action():
-            frame_width = self.termf.winfo_width()
-            frame_height = self.termf.winfo_height()
-            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "pkexec {application_path}/scripts/nala_autopurge_wrap && exit ; exec bash"'''
-                    % wid
-                )
-            
+            autorm_command = f"pkexec {application_path}/scripts/nala_autopurge_wrap"
+            execute_command(autorm_command)
+
         def apt_broken_action():
-            frame_width = self.termf.winfo_width()
-            frame_height = self.termf.winfo_height()
-            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "pkexec {application_path}/scripts/apt_fix_broken_wrap && exit ; exec bash"'''
-                % wid
-            )
+                fix_broken_action=f"pkexec {application_path}/scripts/apt_fix_broken_wrap"
+                execute_command(fix_broken_action)
 
         def apt_missing_action():
-            frame_width = self.termf.winfo_width()
-            frame_height = self.termf.winfo_height()
-            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "pkexec {application_path}/scripts/apt_fix_missing_wrap && exit ; exec bash"'''
-                % wid
-            )
+            fix_missing_action=f"pkexec {application_path}/scripts/apt_fix_missing_wrap"
+            execute_command(fix_missing_action)
 
         def apt_reconf_action():
-            frame_width = self.termf.winfo_width()
-            frame_height = self.termf.winfo_height()
-
-            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "pkexec {application_path}/scripts/conf-a_wrap && exit ; exec bash"'''
-                % wid
-            )
+            fix_missing_action=f"pkexec {application_path}/scripts/conf-a_wrap"
+            execute_command(fix_missing_action)
 
         def flatpak_update_action():
-            frame_width = self.termf.winfo_width()
-            frame_height = self.termf.winfo_height()
-            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{application_path}/scripts/flatpak_update_wrap && exit ; exec bash"'''
-                % wid
-            )
-        def flatpak_clean_action():
-            frame_width = self.termf.winfo_width()
-            frame_height = self.termf.winfo_height()
+            flat_up_command=f"{application_path}/scripts/flatpak_update_wrap && exit ; exec bash"
+            execute_command(flat_up_command)
 
-            os.popen(f'''xterm -into %d -bg {x_bg} -fg {x_fg} -geometry {frame_height}x{frame_width} -e "{application_path}/scripts/flatpak_clean_wrap && exit ; exec bash"'''
-                % wid
-            )
+
+        def flatpak_clean_action():
+            flat_clean_command=f"{application_path}/scripts/flatpak_clean_wrap"
+            execute_command(flat_clean_command)
 
         self.update_button_frame = ttk.Frame(self, padding=20)
         self.update_button_frame.grid(row=0, column=0, sticky="ns")
-
 
         self.all_up_button = ttk.Button(
             self.update_button_frame,
@@ -215,7 +200,6 @@ class UpdateTab(ttk.Frame):
             command=all_up_action,
         )
         self.all_up_button.pack(fill="x")
-
 
         self.apt_option_frame = ttk.LabelFrame(
             self.update_button_frame,
@@ -330,59 +314,137 @@ class UpdateTab(ttk.Frame):
 
         self.update_term_frame = ttk.LabelFrame(self, text=_("Prozess"))
         self.update_term_frame.grid(row=0, column=1, sticky="nesw", padx=20, pady=20)
-
-
-
-
-        self.termf = ttk.Frame(self.update_term_frame)
+        self.update_term_frame.grid_rowconfigure(0, weight=1)
+        self.update_term_frame.grid_columnconfigure(0, weight=1)
 
         self.term_logo_label = Label(
-            self.termf,
+            self.update_term_frame,
             image=self.term_logo,
         )
-        self.term_logo_label.pack(fill=BOTH, expand=True)
+        self.term_logo_label.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
-        self.termf.pack(fill=BOTH, expand=True, padx=10, pady=5)
+        
+        self.terminal = tk.Text(self.update_term_frame, height=20,borderwidth=0, highlightthickness=0)
 
-        global wid
-        wid = self.termf.winfo_id()
+        self.terminal_scroll = ttk.Scrollbar(
+            self.update_term_frame, orient="vertical", command=self.terminal.yview
+        )
+
+        self.term_quit_button = ttk.Button(
+            self.update_term_frame,
+            text=_("Beenden"),
+            style="Accent.TButton",
+            command=kill_term,
+        )
+
+
 
         self.update_info_frame = ttk.LabelFrame(self, text="Info")
         self.update_info_frame.grid(
             row=1, column=0, columnspan=2, sticky="nesw", padx=20, pady=20
         )
 
-
-        self.update_info_label = ttk.Label(self.update_info_frame, text="",justify="left",wraplength=900)
+        self.update_info_label = ttk.Label(
+            self.update_info_frame, text="", justify="left", wraplength=900
+        )
         self.update_info_label.pack(anchor="nw", fill="x", padx=10, pady=5)
 
-        self.all_up_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Aktualisiert das gesammte Betriebsystem inklusive Flatpak-Anwendungen."))
-        self.all_up_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
+        self.all_up_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Aktualisiert das gesammte Betriebsystem inklusive Flatpak-Anwendungen."
+            ),
+        )
+        self.all_up_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
 
-        self.apt_update_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Es wird der Befehl 'apt update' ausgeführ um die Paketliste auf den neusten Stand zu bringen."))
-        self.apt_update_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
+        self.apt_update_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Es wird der Befehl 'apt update' ausgeführ um die Paketliste auf den neusten Stand zu bringen."
+            ),
+        )
+        self.apt_update_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
 
-        self.apt_upgrade_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Es wird der Befehl 'apt update && apt upgrade' ausgeführ um die Paketliste auf den neusten Stand zu bringen und alle Pakete zu aktualisieren."))
-        self.apt_upgrade_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
+        self.apt_upgrade_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Es wird der Befehl 'apt update && apt upgrade' ausgeführ um die Paketliste auf den neusten Stand zu bringen und alle Pakete zu aktualisieren."
+            ),
+        )
+        self.apt_upgrade_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
 
-        self.apt_showupgrade_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Es werden aktualisierbare Pakete aufgelistet."))
-        self.apt_showupgrade_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
+        self.apt_showupgrade_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Es werden aktualisierbare Pakete aufgelistet."
+            ),
+        )
+        self.apt_showupgrade_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
 
-        self.apt_autoremove_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Pakete oder Abhängikeiten, die zurückgeblieben sind werden entfernt."))
-        self.apt_autoremove_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
+        self.apt_autoremove_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Pakete oder Abhängikeiten, die zurückgeblieben sind werden entfernt."
+            ),
+        )
+        self.apt_autoremove_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
 
-        self.apt_broken_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Der Befehl 'apt --fix-broken install' repariert fehlerhafte oder unvollständige Paketinstallationen, indem fehlende Abhängigkeiten installiert oder beschädigte Pakete korrigiert werden."))
-        self.apt_broken_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
+        self.apt_broken_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Der Befehl 'apt --fix-broken install' repariert fehlerhafte oder unvollständige Paketinstallationen, indem fehlende Abhängigkeiten installiert oder beschädigte Pakete korrigiert werden."
+            ),
+        )
+        self.apt_broken_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
 
-        self.apt_missing_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Der Befehl 'apt install --fix-missing' lädt fehlende Paketdateien nach, falls sie beim ersten Versuch nicht heruntergeladen wurden, und setzt die Installation fort."))
-        self.apt_missing_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
+        self.apt_missing_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Der Befehl 'apt install --fix-missing' lädt fehlende Paketdateien nach, falls sie beim ersten Versuch nicht heruntergeladen wurden, und setzt die Installation fort."
+            ),
+        )
+        self.apt_missing_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
 
-        self.apt_cinfigure_a_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Der Befehl 'dpkg --configure -a' richtet alle Pakete ein, die heruntergeladen, aber noch nicht vollständig konfiguriert wurden, und behebt so Installationsprobleme."))
-        self.apt_cinfigure_a_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
+        self.apt_cinfigure_a_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Der Befehl 'dpkg --configure -a' richtet alle Pakete ein, die heruntergeladen, aber noch nicht vollständig konfiguriert wurden, und behebt so Installationsprobleme."
+            ),
+        )
+        self.apt_cinfigure_a_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
 
-        self.flatpak_update_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Es werden alle installierten Flatpak-Programme aktualisiert."))
-        self.flatpak_update_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
+        self.flatpak_update_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Es werden alle installierten Flatpak-Programme aktualisiert."
+            ),
+        )
+        self.flatpak_update_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
 
-        self.flatpak_clean_button.bind("<Enter>", lambda event: self.update_info_label.configure(text="Zurückgebliebene Abhängigkeiten werden entfernt."))
-        self.flatpak_clean_button.bind("<Leave>", lambda event: self.update_info_label.configure(text=""))
-
+        self.flatpak_clean_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Zurückgebliebene Abhängigkeiten werden entfernt."
+            ),
+        )
+        self.flatpak_clean_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
