@@ -1,3 +1,10 @@
+primo-di-tutto (0.6.9) unstable; urgency=medium
+
+  * Added: MediathekView
+  * Replaced: Update-Terminal with Text Field
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sun, 23 Feb 2025 01:29:33 +0100
+
 primo-di-tutto (0.6.8-1) unstable; urgency=medium
 
   * Added: OnlyOffice
