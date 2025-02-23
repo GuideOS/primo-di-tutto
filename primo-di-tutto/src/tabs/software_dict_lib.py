@@ -587,6 +587,16 @@ class SoftwareAudioVideo:
             "Uninstall": "pkexec apt remove hypnotix -y",
             "Path": "hypnotix",
         },
+        "av_12": {
+            "Name": "MediathekView",
+            "Package": AppPackage.FLATPAK,
+            "Description": "MediathekView ist ein Programm, mit dem Sie Sendungen aus den Mediatheken der öffentlich-rechtlichen Sender herunterladen und ansehen können. Es bietet eine einfache Benutzeroberfläche und eine Vielzahl von Funktionen, darunter die Möglichkeit, Sendungen zu abonnieren und automatisch herunterzuladen.",
+            "Icon": f"{application_path}/images/apps/de.mediathekview.MediathekView-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/de.mediathekview.MediathekView-thumb.png",
+            "Install": "flatpak install flathub de.mediathekview.MediathekView -y",
+            "Uninstall": "flatpak remove de.mediathekview.MediathekView -y",
+            "Path": "de.mediathekview.MediathekView",
+        },
     }
 
 
