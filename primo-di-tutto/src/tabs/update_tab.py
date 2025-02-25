@@ -343,6 +343,7 @@ class UpdateTab(ttk.Frame):
         self.update_info_frame.grid(
             row=1, column=0, columnspan=2, sticky="nesw", padx=20, pady=20
         )
+        self.update_info_frame.pack_propagate(False)
 
         self.update_info_label = ttk.Label(
             self.update_info_frame, text="", justify="left", wraplength=900

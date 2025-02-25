@@ -301,7 +301,7 @@ class AppCollectionPanel(tk.Frame):
 
         # Funktion für das Verlassen des Buttons
         def on_leave( event):
-            ttp_label.configure(text="\n\n\n")
+            ttp_label.configure(text="")
 
         def run_installation(app: InstallableApp):
             primo_skript_task = "Installation ..."
@@ -392,9 +392,11 @@ class AppCollectionPanel(tk.Frame):
             self, text="Beschreibung"
         )
         ttp_frame.pack(pady=20, padx=20,fill="x")
+        ttp_frame.config(height=200)
+        ttp_frame.pack_propagate(False)
 
         ttp_label = ttk.Label(
-            ttp_frame, text="\n\n\n", padding=20, wraplength=700
+            ttp_frame, text="", padding=20, wraplength=700
         )
         ttp_label.pack(fill="x")
 
