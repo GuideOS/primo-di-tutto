@@ -25,7 +25,7 @@ logger = setup_logger(__name__)
 class MainApplication(tk.Tk):
     def __init__(self):
         super().__init__(className="Primo")
-        self.title("Primo")
+        self.title("Primo | GuideOS Einstellungen")
 
         self.tk.call("source", TCL_THEME_FILE_PATH)
         # self.tk.call('tk', 'scaling', scaling)
