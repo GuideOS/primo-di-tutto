@@ -1,3 +1,10 @@
+primo-di-tutto (0.7.0) unstable; urgency=medium
+
+  * Changed: Icon & Menu
+  * Fixed: ToolTip expansion /propagate
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Wed, 26 Feb 2025 18:53:51 +0100
+
 primo-di-tutto (0.6.9) unstable; urgency=medium
 
   * Added: MediathekView
