@@ -485,7 +485,7 @@ class SoftwareAudioVideo:
             "Thumbnail": f"{application_path}/images/apps/com.obsproject.Studio-thumb.png",
             "Install": "pkexec apt install obs-studio -y",
             "Uninstall": "pkexec apt remove obs-studio -y",
-            "Path": "obs",
+            "Path": "obs-studio",
         },
         "av_2": {
             "Name": "Kdenlive",
