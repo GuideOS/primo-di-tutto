@@ -41,7 +41,7 @@ class SoftwareSys:
             "Name": "Anmeldefenster",
             "Description": "Öffnet die Einstellungen für das Anmeldefenster (LightDM).",
             "Icon": f"{application_path}/images/icons/papirus/48x48/desktop-effects.png",
-            "Action": "lightdm-gtk-greeter-settings-pkexec",
+            "Action": "pkexec lightdm-settings",
             "Path": "System Settings",
         },
         "sys_9": {
