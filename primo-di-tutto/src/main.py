@@ -187,7 +187,7 @@ class MainApplication(tk.Tk):
             "TNotebook.Tab",
             borderwidth=0,
             font=font_10,
-            width=15,
+            width=18,
             highlightthickness=0,
         )
 
