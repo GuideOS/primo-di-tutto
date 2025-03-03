@@ -138,10 +138,9 @@ class LookTab(ttk.Frame):
         # Funktion aufrufen
         backup_grouped_config()
 
-        def restore_cinnamon_config(file_number):
+        def restore_cinnamon_config(file_number,c_dir):
             # Verzeichnis mit der JSON-Datei
-            config_dir = os.path.expanduser(
-                "~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
+            config_dir = os.path.expanduser(c_dir
             )
 
             # Prüfen, ob das Verzeichnis existiert
@@ -354,15 +353,18 @@ class LookTab(ttk.Frame):
             )
 
             # Quell- und Zielpfade
-            source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
-            destination_path = os.path.expanduser(
+            calendar_bak = f"{application_path}/scripts/calendar@cinnamon.org.json"
+            calendar_path = os.path.expanduser(
                 "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
             )
 
             # create_cinnamenu_conf()
             # Funktion aufrufen
-            copy_file(source_path, destination_path)
-            restore_cinnamon_config(69)
+            copy_file(calendar_bak, calendar_path)
+
+            grouped_win ="~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
+
+            restore_cinnamon_config(69,grouped_win)
             create_cinnamenu_conf()
 
         def set_classico_panel():
@@ -411,15 +413,31 @@ class LookTab(ttk.Frame):
                 check=True,
             )
 
-            # Quell- und Zielpfade
-            source_path = f"{application_path}/scripts/calendar@cinnamon.org.json"
-            destination_path = os.path.expanduser(
+            calendar_bak = f"{application_path}/scripts/calendar@cinnamon.org.json"
+            calendar_path = os.path.expanduser(
                 "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
             )
 
+            # create_cinnamenu_conf()
             # Funktion aufrufen
-            copy_file(source_path, destination_path)
-            restore_cinnamon_config(69)
+            copy_file(calendar_bak, calendar_path)
+
+            grouped_win ="~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
+            restore_cinnamon_config(69,grouped_win)
+
+            workspace_bak = f"{application_path}/scripts/67.json"
+            workspace_path = os.path.expanduser(
+                "~/.config/cinnamon/spices/workspace-switcher@cinnamon.org/67.json"
+            )
+            copy_file(workspace_bak, workspace_path)
+
+            menu_bak = f"{application_path}/scripts/0.json"
+            menu_path = os.path.expanduser(
+                "~/.config/cinnamon/spices/menu@cinnamon.org/0.json"
+            )
+            copy_file(menu_bak, menu_path)
+
+
 
         def set_der_teufel_panel():
             popen("plank")
@@ -462,7 +480,15 @@ class LookTab(ttk.Frame):
 
             # Funktion aufrufen
             copy_file(source_path, destination_path)
-            restore_cinnamon_config(69)
+            grouped_win ="~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
+            restore_cinnamon_config(69,grouped_win)
+
+            menu_bak = f"{application_path}/scripts/0.json"
+            menu_path = os.path.expanduser(
+                "~/.config/cinnamon/spices/menu@cinnamon.org/0.json"
+            )
+            copy_file(menu_bak, menu_path)
+
 
         self.desktop_layout_set = ttk.LabelFrame(
             self, text="Layout-Vorlagen", padding=10

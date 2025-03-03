@@ -8,7 +8,6 @@ favorite-apps=['cinnamon-settings.desktop', 'nemo.desktop', 'primo-di-tutto.desk
 hotcorner-layout=['expo:false:0', 'scale:false:0', 'scale:false:0', 'desktop:false:0']
 hoverclick-action='single'
 hoverclick-layout='vertical::both'
-panel-launchers=['DEPRECATED']
 panel-zone-icon-sizes='[{"panelId":1,"left":0,"center":0,"right":16}]'
 panel-zone-symbolic-icon-sizes='[{"panelId":1,"left":22,"center":28,"right":18}]'
 panel-zone-text-sizes='[{"panelId":1,"left":0,"center":0,"right":0}]'
