@@ -1,3 +1,15 @@
+primo-di-tutto (0.7.1) unstable; urgency=medium
+
+  * Fixed: OBS-Studio isn't shown as installed
+  * Fixed: Steam not installing
+  * Changed: SideBar to width 18
+  * Fixed: Set correct Login Conif Tool
+  * Fix: Layouts
+  * Added: dep: lightpad
+
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Mon, 03 Mar 2025 18:57:03 +0100
+
 primo-di-tutto (0.7.0) unstable; urgency=medium
 
   * Changed: Icon & Menu
