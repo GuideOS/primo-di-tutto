@@ -15,7 +15,7 @@ Encoding=UTF-8
 Terminal=false
 StartupWMClass=Primo
 Type=Application
-Categories=System;GuideOS;
+Categories=GuideOS;
 Icon=primo-di-tutto-logo
 Path=/opt/primo-di-tutto/
 EOL
@@ -26,7 +26,7 @@ cat > debian/primo-di-tutto/usr/share/applications/gos-menu.desktop <<EOL
 Name=gos-menu
 GenericName=Application Launcher
 Comment=Lightweight, look nice and powerful application launcher
-Categories=GNOME;GTK;Utility;GuideOS;
+Categories=GuideOS;
 Exec=com.github.libredeb.lightpad
 Icon=guide-os-logo-symbolic-dark
 Terminal=false
