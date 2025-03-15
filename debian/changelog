@@ -1,3 +1,13 @@
+primo-di-tutto (0.7.2) unstable; urgency=medium
+
+  * Change: Temp Remove of Bootloader Menu
+  * Fixed: Menu Editor not installed
+  * Fixed: Steam not installing
+  * Fixed: Menu Entry
+  * Changed:Icon
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 15 Mar 2025 21:27:54 +0100
+
 primo-di-tutto (0.7.1) unstable; urgency=medium
 
   * Fixed: OBS-Studio isn't shown as installed
