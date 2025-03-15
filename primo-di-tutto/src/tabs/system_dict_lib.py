@@ -125,7 +125,7 @@ class SoftwareSys:
             "Name": "Menu Editor",
             "Description": "Ermöglicht die Bearbeitung von Menüeinträgen.",
             "Icon": f"{application_path}/images/icons/papirus/48x48/kcontrol.png",
-            "Action": "/usr/bin/menulibre",
+            "Action": "/usr/bin/alacarte",
             "Path": "Cinnamon Settings",
         },
         "sys_21": {
