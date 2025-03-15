@@ -25,20 +25,20 @@ class ExpertTab(ttk.Frame):
         self.inst_notebook = ttk.Notebook(self)
         self.inst_notebook.pack(fill=BOTH, expand=True)
 
-        bootloader_frame = ttk.Frame(self.inst_notebook)
+        #bootloader_frame = ttk.Frame(self.inst_notebook)
         source_frame = ttk.Frame(self.inst_notebook)
         #kernel_frame = ttk.Frame(self.inst_notebook)
 
-        bootloader_frame.pack(fill="both", expand=True)
+        #bootloader_frame.pack(fill="both", expand=True)
         source_frame.pack(fill="both", expand=True)
         #kernel_frame.pack(fill="both", expand=True)
 
-        self.inst_notebook.add(bootloader_frame, compound=LEFT, text="Bootloader")
+        #self.inst_notebook.add(bootloader_frame, compound=LEFT, text="Bootloader")
         self.inst_notebook.add(source_frame, compound=LEFT, text="Quellen")
         #self.inst_notebook.add(kernel_frame, compound=LEFT, text="Kernel")
 
-        bootloader_note_frame = BootloaderPanel(bootloader_frame)
-        bootloader_note_frame.pack(fill=tk.BOTH, expand=True)
+       # bootloader_note_frame = BootloaderPanel(bootloader_frame)
+        #bootloader_note_frame.pack(fill=tk.BOTH, expand=True)
 
         source_note_frame = SourcePanel(source_frame)
         source_note_frame.pack(fill=tk.BOTH, expand=True)
