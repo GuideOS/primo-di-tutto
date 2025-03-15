@@ -1,29 +1,8 @@
 #!/bin/bash
 
-# Definiere die URL und den Speicherort der Datei
-URL="https://cdn.cloudflare.steamstatic.com/client/installer/steam.deb"
-TARGET="/tmp/steam.deb"
-
-# Funktion, um eine Fehlermeldung anzuzeigen und das Skript zu beenden
-function error_exit {
-    echo "Fehler: $1"
-    exit 1
-}
-
-# Schritt 1: Datei herunterladen
-echo "Lade Steam-Installer herunter..."
-wget -O "$TARGET" "$URL" || error_exit "Download fehlgeschlagen"
-
-# Überprüfen, ob die Datei erfolgreich heruntergeladen wurde
-if [ -f "$TARGET" ]; then
-    echo "Download erfolgreich: $TARGET"
-else
-    error_exit "Download fehlgeschlagen, Datei wurde nicht gefunden."
-fi
-
 # Schritt 2: Installation der .deb-Datei mit pkexec und apt
 echo "Installiere Steam über apt..."
-sudo dpkg --add-architecture i386 && sudo apt install -y "$TARGET" libgl1-mesa-dri:i386 mesa-vulkan-drivers mesa-vulkan-drivers:i386 || error_exit "Installation fehlgeschlagen"
+sudo dpkg --add-architecture i386 && sudo apt install -y steam-installer libgl1-mesa-dri:i386 mesa-vulkan-drivers mesa-vulkan-drivers:i386 || error_exit "Installation fehlgeschlagen"
 
 # Schritt 3: Erfolgsmeldung
 echo "Installation von Steam erfolgreich abgeschlossen!"
