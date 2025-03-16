@@ -19,6 +19,7 @@ class SoftwareStore:
         },
     }
 
+
 class FlatpakStore:
     flatpak_store_dict = {
         "store_0": {
@@ -120,6 +121,7 @@ class SoftwareOffice:
 
     }
 
+
 class SoftwareGamingTools:
     game_tool_dict = {
         "game_0": {
@@ -167,7 +169,6 @@ class SoftwareGamingTools:
             "AppStream": "net.davidotek.pupgui2",
         },
     }
-
 
 
 class SoftwareGame:
@@ -319,7 +320,6 @@ class SoftwareGame:
     }
 
 
-
 class SoftwareCommunication:
     com_dict = {
         "com_0": {
@@ -374,13 +374,13 @@ class SoftwareCommunication:
         },
         "com_5": {
             "Name": "Google Chrome",
-            "Package": AppPackage.FLATPAK,
+            "Package": AppPackage.DEB,
             "Description": "Der populäre Browser von Google mit integrierten Google-Diensten. Bietet schnelle Performance und Unterstützung für eine Vielzahl an Erweiterungen. Weltweit am häufigsten genutzter Browser.",
             "Icon": f"{application_path}/images/apps/com.google.Chrome-icon.png",
             "Thumbnail": f"{application_path}/images/apps/com.google.Chrome-thumb.png",
-            "Install": "flatpak install flathub com.google.Chrome -y",
-            "Uninstall": "flatpak remove com.google.Chrome -y",
-            "Path": "com.google.Chrome",
+            "Install": f"pkexec {application_path}/scripts/install_chrome",
+            "Uninstall": f"pkexec {application_path}/scripts/uninstall_chrome",
+            "Path": "google-chrome-stable",
         },
         "com_6": {
             "Name": "Thunderbird",
