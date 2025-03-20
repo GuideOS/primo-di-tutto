@@ -1,3 +1,9 @@
+primo-di-tutto (0.7.4) unstable; urgency=medium
+
+  * Changed: New default-Layout
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Thu, 20 Mar 2025 15:46:42 +0100
+
 primo-di-tutto (0.7.3) unstable; urgency=medium
 
   * Change: Temp Remove of Bootloader Menu
