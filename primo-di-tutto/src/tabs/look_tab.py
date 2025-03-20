@@ -415,7 +415,7 @@ class LookTab(ttk.Frame):
 
             calendar_bak = f"{application_path}/scripts/calendar@cinnamon.org.json"
             calendar_path = os.path.expanduser(
-                "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
+                "~/.config/cinnamon/spices/calendar@cinnamon.org/66.json"
             )
 
             # create_cinnamenu_conf()

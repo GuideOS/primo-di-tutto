@@ -144,6 +144,7 @@ class SoftwareTab(ttk.Frame):
         image_frame = ttk.Frame(self.inst_notebook)
         gaming_tools_frame = ttk.Frame(self.inst_notebook)
         gaming_frame = ttk.Frame(self.inst_notebook)
+        system_frame = ttk.Frame(self.inst_notebook)
 
 
 
@@ -153,7 +154,7 @@ class SoftwareTab(ttk.Frame):
         image_frame.pack(fill="both", expand=True)
         gaming_tools_frame.pack(fill="both", expand=True)
         gaming_frame.pack(fill="both", expand=True)
-
+        system_frame.pack(fill="both", expand=True)
 
 
         self.inst_notebook.add(com_frame, compound=LEFT, text="Web & Chat")
@@ -162,7 +163,7 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook.add(image_frame, compound=LEFT, text="Bildbearbeitung")
         self.inst_notebook.add(gaming_tools_frame, compound=LEFT, text="Gaming Tools")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Native Games")
-
+        self.inst_notebook.add(system_frame, compound=LEFT, text="System Tools")
 
         # Com Panel
         com_apps = [];

@@ -404,7 +404,7 @@ class SoftwareCommunication:
         },
         "com_8": {
             "Name": "ZapZap",
-            "Package": AppPackage.SNAP,
+            "Package": AppPackage.FLATPAK,
             "Description": "Eine populäre Messaging-App für Text-, Sprach- und Videoanrufe mit Ende-zu-Ende-Verschlüsselung. Ideal für mobile und Desktop-Kommunikation. Weltweit weit verbreitet.",
             "Icon": f"{application_path}/images/apps/com.rtosta.zapzap-icon.png",
             "Thumbnail": f"{application_path}/images/apps/com.rtosta.zapzap-thumb.png",
