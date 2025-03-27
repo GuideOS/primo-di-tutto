@@ -30,7 +30,8 @@ from tabs.software_dict_lib import (
     SoftwareCommunication,
     SoftwareAudioVideo,
     SoftwareImageEditing,
-    SoftwareBackup
+    SoftwareBackup,
+    SoftwareSafty
 )
 from apt_manage import *
 from snap_manage import *
@@ -146,7 +147,7 @@ class SoftwareTab(ttk.Frame):
         gaming_tools_frame = ttk.Frame(self.inst_notebook)
         gaming_frame = ttk.Frame(self.inst_notebook)
         backup_frame = ttk.Frame(self.inst_notebook)
-        saifty_frame = ttk.Frame(self.inst_notebook)
+        safty_frame = ttk.Frame(self.inst_notebook)
 
 
 
@@ -157,7 +158,7 @@ class SoftwareTab(ttk.Frame):
         gaming_tools_frame.pack(fill="both", expand=True)
         gaming_frame.pack(fill="both", expand=True)
         backup_frame.pack(fill="both", expand=True)
-        saifty_frame.pack(fill="both", expand=True)
+        safty_frame.pack(fill="both", expand=True)
 
 
         self.inst_notebook.add(com_frame, compound=LEFT, text="Web & Chat")
@@ -167,7 +168,7 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook.add(gaming_tools_frame, compound=LEFT, text="Gaming Tools")
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Native Games")
         self.inst_notebook.add(backup_frame, compound=LEFT, text="Backup")
-        self.inst_notebook.add(saifty_frame, compound=LEFT, text="Sicherheit")
+        self.inst_notebook.add(safty_frame, compound=LEFT, text="Sicherheit")
 
         # Com Panel
         com_apps = [];
@@ -295,7 +296,23 @@ class SoftwareTab(ttk.Frame):
         gaming_tool_note_frame = AppCollectionPanel(category_title="Gaming", apps=bak_apps, master=backup_frame)
         gaming_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
+        # Safty Panel
+        saf_apps = [];
+        for i, (key, info) in enumerate(SoftwareSafty.saf_dict.items()):
+            app = InstallableAppFactory.create(
+                type=SoftwareSafty.saf_dict[key]["Package"],
+                name=SoftwareSafty.saf_dict[key]["Name"],
+                icon=SoftwareSafty.saf_dict[key]["Icon"],
+                description=SoftwareSafty.saf_dict[key]["Description"],
+                path=SoftwareSafty.saf_dict[key]["Path"],
+                thumbnail=SoftwareSafty.saf_dict[key]["Thumbnail"],
+                install_command=SoftwareSafty.saf_dict[key]["Install"],
+                uninstall_command=SoftwareSafty.saf_dict[key]["Uninstall"],
+            )
+            saf_apps.append(app)
 
+        gaming_tool_note_frame = AppCollectionPanel(category_title="Gaming", apps=saf_apps, master=safty_frame)
+        gaming_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
 class AppCollectionPanel(tk.Frame):
     def __init__(self, category_title: str, apps, master=None, **kwargs):
