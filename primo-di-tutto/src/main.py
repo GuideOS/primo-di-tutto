@@ -166,7 +166,7 @@ class MainApplication(tk.Tk):
 
         self.notebook.add(self.dash_tab, compound=LEFT, text="Übersicht")
         self.notebook.add(self.update_tab, compound=LEFT, text="Aktualisierung")
-        self.notebook.add(self.software_tab, compound=LEFT, text="Software")
+        self.notebook.add(self.software_tab, compound=LEFT, text="Software-\nEmpfehlungen")
         self.notebook.add(self.system_tab, compound=LEFT, text="Werkzeuge")
         self.notebook.add(
             self.expert_tools_tab, compound=LEFT, text="Expertenwerkzeuge"

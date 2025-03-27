@@ -653,3 +653,28 @@ class SoftwareImageEditing:
             "Path": "com.github.PintaProject.Pinta",
         },
     }
+
+class SoftwareBackup:
+    bak_dict = {
+        "bak_0": {
+            "Name": "Pika Datensicherung",
+            "Package": AppPackage.DEB,
+            "Description": "Ein einfaches und benutzerfreundliches Backup-Tool für Linux. Ermöglicht das Sichern und Wiederherstellen von Dateien und Verzeichnissen. Bietet eine übersichtliche Benutzeroberfläche und verschiedene Sicherungsoptionen.",
+            "Icon": f"{application_path}/images/apps/org.gnome.World.PikaBackup-icon.png",
+            "Thumbnail": f"{application_path}/images/org.gnome.World.PikaBackup-thumb.png",
+            "Install": "flatpak install flathub org.gnome.World.PikaBackup -y",
+            "Uninstall": "flatpak remove org.gnome.World.PikaBackup -y",
+            "Path": "org.gnome.World.PikaBackup",
+        },
+        "bak_1": {
+            "Name": "Timeshift",
+            "Package": AppPackage.DEB,
+            "Description": "Ein Systemwiederherstellungs-Tool für Linux, das Snapshots des Systems erstellt und es ermöglicht, das System auf einen früheren Zustand zurückzusetzen. Bietet eine einfache Benutzeroberfläche und verschiedene Sicherungsoptionen.",
+            "Icon": f"{application_path}/images/apps/timeshift-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/timeshift-thumb.png",
+            "Install": "pkexec apt install timeshift -y",
+            "Uninstall": "pkexec apt remove timeshift -y",
+            "Path": "timeshift",
+        },
+    }
+
