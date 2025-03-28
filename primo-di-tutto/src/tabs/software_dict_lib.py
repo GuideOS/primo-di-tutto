@@ -653,3 +653,51 @@ class SoftwareImageEditing:
             "Path": "com.github.PintaProject.Pinta",
         },
     }
+
+class SoftwareBackup:
+    bak_dict = {
+        "bak_0": {
+            "Name": "Pika Datensicherung",
+            "Package": AppPackage.FLATPAK,
+            "Description": "Ein einfaches und benutzerfreundliches Backup-Tool für Linux. Ermöglicht das Sichern und Wiederherstellen von Dateien und Verzeichnissen. Bietet eine übersichtliche Benutzeroberfläche und verschiedene Sicherungsoptionen.",
+            "Icon": f"{application_path}/images/apps/org.gnome.World.PikaBackup-icon.png",
+            "Thumbnail": f"{application_path}/images/org.gnome.World.PikaBackup-thumb.png",
+            "Install": "flatpak install flathub org.gnome.World.PikaBackup -y",
+            "Uninstall": "flatpak remove org.gnome.World.PikaBackup -y",
+            "Path": "org.gnome.World.PikaBackup",
+        },
+        "bak_1": {
+            "Name": "Timeshift",
+            "Package": AppPackage.DEB,
+            "Description": "Ein Systemwiederherstellungs-Tool für Linux, das Snapshots des Systems erstellt und es ermöglicht, das System auf einen früheren Zustand zurückzusetzen. Bietet eine einfache Benutzeroberfläche und verschiedene Sicherungsoptionen.",
+            "Icon": f"{application_path}/images/apps/timeshift-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/timeshift-thumb.png",
+            "Install": "pkexec apt install timeshift -y",
+            "Uninstall": "pkexec apt remove timeshift -y",
+            "Path": "timeshift",
+        },
+    }
+
+class SoftwareSafty:
+    saf_dict = {
+        "saf_0": {
+            "Name": "KeepassXC",
+            "Package": AppPackage.DEB,
+            "Description": "Ein quelloffener Passwort-Manager, der es Benutzern ermöglicht, Passwörter sicher zu speichern und zu verwalten. Bietet eine starke Verschlüsselung und eine Vielzahl von Funktionen für die Passwortsicherheit.",
+            "Icon": f"{application_path}/images/apps/org.keepassxc.KeePassXC-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/org.keepassxc.KeePassXC-thumb.png",
+            "Install": "pkexec apt install keepassxc -y",
+            "Uninstall": "pkexec apt remove keepassxc -y",
+            "Path": "keepassxc",
+        },
+        "saf_1": {
+            "Name": "Bitwarden",
+            "Package": AppPackage.FLATPAK,
+            "Description": "Ein Passwort-Manager, der es Benutzern ermöglicht, Passwörter sicher zu speichern und zu verwalten. Bietet eine starke Verschlüsselung und eine Vielzahl von Funktionen für die Passwortsicherheit.",
+            "Icon": f"{application_path}/images/apps/com.bitwarden.desktop-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/com.bitwarden.desktop-thumb.png",
+            "Install": "flatpak install flathub com.bitwarden.desktop -y",
+            "Uninstall": "flatpak remove com.bitwarden.desktop -y",
+            "Path": "com.bitwarden.desktop",
+        },
+    }
