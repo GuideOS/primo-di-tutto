@@ -52,6 +52,9 @@ class ContribTab(ttk.Frame):
         def open_gitlab():
             webbrowser.open("https://github.com/GuideOS")
 
+        def open_obs():
+            webbrowser.open("https://build.opensuse.org/project/show/home:guideos")
+
         def open_ticket():
             popen("guideos-ticket-tool")
 
@@ -62,6 +65,14 @@ class ContribTab(ttk.Frame):
             command=open_gitlab,
         )
         go_git.pack(fill="x", expand=True, pady=5)
+
+        go_obs = ttk.Button(
+            self.take_part_frame,
+            text="GuideOS auf Open Build Service",
+            style="Custom.TButton",
+            command=open_obs,
+        )
+        go_obs.pack(fill="x", expand=True, pady=5)
 
         send_error = ttk.Button(
             self.take_part_frame,
