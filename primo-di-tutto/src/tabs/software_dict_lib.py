@@ -444,7 +444,7 @@ class SoftwareCommunication:
         },
         "com_12": {
             "Name": "Ferdium",
-            "Package": AppPackage.DEB,
+            "Package": AppPackage.FLATPAK,
             "Description": "Ein Mehrzweck-Messaging-Manager, der verschiedene Dienste wie WhatsApp, Telegram und Slack kombiniert. Besonders praktisch für Vielnutzer. Plattformübergreifend einsetzbar.",
             "Icon": f"{application_path}/images/apps/org.ferdium.Ferdium-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.ferdium.Ferdium-thumb.png",
