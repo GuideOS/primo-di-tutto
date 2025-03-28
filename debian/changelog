@@ -1,3 +1,13 @@
+primo-di-tutto (0.7.5) unstable; urgency=medium
+
+  * Changed: Displayed Name
+  * Added: pika & timeshift
+  * Added: Safty Panel
+  * Contrib: GitLab > Github
+  * Contrib: Added OBS
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Fri, 28 Mar 2025 23:41:00 +0100
+
 primo-di-tutto (0.7.4) unstable; urgency=medium
 
   * Changed: New default-Layout
