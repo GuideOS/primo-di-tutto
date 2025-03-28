@@ -50,14 +50,14 @@ class ContribTab(ttk.Frame):
         go_board.pack(fill="x", expand=True, pady=5)
 
         def open_gitlab():
-            webbrowser.open("https://gitlab.pgos.net/")
+            webbrowser.open("https://github.com/GuideOS")
 
         def open_ticket():
             popen("guideos-ticket-tool")
 
         go_git = ttk.Button(
             self.take_part_frame,
-            text="GuideOS auf GitLab",
+            text="GuideOS auf GitHub",
             style="Custom.TButton",
             command=open_gitlab,
         )
