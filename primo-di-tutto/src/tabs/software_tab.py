@@ -503,7 +503,7 @@ class AppCollectionPanel(tk.Frame):
         self.detail_name.grid(column=1, row=0, sticky="w")
 
         self.detail_pak = Label(
-            detail_frame, text="", justify="left", anchor="w"
+            detail_frame, text="", justify="left", anchor="w",foreground="#0072b5", font=font_10_b
         )
         self.detail_pak.grid(column=1, row=1, sticky="we")
 
