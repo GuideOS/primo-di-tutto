@@ -1,3 +1,10 @@
+primo-di-tutto (0.7.6) unstable; urgency=medium
+
+  * Added: Firewall Applet to Layouts
+  * Added: dict(sorted) to Software List
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sun, 30 Mar 2025 05:49:58 +0200
+
 primo-di-tutto (0.7.5) unstable; urgency=medium
 
   * Changed: Displayed Name
