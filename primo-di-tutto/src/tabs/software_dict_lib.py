@@ -5,7 +5,7 @@ from constants import AppPackage
 
 
 class SoftwareStore:
-    store_dict = {
+    store_dict = dict(sorted({
         "store_0": {
             "Name": "Gnome Software",
             "Icon": f"{application_path}/images/apps/gnomesoftware_icon_36.png",
@@ -17,11 +17,11 @@ class SoftwareStore:
             "Icon": f"{application_path}/images/apps/synaptic_icon_36.png",
             "Open": "synaptic-pkexec",
         },
-    }
+    }.items(), key=lambda item: item[1]["Name"]))
 
 
 class FlatpakStore:
-    flatpak_store_dict = {
+    flatpak_store_dict = dict(sorted({
         "store_0": {
             "Name": "Gnome Software",
             "Icon": f"{application_path}/images/apps/gnomesoftware_icon_36.png",
@@ -33,11 +33,11 @@ class FlatpakStore:
             "Icon": f"{application_path}/images/apps/synaptic_icon_36.png",
             "Open": "pkexec synaptic",
         },
-    }
+    }.items(), key=lambda item: item[1]["Name"]))
 
 
 class SoftwareOffice:
-    office_dict = {
+    office_dict = dict(sorted({
         "office_0": {
             "Name": "LibreOffice",
             "Package": AppPackage.DEB,
@@ -118,12 +118,11 @@ class SoftwareOffice:
             "Uninstall": "flatpak remove work.openpaper.Paperwork -y",
             "Path": "work.openpaper.Paperwork",
         },
-
-    }
+    }.items(), key=lambda item: item[1]["Name"]))
 
 
 class SoftwareGamingTools:
-    game_tool_dict = {
+    game_tool_dict = dict(sorted({
         "game_0": {
             "Name": "Steam",
             "Package": AppPackage.DEB,
@@ -168,12 +167,12 @@ class SoftwareGamingTools:
             "Path": "net.davidotek.pupgui2",
             "AppStream": "net.davidotek.pupgui2",
         },
-    }
+    }.items(), key=lambda item: item[1]["Name"]))
 
 
 class SoftwareGame:
     # Descriptions by @evilware666
-    game_dict = {
+    game_dict = dict(sorted({
         "game_1": {
             "Name": "GZDoom",
             "Package": AppPackage.FLATPAK,
@@ -280,7 +279,7 @@ class SoftwareGame:
             "Icon": f"{application_path}/images/apps/com.viewizard.AstroMenace-icon.png",
             "Thumbnail": f"{application_path}/images/apps/com.viewizard.AstroMenace-thumb.png",
             "Install": "flatpak install flathub com.viewizard.AstroMenace -y",
-            "Uninstall": "flatpak remove com.viewizard.AstroMenace -y",
+            "Uninstall": "flatpak remove io.freetubeapp.FreeTube -y",
             "Path": "com.viewizard.AstroMenace",
             "AppStream": "com.viewizard.AstroMenace",
         },
@@ -317,11 +316,11 @@ class SoftwareGame:
             "Path": "net.pistegamez.PekkaKana2",
             "AppStream": "net.pistegamez.PekkaKana2",
         },
-    }
+    }.items(), key=lambda item: item[1]["Name"]))
 
 
 class SoftwareCommunication:
-    com_dict = {
+    com_dict = dict(sorted({
         "com_0": {
             "Name": "Brave Browser",
             "Package": AppPackage.DEB,
@@ -462,11 +461,11 @@ class SoftwareCommunication:
             "Uninstall": "pkexec apt remove webapp-manager -y",
             "Path": "webapp-manager",
         },
-    }
+    }.items(), key=lambda item: item[1]["Name"]))
 
 
 class SoftwareAudioVideo:
-    av_dict = {
+    av_dict = dict(sorted({
         "av_0": {
             "Name": "Audacity",
             "Package": AppPackage.DEB,
@@ -597,11 +596,11 @@ class SoftwareAudioVideo:
             "Uninstall": "flatpak remove de.mediathekview.MediathekView -y",
             "Path": "de.mediathekview.MediathekView",
         },
-    }
+    }.items(), key=lambda item: item[1]["Name"]))
 
 
 class SoftwareImageEditing:
-    img_dict = {
+    img_dict = dict(sorted({
         "img_0": {
             "Name": "GIMP",
             "Package": AppPackage.DEB,
@@ -652,10 +651,11 @@ class SoftwareImageEditing:
             "Uninstall": "flatpak remove com.github.PintaProject.Pinta -y",
             "Path": "com.github.PintaProject.Pinta",
         },
-    }
+    }.items(), key=lambda item: item[1]["Name"]))
+
 
 class SoftwareBackup:
-    bak_dict = {
+    bak_dict = dict(sorted({
         "bak_0": {
             "Name": "Pika Datensicherung",
             "Package": AppPackage.FLATPAK,
@@ -676,10 +676,11 @@ class SoftwareBackup:
             "Uninstall": "pkexec apt remove timeshift -y",
             "Path": "timeshift",
         },
-    }
+    }.items(), key=lambda item: item[1]["Name"]))
+
 
 class SoftwareSafty:
-    saf_dict = {
+    saf_dict = dict(sorted({
         "saf_0": {
             "Name": "KeepassXC",
             "Package": AppPackage.DEB,
@@ -700,4 +701,4 @@ class SoftwareSafty:
             "Uninstall": "flatpak remove com.bitwarden.desktop -y",
             "Path": "com.bitwarden.desktop",
         },
-    }
+    }.items(), key=lambda item: item[1]["Name"]))
