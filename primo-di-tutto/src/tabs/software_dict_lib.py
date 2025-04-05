@@ -126,12 +126,12 @@ class SoftwareGamingTools:
         "game_0": {
             "Name": "Steam",
             "Package": AppPackage.DEB,
-            "Description": "Steam ist eine Plattform zum Herunterladen, Kaufen und Spielen von Spielen.\n\nINFO: Beim Erststart von Steam öffnet sich ein Terminal. Lese aufmerksam und bestätige immer mit 'Y' bzw. 'J' oder 'Enter'. Nach der Installation muss in den Einstellungen SteamPlay aktivert werden.",
+            "Description": "Steam ist eine Plattform zum Herunterladen, Kaufen und Spielen von Spielen.\n\nINFO: Nach der Installation muss in den Einstellungen SteamPlay aktivert werden.",
             "Icon": f"{application_path}/images/apps/com.valvesoftware.Steam-icon.png",
             "Thumbnail": f"{application_path}/images/apps/com.valvesoftware.Steam-thumb.png",
             "Install": f"pkexec {application_path}/scripts/install_steam",
-            "Uninstall": "pkexec apt remove steam-launcher -y",
-            "Path": "steam-launcher",
+            "Uninstall": "pkexec apt remove steam-* -y",
+            "Path": "steam-installer",
             "AppStream": "com.valvesoftware.Steam",
         },
         "game_1": {

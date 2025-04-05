@@ -1,3 +1,10 @@
+primo-di-tutto (0.7.7) unstable; urgency=medium
+
+  * Removed: Printer Applet
+  * Added: Dependency Firewall Spice
+ 
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Thu, 03 Apr 2025 13:31:19 +0200
+
 primo-di-tutto (0.7.6) unstable; urgency=medium
 
   * Added: Firewall Applet to Layouts
