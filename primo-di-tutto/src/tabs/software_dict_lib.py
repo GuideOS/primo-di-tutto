@@ -461,6 +461,16 @@ class SoftwareCommunication:
             "Uninstall": "pkexec apt remove webapp-manager -y",
             "Path": "webapp-manager",
         },
+        "com_13": {
+            "Name": "Nextcloud Desktop",
+            "Package": AppPackage.DEB,
+            "Description": "Ein Desktop-Client für Nextcloud, der die Synchronisation von Dateien und Ordnern zwischen Ihrem Computer und Ihrem Nextcloud-Server ermöglicht. Unterstützt auch die Synchronisation von Kontakten, Kalendern und Aufgaben.",
+            "Icon": f"{application_path}/images/apps/com.nextcloud.desktopclient.nextcloud-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/com.nextcloud.desktopclient.nextcloud-thumb.png",
+            "Install": "pkexec apt install nextcloud-desktop -y",
+            "Uninstall": "pkexec apt remove nextcloud-desktop -y",
+            "Path": "nextcloud-desktop",
+        },
     }.items(), key=lambda item: item[1]["Name"]))
 
 
@@ -596,6 +606,17 @@ class SoftwareAudioVideo:
             "Uninstall": "flatpak remove de.mediathekview.MediathekView -y",
             "Path": "de.mediathekview.MediathekView",
         },
+        "av_13": {
+            "Name": "Spotify",
+            "Package": AppPackage.FLATPAK,
+            "Description": "Spotify ist ein beliebter Musik-Streaming-Dienst, der Zugriff auf Millionen von Songs und Podcasts bietet. Die App ermöglicht das Erstellen von Playlists, das Entdecken neuer Musik und das Teilen von Inhalten mit Freunden. Ideal für Musikliebhaber, die eine große Auswahl an Inhalten suchen.",
+            "Icon": f"{application_path}/images/apps/com.spotify.Client-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/com.spotify.Client-thumb.png",
+            "Install": "flatpak install flathub com.spotify.Client -y",
+            "Uninstall": "flatpak remove com.spotify.Client -y",
+            "Path": "com.spotify.Client",
+        },
+
     }.items(), key=lambda item: item[1]["Name"]))
 
 
