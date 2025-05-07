@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.guideos.primo</id>
+  
+  <name>Primo</name>
+  <summary>A system control tool for Linux Guide OS</summary>
+  
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  
+  <description>
+    <p>
+      Primo Di Tutto is a system configuration tool inspired by openSUSE&apos;s YaST but designed with the user-friendliness of Linux Mint in mind.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">primo-di-tutto.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://github.com/GuideOS/things-and-stuff/blob/main/screenshots/primo-di-tutto/primo-screenshot-1.png?raw=true</image>
+    </screenshot>
+    <screenshot>
+      <image>https://github.com/GuideOS/things-and-stuff/blob/main/screenshots/primo-di-tutto/primo-screenshot-2.png?raw=true</image>
+    </screenshot>
+    <screenshot>
+      <image>https://github.com/GuideOS/things-and-stuff/blob/main/screenshots/primo-di-tutto/primo-screenshot-3.png?raw=true</image>
+    </screenshot>
+  </screenshots>
+</component>

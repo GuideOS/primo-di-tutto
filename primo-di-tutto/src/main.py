@@ -32,7 +32,7 @@ class MainApplication(tk.Tk):
 
         # self["background"] = maincolor
         app_width = 1200
-        app_height = 800
+        app_height = 850
         # Define Screen
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()

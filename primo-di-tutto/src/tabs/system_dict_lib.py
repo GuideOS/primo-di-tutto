@@ -30,7 +30,7 @@ class CinnamonLook:
             "Action": "cinnamon-settings theme",
             "Path": "Cinnamon Settings",
         },
-    }
+    } 
 
 class CinnamonSettings:
     cinna_sett_dict = {
