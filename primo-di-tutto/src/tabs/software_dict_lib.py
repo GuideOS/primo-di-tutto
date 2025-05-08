@@ -118,6 +118,16 @@ class SoftwareOffice:
             "Uninstall": "flatpak remove work.openpaper.Paperwork -y",
             "Path": "work.openpaper.Paperwork",
         },
+        "office_8": {
+            "Name": "AusweisApp",
+            "Package": AppPackage.DEB,
+            "Description": "Die AusweisApp2 ist eine Software, die es ermöglicht, den neuen Personalausweis (nPA) und den elektronischen Aufenthaltstitel (eAT) für Online-Dienste zu nutzen. Sie bietet eine sichere Verbindung zwischen dem Ausweis und dem Computer oder Smartphone und ermöglicht die Nutzung von Online-Diensten der öffentlichen Verwaltung.",
+            "Icon": f"{application_path}/images/apps/de.bund.ausweisapp.ausweisapp2-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/de.bund.ausweisapp.ausweisapp2-thumb.png",
+            "Install": "pkexec apt install -y ausweisapp2",
+            "Uninstall": "pkexec apt remove ausweisapp2 -y",
+            "Path": "ausweisapp2",
+        },
     }.items(), key=lambda item: item[1]["Name"]))
 
 
