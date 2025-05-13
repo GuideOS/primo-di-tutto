@@ -37,6 +37,9 @@ class LookTab(ttk.Frame):
             self.cursor_folder_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/cursor_s.png"
             )
+            self.cursor_size_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/cursorsize_s.png"
+            )
             self.theme_folder_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/theme_s.png"
             )
@@ -71,6 +74,9 @@ class LookTab(ttk.Frame):
             )
             self.cursor_folder_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/cursor_s_light.png"
+            )
+            self.cursor_size_icon = PhotoImage(
+                file=f"{application_path}/images/icons/pigro_icons/cursorsize_s_light.png"
             )
             self.theme_folder_icon = PhotoImage(
                 file=f"{application_path}/images/icons/pigro_icons/theme_s_light.png"
@@ -138,10 +144,9 @@ class LookTab(ttk.Frame):
         # Funktion aufrufen
         backup_grouped_config()
 
-        def restore_cinnamon_config(file_number,c_dir):
+        def restore_cinnamon_config(file_number, c_dir):
             # Verzeichnis mit der JSON-Datei
-            config_dir = os.path.expanduser(c_dir
-            )
+            config_dir = os.path.expanduser(c_dir)
 
             # Prüfen, ob das Verzeichnis existiert
             if not os.path.exists(config_dir):
@@ -362,9 +367,9 @@ class LookTab(ttk.Frame):
             # Funktion aufrufen
             copy_file(calendar_bak, calendar_path)
 
-            grouped_win ="~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
+            grouped_win = "~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
 
-            restore_cinnamon_config(69,grouped_win)
+            restore_cinnamon_config(69, grouped_win)
             create_cinnamenu_conf()
 
         def set_classico_panel():
@@ -422,8 +427,8 @@ class LookTab(ttk.Frame):
             # Funktion aufrufen
             copy_file(calendar_bak, calendar_path)
 
-            grouped_win ="~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
-            restore_cinnamon_config(69,grouped_win)
+            grouped_win = "~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
+            restore_cinnamon_config(69, grouped_win)
 
             workspace_bak = f"{application_path}/scripts/67.json"
             workspace_path = os.path.expanduser(
@@ -436,8 +441,6 @@ class LookTab(ttk.Frame):
                 "~/.config/cinnamon/spices/menu@cinnamon.org/0.json"
             )
             copy_file(menu_bak, menu_path)
-
-
 
         def set_der_teufel_panel():
             popen("plank")
@@ -480,15 +483,14 @@ class LookTab(ttk.Frame):
 
             # Funktion aufrufen
             copy_file(source_path, destination_path)
-            grouped_win ="~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
-            restore_cinnamon_config(69,grouped_win)
+            grouped_win = "~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
+            restore_cinnamon_config(69, grouped_win)
 
             menu_bak = f"{application_path}/scripts/0.json"
             menu_path = os.path.expanduser(
                 "~/.config/cinnamon/spices/menu@cinnamon.org/0.json"
             )
             copy_file(menu_bak, menu_path)
-
 
         self.desktop_layout_set = ttk.LabelFrame(
             self, text="Layout-Vorlagen", padding=10
@@ -598,19 +600,45 @@ class LookTab(ttk.Frame):
                     for x in themes
                     if x
                     not in [
+                        "BlackMATE",
+                        "BlueMenta",
+                        "Blue-Submarine",
                         "Clearlooks",
+                        "ContrastHigh",
                         "Crux",
                         "Default",
                         "Emacs",
+                        "GreenLaguna",
+                        "Green-Submarine",
+                        "HighContrast",
+                        "HighContrastInverse",
                         "Industrial",
-                        "Mist",
+                        "Menta",
                         "Raleigh",
                         "Redmond",
+                        "Shiny",
                         "ThinIce",
+                        "TraditionalGreen",
+                        "TraditionalOk",
+                        "WhiteSur-Dark",
+                        "WhiteSur-Dark-hdpi",
                         "WhiteSur-Dark-solid-hdpi",
                         "WhiteSur-Dark-solid-xhdpi",
+                        "WhiteSur-Dark-xhdpi",
+                        "WhiteSur-Light",
+                        "WhiteSur-Light-hdpi",
                         "WhiteSur-Light-solid-hdpi",
                         "WhiteSur-Light-solid-xhdpi",
+                        "WhiteSur-Light-xhdpi",
+                        "YaruOk",
+                        "Yaru-xhdpi",
+                        "Yaru",
+                        "YaruGreen",
+                        "Yaru-dark-hdpi", 
+                        "Yaru-dark-xhdpi", 
+                        "Yaru-hdpi",
+                        "Yaru-xhdpi",
+                        "Mist"
                     ]
                 ]
 
@@ -799,6 +827,25 @@ class LookTab(ttk.Frame):
         def open_icon_folder():
             popen("pkexec nemo /usr/share/icons")
 
+        def apply_cursor_size():
+            selected_size = cursor_size_combobox.get()
+            if not selected_size.isdigit():
+                messagebox.showerror("Fehler", "Bitte eine gültige Größe wählen.")
+                return
+
+            try:
+                subprocess.run([
+                    "gsettings",
+                    "set",
+                    "org.cinnamon.desktop.interface",
+                    "cursor-size",
+                    selected_size
+                ], check=True)
+                messagebox.showinfo("Erfolg", f"Cursorgröße auf {selected_size}px gesetzt.")
+            except subprocess.CalledProcessError:
+                print("Fehler beim Setzen der Cursorgröße.")
+
+
         theme_combobox = ttk.Combobox(self.pixel_set, state="readonly")
         theme_combobox.grid(
             row=1, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
@@ -816,6 +863,15 @@ class LookTab(ttk.Frame):
             row=3, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
         )
         cursor_combobox.set("Bitte aktualisieren")
+
+        cursor_sizes = ["16", "24", "32", "48", "64", "96", "128"]
+        cursor_size_combobox = ttk.Combobox(self.pixel_set, state="readonly")
+        cursor_size_combobox['values'] = cursor_sizes
+        cursor_size_combobox.grid(
+            row=4, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
+        )
+        cursor_size_combobox.set("Cursor-Größe wählen")
+
 
         theme_button = ttk.Button(
             self.pixel_set,
@@ -847,6 +903,9 @@ class LookTab(ttk.Frame):
         )
         cursor_button.grid(row=3, column=3, padx=10, pady=5, sticky="ew")
 
+        cursor_size_button = ttk.Button(self.pixel_set, compound="left", text="Cursorgröße anwenden", image=self.cursor_size_icon, command=apply_cursor_size)
+        cursor_size_button.grid(row=4, column=3,columnspan=2, padx=10, pady=5, sticky="ew")
+
         theme_refresh_button = ttk.Button(
             self.pixel_set,
             text="Aktualisieren",
@@ -857,7 +916,7 @@ class LookTab(ttk.Frame):
             style="Custom.TButton",
         )
         theme_refresh_button.grid(
-            row=4, column=0, columnspan=5, padx=10, pady=5, sticky="ew"
+            row=5, column=0, columnspan=5, padx=10, pady=5, sticky="ew"
         )
 
         theme_folder_button = ttk.Button(
