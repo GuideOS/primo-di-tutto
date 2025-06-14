@@ -5,4 +5,4 @@ YELLOW="\033[1;33m"
 RESET="\033[0m"
 
 # Upgrade und Aufräumen mit nala und flatpak
-nala upgrade -y || { echo "ERROR: nala update failed."; exit 1; }
+apt upgrade -y || { echo "ERROR: Upgrade failed."; exit 1; }
