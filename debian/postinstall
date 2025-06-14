@@ -23,3 +23,7 @@ fi
 # Copy Autostart file to the user's autostart directory
 cp /usr/share/applications/autostart/primo-di-tutto-autostart.desktop "$AUTOSTART_DIR/"
 chmod +x "$AUTOSTART_DIR/primo-di-tutto-autostart.desktop"
+
+if [ -f /usr/share/applications/cinnamon-settings.desktop ]; then
+    sudo rm -rf /usr/share/applications/cinnamon-settings.desktop
+fi
