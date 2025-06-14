@@ -23,13 +23,6 @@ class CinnamonLook:
             "Action": "cinnamon-settings fonts",
             "Path": "Cinnamon Settings",
         },
-        "look_3": {
-            "Name": "Themen",
-            "Description": "Öffnet die Einstellungen für die Themen von Cinnamon.",
-            "Icon": f"{application_path}/images/icons/papirus/48x48/preferences-desktop-icons.png",
-            "Action": "cinnamon-settings theme",
-            "Path": "Cinnamon Settings",
-        },
     } 
 
 class CinnamonSettings:
