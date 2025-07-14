@@ -16,6 +16,7 @@ from tabs.software_tab import *
 from tabs.contrib_tab import ContribTab
 from tabs.expert_tools import ExpertTab
 from tabs.links_tab import LinksTab
+from tabs.large_folders_tab import LargeFoldersTab
 from azure_ttk import *
 from utils import scaling  # Import the scaling variable
 from logger_config import setup_logger
@@ -160,6 +161,7 @@ class MainApplication(tk.Tk):
         self.system_tab = SystemTab(self.notebook)
         self.expert_tools_tab = ExpertTab(self.notebook)
         self.look_tab = LookTab(self.notebook)
+        self.large_folders = LargeFoldersTab(self.notebook)
         self.links_tab = LinksTab(self.notebook)
         self.contrib_tab = ContribTab(self.notebook)
 
@@ -174,6 +176,7 @@ class MainApplication(tk.Tk):
             self.expert_tools_tab, compound=LEFT, text="Expertenwerkzeuge"
         )
         self.notebook.add(self.look_tab, compound=LEFT, text="Erscheinungsbild")
+        self.notebook.add(self.large_folders, compound=LEFT, text="Speicherfresser")
         self.notebook.add(self.links_tab, compound=LEFT, text="Links")
         self.notebook.add(self.contrib_tab, compound=LEFT, text="Mitmachen")
 
