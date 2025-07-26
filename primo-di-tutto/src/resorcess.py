@@ -10,6 +10,7 @@ from tabs.system_tab_check import check_pipanel
 import requests
 import platform
 from constants import NotificationUrgency
+import re
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -263,6 +264,32 @@ else:
 
 theme = get_theme().lower()
 
+def has_nvidia_gpu():
+    try:
+        # lspci -nnk ausführen
+        output = subprocess.check_output(['lspci', '-nnk'], text=True)
+    except subprocess.CalledProcessError as e:
+        print("Fehler beim Ausführen von lspci:", e)
+        return False
+    except FileNotFoundError:
+        print("lspci ist nicht installiert oder nicht im PATH.")
+        return False
+
+    # Alle VGA-Abschnitte extrahieren
+    lines = output.splitlines()
+    capture = False
+    for line in lines:
+        if re.search(r'VGA compatible controller', line):
+            capture = True
+            if "NVIDIA" in line:
+                return True  # NVIDIA gefunden
+        elif capture:
+            if not (line.startswith('\t') or line.startswith(' ')):
+                capture = False  # Ende der Section
+            elif "NVIDIA" in line:
+                return True  # NVIDIA innerhalb des Blocks gefunden
+
+    return False
 
 # Font Definition Vars
 font_20 = ("Sans", 20)
