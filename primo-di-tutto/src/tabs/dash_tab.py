@@ -336,6 +336,7 @@ class DashTab(ttk.Frame):
         self.update_labels()
 
     def update_labels(self):
+
         # Screen dimensions
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
@@ -383,6 +384,18 @@ class DashTab(ttk.Frame):
 
         # Schedule the next update
         self.after(3000, self.update_labels)
+
+    def get_guideo_version(self):
+        # es soll ein der datei /etc/guideo-version ausgelsen werden
+        try:
+            with open("/etc/guideos-version", "r") as file:
+                version = file.read().strip()
+            return version
+        except FileNotFoundError:
+            logger.error("Die Datei /etc/guideo-version wurde nicht gefunden.")
+            return "N/A"
+    
+
 
     def get_cpu_temperature(self):
         """Get the CPU temperature."""
@@ -443,7 +456,7 @@ class DashTab(ttk.Frame):
 
     def update_os_labels(self, my_system):
         """Update OS-related labels."""
-        self.distro_label.configure(text=f"Distro: {nice_name[13:-2]}")
+        self.distro_label.configure(text=f"Distro: {self.get_guideo_version()}")
         self.architecture_label.configure(text=f"Architektur: {os_arch_output}")
         self.kernel_label.configure(text=f"Kernel: {my_system.release}")
         self.shell_label.configure(text=f"Shell: {os.environ['SHELL']}")
