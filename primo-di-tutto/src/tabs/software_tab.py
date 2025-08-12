@@ -31,7 +31,9 @@ from tabs.software_dict_lib import (
     SoftwareAudioVideo,
     SoftwareImageEditing,
     SoftwareBackup,
-    SoftwareSafty
+    SoftwareSafty,
+    SoftwareDesktopTools,
+    SoftwareTerminalTools
 )
 from apt_manage import *
 from snap_manage import *
@@ -148,6 +150,7 @@ class SoftwareTab(ttk.Frame):
         gaming_frame = ttk.Frame(self.inst_notebook)
         backup_frame = ttk.Frame(self.inst_notebook)
         safty_frame = ttk.Frame(self.inst_notebook)
+        desktop_frame = ttk.Frame(self.inst_notebook)
 
 
 
@@ -159,6 +162,8 @@ class SoftwareTab(ttk.Frame):
         gaming_frame.pack(fill="both", expand=True)
         backup_frame.pack(fill="both", expand=True)
         safty_frame.pack(fill="both", expand=True)
+        desktop_frame.pack(fill="both", expand=True)
+        terminal_frame = ttk.Frame(self.inst_notebook)
 
 
         self.inst_notebook.add(com_frame, compound=LEFT, text="Web & Chat")
@@ -169,6 +174,8 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook.add(gaming_frame, compound=LEFT, text="Native Games")
         self.inst_notebook.add(backup_frame, compound=LEFT, text="Backup")
         self.inst_notebook.add(safty_frame, compound=LEFT, text="Sicherheit")
+        self.inst_notebook.add(desktop_frame, compound=LEFT, text="Desktop Tools")
+        self.inst_notebook.add(terminal_frame, compound=LEFT, text="Terminal Tools")
 
         # Com Panel
         com_apps = [];
@@ -313,6 +320,43 @@ class SoftwareTab(ttk.Frame):
 
         gaming_tool_note_frame = AppCollectionPanel(category_title="Gaming", apps=saf_apps, master=safty_frame)
         gaming_tool_note_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Desktop Panel
+        desk_apps = [];
+        for i, (key, info) in enumerate(SoftwareDesktopTools.desk_dict.items()):
+            app = InstallableAppFactory.create(
+                type=SoftwareDesktopTools.desk_dict[key]["Package"],
+                name=SoftwareDesktopTools.desk_dict[key]["Name"],
+                icon=SoftwareDesktopTools.desk_dict[key]["Icon"],
+                description=SoftwareDesktopTools.desk_dict[key]["Description"],
+                path=SoftwareDesktopTools.desk_dict[key]["Path"],
+                thumbnail=SoftwareDesktopTools.desk_dict[key]["Thumbnail"],
+                install_command=SoftwareDesktopTools.desk_dict[key]["Install"],
+                uninstall_command=SoftwareDesktopTools.desk_dict[key]["Uninstall"],
+            )
+            desk_apps.append(app)
+
+        desktop_tool_note_frame = AppCollectionPanel(category_title="Desktop Tools", apps=desk_apps, master=desktop_frame)
+        desktop_tool_note_frame.pack(fill=tk.BOTH, expand=True)
+
+
+        # Terminal Panel
+        term_apps = [];
+        for i, (key, info) in enumerate(SoftwareTerminalTools.term_dict.items()):
+            app = InstallableAppFactory.create(
+                type=SoftwareTerminalTools.term_dict[key]["Package"],
+                name=SoftwareTerminalTools.term_dict[key]["Name"],
+                icon=SoftwareTerminalTools.term_dict[key]["Icon"],
+                description=SoftwareTerminalTools.term_dict[key]["Description"],
+                path=SoftwareTerminalTools.term_dict[key]["Path"],
+                thumbnail=SoftwareTerminalTools.term_dict[key]["Thumbnail"],
+                install_command=SoftwareTerminalTools.term_dict[key]["Install"],
+                uninstall_command=SoftwareTerminalTools.term_dict[key]["Uninstall"],
+            )
+            term_apps.append(app)
+
+        terminal_tool_note_frame = AppCollectionPanel(category_title="Terminal Tools", apps=term_apps, master=terminal_frame)
+        terminal_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
 class AppCollectionPanel(tk.Frame):
     def __init__(self, category_title: str, apps, master=None, **kwargs):

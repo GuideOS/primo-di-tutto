@@ -733,3 +733,41 @@ class SoftwareSafty:
             "Path": "com.bitwarden.desktop",
         },
     }.items(), key=lambda item: item[1]["Name"]))
+
+class SoftwareDesktopTools:
+    desk_dict = dict(sorted({
+        "bak_0": {
+            "Name": "HydraPaper",
+            "Package": AppPackage.FLATPAK,
+            "Description": "HydraPaper ist eine Anwendung, die es Benutzern ermöglicht, ihre Desktop-Hintergründe einfach zu verwalten und zu ändern. Sie bietet eine benutzerfreundliche Oberfläche, um verschiedene Hintergründe auszuwählen und anzupassen.",
+            "Icon": f"{application_path}/images/apps/org.gabmus.hydrapaper-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/org.gabmus.hydrapaper-thumb.png",
+            "Install": "flatpak install flathub org.gabmus.hydrapaper -y",
+            "Uninstall": "flatpak remove org.gabmus.hydrapaper -y",
+            "Path": "org.gnome.World.PikaBackup",
+        },
+    }.items(), key=lambda item: item[1]["Name"]))
+
+class SoftwareTerminalTools:
+    term_dict = dict(sorted({
+        "term_01": {
+            "Name": "BTOP++",
+            "Package": AppPackage.DEB,
+            "Description": "BTOP ist ein modernes, textbasiertes Systemüberwachungstool, das eine benutzerfreundliche Oberfläche für die Überwachung von Systemressourcen wie CPU, Speicher, Netzwerk und Prozesse bietet. Es ist eine Alternative zu traditionellen Tools wie top und htop.",
+            "Icon": f"{application_path}/images/apps/btop-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/btop-thumb.png",
+            "Install": "pkexec apt install btop -y",
+            "Uninstall": "pkexec apt remove btop -y",
+            "Path": "btop",
+        },
+        "term_1": {
+            "Name": "Ranger",
+            "Package": AppPackage.DEB,
+            "Description": "Ranger ist ein textbasierter Dateimanager für die Kommandozeile, der eine einfache Navigation durch das Dateisystem ermöglicht. Er bietet eine benutzerfreundliche Oberfläche und unterstützt Tastaturkürzel für schnelle Aktionen.",
+            "Icon": f"{application_path}/images/apps/ranger-icon.png",
+            "Thumbnail": f"{application_path}/images/apps/ranger-thumb.png",
+            "Install": "pkexec apt install ranger -y",
+            "Uninstall": "pkexec apt remove ranger -y",
+            "Path": "ranger",
+        },
+    }.items(), key=lambda item: item[1]["Name"]))
