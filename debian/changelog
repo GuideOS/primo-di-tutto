@@ -1,3 +1,15 @@
+primo-di-tutto (0.7.9.2) unstable; urgency=medium
+
+  * Added: Speicherfresser-Tab
+  * Added: Speicherfresser-Tab
+  * Removed old get GPU
+  * Added: Nvidia detect
+  * Better Welcome Tab
+  * Added: Dash GuideOS Version
+  * Added: More Software
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Tue, 12 Aug 2025 14:31:06 +0200
+
 primo-di-tutto (0.7.9.1) unstable; urgency=medium
 
   * Removed: CS-Theme

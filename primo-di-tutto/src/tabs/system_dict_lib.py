@@ -115,7 +115,7 @@ class CinnamonSettings:
             "Name": "Online-Konten",
             "Description": "Öffnet die Einstellungen für Online-Konten.",
             "Icon": f"{application_path}/images/icons/papirus/48x48/preferences-desktop-online-accounts.png",
-            "Action": "cinnamon-settings online-accounts",
+            "Action": "gnome-online-accounts-gtk",
             "Path": "Cinnamon Settings",
         },
         "sett_13": {
