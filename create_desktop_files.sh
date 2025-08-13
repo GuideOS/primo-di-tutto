@@ -9,7 +9,7 @@ cat > debian/primo-di-tutto/usr/share/applications/primo-di-tutto.desktop <<EOL
 [Desktop Entry]
 Version=2.1
 Exec=primo-di-tutto
-Name=GuideOS-Einstellungen (Primo)
+Name=GuideOS Einstellungen (Primo)
 GenericName=GuideOS-Einstellungen
 Encoding=UTF-8
 Terminal=false
