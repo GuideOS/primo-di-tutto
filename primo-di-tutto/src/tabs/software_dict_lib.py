@@ -744,7 +744,7 @@ class SoftwareDesktopTools:
             "Thumbnail": f"{application_path}/images/apps/org.gabmus.hydrapaper-thumb.png",
             "Install": "flatpak install flathub org.gabmus.hydrapaper -y",
             "Uninstall": "flatpak remove org.gabmus.hydrapaper -y",
-            "Path": "org.gnome.World.PikaBackup",
+            "Path": "org.gabmus.hydrapaper",
         },
     }.items(), key=lambda item: item[1]["Name"]))
 
