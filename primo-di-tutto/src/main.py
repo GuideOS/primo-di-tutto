@@ -30,7 +30,7 @@ class MainApplication(tk.Tk):
         self.title("Primo | GuideOS Einstellungen")
 
         self.tk.call("source", TCL_THEME_FILE_PATH)
-        # self.tk.call('tk', 'scaling', scaling)
+        self.tk.call('tk', 'scaling', scaling)
 
         # self["background"] = maincolor
         app_width = 1200
@@ -38,8 +38,8 @@ class MainApplication(tk.Tk):
         # Define Screen
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
-        x = (screen_width / 2) - (app_width / 2)
-        y = (screen_height / 2) - (app_height / 2)
+        #x = (screen_width / 2) - (app_width / 2)
+        #y = (screen_height / 2) - (app_height / 2)
 
         # self.icon is still needed for some DEs
         self.icon = tk.PhotoImage(

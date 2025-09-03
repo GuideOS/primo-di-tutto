@@ -655,6 +655,26 @@ class LookTab(ttk.Frame):
                     and "cursors" not in os.listdir(os.path.join("/usr/share/icons", d))
                 ]
                 icons.sort()
+                icons = [
+                    x
+                    for x in icons
+                    if x
+                    not in [
+                            "ContrastHigh",
+                            "default",
+                            "desktop-base",
+                            "gnome",
+                            "hicolor",
+                            "HighContrast",
+                            "locolor",
+                            "mate",
+                            "mate-black",
+                            "menta",
+                            "mozc",
+                            "vendor",
+                            "zbar.ico"
+                    ]
+                ]                
                 icon_combobox["values"] = icons
                 icon_combobox.set("Symbole wählen")
             except Exception as e:

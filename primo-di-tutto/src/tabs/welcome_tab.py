@@ -82,11 +82,20 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
         self.welcome_text_label = ttk.Label(self, text=welcome_text_message,wraplength=800,justify="left")
         self.welcome_text_label.pack(pady=10)
 
+        # a funktion that that starts /usr/lib/guideos-nvidia-tools/main
+        def open_nvidia_manager():
+            try:
+                subprocess.Popen(["/usr/lib/guideos-nvidia-tools/main"])
+            except Exception as e:
+                logger.error(f"Fehler beim Starten des NVIDIA-Managers: {e}")
+                
+
+
         # Button to install NVIDIA drivers
         if not has_nvidia_gpu():
             self.nvidia_button = ttk.Button(
                 self,
-                text=_("NVIDIA-Manager öffnen"),image=self.nvidia_icon, compound="left",
+                text=_("NVIDIA-Manager öffnen"),image=self.nvidia_icon, compound="left",command=open_nvidia_manager
             )
             self.nvidia_button.pack(pady=10)
 
