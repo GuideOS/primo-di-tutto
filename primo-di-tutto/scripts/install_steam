@@ -12,5 +12,4 @@ sudo apt update || error_exit "Update fehlgeschlagen"
 
 sudo apt install -y steam-installer libgl1-mesa-dri:i386 mesa-vulkan-drivers mesa-vulkan-drivers:i386 || error_exit "Installation fehlgeschlagen"
 
-# Schritt 3: Erfolgsmeldung
 echo "Installation von Steam erfolgreich abgeschlossen!"

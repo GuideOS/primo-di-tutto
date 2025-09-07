@@ -7,7 +7,5 @@ sudo chown root:root /tmp/onlyoffice.gpg
 sudo mv /tmp/onlyoffice.gpg /usr/share/keyrings/onlyoffice.gpg
 
 echo 'deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyoffice.com/repo/debian squeeze main' | sudo tee -a /etc/apt/sources.list.d/onlyoffice.list
-
-# Aktualisiere die Paketquellen und installiere Brave-Browser
 sudo apt update -y
 sudo apt install -y onlyoffice-desktopeditors

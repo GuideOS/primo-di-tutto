@@ -362,7 +362,39 @@ class DashTab(ttk.Frame):
 
         # Update OS information
         self.update_os_labels(my_system)
-
+        # Theme dynamisch auslesen
+        try:
+            output = subprocess.check_output(
+                "gsettings get org.cinnamon.desktop.interface gtk-theme",
+                shell=True,
+                universal_newlines=True,
+            )
+            current_theme = output.strip().strip("'")
+        except Exception:
+            current_theme = "N/A"
+        self.desktop_theme_label.configure(text=f"Theme: {current_theme}")
+        # Icon-Theme dynamisch auslesen
+        try:
+            output = subprocess.check_output(
+                "gsettings get org.cinnamon.desktop.interface icon-theme",
+                shell=True,
+                universal_newlines=True,
+            )
+            current_icon_theme = output.strip().strip("'")
+        except Exception:
+            current_icon_theme = "N/A"
+        self.icon_theme_label.configure(text=f"Icons: {current_icon_theme}")
+        # Cursor-Theme dynamisch auslesen
+        try:
+            output = subprocess.check_output(
+                "gsettings get org.cinnamon.desktop.interface cursor-theme",
+                shell=True,
+                universal_newlines=True,
+            )
+            current_cursor_theme = output.strip().strip("'")
+        except Exception:
+            current_cursor_theme = "N/A"
+        self.cursor_theme_label.configure(text=f"Cursor: {current_cursor_theme}")
         # Update disk information
         self.update_disk_labels()
 
