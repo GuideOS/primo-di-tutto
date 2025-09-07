@@ -27,81 +27,19 @@ class LookTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
 
-        if "dark" in theme_name or "Dark" in theme_name:
-            self.folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/folder_s.png"
-            )
-            self.icon_folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/start_here_s.png"
-            )
-            self.cursor_folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/cursor_s.png"
-            )
-            self.cursor_size_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/cursorsize_s.png"
-            )
-            self.theme_folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/theme_s.png"
-            )
-            self.refresh_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/fresh_s.png"
-            )
-            self.save_layout_icon = PhotoImage(
-                file=f"{application_path}/images/icons/nav_bar/document-save-light_24x24.png"
-            )
-            self.load_layout_icon = PhotoImage(
-                file=f"{application_path}/images/icons/nav_bar/draw-star_light_24x24.png"
-            )
-            self.classico_thumb = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/classico_thumb.png"
-            )
-            self.upside_thumb = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/upside_thumb.png"
-            )
-            self.elfi_thumb = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/elfi_thumb.png"
-            )
-            self.devil_thumb = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/devil_thumb.png"
-            )
 
-        else:
-            self.folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/folder_s_light.png"
-            )
-            self.icon_folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/start_here_s_light.png"
-            )
-            self.cursor_folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/cursor_s_light.png"
-            )
-            self.cursor_size_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/cursorsize_s_light.png"
-            )
-            self.theme_folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/theme_s_light.png"
-            )
-            self.refresh_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/fresh_s_light.png"
-            )
-            self.classico_thumb = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/classico_thumb_light.png"
-            )
-            self.upside_thumb = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/upside_thumb_light.png"
-            )
-            self.elfi_thumb = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/elfi_thumb_light.png"
-            )
-            self.devil_thumb = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/devil_thumb_light.png"
-            )
-            self.save_layout_icon = PhotoImage(
-                file=f"{application_path}/images/icons/nav_bar/document-save.png"
-            )
-            self.load_layout_icon = PhotoImage(
-                file=f"{application_path}/images/icons/nav_bar/draw-star_dark_24x24.png"
-            )
+        self.classico_thumb = PhotoImage(
+            file=f"{application_path}/images/icons/pigro_icons/classico_thumb_light.png"
+        )
+        self.upside_thumb = PhotoImage(
+            file=f"{application_path}/images/icons/pigro_icons/upside_thumb_light.png"
+        )
+        self.elfi_thumb = PhotoImage(
+            file=f"{application_path}/images/icons/pigro_icons/elfi_thumb_light.png"
+        )
+        self.devil_thumb = PhotoImage(
+            file=f"{application_path}/images/icons/pigro_icons/devil_thumb_light.png"
+        )
 
         def backup_grouped_config():
             # Verzeichnis mit der JSON-Datei
@@ -562,7 +500,6 @@ class LookTab(ttk.Frame):
             self.desktop_layout_set,
             text="Mein Layout speichern",
             style="Custom.TButton",
-            image=self.save_layout_icon,
             compound="left",
             command=backup_cinnamon_settings,
         )
@@ -572,7 +509,6 @@ class LookTab(ttk.Frame):
             self.desktop_layout_set,
             text="Mein Layout laden",
             style="Custom.TButton",
-            image=self.load_layout_icon,
             compound="left",
             command=restore_cinnamon_settings,
         )
@@ -776,6 +712,7 @@ class LookTab(ttk.Frame):
                     ("org.cinnamon.theme", "name"),
                 ]
 
+
                 # Funktion zum Setzen eines GSettings-Werts
                 def set_gsettings_value(schema, key, value):
                     subprocess.run(["gsettings", "set", schema, key, value], check=True)
@@ -791,8 +728,30 @@ class LookTab(ttk.Frame):
                                 "'prefer-dark'",
                             ]
                         )
-                        # os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'")
+                        self.tk.call("set_theme", "dark")
+                        noteStyler = ttk.Style(self)
+                        noteStyler.configure(
+                            "TNotebook",
+                            borderwidth=0,
+                            tabposition="w",
+                            highlightthickness=0,
+                        )
+                        noteStyler.configure(
+                            "TNotebook.Tab",
+                            borderwidth=0,
+                            font=font_10,
+                            width=18,
+                            highlightthickness=0,
+                        )
 
+                        noteStyler.configure("TButton", justify="left", anchor="w")
+
+                        noteStyler.configure("Custom.TButton", justify="center", anchor="center")
+                        noteStyler.configure(
+                            "Accent2.TButton", justify="center", anchor="center", font=font_12
+        )
+                        # os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'")
+                        
                     else:
                         subprocess.Popen(
                             [
@@ -804,7 +763,30 @@ class LookTab(ttk.Frame):
                             ]
                         )
                         # os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'")
+                        self.tk.call("set_theme", "light")
+                        noteStyler = ttk.Style(self)
+                        noteStyler.configure(
+                            "TNotebook",
+                            borderwidth=0,
+                            tabposition="w",
+                            highlightthickness=0,
+                        )
+                        noteStyler.configure(
+                            "TNotebook.Tab",
+                            borderwidth=0,
+                            font=font_10,
+                            width=18,
+                            highlightthickness=0,
+                        )
 
+                        noteStyler.configure("TButton", justify="left", anchor="w")
+
+                        noteStyler.configure("Custom.TButton", justify="center", anchor="center")
+                        noteStyler.configure(
+                            "Accent2.TButton", justify="center", anchor="center", font=font_12
+        )           
+                        
+        
                 # Für jeden Schlüssel den Wert setzen
                 for schema, key in settings_keys:
                     set_gsettings_value(schema, key, selected_theme)
@@ -897,7 +879,6 @@ class LookTab(ttk.Frame):
             self.pixel_set,
             text="Theme anwenden",
             compound="left",
-            image=self.theme_folder_icon,
             command=set_theme,
             width=20,
         )
@@ -907,7 +888,6 @@ class LookTab(ttk.Frame):
             self.pixel_set,
             text="Symbole anwenden",
             compound="left",
-            image=self.icon_folder_icon,
             command=set_icon,
             width=20,
         )
@@ -917,20 +897,18 @@ class LookTab(ttk.Frame):
             self.pixel_set,
             text="Cursor anwenden",
             compound="left",
-            image=self.cursor_folder_icon,
             command=set_cursor,
             width=20,
         )
         cursor_button.grid(row=3, column=3, padx=10, pady=5, sticky="ew")
 
-        cursor_size_button = ttk.Button(self.pixel_set, compound="left", text="Cursorgröße anwenden", image=self.cursor_size_icon, command=apply_cursor_size)
+        cursor_size_button = ttk.Button(self.pixel_set, compound="left", text="Cursorgröße anwenden", command=apply_cursor_size)
         cursor_size_button.grid(row=4, column=3,columnspan=2, padx=10, pady=5, sticky="ew")
 
         theme_refresh_button = ttk.Button(
             self.pixel_set,
             text="Aktualisieren",
             compound="left",
-            image=self.refresh_icon,
             command=update_theme_combobox,
             width=20,
             style="Custom.TButton",
@@ -942,7 +920,6 @@ class LookTab(ttk.Frame):
         theme_folder_button = ttk.Button(
             self.pixel_set,
             text="Theme-Ordner",
-            image=self.folder_icon,
             compound="left",
             command=open_theme_folder,
             width=20,
@@ -953,7 +930,6 @@ class LookTab(ttk.Frame):
             self.pixel_set,
             text="Symbol-Ordner",
             compound="left",
-            image=self.folder_icon,
             command=open_icon_folder,
             width=20,
         )
@@ -963,7 +939,6 @@ class LookTab(ttk.Frame):
             self.pixel_set,
             text="Cursor-Ordner",
             compound="left",
-            image=self.folder_icon,
             command=open_icon_folder,
             width=20,
         )

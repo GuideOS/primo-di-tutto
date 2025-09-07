@@ -37,74 +37,11 @@ class UpdateTab(ttk.Frame):
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
-        if "dark" in theme_name or "Dark" in theme_name:
-            self.folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/folder_s.png"
-            )
-            self.up_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_up_s.png"
-            )
-            self.gup_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_upg_s.png"
-            )
-            self.recover_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/recover_s.png"
-            )
-            self.fup_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_fupg_s.png"
-            )
-            self.allow_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/allow_s.png"
-            )
-            self.arm_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/del_s.png"
-            )
-            self.confa_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/confa_s.png"
-            )
-            self.re_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/re_s.png"
-            )
-            self.inst_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/debinst_s.png"
-            )
-            self.term_logo = PhotoImage(
-                file=f"{application_path}/images/icons/papirus/goterminal.png"
-            )
-        else:
-            self.folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/folder_s_light.png"
-            )
-            self.up_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_up_s_light.png"
-            )
-            self.gup_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_upg_s_light.png"
-            )
-            self.recover_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/recover_s_light.png"
-            )
-            self.fup_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_fupg_s_light.png"
-            )
-            self.allow_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/allow_s_light.png"
-            )
-            self.arm_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/del_s_light.png"
-            )
-            self.confa_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/confa_s_light.png"
-            )
-            self.re_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/re_s_light.png"
-            )
-            self.inst_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/debinst_s_light.png"
-            )
-            self.term_logo = PhotoImage(
-                file=f"{application_path}/images/icons/papirus/goterminal_light.png"
-            )
+
+        self.term_logo = PhotoImage(
+            file=f"{application_path}/images/icons/papirus/goterminal.png"
+        )
+
 
 
         # kill_term soll % wid beenden
@@ -211,7 +148,6 @@ class UpdateTab(ttk.Frame):
             self.apt_option_frame,
             compound="left",
             text=_("Liste aktualisieren"),
-            image=self.up_icon,
             command=update_action,
             width=20,
         )
@@ -222,7 +158,6 @@ class UpdateTab(ttk.Frame):
             self.apt_option_frame,
             compound="left",
             text=_("Pakete aktualisieren"),
-            image=self.gup_icon,
             command=upgrade_action,
             width=20,
         )
@@ -233,7 +168,6 @@ class UpdateTab(ttk.Frame):
             self.apt_option_frame,
             compound="left",
             text=_("Verfügbare Updates"),
-            image=self.up_icon,
             command=apt_showupgrade_action,
             width=20,
         )
@@ -244,7 +178,6 @@ class UpdateTab(ttk.Frame):
             self.apt_option_frame,
             compound="left",
             text=_("Aufräumen"),
-            image=self.arm_icon,
             command=apt_autremove_action,
             width=20,
         )
@@ -255,7 +188,6 @@ class UpdateTab(ttk.Frame):
             self.apt_option_frame,
             compound="left",
             text=_("Fehler beheben"),
-            image=self.up_icon,
             command=apt_broken_action,
             width=20,
         )
@@ -266,7 +198,6 @@ class UpdateTab(ttk.Frame):
             self.apt_option_frame,
             compound="left",
             text=_("Fehlende Pakete laden"),
-            image=self.confa_icon,
             command=apt_missing_action,
             width=20,
         )
@@ -277,7 +208,6 @@ class UpdateTab(ttk.Frame):
             self.apt_option_frame,
             compound="left",
             text=_("Reparieren"),
-            image=self.up_icon,
             command=apt_reconf_action,
             width=20,
         )
@@ -294,7 +224,6 @@ class UpdateTab(ttk.Frame):
             self.flatpak_option_frame,
             compound="left",
             text=_("Aktualisieren"),
-            image=self.up_icon,
             command=flatpak_update_action,
             width=20,
         )
@@ -305,7 +234,6 @@ class UpdateTab(ttk.Frame):
             self.flatpak_option_frame,
             compound="left",
             text=_("Aufräumen"),
-            image=self.arm_icon,
             command=flatpak_clean_action,
             width=20,
         )

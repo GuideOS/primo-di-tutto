@@ -12,6 +12,7 @@ import platform
 from constants import NotificationUrgency
 import re
 from logger_config import setup_logger
+import GPUtil
 
 logger = setup_logger(__name__)
 

@@ -120,25 +120,6 @@ class SoftwareTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
 
-
-        if "dark" in theme_name or "Dark" in theme_name:
-            self.deb_nav = PhotoImage(
-                file=f"{application_path}/images/icons/nav_bar/debian_dark_24x24.png"
-            )
-
-            self.flatpak_nav = PhotoImage(
-                file=f"{application_path}/images/icons/nav_bar/flatpak_dark_24x24.png"
-            )
-
-        else:
-            self.deb_nav = PhotoImage(
-                file=f"{application_path}/images/icons/nav_bar/debian_light_24x24.png"
-            )
-
-            self.flatpak_nav = PhotoImage(
-                file=f"{application_path}/images/icons/nav_bar/flatpak_light_24x24.png"
-            )
-
         self.inst_notebook = ttk.Notebook(self)
         self.inst_notebook.pack(fill=BOTH, expand=True)
 

@@ -38,39 +38,21 @@ class WelcomeTab(ttk.Frame):
 
         # Icon für den Willkommensbildschirm laden
 
-        if "dark" in theme_name or "Dark" in theme_name:
-            self.welcome_icon = ImageTk.PhotoImage(
-                Image.open(f"{application_path}/images/icons/pigro_icons/guideo_font_logo_dark.png")
-            )
-        else:
-            self.welcome_icon = ImageTk.PhotoImage(
-                Image.open(f"{application_path}/images/icons/pigro_icons/guideo_font_logo_light.png")
-            )
-
-
-
-
+        self.welcome_icon = ImageTk.PhotoImage(
+            Image.open(f"{application_path}/images/icons/guideo_font_logo_dark.png")
+        )
         self.nvidia_icon = ImageTk.PhotoImage(
             Image.open(f"{application_path}/images/icons/nvidia-attentione.png")
         )
-
-        def set_wallpaper():
-            os.popen(f"mpg123 {application_path}/images/backgrounds/bw.mp3")
-            os.popen(f"gsettings set org.cinnamon.desktop.background picture-uri  'file:///{application_path}/images/backgrounds/bw.png'")
-
-
 
         # Label für das Icon erstellen und im Fenster platzieren
         self.icon_label = ttk.Label(self, image=self.welcome_icon)
         self.icon_label.pack(pady=10)
 
-        if user == "jean":
-            welcome_message = _("""Welcome""") + " SCHONG " + "!"
-        else:
-            welcome_message = _("""Welcome""") + f" {user.upper()} " + "!"
+        welcome_message = _("""Welcome""") + f" {user.upper()} " + "!"
 
         # Label für die Willkommensnachricht erstellen
-        self.welcome_label = Button(self, text=welcome_message, font=("Ubuntu",20),command=set_wallpaper,highlightthickness=0,borderwidth=0)
+        self.welcome_label = Label(self, text=welcome_message, font=("Ubuntu",20),highlightthickness=0,borderwidth=0)
         self.welcome_label.pack(pady=5)
                 # Willkommensnachricht definieren
         welcome_text_message = """Dein einfacher Einstieg in die Welt von Linux
@@ -99,9 +81,6 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
             )
             self.nvidia_button.pack(pady=10)
 
-            # Label for the NVIDIA icon
-            #self.nvidia_icon_label = ttk.Label(self, image=self.nvidia_icon)
-            #self.nvidia_icon_label.pack(pady=5)
 
 
         # LabelFrame für Autostart-Optionen erstellen

@@ -8,6 +8,7 @@ import platform
 import psutil
 from time import strftime
 import socket
+import subprocess
 from PIL import ImageTk, Image
 from resorcess import *
 from apt_manage import *
@@ -25,50 +26,16 @@ class DashTab(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
 
-        current_month = strftime("%B")
-
-        def pigro_sound():
-            popen(
-                f"mpg123 {application_path}/scripts/PiGro-just_click_it.mp3 >/dev/null 2>&1"
-            )
-
-        self.pigro_img = ImageTk.PhotoImage(
-            Image.open(f"{application_path}/images/icons/pigro_icons/pigrologo.png")
+        self.system_icon = ImageTk.PhotoImage(
+            Image.open(f"{application_path}/images/icons/logo.png")
         )
-        self.pigroh_img = ImageTk.PhotoImage(
-            Image.open(f"{application_path}/images/icons/pigro_icons/pigrologoh.png")
-        )
-        self.pigrox_img = ImageTk.PhotoImage(
-            Image.open(f"{application_path}/images/icons/pigro_icons/pigrologox.png")
-        )
-        self.pigro_feb_img = ImageTk.PhotoImage(
-            Image.open(f"{application_path}/images/icons/pigro_icons/pigrologo_feb.png")
-        )
-
-        self.distro_ubuntu_logo_img = ImageTk.PhotoImage(
-            Image.open(f"{application_path}/images/icons/ubuntu_logo_dash.png")
-        )
-
-        self.distro_pi_logo_img = ImageTk.PhotoImage(
-            Image.open(f"{application_path}/images/icons/rpi_logo_dash.png")
-        )
-
-        self.distro_debian_logo_img = ImageTk.PhotoImage(
-            Image.open(f"{application_path}/images/icons/debian_logo_dash.png")
-        )
-
         if "dark" in theme_name or "Dark" in theme_name:
-            self.system_icon = ImageTk.PhotoImage(
-                Image.open(f"{application_path}/images/icons/pigro_icons/primo-logo-dark.png")
-            )
+
             self.distro_guide_logo_img = ImageTk.PhotoImage(
                 Image.open(f"{application_path}/images/icons/guideos_logo_dash_dark.png")
             )
         else:
 
-            self.system_icon = ImageTk.PhotoImage(
-                Image.open(f"{application_path}/images/icons/pigro_icons/primo-logo-light.png")
-            )
             self.distro_guide_logo_img = ImageTk.PhotoImage(
                 Image.open(f"{application_path}/images/icons/guideos_logo_dash_light.png")
             )
@@ -321,17 +288,37 @@ class DashTab(ttk.Frame):
 
         self.distro_label_frame = ttk.LabelFrame(
             self.info_frame_container,
-            text="Distro-Logo",
+            text="Grafikkarte",
         )
+
         self.distro_label_frame.grid(
-            column=2, columnspan=2, row=1, rowspan=2, sticky="nesw"
+            column=2, columnspan=2, row=1, sticky="nesw"
         )  
 
-        self.distro_logo_label = Label(
-            self.distro_label_frame,
-            image=self.distro_guide_logo_img,
+        # Ein label das den namen der Grafikkarte anzeigt
+        self.gpu_name_label = Label(self.distro_label_frame, text=f"Modell: {self.get_gpu_model()}")
+        self.gpu_name_label.pack(anchor="w", padx=10)
+
+        self.gpu_memory_label = Label(self.distro_label_frame, text=f"Speicher: {self.get_gpu_memory()}")
+        self.gpu_memory_label.pack(anchor="w", padx=10)
+
+        # Label Frame der Look heißt
+        self.look_label_frame = ttk.LabelFrame(
+            self.info_frame_container,
+            text="Erscheinungsbild",
         )
-        self.distro_logo_label.pack(fill=BOTH, expand=True)
+        self.look_label_frame.grid(
+            column=2, columnspan=2, row=2, sticky="nesw"
+        )
+        self.desktop_theme_label = Label(self.look_label_frame, text=f"Theme: {theme_name}")
+        self.desktop_theme_label.pack(anchor="w", padx=10)
+
+        self.icon_theme_label = Label(self.look_label_frame, text=f"Icons: {self.get_icon_theme()}")
+        self.icon_theme_label.pack(anchor="w", padx=10)
+
+        # label das den cursor theme anzeigt
+        self.cursor_theme_label = Label(self.look_label_frame, text=f"Cursor: {self.get_cursor_theme()}")
+        self.cursor_theme_label.pack(anchor="w", padx=10)
 
         self.update_labels()
 
@@ -384,6 +371,55 @@ class DashTab(ttk.Frame):
 
         # Schedule the next update
         self.after(3000, self.update_labels)
+
+    # Funktion die icon theme für cinnamon ausliest
+    def get_icon_theme(self):
+        try:
+            output = subprocess.check_output(
+                "gsettings get org.cinnamon.desktop.interface icon-theme",
+                shell=True,
+                universal_newlines=True,
+            )
+            icon_theme = output.strip().strip("'")
+            return icon_theme
+        except Exception:
+            return "N/A"
+    # Funktion die cursor theme für cinnamon ausliest
+    def get_cursor_theme(self):
+        try:
+            output = subprocess.check_output(
+                "gsettings get org.cinnamon.desktop.interface cursor-theme",
+                shell=True,
+                universal_newlines=True,
+            )
+            cursor_theme = output.strip().strip("'")
+            return cursor_theme
+        except Exception:
+            return "N/A"
+        
+    # Funktion um des modell der Grafikkarte auszulesen
+    def get_gpu_model(self):
+        try:
+            output = subprocess.check_output(
+                "glxinfo | grep 'Device'", shell=True, universal_newlines=True
+            )
+            # Nur den Teil vor der ersten Klammer nehmen
+            model = output.split(":", 1)[1].strip().split(" (")[0]
+            return model
+        except Exception:
+            return "N/A"
+
+    def get_gpu_memory(self):
+        """Liest den Video-Speicher der GPU mit glxinfo aus."""
+        try:
+            output = subprocess.check_output(
+                "glxinfo | grep 'Video memory'", shell=True, universal_newlines=True
+            )
+            # Beispiel-Ausgabe: '    Video memory: 4096MB'
+            return output.split(":", 1)[1].strip()
+        except Exception:
+            return "N/A"
+
 
     def get_guideo_version(self):
         # es soll ein der datei /etc/guideo-version ausgelsen werden

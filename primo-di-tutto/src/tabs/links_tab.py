@@ -38,7 +38,7 @@ class LinksTab(ttk.Frame):
         self.frame.columnconfigure(0, weight=1)
         # Für jeden Link einen Button erzeugen
         for idx, (label, url) in enumerate(linux_links.items()):
-            btn = ttk.Button(self.frame, text=label,style="Accent.TButton", command=lambda url=url: self.open_link(url))
+            btn = ttk.Button(self.frame, text=label,style="Custom.TButton", command=lambda url=url: self.open_link(url))
             btn.grid(row=idx, column=0, pady=5, sticky="ew")
 
     def open_link(self, url):
