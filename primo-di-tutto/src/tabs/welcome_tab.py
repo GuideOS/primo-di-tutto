@@ -74,7 +74,7 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
 
 
         # Button to install NVIDIA drivers
-        if not has_nvidia_gpu():
+        if has_nvidia_gpu():
             self.nvidia_button = ttk.Button(
                 self,
                 text=_("NVIDIA-Manager öffnen"),image=self.nvidia_icon, compound="left",command=open_nvidia_manager
