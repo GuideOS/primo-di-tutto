@@ -634,13 +634,13 @@ class SoftwareImageEditing:
     img_dict = dict(sorted({
         "img_0": {
             "Name": "GIMP",
-            "Package": AppPackage.DEB,
+            "Package": AppPackage.FLATPAK,
             "Description": "Ein freies und leistungsstarkes Bildbearbeitungsprogramm mit vielen Werkzeugen für Retusche, Montage und Bildkomposition. Unterstützt zahlreiche Plugins und Skripte.",
             "Icon": f"{application_path}/images/apps/org.gimp.GIMP-icon.png",
             "Thumbnail": f"{application_path}/images/apps/org.gimp.GIMP-thumb.png",
-            "Install": "pkexec apt install gimp -y",
-            "Uninstall": "pkexec apt remove gimp -y",
-            "Path": "gimp",
+            "Install": "flatpak install flathub org.gimp.GIMP -y",
+            "Uninstall": "flatpak remove org.gimp.GIMP -y",
+            "Path": "org.gimp.GIMP",
         },
         "img_1": {
             "Name": "Krita",
