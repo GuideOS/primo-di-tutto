@@ -13,8 +13,6 @@ from flatpak_manage import *
 from tool_tipps import CreateToolTip
 from tool_tipps import TipsText
 from tabs.pop_ups import *
-from tabs.text_dict_lib import Update_Tab_Buttons
-from resorcess import pi_identify
 import gettext
 import threading
 from logger_config import setup_logger
@@ -37,12 +35,9 @@ class UpdateTab(ttk.Frame):
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
-
         self.term_logo = PhotoImage(
             file=f"{application_path}/images/icons/papirus/goterminal.png"
         )
-
-
 
         # kill_term soll % wid beenden
 
@@ -106,24 +101,27 @@ class UpdateTab(ttk.Frame):
             execute_command(autorm_command)
 
         def apt_broken_action():
-                fix_broken_action=f"pkexec {application_path}/scripts/apt_fix_broken_wrap"
-                execute_command(fix_broken_action)
+            fix_broken_action = f"pkexec {application_path}/scripts/apt_fix_broken_wrap"
+            execute_command(fix_broken_action)
 
         def apt_missing_action():
-            fix_missing_action=f"pkexec {application_path}/scripts/apt_fix_missing_wrap"
+            fix_missing_action = (
+                f"pkexec {application_path}/scripts/apt_fix_missing_wrap"
+            )
             execute_command(fix_missing_action)
 
         def apt_reconf_action():
-            fix_missing_action=f"pkexec {application_path}/scripts/conf-a_wrap"
+            fix_missing_action = f"pkexec {application_path}/scripts/conf-a_wrap"
             execute_command(fix_missing_action)
 
         def flatpak_update_action():
-            flat_up_command=f"{application_path}/scripts/flatpak_update_wrap && exit ; exec bash"
+            flat_up_command = (
+                f"{application_path}/scripts/flatpak_update_wrap && exit ; exec bash"
+            )
             execute_command(flat_up_command)
 
-
         def flatpak_clean_action():
-            flat_clean_command=f"{application_path}/scripts/flatpak_clean_wrap"
+            flat_clean_command = f"{application_path}/scripts/flatpak_clean_wrap"
             execute_command(flat_clean_command)
 
         self.update_button_frame = ttk.Frame(self, padding=20)
@@ -251,8 +249,9 @@ class UpdateTab(ttk.Frame):
         )
         self.term_logo_label.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
-        
-        self.terminal = tk.Text(self.update_term_frame, height=20,borderwidth=0, highlightthickness=0)
+        self.terminal = tk.Text(
+            self.update_term_frame, height=20, borderwidth=0, highlightthickness=0
+        )
 
         self.terminal_scroll = ttk.Scrollbar(
             self.update_term_frame, orient="vertical", command=self.terminal.yview
@@ -264,8 +263,6 @@ class UpdateTab(ttk.Frame):
             style="Accent.TButton",
             command=kill_term,
         )
-
-
 
         self.update_info_frame = ttk.LabelFrame(self, text="Info")
         self.update_info_frame.grid(

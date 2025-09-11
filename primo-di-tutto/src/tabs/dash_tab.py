@@ -1,6 +1,5 @@
 import os
 from os import popen
-import os.path
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
@@ -16,7 +15,6 @@ from snap_manage import *
 from flatpak_manage import count_flatpaks
 from flatpak_alias_list import *
 from tabs.pop_ups import *
-from tool_tipps import CreateToolTip
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -32,12 +30,16 @@ class DashTab(ttk.Frame):
         if "dark" in theme_name or "Dark" in theme_name:
 
             self.distro_guide_logo_img = ImageTk.PhotoImage(
-                Image.open(f"{application_path}/images/icons/guideos_logo_dash_dark.png")
+                Image.open(
+                    f"{application_path}/images/icons/guideos_logo_dash_dark.png"
+                )
             )
         else:
 
             self.distro_guide_logo_img = ImageTk.PhotoImage(
-                Image.open(f"{application_path}/images/icons/guideos_logo_dash_light.png")
+                Image.open(
+                    f"{application_path}/images/icons/guideos_logo_dash_light.png"
+                )
             )
 
         # Open the /proc/device-tree/model file for reading
@@ -125,8 +127,6 @@ class DashTab(ttk.Frame):
         self.useage_container.grid_rowconfigure(0, weight=0)
         self.useage_container.grid_rowconfigure(1, weight=0)
 
-
-
         primo_logo_label = ttk.Label(self, image=self.system_icon)
         primo_logo_label.pack()
 
@@ -173,9 +173,7 @@ class DashTab(ttk.Frame):
             self.info_frame_container,
             text="Betriebssystem",
         )
-        self.os_label_frame.grid(
-            column=0, row=1, rowspan=2, sticky="nesw"
-        )  
+        self.os_label_frame.grid(column=0, row=1, rowspan=2, sticky="nesw")
 
         self.distro_label = tk.Label(self.os_label_frame, text="Distro:")
         self.distro_label.pack(anchor="w", padx=10)
@@ -209,7 +207,6 @@ class DashTab(ttk.Frame):
         self.info_frame_column_2 = Frame(
             self.info_frame_container,
         )
-
 
         self.mem_label_frame = ttk.LabelFrame(
             self.info_frame_container,
@@ -291,15 +288,17 @@ class DashTab(ttk.Frame):
             text="Grafikkarte",
         )
 
-        self.distro_label_frame.grid(
-            column=2, columnspan=2, row=1, sticky="nesw"
-        )  
+        self.distro_label_frame.grid(column=2, columnspan=2, row=1, sticky="nesw")
 
         # Ein label das den namen der Grafikkarte anzeigt
-        self.gpu_name_label = Label(self.distro_label_frame, text=f"Modell: {self.get_gpu_model()}")
+        self.gpu_name_label = Label(
+            self.distro_label_frame, text=f"Modell: {self.get_gpu_model()}"
+        )
         self.gpu_name_label.pack(anchor="w", padx=10)
 
-        self.gpu_memory_label = Label(self.distro_label_frame, text=f"Speicher: {self.get_gpu_memory()}")
+        self.gpu_memory_label = Label(
+            self.distro_label_frame, text=f"Speicher: {self.get_gpu_memory()}"
+        )
         self.gpu_memory_label.pack(anchor="w", padx=10)
 
         # Label Frame der Look heißt
@@ -307,17 +306,21 @@ class DashTab(ttk.Frame):
             self.info_frame_container,
             text="Erscheinungsbild",
         )
-        self.look_label_frame.grid(
-            column=2, columnspan=2, row=2, sticky="nesw"
+        self.look_label_frame.grid(column=2, columnspan=2, row=2, sticky="nesw")
+        self.desktop_theme_label = Label(
+            self.look_label_frame, text=f"Theme: {theme_name}"
         )
-        self.desktop_theme_label = Label(self.look_label_frame, text=f"Theme: {theme_name}")
         self.desktop_theme_label.pack(anchor="w", padx=10)
 
-        self.icon_theme_label = Label(self.look_label_frame, text=f"Icons: {self.get_icon_theme()}")
+        self.icon_theme_label = Label(
+            self.look_label_frame, text=f"Icons: {self.get_icon_theme()}"
+        )
         self.icon_theme_label.pack(anchor="w", padx=10)
 
         # label das den cursor theme anzeigt
-        self.cursor_theme_label = Label(self.look_label_frame, text=f"Cursor: {self.get_cursor_theme()}")
+        self.cursor_theme_label = Label(
+            self.look_label_frame, text=f"Cursor: {self.get_cursor_theme()}"
+        )
         self.cursor_theme_label.pack(anchor="w", padx=10)
 
         self.update_labels()
@@ -416,6 +419,7 @@ class DashTab(ttk.Frame):
             return icon_theme
         except Exception:
             return "N/A"
+
     # Funktion die cursor theme für cinnamon ausliest
     def get_cursor_theme(self):
         try:
@@ -428,7 +432,7 @@ class DashTab(ttk.Frame):
             return cursor_theme
         except Exception:
             return "N/A"
-        
+
     # Funktion um des modell der Grafikkarte auszulesen
     def get_gpu_model(self):
         try:
@@ -452,7 +456,6 @@ class DashTab(ttk.Frame):
         except Exception:
             return "N/A"
 
-
     def get_guideo_version(self):
         # es soll ein der datei /etc/guideo-version ausgelsen werden
         try:
@@ -462,8 +465,6 @@ class DashTab(ttk.Frame):
         except FileNotFoundError:
             logger.error("Die Datei /etc/guideo-version wurde nicht gefunden.")
             return "N/A"
-    
-
 
     def get_cpu_temperature(self):
         """Get the CPU temperature."""
@@ -476,33 +477,43 @@ class DashTab(ttk.Frame):
     def update_cpu_labels(self, cpu_usage, cpu_temp, cpufreq):
         """Update CPU-related labels."""
         self.cpu_percent["text"] = f"{cpu_usage}%"
-        #self.cpu_temp_percent["text"] = f"{cpu_temp}°C"
+        # self.cpu_temp_percent["text"] = f"{cpu_temp}°C"
         self.cpu_model_label.configure(text=f"Modell: {self.get_cpu_model_name()}")
         self.cpu_max_label.configure(text=f"Max: {cpufreq.max:.0f} Mhz")
         self.cpu_current_label.configure(text=f"Aktuell: {cpufreq.current:.0f} Mhz")
         self.cpu_min_label.configure(text=f"Min: {cpufreq.min:.0f} Mhz")
-        
-
-
 
     def update_memory_labels(self, svmem, swap):
         """Update memory-related labels."""
         self.ram_percent["text"] = f"{svmem.percent}%"
-        self.ram_total_label.configure(text=f"RAM | Total: {self.get_size(svmem.total)}")
-        self.ram_available_label.configure(text=f"RAM | Frei: {self.get_size(svmem.available)}")
-        self.ram_used_label.configure(text=f"RAM | Genutzt: {self.get_size(svmem.used)}")
-        self.swap_total_label.configure(text=f"Swap | Total: {self.get_size(swap.total)}")
+        self.ram_total_label.configure(
+            text=f"RAM | Total: {self.get_size(svmem.total)}"
+        )
+        self.ram_available_label.configure(
+            text=f"RAM | Frei: {self.get_size(svmem.available)}"
+        )
+        self.ram_used_label.configure(
+            text=f"RAM | Genutzt: {self.get_size(svmem.used)}"
+        )
+        self.swap_total_label.configure(
+            text=f"Swap | Total: {self.get_size(swap.total)}"
+        )
         self.swap_free_label.configure(text=f"Swap | Frei: {self.get_size(swap.free)}")
-        self.swap_used_label.configure(text=f"Swap | Genutzt: {self.get_size(swap.used)}")
+        self.swap_used_label.configure(
+            text=f"Swap | Genutzt: {self.get_size(swap.used)}"
+        )
 
     def update_disk_labels(self):
         """Update disk-related labels."""
         hdd_usage = psutil.disk_usage("/").percent
         obj_Disk = psutil.disk_usage("/")
-        self.total_size_label.configure(text=f"Gesamtgröße: {obj_Disk.total / (2**30):.2f} GB")
+        self.total_size_label.configure(
+            text=f"Gesamtgröße: {obj_Disk.total / (2**30):.2f} GB"
+        )
         self.used_label.configure(text=f"Genutzt: {obj_Disk.used / (2**30):.2f} GB")
         self.free_label.configure(text=f"Frei: {obj_Disk.free / (2**30):.2f} GB")
         self.hdd_percent.configure(text=f"{hdd_usage}%")
+
     def get_network_info(self):
         """Get network-related information."""
         try:
@@ -529,9 +540,13 @@ class DashTab(ttk.Frame):
         self.kernel_label.configure(text=f"Kernel: {my_system.release}")
         self.shell_label.configure(text=f"Shell: {os.environ['SHELL']}")
         self.desktop_label.configure(text=f"Desktop: {get_desktop_environment()}")
-        self.window_manager_label.configure(text=f"Window Manager: {self.get_window_manager()}")
+        self.window_manager_label.configure(
+            text=f"Window Manager: {self.get_window_manager()}"
+        )
         self.session_label.configure(text=f"Session: {os.environ['XDG_SESSION_TYPE']}")
-        self.resolution_label.configure(text=f"Auflösung: {self.winfo_screenwidth()}x{self.winfo_screenheight()}")
+        self.resolution_label.configure(
+            text=f"Auflösung: {self.winfo_screenwidth()}x{self.winfo_screenheight()}"
+        )
         self.user_label.configure(text=f"User: {user}")
 
     def update_package_info(self):
@@ -552,7 +567,9 @@ class DashTab(ttk.Frame):
         """Get the CPU model name."""
         command = "lscpu | grep -E 'Model name|Modellname' | awk -F ': ' '{gsub(/^[ \t]+|[ \t]+$/, \"\", $2); print $2}'"
         try:
-            output = subprocess.check_output(command, shell=True, universal_newlines=True)
+            output = subprocess.check_output(
+                command, shell=True, universal_newlines=True
+            )
             return output.strip()
         except subprocess.CalledProcessError:
             return "N/A"
@@ -569,5 +586,5 @@ class DashTab(ttk.Frame):
                     return line.split("Name: ")[1]
         except subprocess.CalledProcessError as e:
             logger.error(f"Error running wmctrl: {e}")
-        
+
         return None

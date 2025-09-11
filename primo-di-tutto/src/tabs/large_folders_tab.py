@@ -22,7 +22,7 @@ class LargeFoldersTab(ttk.Frame):
             result = subprocess.run(
                 ["du", "-h", "--max-depth=10", f"{my_home}/"],
                 capture_output=True,
-                text=True
+                text=True,
             )
             lines = result.stdout.strip().split("\n")
             output = []
@@ -44,14 +44,17 @@ class LargeFoldersTab(ttk.Frame):
                     continue
                 full_path = os.path.join(full_path, part)
                 if full_path not in path_nodes:
-                    node_id = tree.insert(current_parent, "end", text=part, values=("",))
+                    node_id = tree.insert(
+                        current_parent, "end", text=part, values=("",)
+                    )
                     path_nodes[full_path] = node_id
-                    node_paths[node_id] = os.path.join(my_home, full_path)  # <-- hier absolut speichern
+                    node_paths[node_id] = os.path.join(
+                        my_home, full_path
+                    )  # <-- hier absolut speichern
                     current_parent = node_id
                 else:
                     current_parent = path_nodes[full_path]
             tree.item(path_nodes[full_path], values=(size,))
-
 
         def on_double_click(event, tree):
             item_id = tree.identify_row(event.y)
@@ -62,9 +65,9 @@ class LargeFoldersTab(ttk.Frame):
                     try:
                         subprocess.Popen(["nemo", abs_path])
                     except FileNotFoundError:
-                        print("Nemo nicht gefunden. Stelle sicher, dass Nemo installiert ist.")
-
-
+                        print(
+                            "Nemo nicht gefunden. Stelle sicher, dass Nemo installiert ist."
+                        )
 
         tree = ttk.Treeview(self, columns=("size",), show="tree headings")
         tree.heading("#0", text="Pfad", anchor="w")

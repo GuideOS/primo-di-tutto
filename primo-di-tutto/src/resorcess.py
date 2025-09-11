@@ -6,7 +6,6 @@ import os.path
 import distro
 import subprocess
 from subprocess import TimeoutExpired
-from tabs.system_tab_check import check_pipanel
 import requests
 import platform
 from constants import NotificationUrgency
@@ -36,17 +35,19 @@ current_version = "0.6.2"
 
 logger.info(f"You are using Primo Di Tutto {current_version}")
 
+
 def create_plank_directories():
     directories = [
         os.path.expanduser("~/.local/share/plank/themes"),
-        os.path.expanduser("~/.config/plank")
+        os.path.expanduser("~/.config/plank"),
     ]
     for directory in directories:
         if not os.path.exists(directory):
             os.makedirs(directory, exist_ok=True)
-            logger.info(f"Verzeichnis erstellt: {directory}")
+            logger.info(f"Directory created: {directory}")
         else:
-            logger.info(f"Verzeichnis existiert bereits: {directory}")
+            logger.info(f"Directory already exists: {directory}")
+
 
 create_plank_directories()
 
@@ -78,14 +79,14 @@ if not os.path.exists(primo_config_dir):
 
 
 def get_first_run():
-    # Pfad zur Konfigurationsdatei
+    # Path to the configuration file
     primo_config_file = os.path.expanduser("~/.primo/primo.conf")
 
-    # Die Datei Zeile für Zeile durchgehen
+    # Read the file line by line
     with open(primo_config_file, "r") as file:
         for line in file:
             if line.startswith("firstrun="):
-                # Den Wert nach dem Gleichheitszeichen extrahieren
+                # Extract the value after the equals sign
                 firstrun_value = line.split("=")[1].strip()
                 logger.info(f"firstrun: {firstrun_value}")
 
@@ -108,12 +109,16 @@ if machiene_arch == "aarch64" and architecture_arch == "64bit":
     os_arch_output = "arm64"
 
 
-def send_notification(message: str, title="Primo Di Tutto", icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png", urgency: str = NotificationUrgency.NORMAL):
+def send_notification(
+    message: str,
+    title="Primo Di Tutto",
+    icon_path="/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png",
+    urgency: str = NotificationUrgency.NORMAL,
+):
     command = ["notify-send", title, message, "-u", urgency]
     if icon_path:
         command.extend(["-i", icon_path])
     subprocess.run(command)
-
 
 
 def run_command(command):
@@ -125,171 +130,79 @@ def run_command(command):
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            timeout=300, # 5 Minutes Timeout
+            timeout=300,  # 5 Minutes Timeout
             text=True,
         )
         return True, result.stdout.strip()
     except subprocess.CalledProcessError as e:
-        logger.error("Fehler bei der Ausführung des Befehls", e)
+        logger.error("Error while executing the command", e)
         return False, None
     except TimeoutExpired as e:
-        logger.error("Timeout bei der Ausführung des Befehls", e)
+        logger.error("Timeout while executing the command", e)
         return False, None
     except PermissionError as e:
-        logger.error("Fehlende Berechtigungen", e)
+        logger.error("Missing permissions", e)
         return False, None
     except Exception as e:
-        logger.exception("Unbekannter Fehler", e)
+        logger.exception("Unknown error", e)
         return False, None
 
 
 def get_desktop_environment():
-    xdg_current_desktop = os.environ.get("XDG_CURRENT_DESKTOP").lower()
-    # print(xdg_current_desktop)
-    # Check for specific desktop environments
-    if xdg_current_desktop == "x-cinnamon" or xdg_current_desktop == "cinnamon":
+    xdg_current_desktop = os.environ.get("XDG_CURRENT_DESKTOP", "").lower()
+    if xdg_current_desktop in ["x-cinnamon", "cinnamon"]:
         return "CINNAMON"
-    elif xdg_current_desktop == "unity":
-        return "UNITY"
-    elif xdg_current_desktop == "ubuntu:gnome":
-        return "GNOME"
-    elif "gnome" in xdg_current_desktop:
-        return "GNOME"
-    elif "plasma" == xdg_current_desktop or "kde" == xdg_current_desktop:
-        return "KDE"
-    elif "xfce" == xdg_current_desktop:
-        return "XFCE"
-    elif "lxde" == xdg_current_desktop:
-        return "LXDE"
-    elif "lxde-pi-wayfire" == xdg_current_desktop:
-        return "PI-WAYFIRE"
-    elif "mate" == xdg_current_desktop:
-        return "MATE"
-    else:
-        return "Unknown"
-
-
-def get_lxde_theme_name():
-    """Retrieve the current theme for LXDE from the desktop.conf file."""
-    directory_path = os.path.expanduser("~/.config/lxsession/LXDE-pi/")
-    config_file_path = os.path.join(directory_path, "desktop.conf")
-
-    # Ensure ~/.config/lxsession/LXDE-pi/desktop.conf exists
-    if not os.path.exists(directory_path):
-        logger.info("Directory does not exist. Creating", directory_path)
-        os.makedirs(directory_path)
-        with open(config_file_path, "w") as f:
-            f.write(
-                """[GTK]
-sNet/ThemeName=PiXflat
-sGtk/ColorScheme=selected_bg_color:#87919B\nselected_fg_color:#F0F0F0\nbar_bg_color:#EDECEB\nbar_fg_color:#000000\n
-sGtk/FontName=PibotoLt 12
-iGtk/ToolbarIconSize=3
-sGtk/IconSizes=gtk-large-toolbar=24,24
-iGtk/CursorThemeSize=24"""
-            )
-        return "PiXflat"
-    else:
-        with open(config_file_path, "r") as file:
-            for line in file:
-                if "sNet/ThemeName=" in line:
-                    theme_name = line.split("=")[1].strip()
-                    return theme_name
-        return "Theme not found."
+    return "Unknown"
 
 
 def get_theme():
-    """Get the current GTK or KDE theme based on the desktop environment."""
-    de = get_desktop_environment()
-
-    if not de:
-        return "Desktop Environment not detected."
-
-    # KDE/Plasma
-    if "KDE" in de or "PLASMA" in de:
-        kde_config_file = os.path.expanduser("~/.config/kdeglobals")
-        if os.path.exists(kde_config_file):
-            success, kde_theme = run_command(f"grep 'Name=' {kde_config_file}")
-            if kde_theme:
-                return kde_theme.split("=")[-1].strip().strip("'")
-        return "KDE theme not found."
-
-    elif "CINNAMON" in de:
-        success, theme = run_command("gsettings get org.cinnamon.desktop.interface gtk-theme")
-        return theme.strip("'") if theme else "Theme not found."
-    elif "UNITY" in de:
-        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
-        return theme.strip("'") if theme else "Theme not found."
-
-    elif "GNOME" in de:
-        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
-        return theme.strip("'") if theme else "Theme not found."
-
-    elif "BUDGIE" in de:
-        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
-        return theme.strip("'") if theme else "Theme not found."
-
-    elif "PI-WAYFIRE" in de:
-        success, theme = run_command("gsettings get org.gnome.desktop.interface gtk-theme")
-        return theme.strip("'") if theme else "Theme not found."
-    elif "MATE" in de:
-        success, theme = run_command("gsettings get org.mate.interface gtk-theme")
-        return theme.strip("'") if theme else "Theme not found."
-    elif "XFCE" in de:
-        success, theme = run_command("xfconf-query -c xsettings -p /Net/ThemeName")
-        return theme.strip("'") if theme else "Theme not found."
-    elif "LXDE" in de or "LXDE-PI" in de:
-        return get_lxde_theme_name()
-
-    return "Unsupported Desktop Environment."
+    try:
+        output = subprocess.check_output(
+            "gsettings get org.cinnamon.desktop.interface gtk-theme",
+            shell=True,
+            universal_newlines=True,
+        )
+        return output.strip().strip("'")
+    except Exception:
+        return "N/A"
 
 
 theme_name = get_theme()
 # logger.debug(f"Current theme: {theme_name}")
 
-
 # Define Permission Method
-def pi_identify():
-    if get_desktop_environment == "lxde-pi-wayfire" or check_pipanel() == True:
-        os_name_tag = "pi_os"
-    else:
-        os_name_tag = distro_get
-    return os_name_tag
-
-
-if pi_identify() == "pi_os":
-    permit = "sudo"
-else:
-    permit = "pkexec"
+permit = "pkexec"
 
 theme = get_theme().lower()
 
+
 def has_nvidia_gpu():
     try:
-        # lspci -nnk ausführen
-        output = subprocess.check_output(['lspci', '-nnk'], text=True)
+        # Execute lspci -nnk
+        output = subprocess.check_output(["lspci", "-nnk"], text=True)
     except subprocess.CalledProcessError as e:
-        print("Fehler beim Ausführen von lspci:", e)
+        print("Error while executing lspci:", e)
         return False
     except FileNotFoundError:
-        print("lspci ist nicht installiert oder nicht im PATH.")
+        print("lspci is not installed or not in PATH.")
         return False
 
-    # Alle VGA-Abschnitte extrahieren
+    # Extract all VGA sections
     lines = output.splitlines()
     capture = False
     for line in lines:
-        if re.search(r'VGA compatible controller', line):
+        if re.search(r"VGA compatible controller", line):
             capture = True
             if "NVIDIA" in line:
-                return True  # NVIDIA gefunden
+                return True  # NVIDIA found
         elif capture:
-            if not (line.startswith('\t') or line.startswith(' ')):
-                capture = False  # Ende der Section
+            if not (line.startswith("\t") or line.startswith(" ")):
+                capture = False  # End of section
             elif "NVIDIA" in line:
-                return True  # NVIDIA innerhalb des Blocks gefunden
+                return True  # NVIDIA found within the block
 
     return False
+
 
 # Font Definition Vars
 font_20 = ("Sans", 20)

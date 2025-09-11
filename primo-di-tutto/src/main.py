@@ -30,7 +30,7 @@ class MainApplication(tk.Tk):
         self.title("Primo | GuideOS Einstellungen")
         self.resizable(False, False)
         self.tk.call("source", TCL_THEME_FILE_PATH)
-        self.tk.call('tk', 'scaling', scaling)
+        self.tk.call("tk", "scaling", scaling)
 
         # self["background"] = maincolor
         app_width = 1200
@@ -38,8 +38,8 @@ class MainApplication(tk.Tk):
         # Define Screen
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
-        #x = (screen_width / 2) - (app_width / 2)
-        #y = (screen_height / 2) - (app_height / 2)
+        # x = (screen_width / 2) - (app_width / 2)
+        # y = (screen_height / 2) - (app_height / 2)
 
         # self.icon is still needed for some DEs
         self.icon = tk.PhotoImage(
@@ -56,7 +56,6 @@ class MainApplication(tk.Tk):
             self.tk.call("set_theme", "dark")
         else:
             self.tk.call("set_theme", "light")
-
 
         self.notebook = ttk.Notebook(self)
         self.notebook.grid(row=0, column=0, sticky="nsew")
@@ -77,7 +76,9 @@ class MainApplication(tk.Tk):
 
         self.notebook.add(self.dash_tab, compound=LEFT, text="Übersicht")
         self.notebook.add(self.update_tab, compound=LEFT, text="Aktualisierung")
-        self.notebook.add(self.software_tab, compound=LEFT, text="Software-\nEmpfehlungen")
+        self.notebook.add(
+            self.software_tab, compound=LEFT, text="Software-\nEmpfehlungen"
+        )
         self.notebook.add(self.system_tab, compound=LEFT, text="Werkzeuge")
         self.notebook.add(
             self.expert_tools_tab, compound=LEFT, text="Expertenwerkzeuge"
@@ -87,29 +88,32 @@ class MainApplication(tk.Tk):
         self.notebook.add(self.links_tab, compound=LEFT, text="Links")
         self.notebook.add(self.contrib_tab, compound=LEFT, text="Mitmachen")
 
-        # Notebook Theming
-        global noteStyler
-        noteStyler = ttk.Style(self)
-        noteStyler.configure(
-            "TNotebook",
-            borderwidth=0,
-            tabposition="w",
-            highlightthickness=0,
-        )
-        noteStyler.configure(
-            "TNotebook.Tab",
-            borderwidth=0,
-            font=font_10,
-            width=18,
-            highlightthickness=0,
-        )
+        def notebook_styler():
+            # Notebook Theming
+            global noteStyler
+            noteStyler = ttk.Style(self)
+            noteStyler.configure(
+                "TNotebook",
+                borderwidth=0,
+                tabposition="w",
+                highlightthickness=0,
+            )
+            noteStyler.configure(
+                "TNotebook.Tab",
+                borderwidth=0,
+                font=font_10,
+                width=18,
+                highlightthickness=0,
+            )
 
-        noteStyler.configure("TButton", justify="left", anchor="w")
+            noteStyler.configure("TButton", justify="left", anchor="w")
 
-        noteStyler.configure("Custom.TButton", justify="center", anchor="center")
-        noteStyler.configure(
-            "Accent2.TButton", justify="center", anchor="center", font=font_12
-        )
+            noteStyler.configure("Custom.TButton", justify="center", anchor="center")
+            noteStyler.configure(
+                "Accent2.TButton", justify="center", anchor="center", font=font_12
+            )
+
+        notebook_styler()
 
 
 if __name__ == "__main__":

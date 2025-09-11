@@ -1,19 +1,15 @@
 import os
 from os import popen
-import os.path
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
-from tkinter import filedialog
 from PIL import ImageTk, Image
 from resorcess import *
 from apt_manage import *
 import subprocess
 from flatpak_alias_list import *
 from tabs.pop_ups import *
-from tabs.system_tab_check import *
 import json
-from tabs.system_tab_check import check_papirus
 import shutil
 from logger_config import setup_logger
 from back_my_cinnamon import *
@@ -27,32 +23,71 @@ class LookTab(ttk.Frame):
         super().__init__(master)
         self.grid(row=0, column=0, sticky="nsew")
 
-
-        self.classico_thumb = PhotoImage(
+        self.classico_thumb_light = PhotoImage(
             file=f"{application_path}/images/icons/pigro_icons/classico_thumb_light.png"
         )
-        self.upside_thumb = PhotoImage(
+        self.upside_thumb_light = PhotoImage(
             file=f"{application_path}/images/icons/pigro_icons/upside_thumb_light.png"
         )
-        self.elfi_thumb = PhotoImage(
+        self.elfi_thumb_light = PhotoImage(
             file=f"{application_path}/images/icons/pigro_icons/elfi_thumb_light.png"
         )
-        self.devil_thumb = PhotoImage(
+        self.devil_thumb_light = PhotoImage(
             file=f"{application_path}/images/icons/pigro_icons/devil_thumb_light.png"
         )
+        self.classico_thumb_dark = PhotoImage(
+            file=f"{application_path}/images/icons/pigro_icons/classico_thumb_dark.png"
+        )
+        self.upside_thumb_dark = PhotoImage(
+            file=f"{application_path}/images/icons/pigro_icons/upside_thumb_dark.png"
+        )
+        self.elfi_thumb_dark = PhotoImage(
+            file=f"{application_path}/images/icons/pigro_icons/elfi_thumb_dark.png"
+        )
+        self.devil_thumb_dark = PhotoImage(
+            file=f"{application_path}/images/icons/pigro_icons/devil_thumb_dark.png"
+        )
+
+        def notebook_styler():
+            # Notebook Theming
+            global noteStyler
+            noteStyler = ttk.Style(self)
+            noteStyler.configure(
+                "TNotebook",
+                borderwidth=0,
+                tabposition="w",
+                highlightthickness=0,
+            )
+            noteStyler.configure(
+                "TNotebook.Tab",
+                borderwidth=0,
+                font=font_10,
+                width=18,
+                highlightthickness=0,
+            )
+
+            noteStyler.configure("TButton", justify="left", anchor="w")
+
+            noteStyler.configure("Custom.TButton", justify="center", anchor="center")
+            noteStyler.configure(
+                "Accent2.TButton", justify="center", anchor="center", font=font_12
+            )
 
         def backup_grouped_config():
-            # Verzeichnis mit der JSON-Datei
+            # Backup the Cinnamon grouped-window-list configuration JSON file
+            # Returns True if successful, False otherwise
+
+            # Directory containing the JSON configuration file
             config_dir = os.path.expanduser(
                 "~/.config/cinnamon/spices/grouped-window-list@cinnamon.org"
             )
 
-            # Prüfen, ob das Verzeichnis existiert
+            # Check if the directory exists
             if not os.path.exists(config_dir):
                 logger.error(f"Das Verzeichnis {config_dir} wurde nicht gefunden.")
                 return False
 
-            # Datei mit dem Suchmuster finden
+            # Find the file matching the pattern
             try:
                 json_file = next(
                     (f for f in os.listdir(config_dir) if f.endswith(".json")), None
@@ -65,13 +100,13 @@ class LookTab(ttk.Frame):
                 logger.error("Keine JSON-Datei gefunden.")
                 return False
 
-            # Pfad zur Originaldatei
+            # Path to the original file
             file_path = os.path.join(config_dir, json_file)
-            # Backup-Dateipfad
+            # Path to the backup file
             backup_file_path = os.path.join(config_dir, "69.bak")
 
             try:
-                # Datei kopieren
+                # Copy the file
                 shutil.copy(file_path, backup_file_path)
                 logger.info(f"Backup erfolgreich erstellt: {backup_file_path}")
                 return True
@@ -83,28 +118,33 @@ class LookTab(ttk.Frame):
         backup_grouped_config()
 
         def restore_cinnamon_config(file_number, c_dir):
-            # Verzeichnis mit der JSON-Datei
+            # Restore the Cinnamon grouped-window-list configuration from backup
+            # file_number: target JSON file number
+            # c_dir: config directory
+            # Returns True if successful, False otherwise
+
+            # Directory containing the JSON configuration file
             config_dir = os.path.expanduser(c_dir)
 
-            # Prüfen, ob das Verzeichnis existiert
+            # Check if the directory exists
             if not os.path.exists(config_dir):
                 logger.error(f"Das Verzeichnis {config_dir} wurde nicht gefunden.")
                 return False
 
-            # Pfad zur Backup-Datei
+            # Path to the backup file
             backup_file_path = os.path.join(config_dir, "69.bak")
 
-            # Prüfen, ob die Backup-Datei existiert
+            # Check if the backup file exists
             if not os.path.exists(backup_file_path):
                 logger.error(f"Das Backup {backup_file_path} wurde nicht gefunden.")
                 return False
 
-            # Ziel-JSON-Dateiname basierend auf der Zahl
+            # Target JSON filename based on the number
             restored_file_name = f"{file_number}.json"
             restored_file_path = os.path.join(config_dir, restored_file_name)
 
             try:
-                # Backup zurückkopieren
+                # Restore the backup
                 shutil.copy(backup_file_path, restored_file_path)
                 logger.info(
                     f"Backup erfolgreich wiederhergestellt als: {restored_file_path}"
@@ -115,13 +155,15 @@ class LookTab(ttk.Frame):
                 return False
 
         def check_plank_autostart():
-            # Pfad zur Datei
+            # Remove plank.desktop from autostart if it exists
+
+            # Path to the file
             path = os.path.expanduser("~/.config/autostart/plank.desktop")
 
-            # Prüfen, ob die Datei existiert
+            # Check if the file exists
             if os.path.exists(path):
                 try:
-                    # Datei löschen
+                    # Delete the file
                     os.remove(path)
                     logger.info(f"Die Datei {path} wurde gelöscht.")
                 except Exception as e:
@@ -130,21 +172,23 @@ class LookTab(ttk.Frame):
                 logger.warning(f"Die Datei {path} existiert nicht.")
 
         def copy_dockitems():
-            # Definiere Quell- und Zielverzeichnisse
+            # Copy all .dockitem files from the application scripts directory to Plank's launchers directory
+
+            # Define source and destination directories
             src = f"{application_path}/scripts/"
             dest = os.path.expanduser("~/.config/plank/dock1/launchers")
 
-            # Prüfe, ob das Quellverzeichnis existiert
+            # Check if the source directory exists
             if not os.path.exists(src):
                 logger.warning(f"Quellverzeichnis {src} existiert nicht.")
                 return
 
-            # Erstelle das Zielverzeichnis, falls es nicht existiert
+            # Create the destination directory if it does not exist
             if not os.path.exists(dest):
                 os.makedirs(dest)
                 logger.info(f"Zielverzeichnis {dest} wurde erstellt.")
 
-            # Kopiere alle .dockitem-Dateien
+            # Copy all .dockitem files
             for file_name in os.listdir(src):
                 if file_name.endswith(".dockitem"):
                     src_file = os.path.join(src, file_name)
@@ -158,7 +202,8 @@ class LookTab(ttk.Frame):
         # Funktion ausführen
 
         def plank_values():
-            """Schreibt vorgegebene Werte in dconf."""
+            # Write predefined values to dconf for Plank dock configuration
+
             dconf_data = {
                 "/net/launchpad/plank/docks/dock1/alignment": "'fill'",
                 "/net/launchpad/plank/docks/dock1/dock-items": "['gos-menu.dockitem', 'nemo.dockitem', 'org.gnome.Software.dockitem', 'firefox.dockitem', 'thunderbird-1.dockitem', 'libreoffice-writer.dockitem']",
@@ -176,7 +221,7 @@ class LookTab(ttk.Frame):
                     logger.error(f"Fehler beim Schreiben: {path} -> {value}")
                     logger.error(e)
 
-            # Quell- und Zielpfade
+            # Source and destination paths
             source_path = f"{application_path}/scripts/plank.desktop"
             destination_path = os.path.expanduser("~/.config/autostart/plank.desktop")
 
@@ -184,8 +229,10 @@ class LookTab(ttk.Frame):
             copy_file(source_path, destination_path)
 
         def copy_file(source, destination):
+            # Copy a file from source to destination, creating the destination directory if needed
+
             try:
-                # Sicherstellen, dass das Zielverzeichnis existiert
+                # Ensure the destination directory exists
                 destination_dir = os.path.dirname(destination)
                 os.makedirs(destination_dir, exist_ok=True)
 
@@ -196,8 +243,10 @@ class LookTab(ttk.Frame):
                 logger.error(f"Fehler beim Kopieren der Datei: {e}")
 
         def copy_guide_menu(application_path):
+            # Copy guide_menu.json to the Cinnamon menu spices directory as 0.json
+
             """
-            Kopiert die Datei guide_menu.json in das Cinnamon Menü Verzeichnis.
+            Copies the guide_menu.json file to the Cinnamon menu directory
 
             Args:
                 application_path (str): Der Pfad zum Hauptverzeichnis der Anwendung.
@@ -208,40 +257,10 @@ class LookTab(ttk.Frame):
             )
             destination_file = os.path.join(destination_directory, "0.json")
 
-            # Erstelle das Zielverzeichnis, falls es nicht existiert
+            # Create the destination directory if it does not exist
             os.makedirs(destination_directory, exist_ok=True)
 
-            # Kopiere die Datei
-            try:
-                # Datei auslesen
-                with open(source_file, "r") as src:
-                    content = src.read()
-
-                # Datei im Zielverzeichnis erstellen und Inhalt schreiben
-                with open(destination_file, "w") as dst:
-                    dst.write(content)
-
-                logger.info(f"Datei erfolgreich nach {destination_file} kopiert.")
-            except Exception as e:
-                logger.error(f"Fehler beim Kopieren der Datei: {e}")
-
-        def copy_guide_menu_up(application_path):
-            """
-            Kopiert die Datei guide_menu.json in das Cinnamon Menü Verzeichnis.
-
-            Args:
-                application_path (str): Der Pfad zum Hauptverzeichnis der Anwendung.
-            """
-            source_file = f"{application_path}/scripts/guide_menu_up.json"
-            destination_directory = os.path.expanduser(
-                "~/.config/cinnamon/spices/menu@cinnamon.org"
-            )
-            destination_file = os.path.join(destination_directory, "0.json")
-
-            # Erstelle das Zielverzeichnis, falls es nicht existiert
-            os.makedirs(destination_directory, exist_ok=True)
-
-            # Kopiere die Datei
+            # Copy the file
             try:
                 # Datei auslesen
                 with open(source_file, "r") as src:
@@ -283,6 +302,8 @@ class LookTab(ttk.Frame):
                 logger.error(f"Ein Fehler ist aufgetreten: {e}")
 
         def set_elfi_panel():
+            # Set up the Elfi panel layout
+
             popen("killall plank")
             check_plank_autostart()
 
@@ -295,7 +316,7 @@ class LookTab(ttk.Frame):
                 check=True,
             )
 
-            # Quell- und Zielpfade
+            # Source and destination paths
             calendar_bak = f"{application_path}/scripts/calendar@cinnamon.org.json"
             calendar_path = os.path.expanduser(
                 "~/.config/cinnamon/spices/calendar@cinnamon.org/13.json"
@@ -311,6 +332,8 @@ class LookTab(ttk.Frame):
             create_cinnamenu_conf()
 
         def set_classico_panel():
+            # Set up the Classico panel layout
+
             popen("killall plank")
             check_plank_autostart()
             subprocess.run(
@@ -381,6 +404,8 @@ class LookTab(ttk.Frame):
             copy_file(menu_bak, menu_path)
 
         def set_der_teufel_panel():
+            # Set up the Der Teufel panel layout
+
             popen("plank")
             subprocess.run(
                 ["gsettings", "set", "org.cinnamon", "enabled-extensions", "[]"]
@@ -402,6 +427,8 @@ class LookTab(ttk.Frame):
             copy_dockitems()
 
         def set_upside_down_panel():
+            # Set up the Upside Down panel layout
+
             check_plank_autostart()
             popen("killall plank")
             subprocess.run(
@@ -430,6 +457,18 @@ class LookTab(ttk.Frame):
             )
             copy_file(menu_bak, menu_path)
 
+        def layout_icon_conf_light():
+            classico_button.configure(image=self.classico_thumb_light)
+            upside_button.configure(image=self.upside_thumb_light)
+            elfi_button.configure(image=self.elfi_thumb_light)
+            devil_button.configure(image=self.devil_thumb_light)
+
+        def layout_icon_conf_dark():
+            classico_button.configure(image=self.classico_thumb_dark)
+            upside_button.configure(image=self.upside_thumb_dark)
+            elfi_button.configure(image=self.elfi_thumb_dark)
+            devil_button.configure(image=self.devil_thumb_dark)
+
         self.desktop_layout_set = ttk.LabelFrame(
             self, text="Layout-Vorlagen", padding=10
         )
@@ -449,7 +488,7 @@ class LookTab(ttk.Frame):
         classico_button = ttk.Button(
             self.desktop_layout_set,
             compound="center",
-            image=self.classico_thumb,
+            image=self.classico_thumb_light,
             command=set_classico_panel,
         )
         classico_button.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
@@ -462,7 +501,7 @@ class LookTab(ttk.Frame):
         upside_button = ttk.Button(
             self.desktop_layout_set,
             compound="center",
-            image=self.upside_thumb,
+            image=self.upside_thumb_light,
             command=set_upside_down_panel,
         )
         upside_button.grid(row=1, column=1, padx=5, pady=5, sticky="nesw")
@@ -475,7 +514,7 @@ class LookTab(ttk.Frame):
         elfi_button = ttk.Button(
             self.desktop_layout_set,
             compound="center",
-            image=self.elfi_thumb,
+            image=self.elfi_thumb_light,
             command=set_elfi_panel,
         )
         elfi_button.grid(row=1, column=2, padx=5, pady=5, sticky="nesw")
@@ -486,7 +525,7 @@ class LookTab(ttk.Frame):
         devil_button = ttk.Button(
             self.desktop_layout_set,
             compound="center",
-            image=self.devil_thumb,
+            image=self.devil_thumb_light,
             command=set_der_teufel_panel,
         )
         devil_button.grid(row=1, column=3, padx=5, pady=5, sticky="nesw")
@@ -495,6 +534,11 @@ class LookTab(ttk.Frame):
             self.desktop_layout_set, text="Ubuntu-Like", anchor="center"
         )
         devil_label.grid(row=2, column=3, padx=5, pady=5, sticky="nsew")
+
+        if "dark" in theme_name or "Dark" in theme_name:
+            layout_icon_conf_dark()
+        else:
+            layout_icon_conf_light()
 
         save_layout = ttk.Button(
             self.desktop_layout_set,
@@ -524,6 +568,8 @@ class LookTab(ttk.Frame):
             d_mass.grab_set()
 
         def update_theme_combobox():
+            # Update the theme, icon, and cursor comboboxes with available options
+
             try:
                 themes = [
                     d
@@ -570,11 +616,11 @@ class LookTab(ttk.Frame):
                         "Yaru-xhdpi",
                         "Yaru",
                         "YaruGreen",
-                        "Yaru-dark-hdpi", 
-                        "Yaru-dark-xhdpi", 
+                        "Yaru-dark-hdpi",
+                        "Yaru-dark-xhdpi",
                         "Yaru-hdpi",
                         "Yaru-xhdpi",
-                        "Mist"
+                        "Mist",
                     ]
                 ]
 
@@ -596,21 +642,21 @@ class LookTab(ttk.Frame):
                     for x in icons
                     if x
                     not in [
-                            "ContrastHigh",
-                            "default",
-                            "desktop-base",
-                            "gnome",
-                            "hicolor",
-                            "HighContrast",
-                            "locolor",
-                            "mate",
-                            "mate-black",
-                            "menta",
-                            "mozc",
-                            "vendor",
-                            "zbar.ico"
+                        "ContrastHigh",
+                        "default",
+                        "desktop-base",
+                        "gnome",
+                        "hicolor",
+                        "HighContrast",
+                        "locolor",
+                        "mate",
+                        "mate-black",
+                        "menta",
+                        "mozc",
+                        "vendor",
+                        "zbar.ico",
                     ]
-                ]                
+                ]
                 icon_combobox["values"] = icons
                 icon_combobox.set("Symbole wählen")
             except Exception as e:
@@ -636,70 +682,9 @@ class LookTab(ttk.Frame):
             except Exception as e:
                 cursor_combobox.set("Error: " + str(e))
 
-        def update_lxde_theme_config(selected_theme):
-            config_file_path = os.path.expanduser(
-                "~/.config/lxsession/LXDE-pi/desktop.conf"
-            )
-
-            with open(config_file_path, "r") as file:
-                lines = file.readlines()
-
-            found = False
-            for i, line in enumerate(lines):
-                if "sNet/ThemeName=" in line:
-                    lines[i] = f"sNet/ThemeName={selected_theme}\n"
-                    found = True
-                    break
-
-            if not found:
-                lines.append(f"sNet/ThemeName={selected_theme}\n")
-
-            with open(config_file_path, "w") as file:
-                file.writelines(lines)
-
-        def update_lxde_icons_config(selected_icon):
-            config_file_path = os.path.expanduser(
-                "~/.config/lxsession/LXDE-pi/desktop.conf"
-            )
-
-            with open(config_file_path, "r") as file:
-                lines = file.readlines()
-
-            found = False
-            for i, line in enumerate(lines):
-                if "sNet/IconThemeName" in line:
-                    lines[i] = f"sNet/IconThemeName={selected_icon}\n"
-                    found = True
-                    break
-
-            if not found:
-                lines.append(f"sNet/IconThemeName={selected_icon}\n")
-
-            with open(config_file_path, "w") as file:
-                file.writelines(lines)
-
-        def update_lxde_cursor_config(selected_cursor):
-            config_file_path = os.path.expanduser(
-                "~/.config/lxsession/LXDE-pi/desktop.conf"
-            )
-
-            with open(config_file_path, "r") as file:
-                lines = file.readlines()
-
-            found = False
-            for i, line in enumerate(lines):
-                if "sGtk/CursorThemeName" in line:
-                    lines[i] = f"sGtk/CursorThemeName={selected_cursor}\n"
-                    found = True
-                    break
-
-            if not found:
-                lines.append(f"sGtk/CursorThemeName={selected_cursor}\n")
-
-            with open(config_file_path, "w") as file:
-                file.writelines(lines)
-
         def set_theme():
+            # Set the selected theme in GSettings and update the UI accordingly
+
             selected_theme = theme_combobox.get()
 
             if selected_theme != "Bitte aktualisieren":
@@ -711,7 +696,6 @@ class LookTab(ttk.Frame):
                     ("org.cinnamon.desktop.interface", "gtk-theme"),
                     ("org.cinnamon.theme", "name"),
                 ]
-
 
                 # Funktion zum Setzen eines GSettings-Werts
                 def set_gsettings_value(schema, key, value):
@@ -729,29 +713,9 @@ class LookTab(ttk.Frame):
                             ]
                         )
                         self.tk.call("set_theme", "dark")
-                        noteStyler = ttk.Style(self)
-                        noteStyler.configure(
-                            "TNotebook",
-                            borderwidth=0,
-                            tabposition="w",
-                            highlightthickness=0,
-                        )
-                        noteStyler.configure(
-                            "TNotebook.Tab",
-                            borderwidth=0,
-                            font=font_10,
-                            width=18,
-                            highlightthickness=0,
-                        )
+                        notebook_styler()
+                        layout_icon_conf_dark()
 
-                        noteStyler.configure("TButton", justify="left", anchor="w")
-
-                        noteStyler.configure("Custom.TButton", justify="center", anchor="center")
-                        noteStyler.configure(
-                            "Accent2.TButton", justify="center", anchor="center", font=font_12
-        )
-                        # os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'")
-                        
                     else:
                         subprocess.Popen(
                             [
@@ -764,29 +728,9 @@ class LookTab(ttk.Frame):
                         )
                         # os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'")
                         self.tk.call("set_theme", "light")
-                        noteStyler = ttk.Style(self)
-                        noteStyler.configure(
-                            "TNotebook",
-                            borderwidth=0,
-                            tabposition="w",
-                            highlightthickness=0,
-                        )
-                        noteStyler.configure(
-                            "TNotebook.Tab",
-                            borderwidth=0,
-                            font=font_10,
-                            width=18,
-                            highlightthickness=0,
-                        )
+                        notebook_styler()
+                        layout_icon_conf_light()
 
-                        noteStyler.configure("TButton", justify="left", anchor="w")
-
-                        noteStyler.configure("Custom.TButton", justify="center", anchor="center")
-                        noteStyler.configure(
-                            "Accent2.TButton", justify="center", anchor="center", font=font_12
-        )           
-                        
-        
                 # Für jeden Schlüssel den Wert setzen
                 for schema, key in settings_keys:
                     set_gsettings_value(schema, key, selected_theme)
@@ -794,6 +738,8 @@ class LookTab(ttk.Frame):
                 done_message_0()
 
         def set_icon():
+            # Set the selected icon theme in GSettings
+
             selected_icon = icon_combobox.get()
 
             if selected_icon != "Bitte aktualisieren":
@@ -809,6 +755,8 @@ class LookTab(ttk.Frame):
             done_message_0()
 
         def set_cursor():
+            # Set the selected cursor theme in GSettings
+
             selected_cursor = cursor_combobox.get()
 
             if selected_cursor != "Bitte aktualisieren":
@@ -824,29 +772,39 @@ class LookTab(ttk.Frame):
             done_message_0()
 
         def open_theme_folder():
+            # Open the system theme directory in a file manager
+
             popen("pkexec nemo /usr/share/themes")
 
         def open_icon_folder():
+            # Open the system icon directory in a file manager
+
             popen("pkexec nemo /usr/share/icons")
 
         def apply_cursor_size():
+            # Apply the selected cursor size in GSettings
+
             selected_size = cursor_size_combobox.get()
             if not selected_size.isdigit():
                 messagebox.showerror("Fehler", "Bitte eine gültige Größe wählen.")
                 return
 
             try:
-                subprocess.run([
-                    "gsettings",
-                    "set",
-                    "org.cinnamon.desktop.interface",
-                    "cursor-size",
-                    selected_size
-                ], check=True)
-                messagebox.showinfo("Erfolg", f"Cursorgröße auf {selected_size}px gesetzt.")
+                subprocess.run(
+                    [
+                        "gsettings",
+                        "set",
+                        "org.cinnamon.desktop.interface",
+                        "cursor-size",
+                        selected_size,
+                    ],
+                    check=True,
+                )
+                messagebox.showinfo(
+                    "Erfolg", f"Cursorgröße auf {selected_size}px gesetzt."
+                )
             except subprocess.CalledProcessError:
                 print("Fehler beim Setzen der Cursorgröße.")
-
 
         theme_combobox = ttk.Combobox(self.pixel_set, state="readonly")
         theme_combobox.grid(
@@ -868,12 +826,11 @@ class LookTab(ttk.Frame):
 
         cursor_sizes = ["16", "24", "32", "48", "64", "96", "128"]
         cursor_size_combobox = ttk.Combobox(self.pixel_set, state="readonly")
-        cursor_size_combobox['values'] = cursor_sizes
+        cursor_size_combobox["values"] = cursor_sizes
         cursor_size_combobox.grid(
             row=4, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
         )
         cursor_size_combobox.set("Cursor-Größe wählen")
-
 
         theme_button = ttk.Button(
             self.pixel_set,
@@ -902,8 +859,15 @@ class LookTab(ttk.Frame):
         )
         cursor_button.grid(row=3, column=3, padx=10, pady=5, sticky="ew")
 
-        cursor_size_button = ttk.Button(self.pixel_set, compound="left", text="Cursorgröße anwenden", command=apply_cursor_size)
-        cursor_size_button.grid(row=4, column=3,columnspan=2, padx=10, pady=5, sticky="ew")
+        cursor_size_button = ttk.Button(
+            self.pixel_set,
+            compound="left",
+            text="Cursorgröße anwenden",
+            command=apply_cursor_size,
+        )
+        cursor_size_button.grid(
+            row=4, column=3, columnspan=2, padx=10, pady=5, sticky="ew"
+        )
 
         theme_refresh_button = ttk.Button(
             self.pixel_set,

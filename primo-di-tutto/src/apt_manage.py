@@ -22,16 +22,18 @@ def load_installed_apt_pkgs():
     for package in cache:
         if package.is_installed:
             apt_installed_content.append(package.name)
-    
+
     logger.debug(apt_installed_content)
     return apt_installed_content
 
+
 def get_installed_apt_pkgs():
-    result = Cache.get('installed_apt_pkgs')
+    result = Cache.get("installed_apt_pkgs")
     if result is None:
-        result = Cache.set_result('installed_apt_pkgs', load_installed_apt_pkgs)
+        result = Cache.set_result("installed_apt_pkgs", load_installed_apt_pkgs)
 
     return result
+
 
 # Nala Path
 nala_path = os.path.exists("/bin/nala")

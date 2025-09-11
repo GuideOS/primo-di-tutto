@@ -2,14 +2,12 @@
 
 import os
 from os import popen
-import os.path
 from tkinter import *
 from tkinter import ttk
 from resorcess import *
 from apt_manage import *
 from flatpak_alias_list import *
 from tabs.pop_ups import *
-from tabs.system_tab_check import *
 from tabs.system_dict_lib import (
     CinnamonLook,
     CinnamonSettings,
@@ -34,11 +32,16 @@ class SystemTab(ttk.Frame):
         canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Scrollen mit dem Mausrad ermöglichen
-        canvas.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"))
-        canvas.bind("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))  # Linux spezifisch
-        canvas.bind("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))   # Linux spezifisch
-
-
+        canvas.bind(
+            "<MouseWheel>",
+            lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"),
+        )
+        canvas.bind(
+            "<Button-4>", lambda e: canvas.yview_scroll(-1, "units")
+        )  # Linux spezifisch
+        canvas.bind(
+            "<Button-5>", lambda e: canvas.yview_scroll(1, "units")
+        )  # Linux spezifisch
 
         # Scrollbar hinzufügen
         scrollbar = ttk.Scrollbar(
@@ -67,9 +70,16 @@ class SystemTab(ttk.Frame):
         look_btn_frame.grid_columnconfigure(3, weight=1)
         look_btn_frame.grid_columnconfigure(4, weight=2)
 
-        look_btn_frame.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"))
-        look_btn_frame.bind("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))  # Linux spezifisch
-        look_btn_frame.bind("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))   # Linux spezifisch
+        look_btn_frame.bind(
+            "<MouseWheel>",
+            lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"),
+        )
+        look_btn_frame.bind(
+            "<Button-4>", lambda e: canvas.yview_scroll(-1, "units")
+        )  # Linux spezifisch
+        look_btn_frame.bind(
+            "<Button-5>", lambda e: canvas.yview_scroll(1, "units")
+        )  # Linux spezifisch
 
         def look_btn_action(look_key):
             # SoftwareSys.sys_dict[sys_key]["Action"]
@@ -105,10 +115,16 @@ class SystemTab(ttk.Frame):
                 "<Enter>", lambda event, key=look_key: self.on_hover_look(event, key)
             )
             look_button.bind("<Leave>", self.on_leave)
-            look_button.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"))
-            look_button.bind("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))  # Linux spezifisch
-            look_button.bind("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))   # Linux spezifisch
-
+            look_button.bind(
+                "<MouseWheel>",
+                lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"),
+            )
+            look_button.bind(
+                "<Button-4>", lambda e: canvas.yview_scroll(-1, "units")
+            )  # Linux spezifisch
+            look_button.bind(
+                "<Button-5>", lambda e: canvas.yview_scroll(1, "units")
+            )  # Linux spezifisch
 
         # Settings Buttons
         sett_btn_frame = ttk.LabelFrame(
@@ -122,9 +138,16 @@ class SystemTab(ttk.Frame):
         sett_btn_frame.grid_columnconfigure(3, weight=1)
         sett_btn_frame.grid_columnconfigure(4, weight=2)
 
-        sett_btn_frame.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"))
-        sett_btn_frame.bind("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))  # Linux spezifisch
-        sett_btn_frame.bind("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))   # Linux spezifisch
+        sett_btn_frame.bind(
+            "<MouseWheel>",
+            lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"),
+        )
+        sett_btn_frame.bind(
+            "<Button-4>", lambda e: canvas.yview_scroll(-1, "units")
+        )  # Linux spezifisch
+        sett_btn_frame.bind(
+            "<Button-5>", lambda e: canvas.yview_scroll(1, "units")
+        )  # Linux spezifisch
 
         def sett_btn_action(sett_key):
             # CinnamonSettings.cinna_sett_dict[sett_key]["Action"]
@@ -164,9 +187,16 @@ class SystemTab(ttk.Frame):
                 "<Enter>", lambda event, key=sett_key: self.on_hover_sett(event, key)
             )
             sett_button.bind("<Leave>", self.on_leave)
-            sett_button.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"))
-            sett_button.bind("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))  # Linux spezifisch
-            sett_button.bind("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))   # Linux spezifisch
+            sett_button.bind(
+                "<MouseWheel>",
+                lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"),
+            )
+            sett_button.bind(
+                "<Button-4>", lambda e: canvas.yview_scroll(-1, "units")
+            )  # Linux spezifisch
+            sett_button.bind(
+                "<Button-5>", lambda e: canvas.yview_scroll(1, "units")
+            )  # Linux spezifisch
         # Device Settings Buttons
         device_sett_btn_frame = ttk.LabelFrame(
             scrollable_frame, text="Geräte", padding=20
@@ -179,9 +209,16 @@ class SystemTab(ttk.Frame):
         device_sett_btn_frame.grid_columnconfigure(3, weight=1)
         device_sett_btn_frame.grid_columnconfigure(4, weight=2)
 
-        device_sett_btn_frame.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"))
-        device_sett_btn_frame.bind("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))  # Linux spezifisch
-        device_sett_btn_frame.bind("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))   # Linux spezifisch
+        device_sett_btn_frame.bind(
+            "<MouseWheel>",
+            lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"),
+        )
+        device_sett_btn_frame.bind(
+            "<Button-4>", lambda e: canvas.yview_scroll(-1, "units")
+        )  # Linux spezifisch
+        device_sett_btn_frame.bind(
+            "<Button-5>", lambda e: canvas.yview_scroll(1, "units")
+        )  # Linux spezifisch
 
         def device_sett_btn_action(device_sett_key):
             # SystemManagement.sys_mgmt_dict[sett_key]["Action"]
@@ -224,10 +261,16 @@ class SystemTab(ttk.Frame):
                 lambda event, key=device_sett_key: self.on_hover_device(event, key),
             )
             device_sett_button.bind("<Leave>", self.on_leave)
-            device_sett_button.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"))
-            device_sett_button.bind("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))  # Linux spezifisch
-            device_sett_button.bind("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))   # Linux spezifisch
-
+            device_sett_button.bind(
+                "<MouseWheel>",
+                lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"),
+            )
+            device_sett_button.bind(
+                "<Button-4>", lambda e: canvas.yview_scroll(-1, "units")
+            )  # Linux spezifisch
+            device_sett_button.bind(
+                "<Button-5>", lambda e: canvas.yview_scroll(1, "units")
+            )  # Linux spezifisch
 
         # System Management Buttons
         sys_mgmt_btn_frame = ttk.LabelFrame(
@@ -241,9 +284,16 @@ class SystemTab(ttk.Frame):
         sys_mgmt_btn_frame.grid_columnconfigure(3, weight=1)
         sys_mgmt_btn_frame.grid_columnconfigure(4, weight=2)
 
-        sys_mgmt_btn_frame.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"))
-        sys_mgmt_btn_frame.bind("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))  # Linux spezifisch
-        sys_mgmt_btn_frame.bind("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))   # Linux spezifisch
+        sys_mgmt_btn_frame.bind(
+            "<MouseWheel>",
+            lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"),
+        )
+        sys_mgmt_btn_frame.bind(
+            "<Button-4>", lambda e: canvas.yview_scroll(-1, "units")
+        )  # Linux spezifisch
+        sys_mgmt_btn_frame.bind(
+            "<Button-5>", lambda e: canvas.yview_scroll(1, "units")
+        )  # Linux spezifisch
 
         def sys_mgmt_btn_action(sys_mgmt_key):
             # DeviceSettings.sys_mgmt_dict[sett_key]["Action"]
@@ -283,10 +333,16 @@ class SystemTab(ttk.Frame):
                 "<Enter>", lambda event, key=sys_mgmt_key: self.on_hover_sys(event, key)
             )
             sys_mgmt_button.bind("<Leave>", self.on_leave)
-            sys_mgmt_button.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"))
-            sys_mgmt_button.bind("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))  # Linux spezifisch
-            sys_mgmt_button.bind("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))   # Linux spezifisch
-
+            sys_mgmt_button.bind(
+                "<MouseWheel>",
+                lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"),
+            )
+            sys_mgmt_button.bind(
+                "<Button-4>", lambda e: canvas.yview_scroll(-1, "units")
+            )  # Linux spezifisch
+            sys_mgmt_button.bind(
+                "<Button-5>", lambda e: canvas.yview_scroll(1, "units")
+            )  # Linux spezifisch
 
         sys_info_frame = ttk.LabelFrame(self, text="Info", padding=20)
         sys_info_frame.pack(pady=20, padx=20, fill="both")

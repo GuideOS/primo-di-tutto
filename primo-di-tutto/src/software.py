@@ -6,7 +6,16 @@ from snap_manage import get_installed_snaps
 
 
 class InstallableApp:
-    def __init__(self, name, icon, description, path, thumbnail, install_command, uninstall_command):
+    def __init__(
+        self,
+        name,
+        icon,
+        description,
+        path,
+        thumbnail,
+        install_command,
+        uninstall_command,
+    ):
         self.name = name
         self.icon = icon
         self.description = description
@@ -17,13 +26,13 @@ class InstallableApp:
 
     def get_name(self):
         return self.name
-    
+
     def get_description(self):
         return self.description
-    
+
     def get_icon(self):
         return self.icon
-    
+
     def get_path(self):
         return self.path
 
@@ -32,15 +41,16 @@ class InstallableApp:
 
     def get_type(self):
         raise NotImplementedError
-    
+
     def is_installed(self):
         raise NotImplementedError
-    
+
     def get_install_command(self):
         return self.install_command
-    
+
     def get_uninstall_command(self):
         return self.uninstall_command
+
 
 class InstallableAppFactory:
     registry = {}
@@ -50,12 +60,13 @@ class InstallableAppFactory:
         def decorator(subclass):
             cls.registry[type] = subclass
             return subclass
+
         return decorator
-    
+
     @classmethod
     def create(cls, type: AppPackage, **kwargs) -> InstallableApp:
         return cls.registry[type](**kwargs)
-    
+
 
 @InstallableAppFactory.register(AppPackage.FLATPAK)
 class FlatpakApp(InstallableApp):
@@ -64,12 +75,12 @@ class FlatpakApp(InstallableApp):
 
     def get_type(self):
         return AppPackage.FLATPAK.value
-    
+
     def is_installed(self):
         flatpak_installs = refresh_flatpak_installs()
 
         return self.get_path() in flatpak_installs.values()
-        
+
 
 @InstallableAppFactory.register(AppPackage.DEB)
 class DebianApp(InstallableApp):
@@ -78,10 +89,10 @@ class DebianApp(InstallableApp):
 
     def get_type(self):
         return AppPackage.DEB.value
-    
+
     def is_installed(self):
-        return self.get_path() in get_installed_apt_pkgs();
-     
+        return self.get_path() in get_installed_apt_pkgs()
+
 
 @InstallableAppFactory.register(AppPackage.SNAP)
 class SnapApp(InstallableApp):
@@ -90,6 +101,6 @@ class SnapApp(InstallableApp):
 
     def get_type(self):
         return AppPackage.SNAP.value
-    
+
     def is_installed(self):
-        return self.get_path() in get_installed_snaps();
+        return self.get_path() in get_installed_snaps()

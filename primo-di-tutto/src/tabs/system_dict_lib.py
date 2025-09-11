@@ -1,5 +1,6 @@
 from resorcess import *
 
+
 class CinnamonLook:
     cinna_look_dict = {
         "look_0": {
@@ -23,7 +24,8 @@ class CinnamonLook:
             "Action": "cinnamon-settings fonts",
             "Path": "Cinnamon Settings",
         },
-    } 
+    }
+
 
 class CinnamonSettings:
     cinna_sett_dict = {
@@ -155,6 +157,7 @@ class CinnamonSettings:
         },
     }
 
+
 class SoftwareSys:
     sys_dict = {
         "sys_0": {
@@ -214,6 +217,7 @@ class SoftwareSys:
             "Path": "ddm-mx",
         },
     }
+
 
 class DeviceSettings:
     device_sett_dict = {
@@ -296,6 +300,7 @@ class DeviceSettings:
         },
     }
 
+
 class SystemManagement:
     sys_mgmt_dict = {
         "sys_mgmt_0": {
@@ -320,7 +325,3 @@ class SystemManagement:
             "Path": "System Management",
         },
     }
-
-
-
-

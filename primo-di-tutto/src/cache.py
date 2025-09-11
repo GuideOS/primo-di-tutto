@@ -1,5 +1,6 @@
 import time
 
+
 class Cache:
     _instance = None
 
@@ -9,7 +10,7 @@ class Cache:
         return cls._instance
 
     def __init__(self, default_ttl=5):
-        if not hasattr(self, 'initialized'):
+        if not hasattr(self, "initialized"):
             self.default_ttl = default_ttl
             self.cache = {}
             self.initialized = True
@@ -22,12 +23,12 @@ class Cache:
 
     @classmethod
     def set(cls, key, value, ttl=None):
-        """ Set a value in the cache """
+        """Set a value in the cache"""
         cls.instance().set_instance(key, value, ttl)
 
     @classmethod
     def set_result(cls, key, func, *args, **kwargs):
-        """ Sets result of a function in the cache and returns the result """
+        """Sets result of a function in the cache and returns the result"""
         result = func(*args, **kwargs)
         cls.set(key, result)
         return result

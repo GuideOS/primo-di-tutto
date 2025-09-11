@@ -33,7 +33,7 @@ from tabs.software_dict_lib import (
     SoftwareBackup,
     SoftwareSafty,
     SoftwareDesktopTools,
-    SoftwareTerminalTools
+    SoftwareTerminalTools,
 )
 from apt_manage import *
 from snap_manage import *
@@ -133,8 +133,6 @@ class SoftwareTab(ttk.Frame):
         safty_frame = ttk.Frame(self.inst_notebook)
         desktop_frame = ttk.Frame(self.inst_notebook)
 
-
-
         com_frame.pack(fill="both", expand=True)
         office_frame.pack(fill="both", expand=True)
         av_frame.pack(fill="both", expand=True)
@@ -145,7 +143,6 @@ class SoftwareTab(ttk.Frame):
         safty_frame.pack(fill="both", expand=True)
         desktop_frame.pack(fill="both", expand=True)
         terminal_frame = ttk.Frame(self.inst_notebook)
-
 
         self.inst_notebook.add(com_frame, compound=LEFT, text="Web & Chat")
         self.inst_notebook.add(office_frame, compound=LEFT, text="Büro")
@@ -159,7 +156,7 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook.add(terminal_frame, compound=LEFT, text="Terminal Tools")
 
         # Com Panel
-        com_apps = [];
+        com_apps = []
         for i, (key, info) in enumerate(SoftwareCommunication.com_dict.items()):
             app = InstallableAppFactory.create(
                 type=SoftwareCommunication.com_dict[key]["Package"],
@@ -173,11 +170,13 @@ class SoftwareTab(ttk.Frame):
             )
             com_apps.append(app)
 
-        com_note_frame = AppCollectionPanel(category_title="Web & Chat", apps=com_apps, master=com_frame)
+        com_note_frame = AppCollectionPanel(
+            category_title="Web & Chat", apps=com_apps, master=com_frame
+        )
         com_note_frame.pack(fill=tk.BOTH, expand=True)
 
         # Office Panel
-        office_apps = [];
+        office_apps = []
         for i, (key, info) in enumerate(SoftwareOffice.office_dict.items()):
             app = InstallableAppFactory.create(
                 type=SoftwareOffice.office_dict[key]["Package"],
@@ -191,11 +190,13 @@ class SoftwareTab(ttk.Frame):
             )
             office_apps.append(app)
 
-        office_note_frame = AppCollectionPanel(category_title="Büro", apps=office_apps, master=office_frame)
+        office_note_frame = AppCollectionPanel(
+            category_title="Büro", apps=office_apps, master=office_frame
+        )
         office_note_frame.pack(fill=tk.BOTH, expand=True)
 
         # A/V Panel
-        av_apps = [];
+        av_apps = []
         for i, (key, info) in enumerate(SoftwareAudioVideo.av_dict.items()):
             app = InstallableAppFactory.create(
                 type=SoftwareAudioVideo.av_dict[key]["Package"],
@@ -209,11 +210,13 @@ class SoftwareTab(ttk.Frame):
             )
             av_apps.append(app)
 
-        av_note_frame = AppCollectionPanel(category_title="Audio/Video", apps=av_apps, master=av_frame)
+        av_note_frame = AppCollectionPanel(
+            category_title="Audio/Video", apps=av_apps, master=av_frame
+        )
         av_note_frame.pack(fill=tk.BOTH, expand=True)
 
         # Image Editing Panel
-        image_apps = [];
+        image_apps = []
         for i, (key, info) in enumerate(SoftwareImageEditing.img_dict.items()):
             app = InstallableAppFactory.create(
                 type=SoftwareImageEditing.img_dict[key]["Package"],
@@ -227,11 +230,13 @@ class SoftwareTab(ttk.Frame):
             )
             image_apps.append(app)
 
-        image_note_frame = AppCollectionPanel(category_title="Bildbearbeitung", apps=image_apps, master=image_frame)
+        image_note_frame = AppCollectionPanel(
+            category_title="Bildbearbeitung", apps=image_apps, master=image_frame
+        )
         image_note_frame.pack(fill=tk.BOTH, expand=True)
 
         # Gaming Panel
-        gaming_apps = [];
+        gaming_apps = []
         for i, (key, info) in enumerate(SoftwareGame.game_dict.items()):
             app = InstallableAppFactory.create(
                 type=SoftwareGame.game_dict[key]["Package"],
@@ -245,11 +250,13 @@ class SoftwareTab(ttk.Frame):
             )
             gaming_apps.append(app)
 
-        gaming_note_frame = AppCollectionPanel(category_title="Gaming", apps=gaming_apps, master=gaming_frame)
+        gaming_note_frame = AppCollectionPanel(
+            category_title="Gaming", apps=gaming_apps, master=gaming_frame
+        )
         gaming_note_frame.pack(fill=tk.BOTH, expand=True)
 
         # Gaming Panel
-        gaming_tools_apps = [];
+        gaming_tools_apps = []
         for i, (key, info) in enumerate(SoftwareGamingTools.game_tool_dict.items()):
             app = InstallableAppFactory.create(
                 type=SoftwareGamingTools.game_tool_dict[key]["Package"],
@@ -263,11 +270,13 @@ class SoftwareTab(ttk.Frame):
             )
             gaming_tools_apps.append(app)
 
-        gaming_tool_note_frame = AppCollectionPanel(category_title="Gaming", apps=gaming_tools_apps, master=gaming_tools_frame)
+        gaming_tool_note_frame = AppCollectionPanel(
+            category_title="Gaming", apps=gaming_tools_apps, master=gaming_tools_frame
+        )
         gaming_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
         # Backup Panel
-        bak_apps = [];
+        bak_apps = []
         for i, (key, info) in enumerate(SoftwareBackup.bak_dict.items()):
             app = InstallableAppFactory.create(
                 type=SoftwareBackup.bak_dict[key]["Package"],
@@ -281,11 +290,13 @@ class SoftwareTab(ttk.Frame):
             )
             bak_apps.append(app)
 
-        gaming_tool_note_frame = AppCollectionPanel(category_title="Gaming", apps=bak_apps, master=backup_frame)
+        gaming_tool_note_frame = AppCollectionPanel(
+            category_title="Gaming", apps=bak_apps, master=backup_frame
+        )
         gaming_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
         # Safty Panel
-        saf_apps = [];
+        saf_apps = []
         for i, (key, info) in enumerate(SoftwareSafty.saf_dict.items()):
             app = InstallableAppFactory.create(
                 type=SoftwareSafty.saf_dict[key]["Package"],
@@ -299,11 +310,13 @@ class SoftwareTab(ttk.Frame):
             )
             saf_apps.append(app)
 
-        gaming_tool_note_frame = AppCollectionPanel(category_title="Gaming", apps=saf_apps, master=safty_frame)
+        gaming_tool_note_frame = AppCollectionPanel(
+            category_title="Gaming", apps=saf_apps, master=safty_frame
+        )
         gaming_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
         # Desktop Panel
-        desk_apps = [];
+        desk_apps = []
         for i, (key, info) in enumerate(SoftwareDesktopTools.desk_dict.items()):
             app = InstallableAppFactory.create(
                 type=SoftwareDesktopTools.desk_dict[key]["Package"],
@@ -317,12 +330,13 @@ class SoftwareTab(ttk.Frame):
             )
             desk_apps.append(app)
 
-        desktop_tool_note_frame = AppCollectionPanel(category_title="Desktop Tools", apps=desk_apps, master=desktop_frame)
+        desktop_tool_note_frame = AppCollectionPanel(
+            category_title="Desktop Tools", apps=desk_apps, master=desktop_frame
+        )
         desktop_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
-
         # Terminal Panel
-        term_apps = [];
+        term_apps = []
         for i, (key, info) in enumerate(SoftwareTerminalTools.term_dict.items()):
             app = InstallableAppFactory.create(
                 type=SoftwareTerminalTools.term_dict[key]["Package"],
@@ -336,8 +350,11 @@ class SoftwareTab(ttk.Frame):
             )
             term_apps.append(app)
 
-        terminal_tool_note_frame = AppCollectionPanel(category_title="Terminal Tools", apps=term_apps, master=terminal_frame)
+        terminal_tool_note_frame = AppCollectionPanel(
+            category_title="Terminal Tools", apps=term_apps, master=terminal_frame
+        )
         terminal_tool_note_frame.pack(fill=tk.BOTH, expand=True)
+
 
 class AppCollectionPanel(tk.Frame):
     def __init__(self, category_title: str, apps, master=None, **kwargs):
@@ -348,9 +365,9 @@ class AppCollectionPanel(tk.Frame):
         self.apps = apps
 
         def show_button_frame():
-            self.software_store.pack(padx=20,pady=5,fill="x")
+            self.software_store.pack(padx=20, pady=5, fill="x")
             btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
-            ttp_frame.pack(pady=20, padx=20,fill="x", side="bottom")
+            ttp_frame.pack(pady=20, padx=20, fill="x", side="bottom")
             back_button.pack_forget()
             detail_frame.pack_forget()
 
@@ -363,11 +380,11 @@ class AppCollectionPanel(tk.Frame):
         def open_gnome_software():
             subprocess.Popen("gnome-software", shell=True)
 
-        def on_hover( event, app: InstallableApp):
+        def on_hover(event, app: InstallableApp):
             ttp_label.configure(text=app.get_description())
 
         # Funktion für das Verlassen des Buttons
-        def on_leave( event):
+        def on_leave(event):
             ttp_label.configure(text="")
 
         def run_installation(app: InstallableApp):
@@ -393,7 +410,7 @@ class AppCollectionPanel(tk.Frame):
             refresh_status(app)
 
         def refresh_status(app: InstallableApp):
-            if (app.is_installed()):
+            if app.is_installed():
                 logger.info(f"{app.get_name()} is installed")
                 self.detail_inst.config(
                     text="Deinstallieren",
@@ -441,12 +458,23 @@ class AppCollectionPanel(tk.Frame):
             file=f"{application_path}/images/icons/papirus/64x64/gnome-software.png"
         )
 
-        self.software_store = ttk.Button(self, text="Software-Center öffnen", compound="left",image=self.gnome_software_icon, style="Accent2.TButton", command=open_gnome_software)
-        self.software_store.pack(padx=20,pady=5,fill="x")
+        self.software_store = ttk.Button(
+            self,
+            text="Software-Center öffnen",
+            compound="left",
+            image=self.gnome_software_icon,
+            style="Accent2.TButton",
+            command=open_gnome_software,
+        )
+        self.software_store.pack(padx=20, pady=5, fill="x")
 
-        back_button = ttk.Button(self, text="Zurück",style="Custom.TButton", command=show_button_frame)
+        back_button = ttk.Button(
+            self, text="Zurück", style="Custom.TButton", command=show_button_frame
+        )
 
-        btn_frame = ttk.LabelFrame(self, text=f"{category_title} | Empfehlungen", padding=20)
+        btn_frame = ttk.LabelFrame(
+            self, text=f"{category_title} | Empfehlungen", padding=20
+        )
         btn_frame.pack(pady=20, padx=20, fill="both", expand=TRUE)
 
         btn_frame.grid_columnconfigure(0, weight=1)
@@ -455,16 +483,12 @@ class AppCollectionPanel(tk.Frame):
         btn_frame.grid_columnconfigure(3, weight=1)
         btn_frame.grid_columnconfigure(4, weight=1)
 
-        ttp_frame = ttk.LabelFrame(
-            self, text="Beschreibung"
-        )
-        ttp_frame.pack(pady=20, padx=20,fill="x")
+        ttp_frame = ttk.LabelFrame(self, text="Beschreibung")
+        ttp_frame.pack(pady=20, padx=20, fill="x")
         ttp_frame.config(height=200)
         ttp_frame.pack_propagate(False)
 
-        ttp_label = ttk.Label(
-            ttp_frame, text="", padding=20, wraplength=700
-        )
+        ttp_label = ttk.Label(ttp_frame, text="", padding=20, wraplength=700)
         ttp_label.pack(fill="x")
 
         max_columns = 5
@@ -476,8 +500,12 @@ class AppCollectionPanel(tk.Frame):
 
             # add indicator if app is already installed
             if app.is_installed():
-                indicator = Image.open(f"{application_path}/images/icons/pigro_icons/installed.png").resize(resized_img.size)
-                combined_image = Image.alpha_composite(resized_img.convert("RGBA"), indicator.convert("RGBA"))
+                indicator = Image.open(
+                    f"{application_path}/images/icons/pigro_icons/installed.png"
+                ).resize(resized_img.size)
+                combined_image = Image.alpha_composite(
+                    resized_img.convert("RGBA"), indicator.convert("RGBA")
+                )
 
             return combined_image
 
@@ -488,12 +516,11 @@ class AppCollectionPanel(tk.Frame):
             self.button_icons[index] = icon
             button.config(image=icon)
 
-        for (i , app) in enumerate(self.apps):
+        for i, app in enumerate(self.apps):
             row = i // max_columns
             column = i % max_columns
 
             combined_image = generate_app_button(app)
-
 
             icon = ImageTk.PhotoImage(combined_image)
             self.button_icons.append(icon)
@@ -512,7 +539,6 @@ class AppCollectionPanel(tk.Frame):
             button.bind("<Leave>", on_leave)
             self.buttons.append(button)
 
-
         detail_frame = ttk.LabelFrame(self, text="Details", padding=20)
 
         detail_frame.grid_columnconfigure(1, weight=1)
@@ -528,7 +554,12 @@ class AppCollectionPanel(tk.Frame):
         self.detail_name.grid(column=1, row=0, sticky="w")
 
         self.detail_pak = Label(
-            detail_frame, text="", justify="left", anchor="w",foreground="#0072b5", font=font_10_b
+            detail_frame,
+            text="",
+            justify="left",
+            anchor="w",
+            foreground="#0072b5",
+            font=font_10_b,
         )
         self.detail_pak.grid(column=1, row=1, sticky="we")
 
@@ -548,7 +579,6 @@ class AppCollectionPanel(tk.Frame):
 
         global wid
         wid = self.termf.winfo_id()
-
 
 
 class Custom_Installer(tk.Toplevel):
