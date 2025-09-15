@@ -14,9 +14,14 @@ import shutil
 from logger_config import setup_logger
 from back_my_cinnamon import *
 from restore_my_cinnamon import *
+import gettext
 
 logger = setup_logger(__name__)
 
+# Set up gettext
+gettext.bindtextdomain('primo-di-tutto', f'{application_path}/src/locale')
+gettext.textdomain('primo-di-tutto')
+_ = gettext.gettext
 
 class LookTab(ttk.Frame):
     def __init__(self, master):
@@ -165,9 +170,9 @@ class LookTab(ttk.Frame):
                 try:
                     # Delete the file
                     os.remove(path)
-                    logger.info(f"Die Datei {path} wurde gelöscht.")
+                    logger.info(_(f"File {path} deleted."))
                 except Exception as e:
-                    logger.error(f"Fehler beim Löschen der Datei: {e}")
+                    logger.error(_(f"Error deleting file: {e}"))
             else:
                 logger.warning(f"Die Datei {path} existiert nicht.")
 
@@ -199,7 +204,7 @@ class LookTab(ttk.Frame):
                     except Exception as e:
                         logger.error(f"Fehler beim Kopieren von {src_file}: {e}")
 
-        # Funktion ausführen
+    # Execute function
 
         def plank_values():
             # Write predefined values to dconf for Plank dock configuration
@@ -470,7 +475,7 @@ class LookTab(ttk.Frame):
             devil_button.configure(image=self.devil_thumb_dark)
 
         self.desktop_layout_set = ttk.LabelFrame(
-            self, text="Layout-Vorlagen", padding=10
+            self, text=_("Layout Templates"), padding=10
         )
         self.desktop_layout_set.pack(pady=20, padx=40, fill="x", anchor="n")
         self.desktop_layout_set.grid_columnconfigure(0, weight=1)
@@ -480,7 +485,7 @@ class LookTab(ttk.Frame):
 
         layout_label = ttk.Label(
             self.desktop_layout_set,
-            text="Wähle ein Layout aus und passe es an. Du kannst ein Backup davon erstellen und es zu einen späteren Zeitpunkt wiederherstellen.",
+            text=_("Select a layout and customize it. You can create a backup and restore it at a later time."),
             anchor="w",
         )
         layout_label.grid(row=0, column=0, columnspan=4, padx=5, pady=5, sticky="nsew")
@@ -494,7 +499,7 @@ class LookTab(ttk.Frame):
         classico_button.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
 
         classico_label = ttk.Label(
-            self.desktop_layout_set, text="Standard", anchor="center"
+            self.desktop_layout_set, text=_("Standard"), anchor="center"
         )
         classico_label.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
 
@@ -507,7 +512,7 @@ class LookTab(ttk.Frame):
         upside_button.grid(row=1, column=1, padx=5, pady=5, sticky="nesw")
 
         upside_label = ttk.Label(
-            self.desktop_layout_set, text="Spiegel", anchor="center"
+            self.desktop_layout_set, text=_("Mirror"), anchor="center"
         )
         upside_label.grid(row=2, column=1, padx=5, pady=5, sticky="nsew")
 
@@ -519,7 +524,7 @@ class LookTab(ttk.Frame):
         )
         elfi_button.grid(row=1, column=2, padx=5, pady=5, sticky="nesw")
 
-        elfi_label = ttk.Label(self.desktop_layout_set, text="11", anchor="center")
+        elfi_label = ttk.Label(self.desktop_layout_set, text=_("11"), anchor="center")
         elfi_label.grid(row=2, column=2, padx=5, pady=5, sticky="nsew")
 
         devil_button = ttk.Button(
@@ -531,7 +536,7 @@ class LookTab(ttk.Frame):
         devil_button.grid(row=1, column=3, padx=5, pady=5, sticky="nesw")
 
         devil_label = ttk.Label(
-            self.desktop_layout_set, text="Ubuntu-Like", anchor="center"
+            self.desktop_layout_set, text=_("Ubuntu-Like"), anchor="center"
         )
         devil_label.grid(row=2, column=3, padx=5, pady=5, sticky="nsew")
 
@@ -542,7 +547,7 @@ class LookTab(ttk.Frame):
 
         save_layout = ttk.Button(
             self.desktop_layout_set,
-            text="Mein Layout speichern",
+            text=_("Save my layout"),
             style="Custom.TButton",
             compound="left",
             command=backup_cinnamon_settings,
@@ -551,14 +556,14 @@ class LookTab(ttk.Frame):
 
         load_layout = ttk.Button(
             self.desktop_layout_set,
-            text="Mein Layout laden",
+            text=_("Load my layout"),
             style="Custom.TButton",
             compound="left",
             command=restore_cinnamon_settings,
         )
         load_layout.grid(row=3, column=2, columnspan=2, padx=5, pady=5, sticky="nesw")
 
-        self.pixel_set = ttk.LabelFrame(self, text="Farben und Formen", padding=10)
+        self.pixel_set = ttk.LabelFrame(self, text=_("Colors and Shapes"), padding=10)
         self.pixel_set.pack(pady=20, padx=40, fill="x", anchor="n")
         self.pixel_set.columnconfigure(0, weight=1)
         self.pixel_set.rowconfigure(0, weight=1)
@@ -625,7 +630,7 @@ class LookTab(ttk.Frame):
                 ]
 
                 theme_combobox["values"] = themes
-                theme_combobox.set("Theme wählen")
+                theme_combobox.set(_("Select theme"))
             except Exception as e:
                 theme_combobox.set("Error: " + str(e))
 
@@ -658,7 +663,7 @@ class LookTab(ttk.Frame):
                     ]
                 ]
                 icon_combobox["values"] = icons
-                icon_combobox.set("Symbole wählen")
+                icon_combobox.set(_("Select icons"))
             except Exception as e:
                 icon_combobox.set("Error: " + str(e))
 
@@ -678,7 +683,7 @@ class LookTab(ttk.Frame):
                 ]
 
                 cursor_combobox["values"] = cursor_themes
-                cursor_combobox.set("Cursor wählen")
+                cursor_combobox.set(_("Select cursor"))
             except Exception as e:
                 cursor_combobox.set("Error: " + str(e))
 
@@ -688,7 +693,7 @@ class LookTab(ttk.Frame):
             selected_theme = theme_combobox.get()
 
             if selected_theme != "Bitte aktualisieren":
-                # Liste der GSettings-Schlüssel und deren Pfade
+                # List of GSettings keys and their paths
                 settings_keys = [
                     # ("org.gnome.desktop.interface", "gtk-theme"),
                     ("org.cinnamon.desktop.wm.preferences", "theme"),
@@ -731,7 +736,7 @@ class LookTab(ttk.Frame):
                         notebook_styler()
                         layout_icon_conf_light()
 
-                # Für jeden Schlüssel den Wert setzen
+                # Set value for each key
                 for schema, key in settings_keys:
                     set_gsettings_value(schema, key, selected_theme)
                     logger.info(f"{schema}.{key} wurde auf {selected_theme} gesetzt.")
@@ -786,7 +791,7 @@ class LookTab(ttk.Frame):
 
             selected_size = cursor_size_combobox.get()
             if not selected_size.isdigit():
-                messagebox.showerror("Fehler", "Bitte eine gültige Größe wählen.")
+                messagebox.showerror(_("Error"), _("Please select a valid size."))
                 return
 
             try:
@@ -801,10 +806,10 @@ class LookTab(ttk.Frame):
                     check=True,
                 )
                 messagebox.showinfo(
-                    "Erfolg", f"Cursorgröße auf {selected_size}px gesetzt."
+                    _("Success"), _(f"Cursor size set to {selected_size}px.")
                 )
             except subprocess.CalledProcessError:
-                print("Fehler beim Setzen der Cursorgröße.")
+                print(_("Error setting cursor size."))
 
         theme_combobox = ttk.Combobox(self.pixel_set, state="readonly")
         theme_combobox.grid(
@@ -830,11 +835,11 @@ class LookTab(ttk.Frame):
         cursor_size_combobox.grid(
             row=4, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
         )
-        cursor_size_combobox.set("Cursor-Größe wählen")
+        cursor_size_combobox.set(_("Select cursor size"))
 
         theme_button = ttk.Button(
             self.pixel_set,
-            text="Theme anwenden",
+            text=_("Apply theme"),
             compound="left",
             command=set_theme,
             width=20,
@@ -843,7 +848,7 @@ class LookTab(ttk.Frame):
 
         icon_button = ttk.Button(
             self.pixel_set,
-            text="Symbole anwenden",
+            text=_("Apply icons"),
             compound="left",
             command=set_icon,
             width=20,
@@ -852,7 +857,7 @@ class LookTab(ttk.Frame):
 
         cursor_button = ttk.Button(
             self.pixel_set,
-            text="Cursor anwenden",
+            text=_("Apply cursor"),
             compound="left",
             command=set_cursor,
             width=20,
@@ -862,7 +867,7 @@ class LookTab(ttk.Frame):
         cursor_size_button = ttk.Button(
             self.pixel_set,
             compound="left",
-            text="Cursorgröße anwenden",
+            text=_("Apply cursor size"),
             command=apply_cursor_size,
         )
         cursor_size_button.grid(
@@ -871,7 +876,7 @@ class LookTab(ttk.Frame):
 
         theme_refresh_button = ttk.Button(
             self.pixel_set,
-            text="Aktualisieren",
+            text=_("Refresh"),
             compound="left",
             command=update_theme_combobox,
             width=20,
@@ -883,7 +888,7 @@ class LookTab(ttk.Frame):
 
         theme_folder_button = ttk.Button(
             self.pixel_set,
-            text="Theme-Ordner",
+            text=_("Theme folder"),
             compound="left",
             command=open_theme_folder,
             width=20,
@@ -892,7 +897,7 @@ class LookTab(ttk.Frame):
 
         icon_folder_button = ttk.Button(
             self.pixel_set,
-            text="Symbol-Ordner",
+            text=_("Icon folder"),
             compound="left",
             command=open_icon_folder,
             width=20,
@@ -901,7 +906,7 @@ class LookTab(ttk.Frame):
 
         cursor_folder_button = ttk.Button(
             self.pixel_set,
-            text="Cursor-Ordner",
+            text=_("Cursor folder"),
             compound="left",
             command=open_icon_folder,
             width=20,

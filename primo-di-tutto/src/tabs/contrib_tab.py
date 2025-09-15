@@ -4,7 +4,12 @@ from tkinter import ttk
 import webbrowser
 from resorcess import *
 from tabs.pop_ups import *
+import gettext
 
+# Set up gettext
+gettext.bindtextdomain('primo-di-tutto', f'{application_path}/src/locale')
+gettext.textdomain('primo-di-tutto')
+_ = gettext.gettext
 
 class ContribTab(ttk.Frame):
     def __init__(self, master):
@@ -18,21 +23,21 @@ class ContribTab(ttk.Frame):
             webbrowser.open("https://forum.linuxguides.de/core/index.php?dashboard/")
 
         # --- Participation Section ---
-        self.take_part_frame = ttk.LabelFrame(self, text="Mach mit !", padding=20)
+        self.take_part_frame = ttk.LabelFrame(self, text=_("Join in!"), padding=20)
         self.take_part_frame.pack(padx=20, pady=20, fill="both", expand=True)
 
         # Description of the GuideOS project and participation philosophy
         take_part_message = ttk.Label(
             self.take_part_frame,
             wraplength=950,
-            text="Das GuideOS-Projekt nimmt Open Source sehr ernst. Der wohl wichtigste Pfeiler der Philosophie ist die Teilhabe. Mit GuideOS wollen wir nicht die große neue Distro erschaffen, sondern einen einfachen Zugang zu Linux ermöglichen. Dazu gehört auch, dass Nutzer jeden Kenntnisstandes daran arbeiten können. Du kannst im Forum deine Meinung sagen, Code über Git beisteuern oder ohne Anmeldung eine Fehlermeldung verfassen (natürlich komplett anonym).",
+            text=_("The GuideOS project takes open source very seriously. The most important pillar of our philosophy is participation. With GuideOS, we don't want to create the next big distro, but rather provide easy access to Linux. This also means that users of all skill levels can contribute. You can share your opinion in the forum, contribute code via Git, or report a bug anonymously without registration."),
         )
         take_part_message.pack(fill="x")
 
         # Button to open the GuideOS website
         go_home = ttk.Button(
             self.take_part_frame,
-            text="GuideOS Website",
+            text=_("GuideOS Website"),
             style="Custom.TButton",
             command=open_website,
         )
@@ -41,7 +46,7 @@ class ContribTab(ttk.Frame):
         # Button to join the community forum
         go_board = ttk.Button(
             self.take_part_frame,
-            text="Werde Teil der Community!",
+            text=_("Become part of the community!"),
             style="Custom.TButton",
             command=open_board,
         )
@@ -59,7 +64,7 @@ class ContribTab(ttk.Frame):
         # Button to open the GuideOS GitHub page
         go_git = ttk.Button(
             self.take_part_frame,
-            text="GuideOS auf GitHub",
+            text=_("GuideOS on GitHub"),
             style="Custom.TButton",
             command=open_gitlab,
         )
@@ -68,7 +73,7 @@ class ContribTab(ttk.Frame):
         # Button to open the Open Build Service page
         go_obs = ttk.Button(
             self.take_part_frame,
-            text="GuideOS auf Open Build Service",
+            text=_("GuideOS on Open Build Service"),
             style="Custom.TButton",
             command=open_obs,
         )
@@ -77,7 +82,7 @@ class ContribTab(ttk.Frame):
         # Button to report a bug or issue
         send_error = ttk.Button(
             self.take_part_frame,
-            text="Melde einen Fehler oder ein Problem",
+            text=_("Report a bug or problem"),
             style="Custom.TButton",
             command=open_ticket,
         )
@@ -85,7 +90,7 @@ class ContribTab(ttk.Frame):
 
         self.thx_frame = ttk.LabelFrame(
             self,
-            text="Ewiger Dank geht raus an die Community-Mitglieder ...",
+            text=_("Eternal thanks to the community members ..."),
             padding=20,
         )
         self.thx_frame.pack(padx=20, pady=20, fill="both", expand=True)

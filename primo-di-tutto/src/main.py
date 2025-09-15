@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import ttk
 import tkinter as tk
 from PIL import Image, ImageTk
+import gettext
 from resorcess import *
 from apt_manage import *
 from flatpak_alias_list import *
@@ -21,13 +22,19 @@ from azure_ttk import *
 from utils import scaling  # Import the scaling variable
 from logger_config import setup_logger
 
+
+# Set up gettext
+gettext.bindtextdomain('primo-di-tutto', f'{application_path}/src/locale')
+gettext.textdomain('primo-di-tutto')
+_ = gettext.gettext
+
 logger = setup_logger(__name__)
 
 
 class MainApplication(tk.Tk):
     def __init__(self):
         super().__init__(className="Primo")
-        self.title("Primo | GuideOS Einstellungen")
+        self.title(_("Primo | GuideOS Settings"))
         self.resizable(False, False)
         self.tk.call("source", TCL_THEME_FILE_PATH)
         self.tk.call("tk", "scaling", scaling)
@@ -71,22 +78,23 @@ class MainApplication(tk.Tk):
         self.links_tab = LinksTab(self.notebook)
         self.contrib_tab = ContribTab(self.notebook)
 
-        if get_first_run() == "yes":
-            self.notebook.add(self.willkommen_tab, compound=LEFT, text="Willkommen")
 
-        self.notebook.add(self.dash_tab, compound=LEFT, text="Übersicht")
-        self.notebook.add(self.update_tab, compound=LEFT, text="Aktualisierung")
+        if get_first_run() == "yes":
+            self.notebook.add(self.willkommen_tab, compound=LEFT, text=_("Welcome"))
+
+        self.notebook.add(self.dash_tab, compound=LEFT, text=_("Overview"))
+        self.notebook.add(self.update_tab, compound=LEFT, text=_("Updates"))
         self.notebook.add(
-            self.software_tab, compound=LEFT, text="Software-\nEmpfehlungen"
+            self.software_tab, compound=LEFT, text=_("Software\nRecommendations")
         )
-        self.notebook.add(self.system_tab, compound=LEFT, text="Werkzeuge")
+        self.notebook.add(self.system_tab, compound=LEFT, text=_("Tools"))
         self.notebook.add(
-            self.expert_tools_tab, compound=LEFT, text="Expertenwerkzeuge"
+            self.expert_tools_tab, compound=LEFT, text=_("Expert Tools")
         )
-        self.notebook.add(self.look_tab, compound=LEFT, text="Erscheinungsbild")
-        self.notebook.add(self.large_folders, compound=LEFT, text="Speicherfresser")
-        self.notebook.add(self.links_tab, compound=LEFT, text="Links")
-        self.notebook.add(self.contrib_tab, compound=LEFT, text="Mitmachen")
+        self.notebook.add(self.look_tab, compound=LEFT, text=_("Appearance"))
+        self.notebook.add(self.large_folders, compound=LEFT, text=_("Large Folders"))
+        self.notebook.add(self.links_tab, compound=LEFT, text=_("Links"))
+        self.notebook.add(self.contrib_tab, compound=LEFT, text=_("Contribute"))
 
         def notebook_styler():
             # Notebook Theming
