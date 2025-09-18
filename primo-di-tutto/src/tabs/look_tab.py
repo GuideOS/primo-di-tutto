@@ -7,11 +7,10 @@ from PIL import ImageTk, Image
 from resorcess import *
 from apt_manage import *
 import subprocess
-from flatpak_alias_list import *
-from tabs.pop_ups import *
 import json
 import shutil
 from logger_config import setup_logger
+from tabs.pop_ups import Done_
 from back_my_cinnamon import *
 from restore_my_cinnamon import *
 
@@ -61,7 +60,7 @@ class LookTab(ttk.Frame):
             noteStyler.configure(
                 "TNotebook.Tab",
                 borderwidth=0,
-                font=font_10,
+                font=("Sans", 10),
                 width=18,
                 highlightthickness=0,
             )
@@ -70,7 +69,7 @@ class LookTab(ttk.Frame):
 
             noteStyler.configure("Custom.TButton", justify="center", anchor="center")
             noteStyler.configure(
-                "Accent2.TButton", justify="center", anchor="center", font=font_12
+                "Accent2.TButton", justify="center", anchor="center", font=("Sans", 12)
             )
 
         def backup_grouped_config():
@@ -703,28 +702,18 @@ class LookTab(ttk.Frame):
 
                     if "dark" in value or "Dark" in value:
                         # /org/gnome/desktop/interface/color-scheme
-                        subprocess.Popen(
-                            [
-                                "gsettings",
-                                "set",
-                                "org.gnome.desktop.interface",
-                                "color-scheme",
-                                "'prefer-dark'",
-                            ]
+                        subprocess.run(
+                            ["dconf", "write", "/org/gnome/desktop/interface/color-scheme", "'prefer-dark'"],
+                            check=True
                         )
                         self.tk.call("set_theme", "dark")
                         notebook_styler()
                         layout_icon_conf_dark()
 
                     else:
-                        subprocess.Popen(
-                            [
-                                "gsettings",
-                                "set",
-                                "org.gnome.desktop.interface",
-                                "color-scheme",
-                                "'prefer-light'",
-                            ]
+                        subprocess.run(
+                            ["dconf", "write", "/org/gnome/desktop/interface/color-scheme", "'prefer-light'"],
+                            check=True
                         )
                         # os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'")
                         self.tk.call("set_theme", "light")

@@ -6,7 +6,6 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from resorcess import *
 from apt_manage import *
-from flatpak_alias_list import *
 from tabs.welcome_tab import WelcomeTab
 from tabs.dash_tab import DashTab
 from tabs.update_tab import UpdateTab
@@ -18,7 +17,6 @@ from tabs.expert_tools import ExpertTab
 from tabs.links_tab import LinksTab
 from tabs.large_folders_tab import LargeFoldersTab
 from azure_ttk import *
-from utils import scaling  # Import the scaling variable
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -30,16 +28,13 @@ class MainApplication(tk.Tk):
         self.title("Primo | GuideOS Einstellungen")
         self.resizable(False, False)
         self.tk.call("source", TCL_THEME_FILE_PATH)
-        self.tk.call("tk", "scaling", scaling)
-
-        # self["background"] = maincolor
         app_width = 1200
         app_height = 750
         # Define Screen
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
-        # x = (screen_width / 2) - (app_width / 2)
-        # y = (screen_height / 2) - (app_height / 2)
+        x = (screen_width / 2) - (app_width / 2)
+        y = (screen_height / 2) - (app_height / 2)
 
         # self.icon is still needed for some DEs
         self.icon = tk.PhotoImage(
@@ -101,7 +96,6 @@ class MainApplication(tk.Tk):
             noteStyler.configure(
                 "TNotebook.Tab",
                 borderwidth=0,
-                font=font_10,
                 width=18,
                 highlightthickness=0,
             )
@@ -109,9 +103,7 @@ class MainApplication(tk.Tk):
             noteStyler.configure("TButton", justify="left", anchor="w")
 
             noteStyler.configure("Custom.TButton", justify="center", anchor="center")
-            noteStyler.configure(
-                "Accent2.TButton", justify="center", anchor="center", font=font_12
-            )
+            noteStyler.configure("Accent2.TButton", justify="center", anchor="center")
 
         notebook_styler()
 

@@ -1,18 +1,8 @@
 #!/usr/bin/python3
 
-import os
-from os import popen
-import os.path
-from tkinter import *
-from tkinter import ttk
 import tkinter as tk
-import tkinter.font as tkFont
-from PIL import ImageTk, Image
-import requests
-from itertools import count, cycle
-from resorcess import *
-from apt_manage import *
-from flatpak_alias_list import *
+from tkinter import ttk
+from resorcess import application_path
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)

@@ -13,7 +13,6 @@ from resorcess import *
 from apt_manage import *
 from snap_manage import *
 from flatpak_manage import count_flatpaks
-from flatpak_alias_list import *
 from tabs.pop_ups import *
 from logger_config import setup_logger
 
@@ -77,14 +76,14 @@ class DashTab(ttk.Frame):
         cpu_label = tk.Label(
             self.useage_container,
             text="CPU",
-            font=font_12,
+            font=("Sans", 12),
         )
         cpu_label.grid(row=1, column=0, sticky="nsew")
 
         self.cpu_percent = tk.Label(
             self.useage_container,
             text="0%",
-            font=font_20,
+            font=("Sans", 20),
         )
         self.cpu_percent.grid(row=0, column=0, sticky="nsew")
 
@@ -92,14 +91,14 @@ class DashTab(ttk.Frame):
         ram_label = tk.Label(
             self.useage_container,
             text="RAM",
-            font=font_12,
+            font=("Sans", 12),
         )
         ram_label.grid(row=1, column=1, sticky="nsew")
 
         self.ram_percent = Label(
             self.useage_container,
             text="0%",
-            font=font_20,
+            font=("Sans", 20),
         )
         self.ram_percent.grid(row=0, column=1, sticky="nsew")
 
@@ -107,14 +106,14 @@ class DashTab(ttk.Frame):
         hdd_label = tk.Label(
             self.useage_container,
             text="HDD",
-            font=font_12,
+            font=("Sans", 12),
         )
         hdd_label.grid(row=1, column=2, sticky="nsew")
 
         self.hdd_percent = tk.Label(
             self.useage_container,
             text="0%",
-            font=font_20,
+            font=("Sans", 20),
         )
         self.hdd_percent.grid(row=0, column=2, sticky="nsew")
 
@@ -487,20 +486,20 @@ class DashTab(ttk.Frame):
         """Update memory-related labels."""
         self.ram_percent["text"] = f"{svmem.percent}%"
         self.ram_total_label.configure(
-            text=f"RAM | Total: {self.get_size(svmem.total)}"
+            text=f"RAM Total: {self.get_size(svmem.total)}"
         )
         self.ram_available_label.configure(
-            text=f"RAM | Frei: {self.get_size(svmem.available)}"
+            text=f"RAM Frei: {self.get_size(svmem.available)}"
         )
         self.ram_used_label.configure(
-            text=f"RAM | Genutzt: {self.get_size(svmem.used)}"
+            text=f"RAM Genutzt: {self.get_size(svmem.used)}"
         )
         self.swap_total_label.configure(
-            text=f"Swap | Total: {self.get_size(swap.total)}"
+            text=f"Swap Total: {self.get_size(swap.total)}"
         )
-        self.swap_free_label.configure(text=f"Swap | Frei: {self.get_size(swap.free)}")
+        self.swap_free_label.configure(text=f"Swap Frei: {self.get_size(swap.free)}")
         self.swap_used_label.configure(
-            text=f"Swap | Genutzt: {self.get_size(swap.used)}"
+            text=f"Swap Genutzt: {self.get_size(swap.used)}"
         )
 
     def update_disk_labels(self):

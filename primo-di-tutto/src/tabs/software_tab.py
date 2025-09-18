@@ -1,32 +1,21 @@
 import os
 from os import popen
-import os.path
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
-import tkinter.font as tkFont
 from threading import Thread
 from PIL import ImageTk, Image
 from urllib.request import urlopen
-import urllib.error
-import requests
 import xml.etree.ElementTree as ET
-import apt
-from bs4 import BeautifulSoup
 from resorcess import *
 import subprocess
 from tabs.pop_ups import *
-import re
-import webbrowser
 from subprocess import Popen, PIPE
 from threading import Thread
-from tool_tipps import CreateToolTip
-from tkinter import messagebox
 from tabs.software_dict_lib import (
     SoftwareGamingTools,
     SoftwareGame,
     SoftwareOffice,
-    SoftwareStore,
     SoftwareCommunication,
     SoftwareAudioVideo,
     SoftwareImageEditing,
@@ -37,9 +26,6 @@ from tabs.software_dict_lib import (
 )
 from apt_manage import *
 from snap_manage import *
-from flatpak_manage import flatpak_path
-from flatpak_manage import Flat_remote_dict
-from flatpak_manage import refresh_flatpak_installs
 from software import InstallableAppFactory, InstallableApp
 
 
@@ -69,50 +55,6 @@ def resize2(img):
     wpercent = basewidth / float(img.size[0])
     hsize = int((float(img.size[1]) * float(wpercent)))
     return img.resize((basewidth, hsize))
-
-
-def get_app_summary(appstream_id):
-    command = f"appstreamcli dump {appstream_id} | grep -m 1 -oP '<summary>\\K[^<]*'"
-    try:
-        result = subprocess.run(
-            command, shell=True, check=True, capture_output=True, text=True
-        )
-        return result.stdout.strip()
-    except subprocess.CalledProcessError as e:
-        logger.error(f"Error executing the command: {e.stderr}")
-        return ""
-
-
-def extract_default_screenshot_url(application_id):
-    output = subprocess.check_output(
-        ["appstreamcli", "dump", application_id], text=True
-    )
-
-    start_index = output.find("<screenshots>")
-    end_index = output.find("</screenshots>") + len("</screenshots>")
-
-    xml_part = output[start_index:end_index]
-
-    root = ET.fromstring(xml_part)
-
-    for screenshot in root.findall(
-        ".//screenshot[@type='default']/image[@type='source']"
-    ):
-        return screenshot.text
-
-    return None
-
-
-def build_screenshot_url():
-    app_id = Flat_remote_dict[flatpak_entry.get()]
-
-    screenshot_url = extract_default_screenshot_url(app_id)
-    if screenshot_url:
-        logger.info("Standard-Screenshot-URL für {}:".format(app_id))
-        logger.info(screenshot_url)
-
-    else:
-        logger.warning("Kein Standard-Screenshot gefunden für {}.".format(app_id))
 
 
 class SoftwareTab(ttk.Frame):
@@ -549,7 +491,7 @@ class AppCollectionPanel(tk.Frame):
         self.detail_icon.grid(column=0, row=0, rowspan=2, sticky="we")
 
         self.detail_name = Label(
-            detail_frame, text="", justify="left", anchor="w", font=font_16
+            detail_frame, text="", justify="left", anchor="w", font=("Sans", 16)
         )
         self.detail_name.grid(column=1, row=0, sticky="w")
 
@@ -559,7 +501,7 @@ class AppCollectionPanel(tk.Frame):
             justify="left",
             anchor="w",
             foreground="#0072b5",
-            font=font_10_b,
+            font=("Sans", 10, "bold"),
         )
         self.detail_pak.grid(column=1, row=1, sticky="we")
 
@@ -626,7 +568,7 @@ class Custom_Installer(tk.Toplevel):
         self.done_label = tk.Label(
             self.installer_main_frame,
             text="",
-            font=("Helvetica", 16),
+            font=("Sans", 16),
             justify="left",
             anchor="w",
         )
@@ -634,7 +576,7 @@ class Custom_Installer(tk.Toplevel):
         self.done_label2 = tk.Label(
             self.installer_main_frame,
             text="",
-            font=("Helvetica", 16),
+            font=("Sans", 16),
             justify="left",
             anchor="w",
         )

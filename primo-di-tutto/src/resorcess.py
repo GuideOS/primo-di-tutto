@@ -202,18 +202,3 @@ def has_nvidia_gpu():
                 return True  # NVIDIA found within the block
 
     return False
-
-
-# Font Definition Vars
-font_20 = ("Sans", 20)
-font_16_b = ("Sans", 16, "bold")
-font_16 = ("Sans", 16)
-font_14 = ("Sans", 14)
-font_12_b = ("Sans", 12, "bold")
-font_12 = ("Sans", 12)
-font_10 = ("Sans", 11)
-font_10_b = ("Sans", 10, "bold")
-font_9_b = ("Sans", 9, "bold")
-font_9 = ("Sans", 9)
-font_8_b = ("Sans", 8, "bold")
-font_8 = ("Sans", 8)

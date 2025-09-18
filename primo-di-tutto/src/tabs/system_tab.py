@@ -6,7 +6,6 @@ from tkinter import *
 from tkinter import ttk
 from resorcess import *
 from apt_manage import *
-from flatpak_alias_list import *
 from tabs.pop_ups import *
 from tabs.system_dict_lib import (
     CinnamonLook,
@@ -14,7 +13,6 @@ from tabs.system_dict_lib import (
     SystemManagement,
     DeviceSettings,
 )
-from tool_tipps import CreateToolTip
 
 
 class SystemTab(ttk.Frame):

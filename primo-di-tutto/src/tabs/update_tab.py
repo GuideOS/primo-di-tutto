@@ -1,17 +1,13 @@
 #!/usr/bin/python3
 
-import os
-import os.path
+# import os
+# import os.path
 from tkinter import *
 from tkinter import ttk
-from tkinter import filedialog
 from resorcess import *
 from apt_manage import *
 from snap_manage import *
-from flatpak_alias_list import *
 from flatpak_manage import *
-from tool_tipps import CreateToolTip
-from tool_tipps import TipsText
 from tabs.pop_ups import *
 import gettext
 import threading

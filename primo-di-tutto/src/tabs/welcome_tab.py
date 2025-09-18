@@ -1,26 +1,12 @@
 import os
 from os import popen
-import os.path
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
-import platform
-import psutil
-from time import strftime
-import socket
 from PIL import ImageTk, Image
 from resorcess import *
-from apt_manage import *
-from snap_manage import *
-from flatpak_manage import count_flatpaks
-from flatpak_alias_list import *
-from tabs.pop_ups import *
-from tool_tipps import CreateToolTip
 from pathlib import Path
-from tabs.pop_ups import *
-from tabs.software_tab import Custom_Installer
 import subprocess
-import re
 import gettext
 from logger_config import setup_logger
 
@@ -32,7 +18,7 @@ lang = gettext.translation(
 lang.install()
 _ = lang.gettext
 
-#user = "live"
+# user = "live"
 
 
 class WelcomeTab(ttk.Frame):

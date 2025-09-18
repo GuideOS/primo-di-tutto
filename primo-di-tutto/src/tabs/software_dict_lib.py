@@ -1,49 +1,5 @@
 from resorcess import *
-import requests
-import os
 from constants import AppPackage
-
-
-class SoftwareStore:
-    store_dict = dict(
-        sorted(
-            {
-                "store_0": {
-                    "Name": "Gnome Software",
-                    "Icon": f"{application_path}/images/apps/gnomesoftware_icon_36.png",
-                    "Open": "gnome-software",
-                },
-                "store_1": {
-                    "Name": "Synaptic",
-                    "Package": AppPackage.DEB,
-                    "Icon": f"{application_path}/images/apps/synaptic_icon_36.png",
-                    "Open": "synaptic-pkexec",
-                },
-            }.items(),
-            key=lambda item: item[1]["Name"],
-        )
-    )
-
-
-class FlatpakStore:
-    flatpak_store_dict = dict(
-        sorted(
-            {
-                "store_0": {
-                    "Name": "Gnome Software",
-                    "Icon": f"{application_path}/images/apps/gnomesoftware_icon_36.png",
-                    "Open": "gnome-software",
-                },
-                "store_1": {
-                    "Name": "Synaptic",
-                    "Package": AppPackage.DEB,
-                    "Icon": f"{application_path}/images/apps/synaptic_icon_36.png",
-                    "Open": "pkexec synaptic",
-                },
-            }.items(),
-            key=lambda item: item[1]["Name"],
-        )
-    )
 
 
 class SoftwareOffice:
