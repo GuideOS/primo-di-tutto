@@ -1,4 +1,10 @@
-primo-di-tutto (0.7.9.5) unstable; urgency=medium
+primo-di-tutto (0.7.9.7) unstable; urgency=medium
+
+  * Fixed: Layout
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Thu, 18 Sep 2025 14:01:49 +0200
+
+primo-di-tutto (0.7.9.6) unstable; urgency=medium
 
   * PinguinTV FIX EAT MY SHORTS!
 
