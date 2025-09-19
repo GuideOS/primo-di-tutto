@@ -41,7 +41,7 @@ class MainApplication(tk.Tk):
             file=f"/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png"
         )
         self.tk.call("wm", "iconphoto", self._w, self.icon)
-        self.geometry(f"{app_width}x{app_height}")
+        self.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)

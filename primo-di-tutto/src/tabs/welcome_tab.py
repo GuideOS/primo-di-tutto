@@ -18,7 +18,7 @@ lang = gettext.translation(
 lang.install()
 _ = lang.gettext
 
-user = "live"
+#user = "live"
 
 
 class WelcomeTab(ttk.Frame):
