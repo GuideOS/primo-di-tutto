@@ -18,7 +18,7 @@ lang = gettext.translation(
 lang.install()
 _ = lang.gettext
 
-#user = "live"
+user = "live"
 
 
 class WelcomeTab(ttk.Frame):
@@ -44,7 +44,8 @@ class WelcomeTab(ttk.Frame):
         # Custom logic for 'live' or 'linux' user
         if user.lower() in ["live", "linux"]:
             welcome_message = "Hallo!"
-            welcome_text_message = "Schön, dass du dir GuideOS anschaust. Du befindest dich im Live-Modus. Guck' dich in Ruhe um und wenn du möchste kannst du GuideOS über den Starter auf dem Desktop installieren. Wir wünschen dir viele Spaß."
+            welcome_text_message = "Schön, dass du dir GuideOS anschaust. Du befindest dich im Live-Modus. Guck' dich in Ruhe um und wenn du möchste komme hierher zurück, um GuideOS zu installieren.Wir wünschen dir viele Spaß."
+            
             show_autostart = False
         else:
             welcome_message = _("""Welcome""") + f" {user.upper()} " + "!"
@@ -69,11 +70,22 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
         self.welcome_text_label = ttk.Label(
             self, text=welcome_text_message, wraplength=800, justify="left"
         )
-        self.welcome_text_label.pack(pady=10)
+        self.welcome_text_label.pack()
 
         # If user is 'live' or 'linux', set image and compound
         if user.lower() in ["live", "linux"]:
             self.welcome_text_label.configure(image=self.guide_horn, compound="bottom")
+
+            self.welcome_text_label.configure(justify="center")
+            self.install_guideos = ttk.Button(
+                self,
+                text=_("GuideOS installieren"),
+                # subproces thats starts calamares-install-guideos
+                command=lambda: subprocess.Popen(["/usr/bin/calamares-install-guideos"]),
+                style="Accent.TButton"
+            )
+            self.install_guideos.pack(pady=10)
+
 
         # Only show autostart frame if show_autostart is True
         if show_autostart:
@@ -91,7 +103,7 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
             self.autostart_description = ttk.Label(
                 self.autostart_frame,
                 text=_(
-                    "Hier kannst Du den Autostart dieses Programms deaktivieren. Nach dem nächsten Start wird der Willkommensbildschirm entfernt, und Primo wird zu einem Systemtool."
+                    "Hier kannst Du den Autostart dieses Programms deaktivieren. Nach dem nächsten Start wird der Willkommensbildschirm entfernt und Primo wird zu einem Systemtool."
                 ),
                 wraplength=600,
             )

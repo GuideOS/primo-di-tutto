@@ -70,7 +70,7 @@ class MainApplication(tk.Tk):
             self.notebook.add(self.willkommen_tab, compound=LEFT, text="Willkommen")
 
         self.notebook.add(self.dash_tab, compound=LEFT, text="Übersicht")
-        self.notebook.add(self.update_tab, compound=LEFT, text="Aktualisierung")
+        self.notebook.add(self.update_tab, compound=LEFT, text="Aktualisierungen")
         self.notebook.add(
             self.software_tab, compound=LEFT, text="Software-\nEmpfehlungen"
         )
