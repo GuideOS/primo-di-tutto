@@ -15,7 +15,7 @@ if ! command -v wine &> /dev/null; then
     sudo dpkg --add-architecture i386 || error_exit "Fehler beim Hinzufügen der i386-Architektur"
     sudo mkdir -pm755 /etc/apt/keyrings || error_exit "Fehler beim Erstellen von /etc/apt/keyrings"
     sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key || error_exit "Fehler beim Herunterladen des WineHQ-Schlüssels"
-    sudo wget -NP /etc/apt/sources.list.d/ "https://dl.winehq.org/wine-builds/ubuntu/dists/$(lsb_release -c | grep -o '\w*$')/winehq-$(lsb_release -c | grep -o '\w*$').sources"
+    sudo wget -NP /etc/apt/sources.list.d/ "https://dl.winehq.org/wine-builds/debian/dists/$(lsb_release -c | grep -o '\w*$')/winehq-$(lsb_release -c | grep -o '\w*$').sources"
     sudo apt update || error_exit "Fehler beim Aktualisieren der Paketliste"
     sudo apt install -y --install-recommends winehq-stable || error_exit "Fehler bei der Installation von WineHQ-Stable"
     echo "Wine wurde erfolgreich installiert."

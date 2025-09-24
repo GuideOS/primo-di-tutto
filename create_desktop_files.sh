@@ -46,7 +46,7 @@ X-GNOME-Autostart-enabled=true
 NoDisplay=false
 Hidden=false
 Name[de_DE]=primo-di-tutto.desktop
-Comment[de_DE]=Keine Beschreibung
+Comment[de_DE]=GuideOS Einstellungen (Primo)
 X-GNOME-Autostart-Delay=0
 EOL
 
