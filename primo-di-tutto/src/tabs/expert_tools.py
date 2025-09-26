@@ -258,7 +258,7 @@ class AptToolsFrame(tk.Frame):
         self.apt_update_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Liste aktualisieren"),
+            text="apt update",
             command=update_action,
             width=20,
         )
@@ -268,7 +268,7 @@ class AptToolsFrame(tk.Frame):
         self.apt_upgrade_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Pakete aktualisieren"),
+            text="apt upgrade",
             command=upgrade_action,
             width=20,
         )
@@ -278,9 +278,9 @@ class AptToolsFrame(tk.Frame):
         self.apt_showupgrade_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Verfügbare Updates"),
+            text="apt list --upgradable",
             command=apt_showupgrade_action,
-            width=20,
+            width=25,
         )
 
         self.apt_showupgrade_button.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
@@ -288,7 +288,7 @@ class AptToolsFrame(tk.Frame):
         self.apt_autoremove_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Aufräumen"),
+            text="apt autoremove",
             command=apt_autremove_action,
             width=20,
         )
@@ -298,9 +298,9 @@ class AptToolsFrame(tk.Frame):
         self.apt_broken_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Fehler beheben"),
+            text="apt --fix-broken install",
             command=apt_broken_action,
-            width=20,
+            width=25,
         )
 
         self.apt_broken_button.grid(row=4, column=0, padx=5, pady=5, sticky="ew")
@@ -308,9 +308,9 @@ class AptToolsFrame(tk.Frame):
         self.apt_missing_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Fehlende Pakete laden"),
+            text="apt --fix-missing install",
             command=apt_missing_action,
-            width=20,
+            width=25,
         )
 
         self.apt_missing_button.grid(row=5, column=0, padx=5, pady=5, sticky="ew")
@@ -318,9 +318,9 @@ class AptToolsFrame(tk.Frame):
         self.apt_cinfigure_a_button = ttk.Button(
             self.apt_option_frame,
             compound="left",
-            text=_("Reparieren"),
+            text="dpkg --configure -a",
             command=apt_reconf_action,
-            width=20,
+            width=25,
         )
 
         self.apt_cinfigure_a_button.grid(row=6, column=0, padx=5, pady=5, sticky="ew")
@@ -334,7 +334,7 @@ class AptToolsFrame(tk.Frame):
         self.flatpak_update_button = ttk.Button(
             self.flatpak_option_frame,
             compound="left",
-            text=_("Aktualisieren"),
+            text="flatpak update",
             command=flatpak_update_action,
             width=20,
         )
@@ -344,9 +344,9 @@ class AptToolsFrame(tk.Frame):
         self.flatpak_clean_button = ttk.Button(
             self.flatpak_option_frame,
             compound="left",
-            text=_("Aufräumen"),
+            text="flatpak uninstall --unused",
             command=flatpak_clean_action,
-            width=20,
+            width=25,
         )
 
         self.flatpak_clean_button.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
