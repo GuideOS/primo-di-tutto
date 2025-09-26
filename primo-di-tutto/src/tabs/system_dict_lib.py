@@ -1,5 +1,6 @@
 from resorcess import *
 
+
 class CinnamonLook:
     cinna_look_dict = {
         "look_0": {
@@ -23,14 +24,8 @@ class CinnamonLook:
             "Action": "cinnamon-settings fonts",
             "Path": "Cinnamon Settings",
         },
-        "look_3": {
-            "Name": "Themen",
-            "Description": "Öffnet die Einstellungen für die Themen von Cinnamon.",
-            "Icon": f"{application_path}/images/icons/papirus/48x48/preferences-desktop-icons.png",
-            "Action": "cinnamon-settings theme",
-            "Path": "Cinnamon Settings",
-        },
-    } 
+    }
+
 
 class CinnamonSettings:
     cinna_sett_dict = {
@@ -122,7 +117,7 @@ class CinnamonSettings:
             "Name": "Online-Konten",
             "Description": "Öffnet die Einstellungen für Online-Konten.",
             "Icon": f"{application_path}/images/icons/papirus/48x48/preferences-desktop-online-accounts.png",
-            "Action": "cinnamon-settings online-accounts",
+            "Action": "gnome-online-accounts-gtk",
             "Path": "Cinnamon Settings",
         },
         "sett_13": {
@@ -161,6 +156,7 @@ class CinnamonSettings:
             "Path": "Cinnamon Settings",
         },
     }
+
 
 class SoftwareSys:
     sys_dict = {
@@ -217,10 +213,11 @@ class SoftwareSys:
             "Name": "Nvidia-\nTreiberinstallation",
             "Description": "Installiere den proprietären Nvidia-Treiber aus dem Repository.",
             "Icon": f"{application_path}/images/icons/papirus/48x48/nvidia.png",
-            "Action": "x-terminal-emulator -e 'bash -c \"pkexec /usr/bin/ddm-mx -i nvidia; exec bash\"'",
+            "Action": "/usr/lib/guideos-nvidia-tools/main",
             "Path": "ddm-mx",
         },
     }
+
 
 class DeviceSettings:
     device_sett_dict = {
@@ -303,6 +300,7 @@ class DeviceSettings:
         },
     }
 
+
 class SystemManagement:
     sys_mgmt_dict = {
         "sys_mgmt_0": {
@@ -327,7 +325,3 @@ class SystemManagement:
             "Path": "System Management",
         },
     }
-
-
-
-

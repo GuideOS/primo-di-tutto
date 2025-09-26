@@ -15,7 +15,7 @@ if ! command -v wine &> /dev/null; then
     sudo dpkg --add-architecture i386 || error_exit "Fehler beim Hinzufügen der i386-Architektur"
     sudo mkdir -pm755 /etc/apt/keyrings || error_exit "Fehler beim Erstellen von /etc/apt/keyrings"
     sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key || error_exit "Fehler beim Herunterladen des WineHQ-Schlüssels"
-    sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources || error_exit "Fehler beim Hinzufügen der WineHQ-Quellen"
+    sudo wget -NP /etc/apt/sources.list.d/ "https://dl.winehq.org/wine-builds/debian/dists/$(lsb_release -c | grep -o '\w*$')/winehq-$(lsb_release -c | grep -o '\w*$').sources"
     sudo apt update || error_exit "Fehler beim Aktualisieren der Paketliste"
     sudo apt install -y --install-recommends winehq-stable || error_exit "Fehler bei der Installation von WineHQ-Stable"
     echo "Wine wurde erfolgreich installiert."
@@ -25,9 +25,6 @@ fi
 
 # Lutris installieren
 echo "Lutris wird installiert."
-echo 'deb http://download.opensuse.org/repositories/home:/strycore/Debian_12/ /' | sudo tee /etc/apt/sources.list.d/home:strycore.list || error_exit "Fehler beim Hinzufügen der Lutris-Repository"
-curl -fsSL https://download.opensuse.org/repositories/home:strycore/Debian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_strycore.gpg > /dev/null || error_exit "Fehler beim Importieren des Repository-Schlüssels für Lutris"
-sudo apt update || error_exit "Fehler beim Aktualisieren der Paketliste für Lutris"
 sudo apt install -y lutris || error_exit "Fehler bei der Installation von Lutris"
 echo "Lutris wurde erfolgreich installiert."
 

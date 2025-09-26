@@ -9,7 +9,7 @@ cat > debian/primo-di-tutto/usr/share/applications/primo-di-tutto.desktop <<EOL
 [Desktop Entry]
 Version=2.1
 Exec=primo-di-tutto
-Name=GuideOS-Einstellungen (Primo)
+Name=GuideOS Einstellungen (Primo)
 GenericName=GuideOS-Einstellungen
 Encoding=UTF-8
 Terminal=false
@@ -27,7 +27,7 @@ Name=gos-menu
 GenericName=Application Launcher
 Comment=Lightweight, look nice and powerful application launcher
 Categories=GuideOS;
-Exec=com.github.libredeb.lightpad
+Exec=io.github.libredeb.lightpad
 Icon=guide-os-logo-symbolic-dark
 Terminal=false
 Type=Application
@@ -46,7 +46,7 @@ X-GNOME-Autostart-enabled=true
 NoDisplay=false
 Hidden=false
 Name[de_DE]=primo-di-tutto.desktop
-Comment[de_DE]=Keine Beschreibung
+Comment[de_DE]=GuideOS Einstellungen (Primo)
 X-GNOME-Autostart-Delay=0
 EOL
 

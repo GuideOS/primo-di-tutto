@@ -6,10 +6,6 @@ import os.path
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
-from resorcess import *
-from apt_manage import *
-from flatpak_alias_list import *
-from tabs.pop_ups import *
 
 
 class SourcesTab(ttk.Frame):

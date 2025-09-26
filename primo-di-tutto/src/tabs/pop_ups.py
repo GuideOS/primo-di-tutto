@@ -1,18 +1,8 @@
 #!/usr/bin/python3
 
-import os
-from os import popen
-import os.path
-from tkinter import *
-from tkinter import ttk
 import tkinter as tk
-import tkinter.font as tkFont
-from PIL import ImageTk, Image
-import requests
-from itertools import count, cycle
-from resorcess import *
-from apt_manage import *
-from flatpak_alias_list import *
+from tkinter import ttk
+from resorcess import application_path
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -23,7 +13,7 @@ class Done_(tk.Toplevel):
 
     def __init__(self, parent):
         super().__init__(parent)
-        #self["background"] = maincolor
+        # self["background"] = maincolor
         self.title("Erledigt!")
         self.icon = tk.PhotoImage(file=f"{application_path}/images/icons/logo.png")
         self.tk.call("wm", "iconphoto", self._w, self.icon)
@@ -36,10 +26,7 @@ class Done_(tk.Toplevel):
         y = (screen_height / 2) - (app_height / 2)
         self.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
 
-
-
-        cont_btn = ttk.Button(self, text="Ok", command=self.destroy,style="Accent.TButton")
+        cont_btn = ttk.Button(
+            self, text="Ok", command=self.destroy, style="Accent.TButton"
+        )
         cont_btn.pack(fill="x", expand=True, pady=20, padx=20)
-
-
-

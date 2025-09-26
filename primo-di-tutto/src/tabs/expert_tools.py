@@ -1,21 +1,23 @@
 import os
 from os import popen
-import os.path
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
 from resorcess import *
 from tabs.pop_ups import *
-import subprocess
-from tkinter import messagebox
-import threading
-from PIL import Image, ImageTk
-import requests
-from io import BytesIO
 from tabs.system_dict_lib import SoftwareSys
 from logger_config import setup_logger
+import threading
+import subprocess
+import gettext
 
 logger = setup_logger(__name__)
+
+lang = gettext.translation(
+    "messages", localedir=f"{application_path}/src/tabs/locale", languages=["de"]
+)
+lang.install()
+_ = lang.gettext
 
 
 class ExpertTab(ttk.Frame):
@@ -26,32 +28,30 @@ class ExpertTab(ttk.Frame):
         self.inst_notebook = ttk.Notebook(self)
         self.inst_notebook.pack(fill=BOTH, expand=True)
 
-        #bootloader_frame = ttk.Frame(self.inst_notebook)
         source_frame = ttk.Frame(self.inst_notebook)
-        #kernel_frame = ttk.Frame(self.inst_notebook)
         admin_frame = ttk.Frame(self.inst_notebook)
+        apt_tools_frame = ttk.Frame(self.inst_notebook)
 
-        #bootloader_frame.pack(fill="both", expand=True)
+
         source_frame.pack(fill="both", expand=True)
-        #kernel_frame.pack(fill="both", expand=True)
         admin_frame.pack(fill="both", expand=True)
+        apt_tools_frame.pack(fill="both", expand=True)
 
-        #self.inst_notebook.add(bootloader_frame, compound=LEFT, text="Bootloader")
+
+
         self.inst_notebook.add(source_frame, compound=LEFT, text="Quellen")
-        #self.inst_notebook.add(kernel_frame, compound=LEFT, text="Kernel")
-        self.inst_notebook.add(admin_frame, compound=LEFT, text="Admin")
-
-       # bootloader_note_frame = BootloaderPanel(bootloader_frame)
-        #bootloader_note_frame.pack(fill=tk.BOTH, expand=True)
+        self.inst_notebook.add(admin_frame, compound=LEFT, text="Werkzeuge")
+        self.inst_notebook.add(apt_tools_frame, compound=LEFT, text="APT-Werkzeuge")
 
         source_note_frame = SourcePanel(source_frame)
         source_note_frame.pack(fill=tk.BOTH, expand=True)
 
-        #kernel_note_frame = KernelPanel(kernel_frame)
-        #kernel_note_frame.pack(fill=tk.BOTH, expand=True)
-
         admin_note_frame = AdminPanel(admin_frame)
         admin_note_frame.pack(fill=tk.BOTH, expand=True)
+
+        apt_tools_frame = AptToolsFrame(apt_tools_frame)
+        apt_tools_frame.pack(fill=tk.BOTH, expand=True)
+
 
 class AdminPanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
@@ -59,21 +59,22 @@ class AdminPanel(tk.Frame):
 
         # Frame für Canvas und Scrollbar
         canvas_frame = ttk.Frame(self)
-        canvas_frame.pack(fill=tk.BOTH, expand=True,padx=20, pady=20)
+        canvas_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
         # Canvas-Container für sys_btn_frame
-        canvas = tk.Canvas(canvas_frame,borderwidth=0, highlightthickness=0)
+        canvas = tk.Canvas(canvas_frame, borderwidth=0, highlightthickness=0)
         canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Scrollbar hinzufügen
-        scrollbar = ttk.Scrollbar(canvas_frame, orient=tk.VERTICAL, command=canvas.yview)
+        scrollbar = ttk.Scrollbar(
+            canvas_frame, orient=tk.VERTICAL, command=canvas.yview
+        )
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
         # Frame in den Canvas einfügen
         scrollable_frame = ttk.Frame(canvas)
         scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+            "<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
         )
 
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
@@ -88,7 +89,7 @@ class AdminPanel(tk.Frame):
         sys_btn_frame.grid_columnconfigure(2, weight=2)
         sys_btn_frame.grid_columnconfigure(3, weight=1)
         sys_btn_frame.grid_columnconfigure(4, weight=2)
- 
+
         def sys_btn_action(sys_key):
             # SoftwareSys.sys_dict[sys_key]["Action"]
             command = SoftwareSys.sys_dict[sys_key]["Action"]
@@ -114,19 +115,21 @@ class AdminPanel(tk.Frame):
                 command=lambda key=sys_key: sys_btn_action(key),
                 compound=tk.TOP,
                 style="Custom.TButton",
-                width=19
+                width=19,
             )
-            sys_button.grid(row=row, column=column, padx=3, pady=3, sticky="nesw")
+            sys_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
 
             # Hover- und Leave-Ereignisse für diesen Button hinzufügen
-            sys_button.bind("<Enter>", lambda event, key=sys_key: self.on_hover(event, key))
+            sys_button.bind(
+                "<Enter>", lambda event, key=sys_key: self.on_hover(event, key)
+            )
             sys_button.bind("<Leave>", self.on_leave)
 
         sys_info_frame = ttk.LabelFrame(self, text="Info", padding=20)
         sys_info_frame.pack(pady=20, padx=20, fill="both")
 
         # Label für die Anzeige der Beschreibung
-        self.sys_info_label = tk.Label(sys_info_frame, justify="left",wraplength=900)
+        self.sys_info_label = tk.Label(sys_info_frame, justify="left", wraplength=900)
         self.sys_info_label.pack(anchor="w")
 
     # Funktion für das Hover-Ereignis
@@ -137,299 +140,354 @@ class AdminPanel(tk.Frame):
     def on_leave(self, event):
         self.sys_info_label.configure(text="")
 
-class BootloaderPanel(tk.Frame):
+class AptToolsFrame(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
+        self.grid(row=0, column=0, sticky="nsew")
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_columnconfigure(1, weight=1)
 
-        self.folder_icon = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/folder_s_light.png"
-        )
-        self.backup_icon = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/backup_s_light.png"
-        )
-        self.deb_icon = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/deb_s_light.png"
-        )
-        self.recover_icon = PhotoImage(
-            file=f"{application_path}/images/icons/pigro_icons/recover_s_light.png"
+        self.term_logo = PhotoImage(
+            file=f"{application_path}/images/icons/papirus/goterminal.png"
         )
 
-        def get_grub_timeout():
-            grub_config_path = "/etc/default/grub"
-            timeout_style = None
-            timeout_value = None
+        # kill_term soll % wid beenden
 
-            try:
-                with open(grub_config_path, "r") as file:
-                    for line in file:
-                        line = line.strip()
-                        if line.startswith("GRUB_TIMEOUT_STYLE"):
-                            timeout_style = line.split("=")[1].strip().strip('"')
-                        elif line.startswith("GRUB_TIMEOUT"):
-                            timeout_value = line.split("=")[1].strip().strip('"')
-                            if not timeout_value.isdigit():
-                                logger.error(
-                                    f"Unerwarteter Wert für GRUB_TIMEOUT: '{timeout_value}'"
-                                )
-                                timeout_value = None
+        def execute_command(command, event=None):
+            self.term_logo_label.grid_forget()
+            self.terminal.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
-                if timeout_value is not None and timeout_value.isdigit():
-                    return int(timeout_value)
-                elif timeout_style == "menu":
-                    logger.warning(
-                        "GRUB_TIMEOUT_STYLE ist auf 'menu' gesetzt. Verwende den Timeout-Wert dennoch."
-                    )
-                    return 11
-                else:
-                    logger.warning(
-                        "GRUB_TIMEOUT_STYLE oder GRUB_TIMEOUT fehlen oder sind ungültig."
-                    )
+            self.terminal_scroll.grid(row=0, column=1, sticky="ns")
+            self.terminal.config(yscrollcommand=self.terminal_scroll.set)
+            if command.strip() == "":
+                return
 
-            except FileNotFoundError:
-                logger.error("Die GRUB-Konfigurationsdatei wurde nicht gefunden.")
-            except Exception as e:
-                logger.error(f"Ein Fehler ist aufgetreten: {e}")
+            # Starte den Befehl in einem separaten Thread, um das GUI nicht zu blockieren
+            thread = threading.Thread(target=run_command, args=(command,))
+            thread.start()
 
-            return 6
+        def run_command(command):
+            # Starte den Prozess mit Popen
+            process = subprocess.Popen(
+                command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+            )
 
-        def get_grub_timeout_style():
-            grub_config_path = "/etc/default/grub"
-            try:
-                with open(grub_config_path, "r") as file:
-                    for line in file:
-                        line = line.strip()
-                        if line.startswith("GRUB_TIMEOUT_STYLE"):
-                            return line.split("=")[1].strip().strip('"')
-            except FileNotFoundError:
-                logger.error("Die GRUB-Konfigurationsdatei wurde nicht gefunden.")
-            except Exception as e:
-                logger.error(f"Ein Fehler ist aufgetreten: {e}")
+            # Lese Zeile für Zeile und aktualisiere das Text-Widget
+            for line in iter(process.stdout.readline, ""):
+                self.terminal.insert(tk.END, line)
+                self.terminal.see(tk.END)  # Auto-Scroll
 
-            return "menu"
+            process.stdout.close()
+            process.wait()
+            self.term_quit_button.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
 
-        def set_grub_timeout(timeout):
-            grub_config_path = "/etc/default/grub"
-            command = f"""
-            pkexec bash -c '
-            if grep -q "^GRUB_TIMEOUT=" {grub_config_path}; then
-                sed -i "s/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT={timeout}/" {grub_config_path};
-            else
-                echo "GRUB_TIMEOUT={timeout}" >> {grub_config_path};
-            fi
-            update-grub'
-            """
-            os.system(command)
+        def kill_term():
+            self.terminal.delete(1.0, tk.END)
+            self.terminal.grid_forget()
+            self.terminal_scroll.grid_forget()
+            self.term_quit_button.grid_forget()
+            self.term_logo_label.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
-            try:
-                result = subprocess.run(
-                    command,
-                    shell=True,
-                    check=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                )
-                logger.info(f"GRUB-Timeout erfolgreich auf {timeout} gesetzt.")
-                logger.info(result.stdout.decode("utf-8"))
-            except subprocess.CalledProcessError as e:
-                logger.error(f"Fehler beim Setzen des GRUB-Timeout: {e}")
-                logger.error(e.stderr.decode("utf-8"))
+        def all_up_action():
+            allup = f"{permit} {application_path}/scripts/all_up"
+            execute_command(allup)
 
-        def set_grub_timeout_style(style):
-            grub_config_path = "/etc/default/grub"
-            command = f"pkexec bash -c 'sed -i \"s/^GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE={style}/\" {grub_config_path} && update-grub'"
+        def update_action():
+            update_command = f"{permit} {application_path}/scripts/nala_update_wrap"
+            execute_command(update_command)
 
-            try:
-                result = subprocess.run(
-                    command,
-                    shell=True,
-                    check=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                )
-                logger.info(f"GRUB_TIMEOUT_STYLE erfolgreich auf {style} gesetzt.")
-                logger.info(result.stdout.decode("utf-8"))
-            except subprocess.CalledProcessError as e:
-                logger.error(f"Fehler beim Setzen des GRUB_TIMEOUT_STYLE: {e}")
-                logger.error(e.stderr.decode("utf-8"))
+        def upgrade_action():
+            upgrade_command = f"{permit} {application_path}/scripts/nala_upgrade_wrap"
+            execute_command(upgrade_command)
 
-        def update_grub_timeout():
-            try:
-                timeout = int(grub_timeout_spinbox.get())
-                if timeout < 0:
-                    raise ValueError("Das Timeout darf nicht negativ sein.")
-                set_grub_timeout(timeout)
-            except ValueError as ve:
-                logger.error(f"Ungültige Eingabe: {ve}")
+        def apt_showupgrade_action():
+            show_command = f"{application_path}/scripts/apt_list_upgradeble_wrap"
+            execute_command(show_command)
 
-        def update_grub_menu():
-            if grub_state_toggle_var.get() == 1:
-                set_grub_timeout_style("menu")
-            else:
-                set_grub_timeout_style("hidden")
+        def apt_autremove_action():
+            autorm_command = f"pkexec {application_path}/scripts/nala_autopurge_wrap"
+            execute_command(autorm_command)
 
-                self.backup_frame = ttk.LabelFrame(
-                    self, text="Beschreibung", padding=20
-                )
+        def apt_broken_action():
+            fix_broken_action = f"pkexec {application_path}/scripts/apt_fix_broken_wrap"
+            execute_command(fix_broken_action)
 
-        self.recover_frame = ttk.LabelFrame(self, text="Grub Optionen", padding=50)
-        self.recover_frame.pack(pady=20, padx=20, fill=BOTH)
+        def apt_missing_action():
+            fix_missing_action = (
+                f"pkexec {application_path}/scripts/apt_fix_missing_wrap"
+            )
+            execute_command(fix_missing_action)
 
-        self.recover_frame.columnconfigure(0, weight=1)
-        self.recover_frame.rowconfigure(0, weight=1)
+        def apt_reconf_action():
+            fix_missing_action = f"pkexec {application_path}/scripts/conf-a_wrap"
+            execute_command(fix_missing_action)
 
-        grub_state_label = ttk.Label(
-            self.recover_frame,
-            text="Boot-Menü aktivieren",
+        def flatpak_update_action():
+            flat_up_command = (
+                f"{application_path}/scripts/flatpak_update_wrap && exit ; exec bash"
+            )
+            execute_command(flat_up_command)
+
+        def flatpak_clean_action():
+            flat_clean_command = f"{application_path}/scripts/flatpak_clean_wrap"
+            execute_command(flat_clean_command)
+
+        self.update_button_frame = ttk.Frame(self, padding=20)
+        self.update_button_frame.grid(row=0, column=0, sticky="ns")
+
+        self.all_up_button = ttk.Button(
+            self.update_button_frame,
+            text=_("Alles Aktualisieren"),
+            style="Accent.TButton",
+            width=20,
+            command=all_up_action,
         )
-        grub_state_label.grid(row=0, column=0, sticky="ew")
+        self.all_up_button.pack(fill="x")
 
-        grub_state_toggle_var = tk.IntVar()
-        current_style = get_grub_timeout_style()
-        if current_style == "menu":
-            grub_state_toggle_var.set(1)
-        else:
-            grub_state_toggle_var.set(0)
-
-        grub_state_toggle = ttk.Checkbutton(
-            self.recover_frame,
-            style="Switch.TCheckbutton",
-            variable=grub_state_toggle_var,
-            command=update_grub_menu,
+        self.apt_option_frame = ttk.LabelFrame(
+            self.update_button_frame,
+            text="APT-Optionen",
         )
-        grub_state_toggle.grid(row=0, column=2)
+        self.apt_option_frame.pack(pady=10)
 
-        grub_timeout_label = ttk.Label(self.recover_frame, text="GRUB Timeout setzen")
-        grub_timeout_label.grid(row=1, column=0, sticky="ew")
-
-        default_timeout = get_grub_timeout()
-
-        grub_timeout_spinbox = ttk.Spinbox(
-            self.recover_frame, from_=6, to=60, increment=1
-        )
-        grub_timeout_spinbox.set(default_timeout)
-        grub_timeout_spinbox.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
-
-        grub_timeout_button = ttk.Button(
-            self.recover_frame, text="Auswählen", command=update_grub_timeout
-        )
-        grub_timeout_button.grid(row=1, column=2)
-
-        def get_grub_gfxmode():
-            grub_config_path = "/etc/default/grub"
-            gfxmode = None
-            gfxmode_commented = None
-
-            try:
-                with open(grub_config_path, "r") as file:
-                    for line in file:
-                        line = line.strip()
-                        if line.startswith("#GRUB_GFXMODE"):
-                            gfxmode_commented = line.split("=")[1].strip().strip('"')
-                        elif line.startswith("GRUB_GFXMODE"):
-                            gfxmode = line.split("=")[1].strip().strip('"')
-
-                if gfxmode:
-                    return gfxmode
-                elif gfxmode_commented:
-                    return "Standardwert"
-                else:
-                    return "Standardwert"
-
-            except FileNotFoundError:
-                logger.error("Die GRUB-Konfigurationsdatei wurde nicht gefunden.")
-            except Exception as e:
-                logger.error(f"Ein Fehler ist aufgetreten: {e}")
-
-            return "Standardwert"
-
-        def set_grub_gfxmode(resolution):
-            grub_config_path = "/etc/default/grub"
-
-            if resolution == "Standardwert":
-                command = f"pkexec bash -c 'sed -i \"s/^GRUB_GFXMODE=.*/#GRUB_GFXMODE=640x480/\" {grub_config_path} && update-grub'"
-            else:
-                command = f"pkexec bash -c 'sed -i \"s/^#\\?GRUB_GFXMODE=.*/GRUB_GFXMODE={resolution}/\" {grub_config_path} && update-grub'"
-
-            try:
-                result = subprocess.run(
-                    command,
-                    shell=True,
-                    check=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                )
-                logger.info(f"GRUB GFXMODE erfolgreich auf {resolution} gesetzt.")
-                logger.info(result.stdout.decode("utf-8"))
-            except subprocess.CalledProcessError as e:
-                logger.error(f"Fehler beim Setzen des GRUB GFXMODE: {e}")
-                logger.error(e.stderr.decode("utf-8"))
-
-        def update_gfxmode():
-            resolution = grub_res_combobox.get()
-            set_grub_gfxmode(resolution)
-
-        grub_res_label = ttk.Label(self.recover_frame, text="GRUB Auflösung setzen")
-        grub_res_label.grid(row=2, column=0, sticky="ew")
-
-        resolutions = [
-            "640x480",
-            "800x600",
-            "1024x768",
-            "1280x1024",
-            "1600x1200",
-            "1920x1080",
-            "2560x1440",
-            "Standardwert",
-        ]
-
-        grub_res_combobox = ttk.Combobox(
-            self.recover_frame, values=resolutions, state="readonly"
+        self.apt_update_button = ttk.Button(
+            self.apt_option_frame,
+            compound="left",
+            text="apt update",
+            command=update_action,
+            width=20,
         )
 
-        current_gfxmode = get_grub_gfxmode()
-        grub_res_combobox.set(current_gfxmode)
-        grub_res_combobox.grid(row=2, column=1, sticky="ew", padx=5, pady=5)
+        self.apt_update_button.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
 
-        grub_res_button = ttk.Button(
-            self.recover_frame, text="Auswählen", command=update_gfxmode
+        self.apt_upgrade_button = ttk.Button(
+            self.apt_option_frame,
+            compound="left",
+            text="apt upgrade",
+            command=upgrade_action,
+            width=20,
         )
-        grub_res_button.grid(row=2, column=2, sticky="ew")
 
-        self.backup_frame = ttk.LabelFrame(self, text="Info", padding=20)
-        self.backup_frame.pack(pady=20, padx=20, fill=BOTH)
+        self.apt_upgrade_button.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
 
-        self.backup_frame.columnconfigure(0, weight=1)
-        self.backup_frame.rowconfigure(0, weight=1)
+        self.apt_showupgrade_button = ttk.Button(
+            self.apt_option_frame,
+            compound="left",
+            text="apt list --upgradable",
+            command=apt_showupgrade_action,
+            width=25,
+        )
 
-        grub_info = """
-Grub steht für Grand Unified Bootloader und dient zum Starten von Betriebssystemen wie Linux und Windows.
-Viele Linux Distributionen verwenden GRUB als Standard Bootloader.
+        self.apt_showupgrade_button.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
 
-Features
+        self.apt_autoremove_button = ttk.Button(
+            self.apt_option_frame,
+            compound="left",
+            text="apt autoremove",
+            command=apt_autremove_action,
+            width=20,
+        )
 
-- Unterstützung für viele Dateisysteme, u.a.: ext2, ext3, ext4, btrfs, XFS, ZFS, FAT (und einige mehr)
-- Plattform und Architektur Unterstützung für x86, x64, PowerPC und ARM/ARM64
-- Integrierte Shell für Skripte und Befehle sowie Support für die Programmiersprache Lua
-- Anpassbare Auswahlmenüs (Farben, Hintergrundbilder, Aufbau/Struktur und deren Funktion)
-- Bootet automatisiert oder über ein Auswahlmenü Betriebssysteme
-- Betriebssysteme können von Festplatten, Disketten, CD- und DVD Medien, Imagedateien (ISO) und USB-Sticks gebootet
-- Multi-Boot Support um mehrere Betriebssysteme auf einem Computer zu betreiben (z.B. Ubuntu und Windows)
-- GRUB kann mit einem Passwort versehen werden
-- Linux-Kernel können über eine Netzwerkverbindung geladen werden
-- GRUB kommt sowohl mit MBR und GPT Partitionstabellen zurecht
-- GRUB verfügt über einen Rettungsmodus um Bootprobleme beheben zu können
+        self.apt_autoremove_button.grid(row=3, column=0, padx=5, pady=5, sticky="ew")
 
-GRUB bietet mehrere Konfigurationsdateien um ihn an seine Wünsche anzupassen.
-Neben Farben, Schriften und Hintergrundbildern kann die Reihenfolge und Benennung der Menüeinträge angepasst werden. 
-Es ist auch möglich, verschiedene Linux-Kernel-Versionen über GRUB zu booten.
-"""
+        self.apt_broken_button = ttk.Button(
+            self.apt_option_frame,
+            compound="left",
+            text="apt --fix-broken install",
+            command=apt_broken_action,
+            width=25,
+        )
 
-        self.backup_discription = ttk.Label(
-            self.backup_frame,
-            text=grub_info,
-            justify="left",
-            anchor=W,
-        ).grid(row=0, column=0, columnspan=2, sticky="ew")
+        self.apt_broken_button.grid(row=4, column=0, padx=5, pady=5, sticky="ew")
+
+        self.apt_missing_button = ttk.Button(
+            self.apt_option_frame,
+            compound="left",
+            text="apt --fix-missing install",
+            command=apt_missing_action,
+            width=25,
+        )
+
+        self.apt_missing_button.grid(row=5, column=0, padx=5, pady=5, sticky="ew")
+
+        self.apt_cinfigure_a_button = ttk.Button(
+            self.apt_option_frame,
+            compound="left",
+            text="dpkg --configure -a",
+            command=apt_reconf_action,
+            width=25,
+        )
+
+        self.apt_cinfigure_a_button.grid(row=6, column=0, padx=5, pady=5, sticky="ew")
+
+        self.flatpak_option_frame = ttk.LabelFrame(
+            self.update_button_frame,
+            text=_("Flatpak-Optionen"),
+        )
+        self.flatpak_option_frame.pack(pady=10)
+
+        self.flatpak_update_button = ttk.Button(
+            self.flatpak_option_frame,
+            compound="left",
+            text="flatpak update",
+            command=flatpak_update_action,
+            width=20,
+        )
+
+        self.flatpak_update_button.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
+
+        self.flatpak_clean_button = ttk.Button(
+            self.flatpak_option_frame,
+            compound="left",
+            text="flatpak uninstall --unused",
+            command=flatpak_clean_action,
+            width=25,
+        )
+
+        self.flatpak_clean_button.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
+
+        self.update_term_frame = ttk.LabelFrame(self, text=_("Prozess"))
+        self.update_term_frame.grid(row=0, column=1, sticky="nesw", padx=20, pady=20)
+        self.update_term_frame.grid_rowconfigure(0, weight=1)
+        self.update_term_frame.grid_columnconfigure(0, weight=1)
+
+        self.term_logo_label = Label(
+            self.update_term_frame,
+            image=self.term_logo,
+        )
+        self.term_logo_label.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
+
+        self.terminal = tk.Text(
+            self.update_term_frame, height=20, borderwidth=0, highlightthickness=0
+        )
+
+        self.terminal_scroll = ttk.Scrollbar(
+            self.update_term_frame, orient="vertical", command=self.terminal.yview
+        )
+
+        self.term_quit_button = ttk.Button(
+            self.update_term_frame,
+            text=_("Beenden"),
+            style="Accent.TButton",
+            command=kill_term,
+        )
+
+        self.update_info_frame = ttk.LabelFrame(self, text="Info")
+        self.update_info_frame.grid(
+            row=1, column=0, columnspan=2, sticky="nesw", padx=20, pady=20
+        )
+        self.update_info_frame.pack_propagate(False)
+
+        self.update_info_label = ttk.Label(
+            self.update_info_frame, text="", justify="left", wraplength=900
+        )
+        self.update_info_label.pack(anchor="nw", fill="x", padx=10, pady=5)
+
+        self.all_up_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Aktualisiert das gesammte Betriebsystem inklusive Flatpak-Anwendungen."
+            ),
+        )
+        self.all_up_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
+
+        self.apt_update_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Bringt die Paketliste auf den neusten Stand."
+            ),
+        )
+        self.apt_update_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
+
+        self.apt_upgrade_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Aktualisiert alle installierten Pakete auf die neuste Version."
+            ),
+        )
+        self.apt_upgrade_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
+
+        self.apt_showupgrade_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Es werden aktualisierbare Pakete aufgelistet."
+            ),
+        )
+        self.apt_showupgrade_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
+
+        self.apt_autoremove_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Pakete oder Abhängikeiten, die zurückgeblieben sind werden entfernt."
+            ),
+        )
+        self.apt_autoremove_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
+
+        self.apt_broken_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Repartiert fehlerhafte oder unvollständige Paketinstallationen."
+            ),
+        )
+        self.apt_broken_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
+
+        self.apt_missing_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Lädt fehlende Pakete und deren Abhängigkeiten herunter und installiert sie."
+            ),
+        )
+        self.apt_missing_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
+
+        self.apt_cinfigure_a_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Richtet alle Pakete neu ein, die nicht richtig konfiguriert wurden."
+            ),
+        )
+        self.apt_cinfigure_a_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
+
+        self.flatpak_update_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Es werden alle installierten Flatpak-Programme aktualisiert."
+            ),
+        )
+        self.flatpak_update_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
+
+        self.flatpak_clean_button.bind(
+            "<Enter>",
+            lambda event: self.update_info_label.configure(
+                text="Zurückgebliebene Abhängigkeiten werden entfernt."
+            ),
+        )
+        self.flatpak_clean_button.bind(
+            "<Leave>", lambda event: self.update_info_label.configure(text="")
+        )
+
 
 
 class SourcePanel(tk.Frame):
@@ -476,185 +534,3 @@ class SourcePanel(tk.Frame):
 
         for file in sources_d1:
             self.added_treeview.insert("", "end", values=(file))
-
-
-class KernelPanel(tk.Frame):
-    def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
-        self.columnconfigure(0, weight=1)
-        self.rowconfigure(0, weight=1)
-
-        def add_liquorix_repository():
-            try:
-                subprocess.run(
-                    [
-                        "sudo",
-                        "sh",
-                        "-c",
-                        'echo "deb http://liquorix.net/debian sid main" > /etc/apt/sources.list.d/liquorix.list',
-                    ],
-                    check=True,
-                )
-                subprocess.run(
-                    [
-                        "wget",
-                        "-O",
-                        "/tmp/liquorix.key",
-                        "https://liquorix.net/liquorix-keyring.gpg",
-                    ],
-                    check=True,
-                )
-                subprocess.run(
-                    [
-                        "sudo",
-                        "cp",
-                        "/tmp/liquorix.key",
-                        "/etc/apt/trusted.gpg.d/liquorix-keyring.gpg",
-                    ],
-                    check=True,
-                )
-                subprocess.run(["sudo", "apt-get", "update"], check=True)
-                messagebox.showinfo(
-                    "Erfolg", "Liquorix-Repository wurde erfolgreich hinzugefügt."
-                )
-            except subprocess.CalledProcessError as e:
-                messagebox.showerror(
-                    "Fehler", f"Fehler beim Hinzufügen des Liquorix-Repositorys: {e}"
-                )
-
-        def install_kernel(kernel_version):
-            if kernel_version == "linux-image-liquorix-amd64":
-                add_liquorix_repository()
-            try:
-                subprocess.run(
-                    ["sudo", "apt-get", "install", "-y", kernel_version], check=True
-                )
-                messagebox.showinfo(
-                    "Erfolg", f"Kernel {kernel_version} wurde erfolgreich installiert."
-                )
-            except subprocess.CalledProcessError as e:
-                messagebox.showerror(
-                    "Fehler", f"Fehler bei der Installation des Kernels: {e}"
-                )
-
-        def on_install_button_click():
-            kernel_version = kernel_var.get()
-            if kernel_version:
-                messagebox.showinfo(
-                    "Hinweis",
-                    "Ein Terminal wird sich öffnen. Möglicherweise müssen Sie die Installation bestätigen und das Root-Passwort eingeben.",
-                )
-                threading.Thread(target=install_kernel, args=(kernel_version,)).start()
-            else:
-                messagebox.showwarning(
-                    "Warnung", "Bitte wählen Sie eine Kernel-Version aus."
-                )
-
-        def update_description(*args):
-            kernel_version = kernel_var.get()
-            description = kernel_descriptions.get(kernel_version, "")
-            description_label.config(text=description)
-
-        def get_installed_kernel_versions():
-            try:
-                result = subprocess.run(
-                    ["dpkg", "--list", "linux-image-*"],
-                    capture_output=True,
-                    text=True,
-                    check=True,
-                )
-                kernel_versions = []
-                for line in result.stdout.splitlines():
-                    if line.startswith("ii"):
-                        parts = line.split()
-                        if len(parts) > 2 and "linux-image" in parts[1]:
-                            kernel_versions.append((parts[1], parts[2]))
-                return kernel_versions
-            except subprocess.CalledProcessError as e:
-                messagebox.showerror(
-                    "Fehler", f"Fehler beim Abrufen der Kernel-Versionen: {e}"
-                )
-                return []
-
-        # Liste der verfügbaren Kernel-Versionen und ihre Beschreibungen
-        kernel_versions = [
-            ("LTS-Kernel", "linux-image-amd64"),
-            ("Realtime-Kernel", "linux-image-rt-amd64"),
-            ("Liquorix-Kernel", "linux-image-liquorix-amd64"),
-        ]
-        kernel_descriptions = {
-            "linux-image-amd64": "LTS Kernel: Stabil und langfristig unterstützt.",
-            "linux-image-rt-amd64": "Real-Time Kernel: Für Echtzeitanwendungen optimiert.",
-            "linux-image-liquorix-amd64": "Liquorix Kernel: Für Desktop- und Multimedia-Anwendungen optimiert.",
-        }
-
-        # Aktuellen Standard-Debian-Kernel hinzufügen
-        try:
-            result = subprocess.run(
-                ["uname", "-r"], capture_output=True, text=True, check=True
-            )
-            current_kernel = result.stdout.strip()
-            if "liquorix" not in current_kernel:
-                kernel_versions.append(
-                    ("Aktueller Standard-Kernel", f"linux-image-{current_kernel}")
-                )
-                kernel_descriptions[
-                    f"linux-image-{current_kernel}"
-                ] = "Aktueller Standard-Debian-Kernel."
-        except subprocess.CalledProcessError as e:
-            messagebox.showerror(
-                "Fehler", f"Fehler beim Abrufen des aktuellen Kernels: {e}"
-            )
-
-        # Installierte Kernel-Versionen abrufen und hinzufügen
-        installed_kernels = get_installed_kernel_versions()
-        for kernel_name, kernel_version in installed_kernels:
-            if kernel_name not in [kv[1] for kv in kernel_versions]:
-                kernel_versions.append(
-                    (f"Installierter Kernel: {kernel_name}", kernel_name)
-                )
-                kernel_descriptions[
-                    kernel_name
-                ] = f"Installierter Kernel: {kernel_version}"
-
-        self.kernel_main_frame = ttk.LabelFrame(
-            self, text="Kernel-Modifiktion", padding=20
-        )
-        self.kernel_main_frame.pack(fill="both", expand=True, padx=20, pady=20)
-
-        kernel_version_frame = ttk.LabelFrame(
-            self.kernel_main_frame, text="Kernel Version"
-        )
-        kernel_version_frame.pack(padx=10, pady=5, fill="x")
-
-        kernel_var = tk.StringVar()
-        kernel_var.trace("w", update_description)
-        for idx, (kernel_name, kernel_value) in enumerate(kernel_versions):
-            ttk.Radiobutton(
-                kernel_version_frame,
-                text=kernel_name,
-                variable=kernel_var,
-                value=kernel_value,
-            ).grid(row=idx + 1, column=0, padx=10, sticky=tk.W)
-
-        kernel_dsc_frame = ttk.LabelFrame(self.kernel_main_frame, text="Beschreibung")
-        kernel_dsc_frame.pack(padx=10, pady=5, fill="x")
-
-        description_label = tk.Label(kernel_dsc_frame, text="", justify=tk.LEFT)
-        description_label.grid(
-            row=0,
-            column=1,
-            columnspan=2,
-            rowspan=len(kernel_versions) + 1,
-            padx=10,
-            pady=5,
-            sticky=tk.NW,
-        )
-
-        install_button = ttk.Button(
-            self.kernel_main_frame,
-            text="Installieren",
-            command=on_install_button_click,
-            style="Custom.TButton",
-        )
-        install_button.pack(padx=10, pady=20, fill="x")

@@ -4,6 +4,7 @@ from logger_config import setup_logger
 
 logger = setup_logger(__name__)
 
+
 def is_snap_installed():
     return os.path.exists("/bin/snap")
 
@@ -36,7 +37,6 @@ import subprocess
 
 def get_installed_snaps():
     snap_names = [""]
-
 
     # print(snap_names)
     return snap_names

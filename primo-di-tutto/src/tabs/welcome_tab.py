@@ -1,35 +1,24 @@
 import os
 from os import popen
-import os.path
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
-import platform
-import psutil
-from time import strftime
-import socket
 from PIL import ImageTk, Image
 from resorcess import *
-from apt_manage import *
-from snap_manage import *
-from flatpak_manage import count_flatpaks
-from flatpak_alias_list import *
-from tabs.pop_ups import *
-from tool_tipps import CreateToolTip
 from pathlib import Path
-from tabs.pop_ups import *
-from tabs.software_tab import Custom_Installer
 import subprocess
-import re
 import gettext
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
 
-lang = gettext.translation('messages', localedir=f"{application_path}/src/tabs/locale", languages=['de'])
+lang = gettext.translation(
+    "messages", localedir=f"{application_path}/src/tabs/locale", languages=["de"]
+)
 lang.install()
 _ = lang.gettext
 
+#user = "live"
 
 
 class WelcomeTab(ttk.Frame):
@@ -38,171 +27,125 @@ class WelcomeTab(ttk.Frame):
 
         # Icon für den Willkommensbildschirm laden
 
-        if "dark" in theme_name or "Dark" in theme_name:
-            self.welcome_icon = ImageTk.PhotoImage(
-                Image.open(f"{application_path}/images/icons/pigro_icons/guideo_font_logo_dark.png")
-            )
-        else:
-            self.welcome_icon = ImageTk.PhotoImage(
-                Image.open(f"{application_path}/images/icons/pigro_icons/guideo_font_logo_light.png")
-            )
-
-
-
-
+        self.welcome_icon = ImageTk.PhotoImage(
+            Image.open(f"{application_path}/images/icons/guideo_font_logo_dark.png")
+        )
         self.nvidia_icon = ImageTk.PhotoImage(
             Image.open(f"{application_path}/images/icons/nvidia-attentione.png")
         )
-
-        def set_wallpaper():
-            os.popen(f"mpg123 {application_path}/images/backgrounds/bw.mp3")
-            os.popen(f"gsettings set org.cinnamon.desktop.background picture-uri  'file:///{application_path}/images/backgrounds/bw.png'")
-
-
+        self.guide_horn = ImageTk.PhotoImage(
+            Image.open(f"{application_path}/images/icons/guidehorn.png")
+        )
 
         # Label für das Icon erstellen und im Fenster platzieren
         self.icon_label = ttk.Label(self, image=self.welcome_icon)
         self.icon_label.pack(pady=10)
 
-        if user == "jean":
-            welcome_message = _("""Welcome""") + " SCHONG " + "!"
+        # Custom logic for 'live' or 'linux' user
+        if user.lower() in ["live", "linux"]:
+            welcome_message = "Hallo!"
+            welcome_text_message = "Schön, dass du dir GuideOS anschaust. Du befindest dich im Live-Modus. Guck' dich in Ruhe um und wenn du möchste komme hierher zurück, um GuideOS zu installieren.Wir wünschen dir viele Spaß."
+            
+            show_autostart = False
         else:
             welcome_message = _("""Welcome""") + f" {user.upper()} " + "!"
-
-        # Label für die Willkommensnachricht erstellen
-        self.welcome_label = Button(self, text=welcome_message, font=("Ubuntu",20),command=set_wallpaper,highlightthickness=0,borderwidth=0)
-        self.welcome_label.pack(pady=5)
-                # Willkommensnachricht definieren
-        welcome_text_message = """Dein einfacher Einstieg in die Welt von Linux
+            welcome_text_message = """Dein einfacher Einstieg in die Welt von Linux
 GuideOS ist eine Linux-Distribution, die von Mitgliedern des Linux Guides Forums ins Leben gerufen wurde. Sie wurde Ende 2024 entwickelt, um mit der Community gemeinsam einen Weg in die Welt von Linux zu finden. Unser Ziel ist es nicht nur, ein Betriebssystem zu schaffen, sondern vor allem den gemeinsamen Entwicklungsprozess zu erleben. Der Weg ist das Ziel!
 
-- Solide Basis: GuideOS basiert auf Debian, einer bewährten und stabilen Linux-Distribution.
-
-- Intuitive Oberfläche: Als Desktop-Umgebung setzen wir auf Cinnamon, das eine moderne und anpassbare Benutzererfahrung bietet.
-
-- Sorgfältige Programmauswahl: Die vorinstallierten Programme wurden aus langjähriger Erfahrung ausgewählt, um den Bedürfnissen unterschiedlicher Nutzer gerecht zu werden – egal ob für Office-Arbeiten, Internet, Multimedia oder Gaming.
-
 GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle Interessierten ein, mitzuwirken – auch ohne Programmierkenntnisse. Jeder kann etwas beitragen, sei es durch das Testen neuer Funktionen, das Einbringen von Ideen oder das Teilen von Erfahrungen. Der Schwerpunkt liegt aktuell darauf, zu schauen, ob wir gemeinsam mit der Community eine solche Distribution erfolgreich auf die Beine stellen können. Ob du Fragen hast, Ideen einbringen oder einfach nur Teil dieser wachsenden Gemeinschaft werden möchtest – besuche uns im Forum unter forum.linuxguides.de. Wir freuen uns über jeden, der GuideOS nutzt und mitgestaltet!
-
-*** NVIDIA-Nutzer können über 'Werkzeuge' den passenden Treiber installieren. ***
 """
-        # Label für die Willkommensnachricht erstellen
-        self.welcome_text_label = ttk.Label(self, text=welcome_text_message,wraplength=800,justify="left")
-        self.welcome_text_label.pack(pady=10)
-
-        # LabelFrame für Autostart-Optionen erstellen
-        self.autostart_frame = ttk.Labelframe(self, text="Autostart")
-        self.autostart_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
-
-        def get_gpu_model_inxi():
-            try:
-                output = subprocess.check_output("inxi -G", shell=True, text=True)
-                gpu_model = output.strip()
-                logger.debug("GPU Modell (über inxi):", gpu_model)
-                return gpu_model
-            except subprocess.CalledProcessError:
-                logger.error("Fehler beim Auslesen des GPU-Modells über inxi.")
-                return None
-
-
-        def check_nvidia_driver():
-            try:
-                driver_info = subprocess.check_output("nvidia-smi --query-gpu=driver_version --format=csv,noheader", shell=True, text=True)
-                logger.info("NVIDIA Treiber Version:", driver_info.strip())
-                return True
-            except subprocess.CalledProcessError:
-                logger.info("NVIDIA-Treiber nicht installiert, möglicherweise läuft der Nouveau-Treiber.")
-                return False
-
-        def check_nvidia_gpu():
-            try:
-                if "NVIDIA" in get_gpu_model_inxi():
-                    return True
-                else:
-                    return False
-            except subprocess.CalledProcessError as e:
-                logger.error("Error running 'lspci'")
-                return False
-
-
-        def get_nvidia_gpu_model():
-            try:
-                model_info = subprocess.check_output("nvidia-smi --query-gpu=name --format=csv,noheader", shell=True, text=True)
-                model = model_info.strip()
-                logger.info("NVIDIA GPU Modell:", model)
-                return model
-            except subprocess.CalledProcessError:
-                logger.info("Fehler beim Abrufen des NVIDIA-GPU-Modells. Bitte überprüfen Sie, ob 'nvidia-smi' installiert ist.")
-                return None
-
-        def open_software_properties_tab():
-            popen(
-                f"x-terminal-emulator -e 'bash -c \"pkexec apt install nvidia-driver-assistant && clear && nvidia-driver-assistant; exec bash\"'"
-            )
-
-
-        def driver_recognition():
-            if check_nvidia_gpu():
-                logger.info("NVIDIA-GPU erkannt.")
-                if check_nvidia_driver():
-                    get_nvidia_gpu_model()  # Modell der GPU abrufen und ausgeben
-                else:
-                    self.nvidia_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
-            else:
-                logger.info("Keine NVIDIA-GPU erkannt.")
-
-
-
-
-
-
-        # LabelFrame für Autostart-Optionen erstellen
-        self.nvidia_frame = ttk.Labelframe(self, text="NVIDIA-Treiber")
-        #self.nvidia_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
-        #driver_recognition()
-        nvidia_text_message = """Das System hat erkannt das noch kein Treiber für die Eingebaue Grafikarte installiert ist."""
+            show_autostart = True
 
         # Label für die Willkommensnachricht erstellen
-        self.nvidia_text_label = ttk.Label(self.nvidia_frame, text=nvidia_text_message,image=self.nvidia_icon, wraplength=800,justify="center",compound="left")
-        self.nvidia_text_label.pack(pady=10,padx=10,fill="x")
+        self.welcome_label = Label(
+            self,
+            text=welcome_message,
+            font=("Ubuntu", 20),
+            highlightthickness=0,
+            borderwidth=0,
+        )
+        self.welcome_label.pack(pady=5)
 
-        self.drivers_button = ttk.Button(
-                self.nvidia_frame,
-                text="Nvidia Treiber installieren",
-                command=open_software_properties_tab,
-                style="Accent.TButton",
+        # Create the welcome text label first
+        self.welcome_text_label = ttk.Label(
+            self, text=welcome_text_message, wraplength=800, justify="left"
+        )
+        self.welcome_text_label.pack()
+
+        # If user is 'live' or 'linux', set image and compound
+        if user.lower() in ["live", "linux"]:
+            self.welcome_text_label.configure(image=self.guide_horn, compound="bottom")
+
+            self.welcome_text_label.configure(justify="center")
+            self.install_guideos = ttk.Button(
+                self,
+                text=_("GuideOS installieren"),
+                # subproces thats starts calamares-install-guideos
+                command=lambda: subprocess.Popen(["/usr/bin/calamares-install-guideos"]),
+                style="Accent.TButton"
             )
-        self.drivers_button.pack(pady=10,padx=10,fill="x")
+            self.install_guideos.pack(pady=10)
 
 
+        # Only show autostart frame if show_autostart is True
+        if show_autostart:
+            # LabelFrame für Autostart-Optionen erstellen
+            self.autostart_frame = ttk.Labelframe(self, text="Autostart")
+            self.autostart_frame.pack(side=BOTTOM, fill="x", padx=20, pady=20)
 
-        # Konfigurieren der Spalten im LabelFrame
-        self.autostart_frame.columnconfigure(0, weight=1)  # Spalte für den Text
-        self.autostart_frame.columnconfigure(1, weight=0)  # Spalte für den Checkbutton
+            # Konfigurieren der Spalten im LabelFrame
+            self.autostart_frame.columnconfigure(0, weight=1)  # Spalte für den Text
+            self.autostart_frame.columnconfigure(
+                1, weight=0
+            )  # Spalte für den Checkbutton
 
-        # Beschreibung für Autostart hinzufügen (nimmt die erste Spalte ein)
-        self.autostart_description = ttk.Label(
-            self.autostart_frame,
-            text=_("Hier kannst Du den Autostart dieses Programms deaktivieren. Nach dem nächsten Start wird der Willkommensbildschirm entfernt, und Primo wird zu einem Systemtool."
-            ),
-            wraplength=600,
-        )
-        self.autostart_description.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+            # Beschreibung für Autostart hinzufügen (nimmt die erste Spalte ein)
+            self.autostart_description = ttk.Label(
+                self.autostart_frame,
+                text=_(
+                    "Hier kannst Du den Autostart dieses Programms deaktivieren. Nach dem nächsten Start wird der Willkommensbildschirm entfernt und Primo wird zu einem Systemtool."
+                ),
+                wraplength=600,
+            )
+            self.autostart_description.grid(
+                row=0, column=0, padx=20, pady=20, sticky="w"
+            )
 
-        # BooleanVar für den Autostart-Status
-        self.autostart_enabled = tk.BooleanVar()
+            # BooleanVar für den Autostart-Status
+            self.autostart_enabled = tk.BooleanVar()
 
-        # Checkbutton für das Umschalten des Autostarts (rechtsbündig in der zweiten Spalte)
-        self.autostart_checkbutton = ttk.Checkbutton(
-            self.autostart_frame,
-            variable=self.autostart_enabled,
-            command=self.toggle_autostart,
-            style="Switch.TCheckbutton",
-        )
-        self.autostart_checkbutton.grid(row=0, column=1, padx=10, pady=10, sticky="e")
+            # Checkbutton für das Umschalten des Autostarts (rechtsbündig in der zweiten Spalte)
+            self.autostart_checkbutton = ttk.Checkbutton(
+                self.autostart_frame,
+                variable=self.autostart_enabled,
+                command=self.toggle_autostart,
+                style="Switch.TCheckbutton",
+            )
+            self.autostart_checkbutton.grid(
+                row=0, column=1, padx=20, pady=20, sticky="e"
+            )
+
+        # Only show NVIDIA button if not 'live' or 'linux' user
+        if user.lower() not in ["live", "linux"]:
+            if has_nvidia_gpu():
+                # Function to start the NVIDIA manager
+                def open_nvidia_manager():
+                    try:
+                        subprocess.Popen(["/usr/lib/guideos-nvidia-tools/main"])
+                    except Exception as e:
+                        logger.error(f"Error starting NVIDIA Manager: {e}")
+
+                self.nvidia_button = ttk.Button(
+                    self,
+                    text=_("NVIDIA-Manager öffnen"),
+                    image=self.nvidia_icon,
+                    compound="left",
+                    command=open_nvidia_manager,
+                )
+                self.nvidia_button.pack(pady=10)
 
         # Check den aktuellen Autostart-Status und setze den Checkbutton korrekt
-        #self.check_autostart_status()
+        # self.check_autostart_status()
 
     def check_autostart_status(self):
         """Überprüft den aktuellen Autostart-Status anhand der .desktop-Datei."""

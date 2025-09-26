@@ -13,10 +13,9 @@ class LinksTab(ttk.Frame):
         self.grid(row=0, column=0, sticky="nsew")
         self.columnconfigure(0, weight=1)
 
-    
-
         # Dictionary mit Links @dunkelklausner, Gonzo-3004
         linux_links = {
+            "Rueegger Blog - Tolle Artikel zu Linux-Themen": "https://www.rueegger.eu/",
             "Holarse - Linuxspiele-News": "https://holarse.de/",
             "ProtonDB - Checke die Kompatibilitär deiner Games": "https://www.protondb.com/",
             "LinuxNews - Das Neueste aus der Linux Welt": "https://linuxnews.de/",
@@ -28,17 +27,18 @@ class LinksTab(ttk.Frame):
             "Linux-Bibel - Die freundliche Website rund um Debian und Linux": "https://linux-bibel.at/",
         }
 
-
-
-
-
         self.frame = ttk.Frame(self, padding="30")
         self.frame.grid(sticky="nsew")
 
         self.frame.columnconfigure(0, weight=1)
         # Für jeden Link einen Button erzeugen
         for idx, (label, url) in enumerate(linux_links.items()):
-            btn = ttk.Button(self.frame, text=label,style="Accent.TButton", command=lambda url=url: self.open_link(url))
+            btn = ttk.Button(
+                self.frame,
+                text=label,
+                style="Custom.TButton",
+                command=lambda url=url: self.open_link(url),
+            )
             btn.grid(row=idx, column=0, pady=5, sticky="ew")
 
     def open_link(self, url):

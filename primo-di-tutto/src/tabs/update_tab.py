@@ -1,20 +1,14 @@
 #!/usr/bin/python3
 
-import os
-import os.path
+# import os
+# import os.path
 from tkinter import *
 from tkinter import ttk
-from tkinter import filedialog
 from resorcess import *
 from apt_manage import *
 from snap_manage import *
-from flatpak_alias_list import *
 from flatpak_manage import *
-from tool_tipps import CreateToolTip
-from tool_tipps import TipsText
 from tabs.pop_ups import *
-from tabs.text_dict_lib import Update_Tab_Buttons
-from resorcess import pi_identify
 import gettext
 import threading
 from logger_config import setup_logger
@@ -37,81 +31,15 @@ class UpdateTab(ttk.Frame):
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
-        if "dark" in theme_name or "Dark" in theme_name:
-            self.folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/folder_s.png"
-            )
-            self.up_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_up_s.png"
-            )
-            self.gup_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_upg_s.png"
-            )
-            self.recover_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/recover_s.png"
-            )
-            self.fup_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_fupg_s.png"
-            )
-            self.allow_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/allow_s.png"
-            )
-            self.arm_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/del_s.png"
-            )
-            self.confa_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/confa_s.png"
-            )
-            self.re_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/re_s.png"
-            )
-            self.inst_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/debinst_s.png"
-            )
-            self.term_logo = PhotoImage(
-                file=f"{application_path}/images/icons/papirus/goterminal.png"
-            )
-        else:
-            self.folder_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/folder_s_light.png"
-            )
-            self.up_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_up_s_light.png"
-            )
-            self.gup_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_upg_s_light.png"
-            )
-            self.recover_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/recover_s_light.png"
-            )
-            self.fup_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/pack_fupg_s_light.png"
-            )
-            self.allow_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/allow_s_light.png"
-            )
-            self.arm_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/del_s_light.png"
-            )
-            self.confa_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/confa_s_light.png"
-            )
-            self.re_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/re_s_light.png"
-            )
-            self.inst_icon = PhotoImage(
-                file=f"{application_path}/images/icons/pigro_icons/debinst_s_light.png"
-            )
-            self.term_logo = PhotoImage(
-                file=f"{application_path}/images/icons/papirus/goterminal_light.png"
-            )
-
+        self.term_logo = PhotoImage(
+            file=f"{application_path}/images/icons/papirus/goterminal.png"
+        )
 
         # kill_term soll % wid beenden
 
         def execute_command(command, event=None):
             self.term_logo_label.grid_forget()
-            self.terminal.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
+            self.terminal.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
 
             self.terminal_scroll.grid(row=0, column=1, sticky="ns")
             self.terminal.config(yscrollcommand=self.terminal_scroll.set)
@@ -139,58 +67,22 @@ class UpdateTab(ttk.Frame):
 
             process.stdout.close()
             process.wait()
-            self.term_quit_button.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+            self.term_quit_button.grid(row=1, column=0, sticky="nsew", padx=20, pady=20)
 
         def kill_term():
             self.terminal.delete(1.0, tk.END)
             self.terminal.grid_forget()
             self.terminal_scroll.grid_forget()
             self.term_quit_button.grid_forget()
-            self.term_logo_label.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
+            self.term_logo_label.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
 
         def all_up_action():
             allup = f"{permit} {application_path}/scripts/all_up"
             execute_command(allup)
 
-        def update_action():
-            update_command = f"{permit} {application_path}/scripts/nala_update_wrap"
-            execute_command(update_command)
-
-        def upgrade_action():
-            upgrade_command = f"{permit} {application_path}/scripts/nala_upgrade_wrap"
-            execute_command(upgrade_command)
-
-        def apt_showupgrade_action():
-            show_command = f"{application_path}/scripts/apt_list_upgradeble_wrap"
-            execute_command(show_command)
-
-        def apt_autremove_action():
-            autorm_command = f"pkexec {application_path}/scripts/nala_autopurge_wrap"
-            execute_command(autorm_command)
-
-        def apt_broken_action():
-                fix_broken_action=f"pkexec {application_path}/scripts/apt_fix_broken_wrap"
-                execute_command(fix_broken_action)
-
-        def apt_missing_action():
-            fix_missing_action=f"pkexec {application_path}/scripts/apt_fix_missing_wrap"
-            execute_command(fix_missing_action)
-
-        def apt_reconf_action():
-            fix_missing_action=f"pkexec {application_path}/scripts/conf-a_wrap"
-            execute_command(fix_missing_action)
-
-        def flatpak_update_action():
-            flat_up_command=f"{application_path}/scripts/flatpak_update_wrap && exit ; exec bash"
-            execute_command(flat_up_command)
-
-
-        def flatpak_clean_action():
-            flat_clean_command=f"{application_path}/scripts/flatpak_clean_wrap"
-            execute_command(flat_clean_command)
 
         self.update_button_frame = ttk.Frame(self, padding=20)
-        self.update_button_frame.grid(row=0, column=0, sticky="ns")
+        self.update_button_frame.pack(side="top", fill="x")
 
         self.all_up_button = ttk.Button(
             self.update_button_frame,
@@ -201,119 +93,21 @@ class UpdateTab(ttk.Frame):
         )
         self.all_up_button.pack(fill="x")
 
-        self.apt_option_frame = ttk.LabelFrame(
+        self.update_info_label = ttk.Label(
             self.update_button_frame,
-            text="APT-Optionen",
+            # Der text für anfänger angemessen erklären was all_up macht
+            text="Hier kannst Du alle verfügbaren Aktualisierungen für Dein System installieren. Dies umfasst Updates für das Betriebssystem, installierte Software und Anwendungen aus verschiedenen Quellen wie APT und Flatpak. Klicke einfach auf 'Alles Aktualisieren', um den Prozess zu starten. Während der Aktualisierung werden alle Schritte in einem Terminalfenster angezeigt, damit Du den Fortschritt verfolgen kannst.",
+            justify="left", 
+            # Der zeilenumbruch soll eine gute lesbarkeit haben
+            wraplength=950
         )
-        self.apt_option_frame.pack(pady=10)
+        self.update_info_label.pack(anchor="nw", fill="x", pady=5)        
 
-        self.apt_update_button = ttk.Button(
-            self.apt_option_frame,
-            compound="left",
-            text=_("Liste aktualisieren"),
-            image=self.up_icon,
-            command=update_action,
-            width=20,
-        )
-
-        self.apt_update_button.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
-
-        self.apt_upgrade_button = ttk.Button(
-            self.apt_option_frame,
-            compound="left",
-            text=_("Pakete aktualisieren"),
-            image=self.gup_icon,
-            command=upgrade_action,
-            width=20,
-        )
-
-        self.apt_upgrade_button.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
-
-        self.apt_showupgrade_button = ttk.Button(
-            self.apt_option_frame,
-            compound="left",
-            text=_("Verfügbare Updates"),
-            image=self.up_icon,
-            command=apt_showupgrade_action,
-            width=20,
-        )
-
-        self.apt_showupgrade_button.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
-
-        self.apt_autoremove_button = ttk.Button(
-            self.apt_option_frame,
-            compound="left",
-            text=_("Aufräumen"),
-            image=self.arm_icon,
-            command=apt_autremove_action,
-            width=20,
-        )
-
-        self.apt_autoremove_button.grid(row=3, column=0, padx=5, pady=5, sticky="ew")
-
-        self.apt_broken_button = ttk.Button(
-            self.apt_option_frame,
-            compound="left",
-            text=_("Fehler beheben"),
-            image=self.up_icon,
-            command=apt_broken_action,
-            width=20,
-        )
-
-        self.apt_broken_button.grid(row=4, column=0, padx=5, pady=5, sticky="ew")
-
-        self.apt_missing_button = ttk.Button(
-            self.apt_option_frame,
-            compound="left",
-            text=_("Fehlende Pakete laden"),
-            image=self.confa_icon,
-            command=apt_missing_action,
-            width=20,
-        )
-
-        self.apt_missing_button.grid(row=5, column=0, padx=5, pady=5, sticky="ew")
-
-        self.apt_cinfigure_a_button = ttk.Button(
-            self.apt_option_frame,
-            compound="left",
-            text=_("Reparieren"),
-            image=self.up_icon,
-            command=apt_reconf_action,
-            width=20,
-        )
-
-        self.apt_cinfigure_a_button.grid(row=6, column=0, padx=5, pady=5, sticky="ew")
-
-        self.flatpak_option_frame = ttk.LabelFrame(
-            self.update_button_frame,
-            text=_("Flatpak-Optionen"),
-        )
-        self.flatpak_option_frame.pack(pady=10)
-
-        self.flatpak_update_button = ttk.Button(
-            self.flatpak_option_frame,
-            compound="left",
-            text=_("Aktualisieren"),
-            image=self.up_icon,
-            command=flatpak_update_action,
-            width=20,
-        )
-
-        self.flatpak_update_button.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
-
-        self.flatpak_clean_button = ttk.Button(
-            self.flatpak_option_frame,
-            compound="left",
-            text=_("Aufräumen"),
-            image=self.arm_icon,
-            command=flatpak_clean_action,
-            width=20,
-        )
-
-        self.flatpak_clean_button.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
 
         self.update_term_frame = ttk.LabelFrame(self, text=_("Prozess"))
-        self.update_term_frame.grid(row=0, column=1, sticky="nesw", padx=20, pady=20)
+        self.update_term_frame.pack(side="top", fill="both", expand=True, padx=20, pady=20)
+        
+        # Configure grid weights for proper resizing
         self.update_term_frame.grid_rowconfigure(0, weight=1)
         self.update_term_frame.grid_columnconfigure(0, weight=1)
 
@@ -321,10 +115,12 @@ class UpdateTab(ttk.Frame):
             self.update_term_frame,
             image=self.term_logo,
         )
-        self.term_logo_label.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
-
         
-        self.terminal = tk.Text(self.update_term_frame, height=20,borderwidth=0, highlightthickness=0)
+        #self.term_logo_label soll zentriert sein
+        self.term_logo_label.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
+        self.terminal = tk.Text(
+            self.update_term_frame, height=20, borderwidth=0, highlightthickness=0
+        )
 
         self.terminal_scroll = ttk.Scrollbar(
             self.update_term_frame, orient="vertical", command=self.terminal.yview
@@ -339,113 +135,5 @@ class UpdateTab(ttk.Frame):
 
 
 
-        self.update_info_frame = ttk.LabelFrame(self, text="Info")
-        self.update_info_frame.grid(
-            row=1, column=0, columnspan=2, sticky="nesw", padx=20, pady=20
-        )
-        self.update_info_frame.pack_propagate(False)
 
-        self.update_info_label = ttk.Label(
-            self.update_info_frame, text="", justify="left", wraplength=900
-        )
-        self.update_info_label.pack(anchor="nw", fill="x", padx=10, pady=5)
 
-        self.all_up_button.bind(
-            "<Enter>",
-            lambda event: self.update_info_label.configure(
-                text="Aktualisiert das gesammte Betriebsystem inklusive Flatpak-Anwendungen."
-            ),
-        )
-        self.all_up_button.bind(
-            "<Leave>", lambda event: self.update_info_label.configure(text="")
-        )
-
-        self.apt_update_button.bind(
-            "<Enter>",
-            lambda event: self.update_info_label.configure(
-                text="Es wird der Befehl 'apt update' ausgeführ um die Paketliste auf den neusten Stand zu bringen."
-            ),
-        )
-        self.apt_update_button.bind(
-            "<Leave>", lambda event: self.update_info_label.configure(text="")
-        )
-
-        self.apt_upgrade_button.bind(
-            "<Enter>",
-            lambda event: self.update_info_label.configure(
-                text="Es wird der Befehl 'apt update && apt upgrade' ausgeführ um die Paketliste auf den neusten Stand zu bringen und alle Pakete zu aktualisieren."
-            ),
-        )
-        self.apt_upgrade_button.bind(
-            "<Leave>", lambda event: self.update_info_label.configure(text="")
-        )
-
-        self.apt_showupgrade_button.bind(
-            "<Enter>",
-            lambda event: self.update_info_label.configure(
-                text="Es werden aktualisierbare Pakete aufgelistet."
-            ),
-        )
-        self.apt_showupgrade_button.bind(
-            "<Leave>", lambda event: self.update_info_label.configure(text="")
-        )
-
-        self.apt_autoremove_button.bind(
-            "<Enter>",
-            lambda event: self.update_info_label.configure(
-                text="Pakete oder Abhängikeiten, die zurückgeblieben sind werden entfernt."
-            ),
-        )
-        self.apt_autoremove_button.bind(
-            "<Leave>", lambda event: self.update_info_label.configure(text="")
-        )
-
-        self.apt_broken_button.bind(
-            "<Enter>",
-            lambda event: self.update_info_label.configure(
-                text="Der Befehl 'apt --fix-broken install' repariert fehlerhafte oder unvollständige Paketinstallationen, indem fehlende Abhängigkeiten installiert oder beschädigte Pakete korrigiert werden."
-            ),
-        )
-        self.apt_broken_button.bind(
-            "<Leave>", lambda event: self.update_info_label.configure(text="")
-        )
-
-        self.apt_missing_button.bind(
-            "<Enter>",
-            lambda event: self.update_info_label.configure(
-                text="Der Befehl 'apt install --fix-missing' lädt fehlende Paketdateien nach, falls sie beim ersten Versuch nicht heruntergeladen wurden, und setzt die Installation fort."
-            ),
-        )
-        self.apt_missing_button.bind(
-            "<Leave>", lambda event: self.update_info_label.configure(text="")
-        )
-
-        self.apt_cinfigure_a_button.bind(
-            "<Enter>",
-            lambda event: self.update_info_label.configure(
-                text="Der Befehl 'dpkg --configure -a' richtet alle Pakete ein, die heruntergeladen, aber noch nicht vollständig konfiguriert wurden, und behebt so Installationsprobleme."
-            ),
-        )
-        self.apt_cinfigure_a_button.bind(
-            "<Leave>", lambda event: self.update_info_label.configure(text="")
-        )
-
-        self.flatpak_update_button.bind(
-            "<Enter>",
-            lambda event: self.update_info_label.configure(
-                text="Es werden alle installierten Flatpak-Programme aktualisiert."
-            ),
-        )
-        self.flatpak_update_button.bind(
-            "<Leave>", lambda event: self.update_info_label.configure(text="")
-        )
-
-        self.flatpak_clean_button.bind(
-            "<Enter>",
-            lambda event: self.update_info_label.configure(
-                text="Zurückgebliebene Abhängigkeiten werden entfernt."
-            ),
-        )
-        self.flatpak_clean_button.bind(
-            "<Leave>", lambda event: self.update_info_label.configure(text="")
-        )

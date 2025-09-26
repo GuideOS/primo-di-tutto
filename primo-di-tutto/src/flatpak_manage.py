@@ -30,10 +30,11 @@ def is_internet_available():
         pass
     return False
 
+
 def refresh_flatpak_installs():
-    result = Cache.get('flatpak_installs')
+    result = Cache.get("flatpak_installs")
     if result is None:
-        result = Cache.set_result('flatpak_installs', load_flatpak_installs)
+        result = Cache.set_result("flatpak_installs", load_flatpak_installs)
 
     return result
 
@@ -116,4 +117,4 @@ else:
     Flat_remote_dict = {}
     flat_counted = "-"
 
-#print(Flat_remote_dict)
+# print(Flat_remote_dict)

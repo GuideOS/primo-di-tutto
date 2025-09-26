@@ -52,7 +52,7 @@ GuideosMenuApplet.prototype = {
 
     on_applet_clicked: function() {
         // Execute the command com.github.libredeb.lightpad
-        GLib.spawn_command_line_async('com.github.libredeb.lightpad');
+        GLib.spawn_command_line_async('io.github.libredeb.lightpad');
     }
 
 };

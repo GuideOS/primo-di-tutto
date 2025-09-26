@@ -1,13 +1,8 @@
 from os import popen
 from tkinter import *
 from tkinter import ttk
-
-# import tkinter as tk
 import webbrowser
 from resorcess import *
-
-# from apt_manage import *
-# from flatpak_alias_list import *
 from tabs.pop_ups import *
 
 
@@ -22,31 +17,34 @@ class ContribTab(ttk.Frame):
         def open_board():
             webbrowser.open("https://forum.linuxguides.de/core/index.php?dashboard/")
 
-
+        # --- Participation Section ---
         self.take_part_frame = ttk.LabelFrame(self, text="Mach mit !", padding=20)
         self.take_part_frame.pack(padx=20, pady=20, fill="both", expand=True)
 
+        # Description of the GuideOS project and participation philosophy
         take_part_message = ttk.Label(
             self.take_part_frame,
-            wraplength=950,
+            wraplength=900,
             text="Das GuideOS-Projekt nimmt Open Source sehr ernst. Der wohl wichtigste Pfeiler der Philosophie ist die Teilhabe. Mit GuideOS wollen wir nicht die große neue Distro erschaffen, sondern einen einfachen Zugang zu Linux ermöglichen. Dazu gehört auch, dass Nutzer jeden Kenntnisstandes daran arbeiten können. Du kannst im Forum deine Meinung sagen, Code über Git beisteuern oder ohne Anmeldung eine Fehlermeldung verfassen (natürlich komplett anonym).",
         )
         take_part_message.pack(fill="x")
 
+        # Button to open the GuideOS website
         go_home = ttk.Button(
-            self.take_part_frame, text="GuideOS Website", style="Custom.TButton", command=open_website
+            self.take_part_frame,
+            text="GuideOS Website",
+            style="Custom.TButton",
+            command=open_website,
         )
         go_home.pack(fill="x", expand=True, pady=5)
 
-
-
+        # Button to join the community forum
         go_board = ttk.Button(
             self.take_part_frame,
             text="Werde Teil der Community!",
             style="Custom.TButton",
             command=open_board,
         )
-
         go_board.pack(fill="x", expand=True, pady=5)
 
         def open_gitlab():
@@ -58,6 +56,7 @@ class ContribTab(ttk.Frame):
         def open_ticket():
             popen("guideos-ticket-tool")
 
+        # Button to open the GuideOS GitHub page
         go_git = ttk.Button(
             self.take_part_frame,
             text="GuideOS auf GitHub",
@@ -66,6 +65,7 @@ class ContribTab(ttk.Frame):
         )
         go_git.pack(fill="x", expand=True, pady=5)
 
+        # Button to open the Open Build Service page
         go_obs = ttk.Button(
             self.take_part_frame,
             text="GuideOS auf Open Build Service",
@@ -74,6 +74,7 @@ class ContribTab(ttk.Frame):
         )
         go_obs.pack(fill="x", expand=True, pady=5)
 
+        # Button to report a bug or issue
         send_error = ttk.Button(
             self.take_part_frame,
             text="Melde einen Fehler oder ein Problem",
@@ -89,25 +90,26 @@ class ContribTab(ttk.Frame):
         )
         self.thx_frame.pack(padx=20, pady=20, fill="both", expand=True)
 
-        # Textbox erstellen und die Hintergrundfarbe setzen
+        # Create a text box and set the background color
         text_box = tk.Text(
             self.thx_frame, wrap="word"
-        )  # Hier wird die Hintergrundfarbe geändert
+        )  # Here the background color is changed
         text_box.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # Scrollbar erstellen
+        # Create a scrollbar
         scrollbar = ttk.Scrollbar(
             self.thx_frame, orient=tk.VERTICAL, command=text_box.yview
         )
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        # Scrollbar mit der Textbox verbinden
+        # Connect the scrollbar to the text box
         text_box.config(yscrollcommand=scrollbar.set)
 
-        # Text in die Textbox einfügen
+        # Insert text into the text box
         text_box.insert(
-            tk.END, "@Bulvai @DenalB @evilware666 @Fhyrst @Gamma @GF-S15 @Gonzo-3004 @Hammer20l @harihegen @kim88 @KTT73 @maik3531 @Mastertac @Nightworker @Perval @Ritchy @Stardenver @Stephan @StephanR @stryvyr @Toadie @vizh"
+            tk.END,
+            "@Bulvai @DenalB @evilware666 @Fhyrst @Gamma @GF-S15 @Gonzo-3004 @Hammer20l @harihegen @kim88 @KTT73 @maik3531 @Mastertac @Nightworker @Perval @PinguinTV @Ritchy @Stardenver @Stephan @StephanR @stryvyr @dantechgamegeek @Toadie @vizh",
         )
 
-        # Textbox für Eingaben sperren (read-only)
+        # Make the text box read-only
         text_box.config(state=tk.DISABLED)
