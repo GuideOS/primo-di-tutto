@@ -1,3 +1,23 @@
+primo-di-tutto (0.8.0.0) unstable; urgency=medium
+
+  * Major Release: Enhanced System Management & GPU Detection
+  * Added: Robust GPU detection for NVIDIA, AMD/ATI, and Intel graphics cards
+  * Added: Multi-method GPU memory detection (nvidia-smi, glxinfo, lspci, /sys/class/drm)
+  * Added: Intelligent GPU name cleaning and formatting
+  * Added: Enhanced GPU model detection with fallback methods
+  * Fixed: GPU detection now works reliably without NVIDIA drivers
+  * Improved: Unified outer padding (20px) across all tabs for consistent UI
+  * Improved: Standardized button spacing (5px) in grid layouts
+  * Improved: Expert Tools button texts now show actual shell commands
+  * Fixed: Geometry manager conflicts in expert_tools.py
+  * Fixed: Missing gettext configuration in expert_tools.py
+  * Updated: Professional English README with comprehensive documentation
+  * Added: requirements.txt for Python dependencies
+  * Enhanced: Error handling with stderr suppression for cleaner output
+  * Performance: Optimized GPU detection order for faster results
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Thu, 26 Sep 2025 12:30:00 +0100
+
 primo-di-tutto (0.7.9.8) unstable; urgency=medium
 
   * Fixed: Layout
