@@ -106,7 +106,7 @@ class SystemTab(ttk.Frame):
                 style="Custom.TButton",
                 width=19,
             )
-            look_button.grid(row=row, column=column, padx=3, pady=3, sticky="nesw")
+            look_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
 
             # Hover- und Leave-Ereignisse für diesen Button hinzufügen
             look_button.bind(
@@ -178,7 +178,7 @@ class SystemTab(ttk.Frame):
                 style="Custom.TButton",
                 width=19,
             )
-            sett_button.grid(row=row, column=column, padx=3, pady=3, sticky="nesw")
+            sett_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
 
             # Hover- und Leave-Ereignisse für diesen Button hinzufügen
             sett_button.bind(
@@ -250,7 +250,7 @@ class SystemTab(ttk.Frame):
                 width=19,
             )
             device_sett_button.grid(
-                row=row, column=column, padx=3, pady=3, sticky="nesw"
+                row=row, column=column, padx=5, pady=5, sticky="nesw"
             )
 
             # Hover- und Leave-Ereignisse für diesen Button hinzufügen
@@ -324,7 +324,7 @@ class SystemTab(ttk.Frame):
                 style="Custom.TButton",
                 width=19,
             )
-            sys_mgmt_button.grid(row=row, column=column, padx=3, pady=3, sticky="nesw")
+            sys_mgmt_button.grid(row=row, column=column, padx=5, pady=5, sticky="nesw")
 
             # Hover- und Leave-Ereignisse für diesen Button hinzufügen
             sys_mgmt_button.bind(

@@ -18,7 +18,7 @@ lang = gettext.translation(
 lang.install()
 _ = lang.gettext
 
-user = "live"
+#user = "live"
 
 
 class WelcomeTab(ttk.Frame):
@@ -91,7 +91,7 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
         if show_autostart:
             # LabelFrame für Autostart-Optionen erstellen
             self.autostart_frame = ttk.Labelframe(self, text="Autostart")
-            self.autostart_frame.pack(side=BOTTOM, fill="x", padx=10, pady=10)
+            self.autostart_frame.pack(side=BOTTOM, fill="x", padx=20, pady=20)
 
             # Konfigurieren der Spalten im LabelFrame
             self.autostart_frame.columnconfigure(0, weight=1)  # Spalte für den Text
@@ -108,7 +108,7 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
                 wraplength=600,
             )
             self.autostart_description.grid(
-                row=0, column=0, padx=10, pady=10, sticky="w"
+                row=0, column=0, padx=20, pady=20, sticky="w"
             )
 
             # BooleanVar für den Autostart-Status
@@ -122,7 +122,7 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
                 style="Switch.TCheckbutton",
             )
             self.autostart_checkbutton.grid(
-                row=0, column=1, padx=10, pady=10, sticky="e"
+                row=0, column=1, padx=20, pady=20, sticky="e"
             )
 
         # Only show NVIDIA button if not 'live' or 'linux' user

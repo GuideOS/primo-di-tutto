@@ -74,7 +74,7 @@ class LargeFoldersTab(ttk.Frame):
         tree.heading("size", text="Größe", anchor="center")
         tree.column("#0", anchor="w", width=600)
         tree.column("size", anchor="center", width=100)
-        tree.pack(fill="both", expand=True, padx=30, pady=30)
+        tree.pack(fill="both", expand=True, padx=20, pady=20)
 
         du_data = get_du_output()
         for path, size in du_data:

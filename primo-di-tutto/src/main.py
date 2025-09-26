@@ -76,7 +76,7 @@ class MainApplication(tk.Tk):
         )
         self.notebook.add(self.system_tab, compound=LEFT, text="Werkzeuge")
         self.notebook.add(
-            self.expert_tools_tab, compound=LEFT, text="Expertenwerkzeuge"
+            self.expert_tools_tab, compound=LEFT, text="Admin"
         )
         self.notebook.add(self.look_tab, compound=LEFT, text="Erscheinungsbild")
         self.notebook.add(self.large_folders, compound=LEFT, text="Speicherfresser")

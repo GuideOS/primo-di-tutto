@@ -24,7 +24,7 @@ class ContribTab(ttk.Frame):
         # Description of the GuideOS project and participation philosophy
         take_part_message = ttk.Label(
             self.take_part_frame,
-            wraplength=950,
+            wraplength=900,
             text="Das GuideOS-Projekt nimmt Open Source sehr ernst. Der wohl wichtigste Pfeiler der Philosophie ist die Teilhabe. Mit GuideOS wollen wir nicht die große neue Distro erschaffen, sondern einen einfachen Zugang zu Linux ermöglichen. Dazu gehört auch, dass Nutzer jeden Kenntnisstandes daran arbeiten können. Du kannst im Forum deine Meinung sagen, Code über Git beisteuern oder ohne Anmeldung eine Fehlermeldung verfassen (natürlich komplett anonym).",
         )
         take_part_message.pack(fill="x")

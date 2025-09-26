@@ -317,7 +317,7 @@ class SoftwareCommunication:
                 "com_0": {
                     "Name": "Brave Browser",
                     "Package": AppPackage.DEB,
-                    "Description": "Ein schneller, sicherheitsorientierter Browser, der Werbung blockiert und Tracker blockiert. Basiert auf Chromium und fokussiert auf Datenschutz. Unterstützt eine Vielzahl an Erweiterungen.",
+                    "Description": "Ein schneller, sicherheitsorientierter Browser, der Werbung und Tracker blockiert. Basiert auf Chromium und fokussiert auf Datenschutz. Unterstützt eine Vielzahl an Erweiterungen.",
                     "Icon": f"{application_path}/images/apps/com.brave.Browser-icon.png",
                     "Thumbnail": f"{application_path}/images/apps/com.brave.Browser-thumb.png",
                     "Install": f"pkexec {application_path}/scripts/install_brave",
@@ -496,13 +496,13 @@ class SoftwareAudioVideo:
                 },
                 "av_2": {
                     "Name": "Kdenlive",
-                    "Package": AppPackage.DEB,
+                    "Package": AppPackage.FLATPAK,
                     "Description": "Ein leistungsstarkes, nicht-lineares Open-Source-Videoschnittprogramm. Unterstützt mehrere Spuren, umfangreiche Effekte und Transitions für professionelle Videoerstellungen.",
                     "Icon": f"{application_path}/images/apps/org.kde.kdenlive-icon.png",
                     "Thumbnail": f"{application_path}/images/apps/org.kde.kdenlive-thumb.png",
-                    "Install": "pkexec apt install kdenlive -y",
-                    "Uninstall": "pkexec apt remove kdenlive -y",
-                    "Path": "kdenlive",
+                    "Install": "flatpak install flathub org.kde.kdenlive -y",
+                    "Uninstall": "flatpak remove org.kde.kdenlive -y",
+                    "Path": "org.kde.kdenlive",
                 },
                 "av_3": {
                     "Name": "VLC Media Player",
@@ -547,7 +547,7 @@ class SoftwareAudioVideo:
                 "av_7": {
                     "Name": "Amarok",
                     "Package": AppPackage.FLATPAK,
-                    "Description": "Ein moderner Musikplayer und -manager, der auf Amarok basiert. Bietet Unterstützung für Playlisten, Online-Dienste wie Spotify und Soundcloud, sowie umfangreiche Bibliotheksverwaltung.",
+                    "Description": "Ein moderner Musikplayer und -manager. Bietet Unterstützung für Playlisten, Online-Dienste wie Spotify und Soundcloud, sowie umfangreiche Bibliotheksverwaltung.",
                     "Icon": f"{application_path}/images/apps/org.kde.amarok-icon.png",
                     "Thumbnail": f"{application_path}/images/apps/org.kde.amarok-thumb.png",
                     "Install": "flatpak install flathub org.kde.amarok -y",
@@ -557,7 +557,7 @@ class SoftwareAudioVideo:
                 "av_8": {
                     "Name": "Cozy",
                     "Package": AppPackage.FLATPAK,
-                    "Description": "Cozy ist ein moderner Hörbuch-Player, der speziell für Hörbücher entwickelt wurde. Die App bietet Funktionen wie Lesezeichen, Fortschrittsverfolgung und Sleep-Timer, um das Hörerlebnis zu verbessern. Ideal für Benutzer, die eine einfache und effektive Möglichkeit suchen, Hörbücher zu genießen.",
+                    "Description": "Cozy ist ein moderner Hörbuch-Player. Die App bietet Funktionen wie Lesezeichen, Fortschrittsverfolgung und Sleep-Timer, um das Hörerlebnis zu verbessern. Ideal für Benutzer, die eine einfache und effektive Möglichkeit suchen, Hörbücher zu genießen.",
                     "Icon": f"{application_path}/images/apps/com.github.geigi.cozy-icon.png",
                     "Thumbnail": f"{application_path}/images/apps/com.github.geigi.cozy-thumb.png",
                     "Install": "flatpak install flathub com.github.geigi.cozy -y",
