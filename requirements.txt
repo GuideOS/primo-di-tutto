@@ -1,0 +1,25 @@
+# Primo - GuideOS System Management Tool
+# Python Dependencies
+
+# Core GUI Framework
+Pillow>=8.0.0           # PIL/Pillow for image processing
+psutil>=5.8.0           # System and process utilities
+requests>=2.25.0        # HTTP library for web requests
+
+# Optional but recommended
+setuptools>=50.0.0      # Python package development
+wheel>=0.36.0           # Built-package format for Python
+
+# System integration (usually pre-installed on Linux)
+# tkinter - included with Python 3
+# subprocess - included with Python 3
+# threading - included with Python 3
+# json - included with Python 3
+# re - included with Python 3
+# os - included with Python 3
+# sys - included with Python 3
+# glob - included with Python 3
+# gettext - included with Python 3
+
+# Note: Some dependencies are system packages and should be installed via apt:
+# sudo apt install python3-tkinter python3-pil python3-pil.imagetk python3-psutil
