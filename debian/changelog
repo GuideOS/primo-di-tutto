@@ -1,4 +1,4 @@
-primo-di-tutto (0.8.0.0) unstable; urgency=medium
+primo-di-tutto (0.8.0.1) unstable; urgency=medium
 
   * Major Release: Enhanced System Management & GPU Detection
   * Added: Robust GPU detection for NVIDIA, AMD/ATI, and Intel graphics cards
