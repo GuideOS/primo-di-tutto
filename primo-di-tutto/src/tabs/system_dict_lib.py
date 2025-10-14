@@ -213,7 +213,7 @@ class SoftwareSys:
             "Name": "Nvidia-\nTreiberinstallation",
             "Description": "Installiere den proprietären Nvidia-Treiber aus dem Repository.",
             "Icon": f"{application_path}/images/icons/papirus/48x48/nvidia.png",
-            "Action": "/usr/lib/guideos-nvidia-tools/main",
+            "Action": "x-terminal-emulator -e 'pkexec /usr/bin/debian-nvidia-installer'",
             "Path": "ddm-mx",
         },
     }

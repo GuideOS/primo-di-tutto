@@ -131,7 +131,7 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
                 # Function to start the NVIDIA manager
                 def open_nvidia_manager():
                     try:
-                        subprocess.Popen(["pkexec /usr/bin/debian-nvidia-installer"])
+                        subprocess.Popen(["x-terminal-emulator", "-e", "pkexec /usr/bin/debian-nvidia-installer"])
                     except Exception as e:
                         logger.error(f"Error starting NVIDIA Manager: {e}")
 
