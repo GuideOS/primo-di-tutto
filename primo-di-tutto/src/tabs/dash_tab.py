@@ -929,7 +929,7 @@ class DashTab(ttk.Frame):
         self.architecture_label.configure(text=f"Architektur: {os_arch_output}")
         self.kernel_label.configure(text=f"Kernel: {my_system.release}")
         self.shell_label.configure(text=f"Shell: {os.environ['SHELL']}")
-        self.desktop_label.configure(text=f"Desktop: {get_desktop_environment()}")
+        self.desktop_label.configure(text=f"Desktop: {get_desktop_environment()} {get_cinnamon_version()}")
         self.window_manager_label.configure(
             text=f"Window Manager: {self.get_window_manager()}"
         )

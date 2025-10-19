@@ -624,7 +624,22 @@ class LookTab(ttk.Frame):
                 ]
 
                 theme_combobox["values"] = themes
-                theme_combobox.set("Theme wählen")
+                
+                # Aktuelles Theme ermitteln und anzeigen
+                try:
+                    current_theme = subprocess.run(
+                        ["gsettings", "get", "org.cinnamon.desktop.interface", "gtk-theme"],
+                        capture_output=True,
+                        text=True,
+                        check=True
+                    ).stdout.strip().strip("'\"")
+                    
+                    if current_theme in themes:
+                        theme_combobox.set(current_theme)
+                    else:
+                        theme_combobox.set("Theme wählen")
+                except Exception:
+                    theme_combobox.set("Theme wählen")
             except Exception as e:
                 theme_combobox.set("Error: " + str(e))
 
@@ -657,7 +672,22 @@ class LookTab(ttk.Frame):
                     ]
                 ]
                 icon_combobox["values"] = icons
-                icon_combobox.set("Symbole wählen")
+                
+                # Aktuelles Icon-Theme ermitteln und anzeigen
+                try:
+                    current_icon = subprocess.run(
+                        ["gsettings", "get", "org.cinnamon.desktop.interface", "icon-theme"],
+                        capture_output=True,
+                        text=True,
+                        check=True
+                    ).stdout.strip().strip("'\"")
+                    
+                    if current_icon in icons:
+                        icon_combobox.set(current_icon)
+                    else:
+                        icon_combobox.set("Symbole wählen")
+                except Exception:
+                    icon_combobox.set("Symbole wählen")
             except Exception as e:
                 icon_combobox.set("Error: " + str(e))
 
@@ -677,9 +707,40 @@ class LookTab(ttk.Frame):
                 ]
 
                 cursor_combobox["values"] = cursor_themes
-                cursor_combobox.set("Cursor wählen")
+                
+                # Aktuelles Cursor-Theme ermitteln und anzeigen
+                try:
+                    current_cursor = subprocess.run(
+                        ["gsettings", "get", "org.cinnamon.desktop.interface", "cursor-theme"],
+                        capture_output=True,
+                        text=True,
+                        check=True
+                    ).stdout.strip().strip("'\"")
+                    
+                    if current_cursor in cursor_themes:
+                        cursor_combobox.set(current_cursor)
+                    else:
+                        cursor_combobox.set("Cursor wählen")
+                except Exception:
+                    cursor_combobox.set("Cursor wählen")
             except Exception as e:
                 cursor_combobox.set("Error: " + str(e))
+                
+            # Aktuelle Cursor-Größe ermitteln und anzeigen
+            try:
+                current_cursor_size = subprocess.run(
+                    ["gsettings", "get", "org.cinnamon.desktop.interface", "cursor-size"],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                ).stdout.strip()
+                
+                if current_cursor_size in cursor_sizes:
+                    cursor_size_combobox.set(current_cursor_size)
+                else:
+                    cursor_size_combobox.set("Cursor-Größe wählen")
+            except Exception:
+                cursor_size_combobox.set("Cursor-Größe wählen")
 
         def set_theme():
             # Set the selected theme in GSettings and update the UI accordingly

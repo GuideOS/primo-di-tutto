@@ -155,6 +155,7 @@ def get_desktop_environment():
     return "Unknown"
 
 
+
 def get_theme():
     try:
         output = subprocess.check_output(
@@ -202,3 +203,19 @@ def has_nvidia_gpu():
                 return True  # NVIDIA found within the block
 
     return False
+
+
+def get_cinnamon_version():
+    """Einfache Funktion um die Cinnamon Version zu ermitteln."""
+    try:
+        result = popen("dpkg-query -W -f='${Version}' cinnamon").read().strip().strip("'\"")
+        return result if result else "N/A"
+    except:
+        return "N/A"
+
+
+def print_cinnamon_version():
+    """Gibt die Cinnamon Version direkt aus."""
+    version = get_cinnamon_version()
+    print(f"Cinnamon Version: {version}")
+    return version
