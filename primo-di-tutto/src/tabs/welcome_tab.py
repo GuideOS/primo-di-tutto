@@ -44,7 +44,7 @@ class WelcomeTab(ttk.Frame):
         # Custom logic for 'live' or 'linux' user
         if user.lower() in ["live", "linux"]:
             welcome_message = "Hallo!"
-            welcome_text_message = "Schön, dass du dir GuideOS anschaust. Du befindest dich im Live-Modus. Guck' dich in Ruhe um und wenn du möchste komme hierher zurück, um GuideOS zu installieren.Wir wünschen dir viele Spaß."
+            welcome_text_message = "Schön, dass du dir GuideOS anschaust. Du befindest dich im Live-Modus. Guck dich in Ruhe um und wenn du möchtest, komm hierher zurück, um GuideOS zu installieren. Wir wünschen dir viel Spaß."
             
             show_autostart = False
         else:
