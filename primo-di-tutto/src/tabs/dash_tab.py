@@ -8,6 +8,7 @@ import psutil
 from time import strftime
 import socket
 import subprocess
+import threading
 from PIL import ImageTk, Image
 from resorcess import *
 from apt_manage import *
@@ -432,293 +433,140 @@ class DashTab(ttk.Frame):
         except Exception:
             return "N/A"
 
-    def _clean_gpu_name(self, raw_name):
-        """Bereinigt und kürzt GPU-Namen auf Hersteller + Modell."""
-        if not raw_name or raw_name == "N/A":
-            return raw_name
+    def killProcess(self, process):
+        """Kill a process if it times out."""
+        try:
+            process.terminate()
+            process.wait(timeout=1)
+        except:
+            try:
+                process.kill()
+            except:
+                pass
+
+    def getProcessOut(self, command):
+        """Execute a command and return its output lines with timeout protection."""
+        timeout = 2.0  # Timeout for any subprocess before aborting it
+
+        lines = []
+        try:
+            p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True, text=True)
+            timer = threading.Timer(timeout, self.killProcess, [p])
+            timer.start()
+            
+            while True:
+                line = p.stdout.readline()
+                if not line:
+                    break
+                if line != '':
+                    lines.append(line.strip())
+            
+            timer.cancel()
+            p.wait()
+            
+        except Exception as e:
+            logger.error(f"Error in getProcessOut: {e}")
+            
+        return lines
+
+    def shorten_gpu_name(self, gpu_name):
+        """Kürzt GPU-Namen für bessere Darstellung."""
         
-        name = raw_name.strip()
+        # Entferne häufige unnötige Begriffe am Anfang
+        replacements_start = [
+            ("Advanced Micro Devices, Inc. [AMD/ATI] ", "AMD "),
+            ("NVIDIA Corporation ", "NVIDIA "),
+            ("Intel Corporation ", "Intel "),
+            ("ATI Technologies Inc ", "AMD "),
+        ]
         
-        # NVIDIA Bereinigung
-        if "NVIDIA" in name or "GeForce" in name or "Quadro" in name or "Tesla" in name:
-            # Entferne Herstellerinfo am Anfang
-            name = name.replace("NVIDIA Corporation ", "")
-            name = name.replace("NVIDIA ", "")
-            
-            # Vereinfache GeForce Namen
-            if "GeForce" in name:
-                # GeForce RTX 4090 -> NVIDIA RTX 4090
-                import re
-                match = re.search(r'GeForce\s+(.*?)(\s+\(|$)', name)
-                if match:
-                    model = match.group(1).strip()
-                    return f"NVIDIA {model}"
-            
-            # Quadro/Tesla Namen
-            if "Quadro" in name or "Tesla" in name:
-                match = re.search(r'(Quadro|Tesla)\s+([^(\[]+)', name)
-                if match:
-                    return f"NVIDIA {match.group(1)} {match.group(2).strip()}"
-            
-            # Fallback für andere NVIDIA
-            return f"NVIDIA {name}"
+        shortened = gpu_name
+        for old, new in replacements_start:
+            if shortened.startswith(old):
+                shortened = shortened.replace(old, new, 1)
+                break
         
-        # AMD/ATI Bereinigung  
-        elif "AMD" in name or "ATI" in name or "Radeon" in name:
-            # Entferne Herstellerinfo
-            name = name.replace("Advanced Micro Devices, Inc. [AMD/ATI] ", "")
-            name = name.replace("Advanced Micro Devices, Inc. ", "")
-            name = name.replace("AMD/ATI ", "")
-            name = name.replace("AMD ", "")
-            
-            # Radeon Namen vereinfachen
-            if "Radeon" in name:
-                import re
-                # Suche nach Radeon + Modell ohne Zusatzinfo
-                patterns = [
-                    r'Radeon\s+(RX\s+\d+\s*\w*)',  # RX 5500 XT
-                    r'Radeon\s+(R\d+\s+\d+)',      # R9 290
-                    r'Radeon\s+(HD\s+\d+)',        # HD 7970
-                    r'Radeon\s+(\w+\s*\d+)',       # Vega 64
-                    r'Radeon\s+([^(\[/]+)'         # Fallback
-                ]
-                
-                for pattern in patterns:
-                    match = re.search(pattern, name)
-                    if match:
-                        model = match.group(1).strip()
-                        # Entferne Zusatzinfo in Klammern und schließende Klammern
-                        model = re.sub(r'\s*[\(\[].*', '', model)
-                        model = re.sub(r'[\)\]]+$', '', model)
-                        return f"AMD Radeon {model}"
-            
-            # Andere AMD GPUs (RDNA, Vega etc.)
+        # Entferne unnötige Begriffe
+        remove_terms = [
+            "Corporation",
+            "Technologies Inc",
+            "Limited", 
+            "Ltd",
+            "Inc.",
+            ", Inc",
+        ]
+        
+        for term in remove_terms:
+            shortened = shortened.replace(term, "")
+        
+        # Spezielle Behandlung für AMD Radeon
+        if "AMD" in shortened and "Radeon" in shortened:
+            # Extrahiere das wichtige: "AMD Radeon RX 6700 XT" etc.
             import re
-            match = re.search(r'(RDNA|Vega|Navi)\s*\d*\s*([^(\[\s/]+)?', name)
+            match = re.search(r'AMD.*(Radeon.*?)(?:\s*\[|$)', shortened)
             if match:
-                arch = match.group(1)
-                model = match.group(2) if match.group(2) else ""
-                return f"AMD {arch} {model}".strip()
-            
-            # Fallback für AMD
-            clean_name = re.sub(r'\s*[\(\[].*', '', name)
-            return f"AMD {clean_name}"
+                shortened = f"AMD {match.group(1)}"
         
-        # Intel Bereinigung
-        elif "Intel" in name:
-            name = name.replace("Intel Corporation ", "")
-            name = name.replace("Intel(R) ", "")
-            name = name.replace("Intel ", "")
-            
+        # Spezielle Behandlung für NVIDIA GeForce
+        elif "NVIDIA" in shortened and ("GeForce" in shortened or "GTX" in shortened or "RTX" in shortened):
             import re
-            # Intel HD/UHD/Iris Graphics
-            patterns = [
-                r'(UHD Graphics\s*\d*)',
-                r'(HD Graphics\s*\d*)',  
-                r'(Iris\s+\w*\s*\d*)',
-                r'(Arc\s+\w\d+)'
-            ]
-            
-            for pattern in patterns:
-                match = re.search(pattern, name, re.IGNORECASE)
-                if match:
-                    model = match.group(1).strip()
-                    return f"Intel {model}"
-            
-            # Fallback für Intel
-            clean_name = re.sub(r'\s*[\(\[].*', '', name)
-            return f"Intel {clean_name}"
+            match = re.search(r'NVIDIA.*(GeForce.*?|GTX.*?|RTX.*?)(?:\s*\[|$)', shortened)
+            if match:
+                shortened = f"NVIDIA {match.group(1)}"
         
-        # Unbekannte Hersteller - versuche zu kürzen
-        else:
+        # Spezielle Behandlung für Intel
+        elif "Intel" in shortened:
             import re
-            # Entferne Revision und Zusatzinfo
-            name = re.sub(r'\s*\(rev\s+\w+\)', '', name)
-            name = re.sub(r'\s*[\(\[].*', '', name)
-            # Entferne übrig gebliebene schließende Klammern
-            name = re.sub(r'[\)\]]+$', '', name).strip()
+            match = re.search(r'Intel.*(HD.*?|UHD.*?|Iris.*?)(?:\s*\[|$)', shortened)
+            if match:
+                shortened = f"Intel {match.group(1)}"
+        
+        # Entferne eckige Klammern und alles danach
+        if "[" in shortened:
+            shortened = shortened.split("[")[0].strip()
+        
+        # Entferne übrig gebliebene Sonderzeichen
+        import re
+        shortened = re.sub(r'[^\w\s\-\.]', '', shortened)
+        
+        # Entferne mehrfache Leerzeichen
+        shortened = " ".join(shortened.split())
+        
+        # Entferne Leerzeichen am Anfang/Ende
+        shortened = shortened.strip()
+        
+        # Kürze nur wenn wirklich zu lang (50 Zeichen)
+        if len(shortened) > 50:
+            shortened = shortened[:47] + "..."
             
-            # Wenn immer noch sehr lang, kürze auf ersten Teil
-            if len(name) > 40:
-                parts = name.split()
-                if len(parts) > 3:
-                    name = " ".join(parts[:3]) + "..."
-            
-            return name
+        return shortened
 
     # Sehr robuste Funktion um das Modell der Grafikkarte auszulesen
-    def get_gpu_model(self):
-        """Sehr robuste Methode zur Erkennung des GPU-Modells für alle GPU-Typen."""
+    def get_gpu_model(self): 
+        cards = {}
+        count = 0
+        envpath = os.environ["PATH"]
+        os.environ["PATH"] = envpath + ":/usr/local/sbin:/usr/sbin:/sbin"
         
-        # Methode 1: nvidia-smi für NVIDIA GPUs (beste Qualität)
         try:
-            output = subprocess.check_output(
-                "nvidia-smi --query-gpu=name --format=csv,noheader,nounits", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
-            ).strip()
-            if output and output != "N/A" and len(output) > 3:
-                # Mehrere GPUs unterstützen
-                gpu_names = [name.strip() for name in output.split('\n') if name.strip()]
-                cleaned_names = [self._clean_gpu_name(name) for name in gpu_names[:3]]
-                return " | ".join(cleaned_names)  # Max 3 GPUs
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            pass
+            for card in self.getProcessOut("lspci"):
+                for prefix in ["VGA compatible controller:", "3D controller:", "Display controller:"]:
+                    if prefix in card:
+                        cardName = card.split(prefix)[1].split("(rev")[0].strip()
+                        # GPU-Namen kürzen für bessere Darstellung
+                        cardName = self.shorten_gpu_name(cardName)
+                        cards[count] = cardName
+                        count += 1
+        except Exception as e:
+            logger.error(f"Error getting GPU model: {e}")
+            cards[0] = "N/A"
         
-        # Methode 2: AMD rocm-smi für moderne AMD GPUs
-        try:
-            output = subprocess.check_output(
-                "rocm-smi --showproductname", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
-            ).strip()
-            if output and "Card series" in output:
-                lines = output.split('\n')
-                gpu_models = []
-                for line in lines:
-                    if "Card series" in line and ":" in line:
-                        model = line.split(":", 1)[1].strip()
-                        if model and model != "N/A":
-                            gpu_models.append(model)
-                if gpu_models:
-                    cleaned_models = [self._clean_gpu_name(model) for model in gpu_models[:2]]
-                    return " | ".join(cleaned_models)
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            pass
+        os.environ["PATH"] = envpath
         
-        # Methode 3: lspci für universelle Hardware-Erkennung (zuverlässigste Methode)
-        try:
-            output = subprocess.check_output(
-                "lspci | grep -iE 'vga|3d|display'", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
-            ).strip()
-            
-            if output:
-                lines = output.split('\n')
-                gpu_models = []
-                for line in lines:
-                    if ":" in line:
-                        # Extrahiere GPU-Info nach dem PCI-Slot
-                        parts = line.split(":", 2)
-                        if len(parts) >= 3:
-                            gpu_info = parts[2].strip()
-                        elif len(parts) == 2:
-                            gpu_info = parts[1].strip()
-                        else:
-                            continue
-                            
-                        # Bereinige Controller-Bezeichnungen
-                        cleaners = [
-                            "VGA compatible controller: ",
-                            "3D controller: ",
-                            "Display controller: ",
-                            "Audio device: "  # Manchmal fälschlich erkannt
-                        ]
-                        for cleaner in cleaners:
-                            gpu_info = gpu_info.replace(cleaner, "")
-                        
-                        # Entferne Revision Info am Ende
-                        gpu_info = gpu_info.split(" (rev ")[0]
-                        
-                        # Filtere offensichtliche Audio-Devices
-                        if not any(audio_term in gpu_info.lower() for audio_term in ['audio', 'sound', 'hdmi audio']):
-                            gpu_models.append(gpu_info.strip())
-                
-                if gpu_models:
-                    # Entferne Duplikate aber behalte Reihenfolge
-                    unique_models = []
-                    for model in gpu_models:
-                        if model not in unique_models:
-                            unique_models.append(model)
-                    # Bereinige die GPU-Namen
-                    cleaned_models = [self._clean_gpu_name(model) for model in unique_models[:2]]
-                    return " | ".join(cleaned_models)  # Max 2 GPUs
-        except Exception:
-            pass
-        
-        # Methode 4: glxinfo für OpenGL-Renderer-Info
-        try:
-            output = subprocess.check_output(
-                "glxinfo | grep -E 'OpenGL renderer|Device:'", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
-            ).strip()
-            
-            if output:
-                lines = output.split('\n')
-                for line in lines:
-                    if "OpenGL renderer" in line and ":" in line:
-                        renderer = line.split(":", 1)[1].strip()
-                        # Bereinige Mesa/Driver-Info
-                        renderer = renderer.replace("Mesa ", "").split(" (")[0]
-                        if renderer and len(renderer) > 5:
-                            return self._clean_gpu_name(renderer)
-                    elif "Device:" in line and ":" in line:
-                        device = line.split(":", 1)[1].strip().split(" (")[0]
-                        if device and len(device) > 5:
-                            return self._clean_gpu_name(device)
-        except Exception:
-            pass
-        
-        # Methode 5: /sys/class/drm für Kernel-DRM-Info
-        try:
-            import glob
-            import os
-            gpu_info_list = []
-            
-            for card_path in glob.glob('/sys/class/drm/card*/device'):
-                try:
-                    # Versuche vendor und device IDs zu lesen
-                    vendor_path = os.path.join(card_path, 'vendor')
-                    device_path = os.path.join(card_path, 'device')
-                    
-                    if os.path.exists(vendor_path) and os.path.exists(device_path):
-                        with open(vendor_path, 'r') as f:
-                            vendor_id = f.read().strip()
-                        with open(device_path, 'r') as f:
-                            device_id = f.read().strip()
-                        
-                        # Bekannte Vendor-IDs
-                        vendor_names = {
-                            '0x10de': 'NVIDIA',
-                            '0x1002': 'AMD/ATI', 
-                            '0x8086': 'Intel'
-                        }
-                        
-                        vendor_name = vendor_names.get(vendor_id, f'Unknown({vendor_id})')
-                        gpu_info_list.append(f"{vendor_name} GPU ({device_id})")
-                except:
-                    continue
-            
-            if gpu_info_list:
-                cleaned_info = [self._clean_gpu_name(info) for info in gpu_info_list[:2]]
-                return " | ".join(cleaned_info)
-        except Exception:
-            pass
-        
-        # Methode 6: lshw als letzter Ausweg
-        try:
-            output = subprocess.check_output(
-                "lshw -C display -short 2>/dev/null", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
-            ).strip()
-            
-            if output:
-                lines = output.split('\n')[1:]  # Skip header
-                gpu_models = []
-                for line in lines:
-                    if line.strip():
-                        # lshw short format: H/W path Device Class Description
-                        parts = line.split(None, 3)
-                        if len(parts) >= 4:
-                            description = parts[3]
-                            if description and "display" not in description.lower():
-                                gpu_models.append(description)
-                
-                if gpu_models:
-                    cleaned_models = [self._clean_gpu_name(model) for model in gpu_models[:2]]
-                    return " | ".join(cleaned_models)
-        except Exception:
-            pass
-        
-        return "N/A"
+        # Return the first GPU or "N/A" if none found
+        gpu_model = cards.get(0, "N/A")
+        print(f"GPU Model detected: {gpu_model}")
+        return gpu_model
 
     def get_gpu_memory(self):
         """Sehr robuste Methode zur Erkennung des GPU-Speichers für alle GPU-Typen."""
