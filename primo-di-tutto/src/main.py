@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+import os
+import sys
+import fcntl
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
@@ -20,6 +23,30 @@ from azure_ttk import *
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
+
+
+def check_single_instance():
+    """Check if another instance of the application is already running"""
+    lock_file = "/tmp/primo-di-tutto.lock"
+    
+    try:
+        # Try to open the lock file
+        lock_fd = open(lock_file, 'w')
+        
+        # Try to acquire an exclusive lock
+        fcntl.flock(lock_fd.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        
+        # Write the current PID to the lock file
+        lock_fd.write(str(os.getpid()))
+        lock_fd.flush()
+        
+        # Return the file descriptor to keep it open
+        return lock_fd
+        
+    except (IOError, OSError):
+        # Another instance is already running
+        print("Another instance of Primo is already running.")
+        sys.exit(1)
 
 
 class MainApplication(tk.Tk):
@@ -109,5 +136,17 @@ class MainApplication(tk.Tk):
 
 
 if __name__ == "__main__":
-    app = MainApplication()
-    app.mainloop()
+    # Check for single instance before creating the application
+    lock_fd = check_single_instance()
+    
+    try:
+        app = MainApplication()
+        app.mainloop()
+    finally:
+        # Clean up the lock file when the application exits
+        if lock_fd:
+            lock_fd.close()
+            try:
+                os.remove("/tmp/primo-di-tutto.lock")
+            except OSError:
+                pass

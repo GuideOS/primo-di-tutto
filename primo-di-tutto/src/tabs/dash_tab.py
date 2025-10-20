@@ -118,12 +118,14 @@ class DashTab(ttk.Frame):
         )
         self.hdd_percent.grid(row=0, column=2, sticky="nsew")
 
-        # Konfiguriere jede Spalte so, dass sie expandiert
+        self.useage_container.grid_columnconfigure(2, weight=1)
+
+        # Configure each column to expand
         self.useage_container.grid_columnconfigure(0, weight=1)
         self.useage_container.grid_columnconfigure(1, weight=1)
         self.useage_container.grid_columnconfigure(2, weight=1)
 
-        # Keine Gewichtung für die Zeilen, sodass sie nicht expandieren
+        # No weighting for rows, so they don't expand
         self.useage_container.grid_rowconfigure(0, weight=0)
         self.useage_container.grid_rowconfigure(1, weight=0)
 
@@ -290,7 +292,7 @@ class DashTab(ttk.Frame):
 
         self.distro_label_frame.grid(column=2, columnspan=2, row=1, sticky="nesw")
 
-        # Ein label das den namen der Grafikkarte anzeigt
+        # A label that displays the graphics card name
         self.gpu_name_label = Label(
             self.distro_label_frame, text=f"Modell: {self.get_gpu_model()}"
         )
@@ -301,7 +303,7 @@ class DashTab(ttk.Frame):
         )
         self.gpu_memory_label.pack(anchor="w", padx=10)
 
-        # Label Frame der Look heißt
+        # Label Frame for appearance/look
         self.look_label_frame = ttk.LabelFrame(
             self.info_frame_container,
             text="Erscheinungsbild",
@@ -317,7 +319,7 @@ class DashTab(ttk.Frame):
         )
         self.icon_theme_label.pack(anchor="w", padx=10)
 
-        # label das den cursor theme anzeigt
+        # Label that displays the cursor theme
         self.cursor_theme_label = Label(
             self.look_label_frame, text=f"Cursor: {self.get_cursor_theme()}"
         )
@@ -365,7 +367,7 @@ class DashTab(ttk.Frame):
 
         # Update OS information
         self.update_os_labels(my_system)
-        # Theme dynamisch auslesen
+        # Read theme dynamically
         try:
             output = subprocess.check_output(
                 "gsettings get org.cinnamon.desktop.interface gtk-theme",
@@ -376,7 +378,7 @@ class DashTab(ttk.Frame):
         except Exception:
             current_theme = "N/A"
         self.desktop_theme_label.configure(text=f"Theme: {current_theme}")
-        # Icon-Theme dynamisch auslesen
+        # Read icon theme dynamically
         try:
             output = subprocess.check_output(
                 "gsettings get org.cinnamon.desktop.interface icon-theme",
@@ -387,7 +389,7 @@ class DashTab(ttk.Frame):
         except Exception:
             current_icon_theme = "N/A"
         self.icon_theme_label.configure(text=f"Icons: {current_icon_theme}")
-        # Cursor-Theme dynamisch auslesen
+        # Read cursor theme dynamically
         try:
             output = subprocess.check_output(
                 "gsettings get org.cinnamon.desktop.interface cursor-theme",
@@ -407,7 +409,7 @@ class DashTab(ttk.Frame):
         # Schedule the next update
         self.after(3000, self.update_labels)
 
-    # Funktion die icon theme für cinnamon ausliest
+    # Function that reads icon theme for cinnamon
     def get_icon_theme(self):
         try:
             output = subprocess.check_output(
@@ -420,7 +422,7 @@ class DashTab(ttk.Frame):
         except Exception:
             return "N/A"
 
-    # Funktion die cursor theme für cinnamon ausliest
+    # Function that reads cursor theme for cinnamon
     def get_cursor_theme(self):
         try:
             output = subprocess.check_output(
@@ -470,9 +472,9 @@ class DashTab(ttk.Frame):
         return lines
 
     def shorten_gpu_name(self, gpu_name):
-        """Kürzt GPU-Namen für bessere Darstellung."""
+        """Shortens GPU names for better display."""
         
-        # Entferne häufige unnötige Begriffe am Anfang
+        # Remove common unnecessary terms at the beginning
         replacements_start = [
             ("Advanced Micro Devices, Inc. [AMD/ATI] ", "AMD "),
             ("NVIDIA Corporation ", "NVIDIA "),
@@ -486,7 +488,7 @@ class DashTab(ttk.Frame):
                 shortened = shortened.replace(old, new, 1)
                 break
         
-        # Entferne unnötige Begriffe
+        # Remove unnecessary terms
         remove_terms = [
             "Corporation",
             "Technologies Inc",
@@ -499,49 +501,49 @@ class DashTab(ttk.Frame):
         for term in remove_terms:
             shortened = shortened.replace(term, "")
         
-        # Spezielle Behandlung für AMD Radeon
+        # Special handling for AMD Radeon
         if "AMD" in shortened and "Radeon" in shortened:
-            # Extrahiere das wichtige: "AMD Radeon RX 6700 XT" etc.
+            # Extract the important part: "AMD Radeon RX 6700 XT" etc.
             import re
             match = re.search(r'AMD.*(Radeon.*?)(?:\s*\[|$)', shortened)
             if match:
                 shortened = f"AMD {match.group(1)}"
         
-        # Spezielle Behandlung für NVIDIA GeForce
+        # Special handling for NVIDIA GeForce
         elif "NVIDIA" in shortened and ("GeForce" in shortened or "GTX" in shortened or "RTX" in shortened):
             import re
             match = re.search(r'NVIDIA.*(GeForce.*?|GTX.*?|RTX.*?)(?:\s*\[|$)', shortened)
             if match:
                 shortened = f"NVIDIA {match.group(1)}"
         
-        # Spezielle Behandlung für Intel
+        # Special handling for Intel
         elif "Intel" in shortened:
             import re
             match = re.search(r'Intel.*(HD.*?|UHD.*?|Iris.*?)(?:\s*\[|$)', shortened)
             if match:
                 shortened = f"Intel {match.group(1)}"
         
-        # Entferne eckige Klammern und alles danach
+        # Remove square brackets and everything after
         if "[" in shortened:
             shortened = shortened.split("[")[0].strip()
         
-        # Entferne übrig gebliebene Sonderzeichen
+        # Remove remaining special characters
         import re
         shortened = re.sub(r'[^\w\s\-\.]', '', shortened)
         
-        # Entferne mehrfache Leerzeichen
+        # Remove multiple spaces
         shortened = " ".join(shortened.split())
         
-        # Entferne Leerzeichen am Anfang/Ende
+        # Remove spaces at beginning/end
         shortened = shortened.strip()
         
-        # Kürze nur wenn wirklich zu lang (50 Zeichen)
+        # Shorten only if really too long (50 characters)
         if len(shortened) > 50:
             shortened = shortened[:47] + "..."
             
         return shortened
 
-    # Sehr robuste Funktion um das Modell der Grafikkarte auszulesen
+    # Very robust function to read the graphics card model
     def get_gpu_model(self): 
         cards = {}
         count = 0
@@ -553,7 +555,7 @@ class DashTab(ttk.Frame):
                 for prefix in ["VGA compatible controller:", "3D controller:", "Display controller:"]:
                     if prefix in card:
                         cardName = card.split(prefix)[1].split("(rev")[0].strip()
-                        # GPU-Namen kürzen für bessere Darstellung
+                        # Shorten GPU names for better display
                         cardName = self.shorten_gpu_name(cardName)
                         cards[count] = cardName
                         count += 1
@@ -565,13 +567,13 @@ class DashTab(ttk.Frame):
         
         # Return the first GPU or "N/A" if none found
         gpu_model = cards.get(0, "N/A")
-        print(f"GPU Model detected: {gpu_model}")
+        #print(f"GPU Model detected: {gpu_model}")
         return gpu_model
 
     def get_gpu_memory(self):
-        """Sehr robuste Methode zur Erkennung des GPU-Speichers für alle GPU-Typen."""
+        """Very robust method for detecting GPU memory for all GPU types."""
         
-        # Methode 1: nvidia-smi für NVIDIA GPUs (Primärmethode)
+        # Method 1: nvidia-smi for NVIDIA GPUs (primary method)
         try:
             output = subprocess.check_output(
                 "nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits", 
@@ -582,7 +584,7 @@ class DashTab(ttk.Frame):
         except (subprocess.CalledProcessError, FileNotFoundError):
             pass
         
-        # Methode 2: nvidia-smi Alternative für NVIDIA
+        # Method 2: nvidia-smi alternative for NVIDIA
         try:
             output = subprocess.check_output(
                 "nvidia-smi -q -d MEMORY | grep 'Total.*MiB' | head -1", 
@@ -596,7 +598,7 @@ class DashTab(ttk.Frame):
         except (subprocess.CalledProcessError, FileNotFoundError):
             pass
         
-        # Methode 3: glxinfo für alle OpenGL-kompatiblen GPUs (AMD, Intel, NVIDIA)
+        # Method 3: glxinfo for all OpenGL-compatible GPUs (AMD, Intel, NVIDIA)
         try:
             output = subprocess.check_output(
                 "glxinfo | grep -E 'Video memory|Dedicated video memory'", 
@@ -604,7 +606,7 @@ class DashTab(ttk.Frame):
             ).strip()
             if output:
                 import re
-                # Suche nach verschiedenen Formaten
+                # Search for various formats
                 match = re.search(r'(\d+)\s*MB', output)
                 if match:
                     return f"{match.group(1)}MB"
@@ -614,7 +616,7 @@ class DashTab(ttk.Frame):
         except (subprocess.CalledProcessError, FileNotFoundError):
             pass
         
-        # Methode 4: AMD-spezifische rocm-smi
+        # Method 4: AMD-specific rocm-smi
         try:
             output = subprocess.check_output(
                 "rocm-smi --showmeminfo vram --csv", 
@@ -634,7 +636,7 @@ class DashTab(ttk.Frame):
         except (subprocess.CalledProcessError, FileNotFoundError):
             pass
         
-        # Methode 5: /sys/class/drm für moderne Linux-Systeme
+        # Method 5: /sys/class/drm for modern Linux systems
         try:
             import glob
             for card_path in glob.glob('/sys/class/drm/card*/device/mem_info_vram_total'):
@@ -646,25 +648,25 @@ class DashTab(ttk.Frame):
         except (FileNotFoundError, ValueError, PermissionError):
             pass
         
-        # Methode 6: lspci + /proc/meminfo für integrierte GPUs
+        # Method 6: lspci + /proc/meminfo for integrated GPUs
         try:
             output = subprocess.check_output(
                 "lspci | grep -i 'vga\\|display'", 
                 shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
             )
-            # Nur für eindeutig integrierte GPUs schätzen
+            # Only estimate for clearly integrated GPUs
             if any(term in output.lower() for term in ['intel.*hd', 'intel.*uhd', 'intel.*iris', 'amd.*vega.*[0-9]']):
                 with open("/proc/meminfo", "r") as f:
                     for line in f:
                         if "MemTotal" in line:
-                            total_mem = int(line.split()[1]) // 1024  # KB zu MB
-                            # Schätze GPU-Memory (typisch 512MB-2GB für integrierte)
+                            total_mem = int(line.split()[1]) // 1024  # KB to MB
+                            # Estimate GPU memory (typically 512MB-2GB for integrated)
                             estimated_gpu_mem = min(2048, max(512, total_mem // 8))
                             return f"~{estimated_gpu_mem} MB (geschätzt)"
         except Exception:
             pass
         
-        # Methode 7: dmesg für Boot-Zeit GPU-Informationen
+        # Method 7: dmesg for boot-time GPU information
         try:
             output = subprocess.check_output(
                 "dmesg | grep -iE '(vram|memory).*[0-9]+.*mb' | grep -i gpu | tail -1", 
@@ -678,7 +680,7 @@ class DashTab(ttk.Frame):
         except Exception:
             pass
         
-        # Methode 8: Fallback über lshw (wenn installiert)
+        # Method 8: Fallback via lshw (if installed)
         try:
             output = subprocess.check_output(
                 "lshw -C display 2>/dev/null | grep -i 'size.*mb'", 
@@ -695,13 +697,13 @@ class DashTab(ttk.Frame):
         return "N/A"
 
     def get_guideo_version(self):
-        # es soll ein der datei /etc/guideo-version ausgelsen werden
+        # Read from the file /etc/guideo-version
         try:
             with open("/etc/guideos-version", "r") as file:
                 version = file.read().strip()
             return version
         except FileNotFoundError:
-            logger.error("Die Datei /etc/guideo-version wurde nicht gefunden.")
+            logger.error("The file /etc/guideo-version was not found.")
             return "N/A"
 
     def get_cpu_temperature(self):
