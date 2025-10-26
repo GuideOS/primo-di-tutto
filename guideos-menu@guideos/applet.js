@@ -34,25 +34,30 @@ GuideosMenuApplet.prototype = {
     // There are more options like Applet, TextApplet, and TextIconApplet.
     __proto__: Applet.IconApplet.prototype,
 
+
     _init: function(metadata, orientation, panel_height, instance_id) {
         Applet.IconApplet.prototype._init.call(this, orientation, panel_height, instance_id);
-
-        // Set the path to our custom icon.
         this.set_applet_icon_path(APPLET_DIR + "/icon.png");
+        this.set_applet_tooltip("GuideOS Menü");
 
-        // Or use an icon available at /usr/share/icons/, for example,
-        // this.set_applet_icon_name("folder");
+        // Settings initialisieren
+        this._settings = new Settings.AppletSettings(this, APPLET_UUID, instance_id);
+        this._settings.bindProperty(Settings.BindingDirection.IN, "background-image", "_backgroundImage", this.onBackgroundImageChanged, null);
+    },
 
-        // By wrapping the string with the _( ) function,
-        // we are telling Cinnamon to translate the string to the correct language,
-        // if translations are available.
-        this.set_applet_tooltip("Starte ein Programm");
-
+    onBackgroundImageChanged: function() {
+        // Optional: Hier könntest du auf Änderungen reagieren
     },
 
     on_applet_clicked: function() {
-        // Execute the command com.github.libredeb.lightpad
-        GLib.spawn_command_line_async('io.github.libredeb.lightpad');
+        // Wenn ein Bild gewählt wurde, führe lightpad mit dem Bild aus
+        if (this._backgroundImage && this._backgroundImage.length > 0) {
+            let cmd = `io.github.libredeb.lightpad --background "${this._backgroundImage}"`;
+            GLib.spawn_command_line_async(cmd);
+        } else {
+            // Falls kein Bild gewählt, öffne das Konfigurationsfenster
+            this.open_settings();
+        }
     }
 
 };

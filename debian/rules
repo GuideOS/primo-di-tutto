@@ -17,6 +17,7 @@ override_dh_install:
 	mkdir -p debian/$(PACKAGE)/opt/primo-di-tutto
 	mkdir -p debian/$(PACKAGE)/usr/bin
 	mkdir -p debian/$(PACKAGE)/etc/xdg/autostart
+	mkdir -p debian/$(PACKAGE)/usr/share/locale/de/LC_MESSAGES/
 
 	# Kopieren der Dateien
 	cp primo-di-tutto-logo.png debian/$(PACKAGE)/usr/share/icons/hicolor/256x256/apps/primo-di-tutto-logo.png
@@ -25,6 +26,7 @@ override_dh_install:
 	cp -r guideos-menu@guideos debian/$(PACKAGE)/usr/share/cinnamon/applets/
 	cp io.github.guideos.primo.metainfo.xml debian/$(PACKAGE)/usr/share/metainfo/io.github.guideos.primo.metainfo.xml
 	cp LICENSE debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)/LICENSE
+	cp Cinnamenu@json/locale/de/LC_MESSAGES/cinnamenu.mo debian/$(PACKAGE)/usr/share/locale/de/LC_MESSAGES/Cinnamenu@json
 
 	# Kopieren der notwendigen Dateien
 	rsync -av --exclude='start.sh' --exclude='.vscode' --exclude='src/__pycache__' --exclude='src/tabs/__pycache__' primo-di-tutto/* debian/$(PACKAGE)/opt/primo-di-tutto/

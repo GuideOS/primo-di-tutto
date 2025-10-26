@@ -581,7 +581,7 @@
     },
     "apps-grid-icon-size":{
         "type":"spinbutton",
-        "default":48,
+        "default":64,
         "min":0,
         "max":256,
         "step":1,
