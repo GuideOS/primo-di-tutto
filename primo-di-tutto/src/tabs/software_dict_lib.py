@@ -744,7 +744,7 @@ class SoftwareDesktopTools:
     desk_dict = dict(
         sorted(
             {
-                "bak_0": {
+                "desktool_0": {
                     "Name": "HydraPaper",
                     "Package": AppPackage.FLATPAK,
                     "Description": "HydraPaper ist eine Anwendung, die es Benutzern ermöglicht, ihre Desktop-Hintergründe einfach zu verwalten und zu ändern. Sie bietet eine benutzerfreundliche Oberfläche, um verschiedene Hintergründe auszuwählen und anzupassen.",
@@ -753,6 +753,17 @@ class SoftwareDesktopTools:
                     "Install": "flatpak install flathub org.gabmus.hydrapaper -y",
                     "Uninstall": "flatpak remove org.gabmus.hydrapaper -y",
                     "Path": "org.gabmus.hydrapaper",
+                },
+                # desktool_1" für Bazaar
+                "desktool_1": {
+                    "Name": "Bazaar",
+                    "Package": AppPackage.FLATPAK,
+                    "Description": "Bazaar ist ein Store-Client für Flatpak-Anwendungen, der es Benutzern ermöglicht, Flatpak-Apps einfach zu durchsuchen, zu installieren und zu verwalten. Die Anwendung bietet eine benutzerfreundliche Oberfläche und erleichtert die Verwaltung von Flatpak-Paketen auf dem System.",
+                    "Icon": f"{application_path}/images/apps/io.github.kolunmi.Bazaar-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/io.github.kolunmi.Bazaar-thumb.png",
+                    "Install": "flatpak install flathub io.github.kolunmi.Bazaar -y",
+                    "Uninstall": "flatpak remove io.github.kolunmi.Bazaar -y",
+                    "Path": "io.github.kolunmi.Bazaar",
                 },
             }.items(),
             key=lambda item: item[1]["Name"],
@@ -784,6 +795,18 @@ class SoftwareTerminalTools:
                     "Uninstall": "pkexec apt remove ranger -y",
                     "Path": "ranger",
                 },
+                # Eintrag für fastfetch DEB
+                "term_2": {
+                    "Name": "Fastfetch",
+                    "Package": AppPackage.DEB,
+                    "Description": "Fastfetch ist ein schnelles und anpassbares Systeminformations-Tool für die Kommandozeile. Es zeigt wichtige Systeminformationen wie Betriebssystem, Kernel-Version, Hardware-Spezifikationen und mehr in einer übersichtlichen und ästhetischen Weise an.",
+                    "Icon": f"{application_path}/images/apps/fastfetch-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/fastfetch-thumb.png",
+                    "Install": "pkexec apt install fastfetch -y",
+                    "Uninstall": "pkexec apt remove fastfetch -y",
+                    "Path": "fastfetch",
+                },
+                
             }.items(),
             key=lambda item: item[1]["Name"],
         )
