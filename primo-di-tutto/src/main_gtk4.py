@@ -12,6 +12,7 @@ from tabs.look_tab import LookTab
 from tabs.software_tab import *
 from contrib_tab import ContribTab
 from links_tab import LinksTab
+from update_tab import UpdateTab
 from tabs.expert_tools import ExpertTab
 from tabs.links_tab import LinksTab
 from tabs.large_folders_tab import LargeFoldersTab
@@ -51,7 +52,7 @@ class MainApplication(Gtk.Application):
         sections = [
             ("Willkommen", Gtk.Label(label="Willkommen-Bereich")),
             ("Übersicht", Gtk.Label(label="Übersicht-Bereich")),
-            ("Aktualisierungen", Gtk.Label(label="Aktualisierungen-Bereich")),
+            ("Aktualisierungen", UpdateTab()),
             ("Software-\nEmpfehlungen", Gtk.Label(label="Software-Empfehlungen-Bereich")),
             ("Werkzeuge", Gtk.Label(label="Werkzeuge-Bereich")),
             ("Admin", Gtk.Label(label="Admin-Bereich")),
