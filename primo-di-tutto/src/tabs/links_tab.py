@@ -15,7 +15,7 @@ class LinksTab(ttk.Frame):
 
         # Dictionary mit Links @dunkelklausner, Gonzo-3004
         linux_links = {
-            "Rueegger Blog - Tolle Artikel zu Linux-Themen": "https://www.rueegger.eu/",
+            "Rueegger Blog - Tolle Artikel zu Linux-Themen": "https://www.rueegger.me/",
             "Holarse - Linuxspiele-News": "https://holarse.de/",
             "ProtonDB - Checke die Kompatibilitär deiner Games": "https://www.protondb.com/",
             "LinuxNews - Das Neueste aus der Linux Welt": "https://linuxnews.de/",
