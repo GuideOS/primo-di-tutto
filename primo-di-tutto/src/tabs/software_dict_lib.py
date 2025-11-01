@@ -150,6 +150,17 @@ class SoftwareGamingTools:
                     "Path": "net.davidotek.pupgui2",
                     "AppStream": "net.davidotek.pupgui2",
                 },
+                "game_4": {
+                    "Name": "Faugus",
+                    "Package": AppPackage.FLATPAK,
+                    "Description": "Mit dieser Anwendung kannst du Windows-Spiele mithilfe von Proton ausführen und ebenso native Linux-Spiele starten. Es ist möglich, Windows-Spiele direkt über die .exe-Datei zu starten. Die Verwaltung von Wine-Präfixen sowie das Anlegen von Verknüpfungen und Steam-Verknüpfungen wird unterstützt.",
+                    "Icon": f"{application_path}/images/apps/io.github.Faugus.faugus-launcher-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/io.github.Faugus.faugus-launcher-thumb.png",
+                    "Install": "flatpak install flathub io.github.Faugus.faugus-launcher -y",
+                    "Uninstall": "flatpak remove io.github.Faugus.faugus-launcher -y",
+                    "Path": "io.github.Faugus.faugus-launcher",
+                    "AppStream": "io.github.Faugus.faugus-launcher",
+                },
             }.items(),
             key=lambda item: item[1]["Name"],
         )
