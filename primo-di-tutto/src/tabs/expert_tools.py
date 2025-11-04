@@ -519,11 +519,11 @@ class SourcePanel(tk.Frame):
         self.add_sources_to_treeview()
 
         def open_source_f_d():
-            popen(f"software-properties-gtk")
+            popen(f"pkexec nemo /etc/apt/sources.list.d")
 
         self.open_source_folder = ttk.Button(
             self.added_repositories,
-            text="Quellen bearbeiten",
+            text="Quellen bearbeiten (Nur für erfahrene Nutzer!)",
             command=open_source_f_d,
             style="Custom.TButton",
         )

@@ -15,15 +15,16 @@ class LinksTab(ttk.Frame):
 
         # Dictionary mit Links @dunkelklausner, Gonzo-3004
         linux_links = {
-            "Rueegger Blog - Tolle Artikel zu Linux-Themen": "https://www.rueegger.me/",
-            "Holarse - Linuxspiele-News": "https://holarse.de/",
-            "ProtonDB - Checke die Kompatibilitär deiner Games": "https://www.protondb.com/",
-            "LinuxNews - Das Neueste aus der Linux Welt": "https://linuxnews.de/",
+            "Rueegger-Blog - Tolle Artikel zu Linux-Themen": "https://www.rueegger.me/",
+            "Holarse - Linux-Spiele-News": "https://holarse.de/",
+            "ProtonDB - Prüfe die Kompatibilität deiner Spiele": "https://www.protondb.com/",
+            "ProtonDB Borked - Spiele, die absolut gar nicht auf Linux laufen": "https://www.protondb.com/explore?sort=fixWanted",
+            "LinuxNews - Das Neueste aus der Linux-Welt": "https://linuxnews.de/",
             "GNU/LINUX.ch - Tiefergehende Artikel zu Linux-Themen": "https://gnulinux.ch/",
             "Linux Command Library - Wissen, was ein Kommando tut": "https://linuxcommandlibrary.com/",
             "Open OS - Linux lernen": "http://www.openos.at/",
-            "Distrowatch - Ausführliche Liste und Beschreibungen aller Distros": "https://distrowatch.com/",
-            "Decocode - Wissens-Datenbank": "https://www.decocode.de/",
+            "Distrowatch - Ausführliche Liste und Beschreibungen aller Distributionen": "https://distrowatch.com/",
+            "Decocode - Wissensdatenbank": "https://www.decocode.de/",
             "Linux-Bibel - Die freundliche Website rund um Debian und Linux": "https://linux-bibel.at/",
         }
 

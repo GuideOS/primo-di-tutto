@@ -108,7 +108,7 @@ class ContribTab(ttk.Frame):
         # Insert text into the text box
         text_box.insert(
             tk.END,
-            "@Bulvai @DenalB @evilware666 @Fhyrst @Gamma @GF-S15 @Gonzo-3004 @Hammer20l @harihegen @kim88 @KTT73 @maik3531 @Mastertac @Nightworker @Perval @PinguinTV @Ritchy @Stardenver @Stephan @StephanR @stryvyr @dantechgamegeek @Toadie @vizh",
+            "@Bulvai @DenalB @evilware666 @Fhyrst @Gamma @GF-S15 @Gonzo-3004 @Hammer20l @harihegen @kim88 @KTT73 @maik3531 @Mastertac @MyLibertard @Nightworker @Perval @PinguinTV @Ritchy @Stardenver @Stephan @StephanR @stryvyr @dantechgamegeek @Toadie @vizh",
         )
 
         # Make the text box read-only
