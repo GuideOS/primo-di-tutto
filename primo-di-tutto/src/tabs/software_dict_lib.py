@@ -153,7 +153,7 @@ class SoftwareGamingTools:
                 "game_4": {
                     "Name": "Faugus",
                     "Package": AppPackage.FLATPAK,
-                    "Description": "Mit dieser Anwendung kannst du Windows-Spiele mithilfe von Proton ausführen und ebenso native Linux-Spiele starten. Es ist möglich, Windows-Spiele direkt über die .exe-Datei zu starten. Die Verwaltung von Wine-Präfixen sowie das Anlegen von Verknüpfungen und Steam-Verknüpfungen wird unterstützt.",
+                    "Description": "Installiere EA-App, Battle.net, Uplay und Epic Games Store Spiele über Faugus auf Linux-Systemen mit Leichtigkeit. Faugus ist ein benutzerfreundlicher Launcher, der die Installation und Verwaltung von Spielen aus diesen Plattformen vereinfacht, indem er Wine und Proton nutzt, um eine nahtlose Spielerfahrung zu bieten.",
                     "Icon": f"{application_path}/images/apps/io.github.Faugus.faugus-launcher-icon.png",
                     "Thumbnail": f"{application_path}/images/apps/io.github.Faugus.faugus-launcher-thumb.png",
                     "Install": "flatpak install flathub io.github.Faugus.faugus-launcher -y",
