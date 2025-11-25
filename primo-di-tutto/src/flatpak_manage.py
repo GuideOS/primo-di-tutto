@@ -24,7 +24,7 @@ def count_flatpaks():
 def is_internet_available():
     try:
         host = socket.gethostbyname("www.github.com")
-        socket.create_connection((host, 80), 2)
+        socket.create_connection((host, 80), 0.5)
         return True
     except socket.error:
         pass

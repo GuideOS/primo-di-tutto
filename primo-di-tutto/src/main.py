@@ -55,9 +55,9 @@ class MainApplication(tk.Tk):
         super().__init__(className="Primo")
         self.title("Primo | GuideOS Einstellungen")
         self.resizable(False, False)
-        dpi = self.winfo_fpixels('1i')
-        print("DPI:", dpi)
-        self.tk.call('tk', 'scaling',1.0)
+        #dpi = self.winfo_fpixels('1i')
+        #print("DPI:", dpi)
+        #self.tk.call('tk', 'scaling',1.0)
 
         self.tk.call("source", TCL_THEME_FILE_PATH)
         app_width = 1200

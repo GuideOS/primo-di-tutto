@@ -17,7 +17,7 @@ logger = setup_logger(__name__)
 
 def ping_github():
     try:
-        response = requests.get("https://api.github.com", timeout=5)
+        response = requests.get("https://api.github.com", timeout=1)
 
         if response.status_code == 200:
             return True
