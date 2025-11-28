@@ -7,11 +7,17 @@ from cache import Cache
 
 logger = setup_logger(__name__)
 
-# Counts installed .DEBs
-deb_count = popen("dpkg --list | wc --lines")
-deb_counted = deb_count.read()
-deb_count.close()
-logger.info(f"{deb_counted[:-1]} .deb Packages Installed")
+# Counts installed .DEBs - lazy loaded
+deb_counted = None
+
+def get_deb_count():
+    global deb_counted
+    if deb_counted is None:
+        deb_count = popen("dpkg --list | wc --lines")
+        deb_counted = deb_count.read().strip()
+        deb_count.close()
+        logger.info(f"{deb_counted} .deb Packages Installed")
+    return deb_counted
 
 
 def load_installed_apt_pkgs():

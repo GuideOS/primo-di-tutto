@@ -27,7 +27,6 @@ def ping_github():
         return False
 
 
-ping_github()
 user = os.environ["USER"]
 
 
@@ -95,8 +94,14 @@ def get_first_run():
 
 distro_get = distro.id()
 
-nice_name = popen("egrep '^(PRETTY_NAME)=' /etc/os-release")
-nice_name = nice_name.read()
+nice_name = None  # Lazy loaded
+
+def get_nice_name():
+    global nice_name
+    if nice_name is None:
+        p = popen("egrep '^(PRETTY_NAME)=' /etc/os-release")
+        nice_name = p.read()
+    return nice_name
 
 machiene_arch = platform.machine()
 logger.info(platform.machine())
@@ -168,13 +173,18 @@ def get_theme():
         return "N/A"
 
 
-theme_name = get_theme()
-# logger.debug(f"Current theme: {theme_name}")
+theme_name = None  # Lazy loaded
+theme = None  # Lazy loaded
+
+def get_theme_cached():
+    global theme_name, theme
+    if theme_name is None:
+        theme_name = get_theme()
+        theme = theme_name.lower()
+    return theme_name
 
 # Define Permission Method
 permit = "pkexec"
-
-theme = get_theme().lower()
 
 
 def has_nvidia_gpu():

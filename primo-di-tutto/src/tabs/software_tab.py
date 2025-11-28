@@ -23,6 +23,7 @@ from tabs.software_dict_lib import (
     SoftwareSafty,
     SoftwareDesktopTools,
     SoftwareTerminalTools,
+    SoftwareGuideOSTools,
 )
 from apt_manage import *
 from snap_manage import *
@@ -74,6 +75,7 @@ class SoftwareTab(ttk.Frame):
         backup_frame = ttk.Frame(self.inst_notebook)
         safty_frame = ttk.Frame(self.inst_notebook)
         desktop_frame = ttk.Frame(self.inst_notebook)
+        guideos_frame = ttk.Frame(self.inst_notebook)
 
         com_frame.pack(fill="both", expand=True)
         office_frame.pack(fill="both", expand=True)
@@ -85,6 +87,7 @@ class SoftwareTab(ttk.Frame):
         safty_frame.pack(fill="both", expand=True)
         desktop_frame.pack(fill="both", expand=True)
         terminal_frame = ttk.Frame(self.inst_notebook)
+        guideos_frame.pack(fill="both", expand=True)
 
         self.inst_notebook.add(com_frame, compound=LEFT, text="Web & Chat")
         self.inst_notebook.add(office_frame, compound=LEFT, text="Büro")
@@ -96,6 +99,7 @@ class SoftwareTab(ttk.Frame):
         self.inst_notebook.add(safty_frame, compound=LEFT, text="Sicherheit")
         self.inst_notebook.add(desktop_frame, compound=LEFT, text="Desktop Tools")
         self.inst_notebook.add(terminal_frame, compound=LEFT, text="Terminal Tools")
+        self.inst_notebook.add(guideos_frame, compound=LEFT, text="GuideOS Tools")
 
         # Com Panel
         com_apps = []
@@ -277,6 +281,7 @@ class SoftwareTab(ttk.Frame):
         )
         desktop_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
+        
         # Terminal Panel
         term_apps = []
         for i, (key, info) in enumerate(SoftwareTerminalTools.term_dict.items()):
@@ -296,6 +301,27 @@ class SoftwareTab(ttk.Frame):
             category_title="Terminal Tools", apps=term_apps, master=terminal_frame
         )
         terminal_tool_note_frame.pack(fill=tk.BOTH, expand=True)
+
+        
+        # GuideOS Tools Panel
+        guideos_apps = []
+        for i, (key, info) in enumerate(SoftwareGuideOSTools.guideos_dict.items()):
+            app = InstallableAppFactory.create(
+                type=SoftwareGuideOSTools.guideos_dict[key]["Package"],
+                name=SoftwareGuideOSTools.guideos_dict[key]["Name"],
+                icon=SoftwareGuideOSTools.guideos_dict[key]["Icon"],
+                description=SoftwareGuideOSTools.guideos_dict[key]["Description"],
+                path=SoftwareGuideOSTools.guideos_dict[key]["Path"],
+                thumbnail=SoftwareGuideOSTools.guideos_dict[key]["Thumbnail"],
+                install_command=SoftwareGuideOSTools.guideos_dict[key]["Install"],
+                uninstall_command=SoftwareGuideOSTools.guideos_dict[key]["Uninstall"],
+            )
+            guideos_apps.append(app)
+
+        guideos_tool_note_frame = AppCollectionPanel(
+            category_title="GuideOS Tools", apps=guideos_apps, master=guideos_frame
+        )
+        guideos_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
 
 class AppCollectionPanel(tk.Frame):

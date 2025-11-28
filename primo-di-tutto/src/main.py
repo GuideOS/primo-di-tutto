@@ -21,6 +21,7 @@ from tabs.links_tab import LinksTab
 from tabs.large_folders_tab import LargeFoldersTab
 from azure_ttk import *
 from logger_config import setup_logger
+import threading
 
 logger = setup_logger(__name__)
 
@@ -78,8 +79,9 @@ class MainApplication(tk.Tk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         # Notebook Icons
-        logger.info(theme_name)
-        if "dark" in theme_name or "Dark" in theme_name:
+        theme_name_val = get_theme_cached()
+        logger.info(theme_name_val)
+        if "dark" in theme_name_val or "Dark" in theme_name_val:
             self.tk.call("set_theme", "dark")
         else:
             self.tk.call("set_theme", "light")
@@ -138,6 +140,33 @@ class MainApplication(tk.Tk):
             noteStyler.configure("Accent2.TButton", justify="center", anchor="center")
 
         notebook_styler()
+        
+        # Start background initialization after GUI is ready
+        self.after(100, self._init_background_tasks)
+    
+    def _init_background_tasks(self):
+        """Initialize heavy operations in background threads"""
+        def background_init():
+            try:
+                # Initialize flatpak data
+                from flatpak_manage import init_flatpak_data
+                init_flatpak_data()
+                
+                # Initialize snap count
+                from snap_manage import get_snap_package_count
+                get_snap_package_count()
+                
+                # Initialize deb count
+                from apt_manage import get_deb_count
+                get_deb_count()
+                
+                logger.info("Background initialization completed")
+            except Exception as e:
+                logger.error(f"Background initialization failed: {e}")
+        
+        # Start in daemon thread so it doesn't block app closing
+        thread = threading.Thread(target=background_init, daemon=True)
+        thread.start()
 
 
 if __name__ == "__main__":

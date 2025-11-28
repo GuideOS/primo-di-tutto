@@ -534,7 +534,8 @@ class LookTab(ttk.Frame):
         )
         devil_label.grid(row=2, column=3, padx=5, pady=5, sticky="nsew")
 
-        if "dark" in theme_name or "Dark" in theme_name:
+        theme_name_val = get_theme_cached()
+        if "dark" in theme_name_val or "Dark" in theme_name_val:
             layout_icon_conf_dark()
         else:
             layout_icon_conf_light()

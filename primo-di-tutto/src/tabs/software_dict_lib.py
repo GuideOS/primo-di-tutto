@@ -822,3 +822,103 @@ class SoftwareTerminalTools:
             key=lambda item: item[1]["Name"],
         )
     )
+
+class SoftwareGuideOSTools:
+    guideos_dict = dict(
+        sorted(
+            {
+                "guideos_01": {
+                    "Name": "Adblocker Tool",
+                    "Package": AppPackage.DEB,
+                    "Description": "Ein einfaches Tool zum Blockieren von Werbung in Ihrem Browser.",
+                    "Icon": f"{application_path}/images/apps/guideos-adblocker-tool-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/guideos-adblocker-tool-thumb.png",
+                    "Install": "pkexec apt install guideos-adblocker-tool -y",
+                    "Uninstall": "pkexec apt remove guideos-adblocker-tool -y",
+                    "Path": "guideos-adblocker-tool",
+                },
+                "guideos_02": {
+                    "Name": "Browser & Mail\nBackup",
+                    "Package": AppPackage.DEB,
+                    "Description": "Ein einfaches Tool zum Sichern beliebter Browser und E-Mail-Clients.",
+                    "Icon": f"{application_path}/images/apps/guideos-browser-mail-backup-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/guideos-browser-mail-backup-thumb.png",
+                    "Install": "pkexec apt install guideos-browser-mail-backup -y",
+                    "Uninstall": "pkexec apt remove guideos-browser-mail-backup -y",
+                    "Path": "guideos-browser-mail-backup",
+                },
+                "guideos_03": {
+                    "Name": "Daten-Tresor",
+                    "Package": AppPackage.DEB,
+                    "Description": "Sicherer Datentresor für GuideOS zum Verschlüsseln und Schützen wichtiger Daten.",
+                    "Icon": f"{application_path}/images/apps/guideos-data-vault-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/guideos-data-vault-thumb.png",
+                    "Install": "pkexec apt install guideos-data-vault -y",
+                    "Uninstall": "pkexec apt remove guideos-data-vault -y",
+                    "Path": "guideos-data-vault",
+                },
+                "guideos_05": {
+                    "Name": "Medienkonverter",
+                    "Package": AppPackage.DEB,
+                    "Description": "Ein einfacher Medienkonverter für Linux zum Konvertieren von Audio- und Videodateien.",
+                    "Icon": f"{application_path}/images/apps/guideos-media-converter-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/guideos-media-converter-thumb.png",
+                    "Install": "pkexec apt install guideos-media-converter -y",
+                    "Uninstall": "pkexec apt remove guideos-media-converter -y",
+                    "Path": "guideos-media-converter",
+                },
+                "guideos_06": {
+                    "Name": "Raid Pasta 2K",
+                    "Package": AppPackage.DEB,
+                    "Description": "RAID-Konfigurationstool für Linux. Verwalten Sie Software-RAID-Arrays einfach über eine grafische Oberfläche.",
+                    "Icon": f"{application_path}/images/apps/raid-pasta-2k-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/raid-pasta-2k-thumb.png",
+                    "Install": "pkexec apt install raid-pasta-2k -y",
+                    "Uninstall": "pkexec apt remove raid-pasta-2k -y",
+                    "Path": "raid-pasta-2k",
+                },
+                "guideos_07": {
+                    "Name": "Shutdown-Tool",
+                    "Package": AppPackage.DEB,
+                    "Description": "Ein einfaches Tool zum Einrichten eines Herunterfahren-Timers.",
+                    "Icon": f"{application_path}/images/apps/guideos-shutdown-tool-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/guideos-shutdown-tool-thumb.png",
+                    "Install": "pkexec apt install guideos-shutdown-tool -y",
+                    "Uninstall": "pkexec apt remove guideos-shutdown-tool -y",
+                    "Path": "guideos-shutdown-tool",
+                },
+                "guideos_09": {
+                    "Name": "Snapshot Manager",
+                    "Package": AppPackage.DEB,
+                    "Description": "GUI zur Verwaltung von Snapshots in GuideOS. Erstellen und verwalten Sie Systemsicherungspunkte.",
+                    "Icon": f"{application_path}/images/apps/guideos-snapshot-manager-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/guideos-snapshot-manager-thumb.png",
+                    "Install": "pkexec apt install guideos-snapshot-manager -y",
+                    "Uninstall": "pkexec apt remove guideos-snapshot-manager -y",
+                    "Path": "guideos-snapshot-manager",
+                },
+                "guideos_10": {
+                    "Name": "Programm-Stop",
+                    "Package": AppPackage.DEB,
+                    "Description": "Eine einfache GUI zum Beenden von Prozessen. Task-Manager-Alternative.",
+                    "Icon": f"{application_path}/images/apps/guideos-stop-tool-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/guideos-stop-tool-thumb.png",
+                    "Install": "pkexec apt install guideos-stop-tool -y",
+                    "Uninstall": "pkexec apt remove guideos-stop-tool -y",
+                    "Path": "guideos-stop-tool",
+                },
+                "guideos_11": {
+                    "Name": "GuideOS Conky",
+                    "Package": AppPackage.DEB,
+                    "Description": "Ein einfaches Tool zur Verwaltung von Conky-Systemmonitoren in GuideOS.",
+                    "Icon": f"{application_path}/images/apps/guideos-conky-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/guideos-conky-thumb.png",
+                    "Install": "pkexec apt install guideos-conky -y",
+                    "Uninstall": "pkexec apt remove guideos-conky -y",
+                    "Path": "guideos-conky",
+                },
+                
+            }.items(),
+            key=lambda item: item[1]["Name"],
+        )
+    )

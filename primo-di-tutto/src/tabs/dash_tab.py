@@ -27,7 +27,8 @@ class DashTab(ttk.Frame):
         self.system_icon = ImageTk.PhotoImage(
             Image.open(f"{application_path}/images/icons/logo.png")
         )
-        if "dark" in theme_name or "Dark" in theme_name:
+        theme_name_val = get_theme_cached()
+        if "dark" in theme_name_val or "Dark" in theme_name_val:
 
             self.distro_guide_logo_img = ImageTk.PhotoImage(
                 Image.open(
@@ -309,10 +310,10 @@ class DashTab(ttk.Frame):
             text="Erscheinungsbild",
         )
         self.look_label_frame.grid(column=2, columnspan=2, row=2, sticky="nesw")
-        self.desktop_theme_label = Label(
-            self.look_label_frame, text=f"Theme: {theme_name}"
+        self.theme_label = ttk.Label(
+            self.look_label_frame, text=f"Theme: {get_theme_cached()}"
         )
-        self.desktop_theme_label.pack(anchor="w", padx=10)
+        self.theme_label.pack(anchor="w", padx=10)
 
         self.icon_theme_label = Label(
             self.look_label_frame, text=f"Icons: {self.get_icon_theme()}"
@@ -377,7 +378,7 @@ class DashTab(ttk.Frame):
             current_theme = output.strip().strip("'")
         except Exception:
             current_theme = "N/A"
-        self.desktop_theme_label.configure(text=f"Theme: {current_theme}")
+        self.theme_label.configure(text=f"Theme: {current_theme}")
         # Read icon theme dynamically
         try:
             output = subprocess.check_output(
@@ -791,9 +792,12 @@ class DashTab(ttk.Frame):
 
     def update_package_info(self):
         """Update package-related information."""
-        self.debian_label.configure(text=f"Debian: {deb_counted[:-1]}")
+        from apt_manage import get_deb_count
+        from snap_manage import get_snap_package_count
+        
+        self.debian_label.configure(text=f"Debian: {get_deb_count()}")
         self.flatpak_label.configure(text=f"Flatpak: {count_flatpaks()}")
-        self.snap_label.configure(text=f"Snap: {snap_package_count}")
+        self.snap_label.configure(text=f"Snap: {get_snap_package_count()}")
 
     def get_size(self, bytes, suffix="B"):
         """Scale bytes to its proper format."""
