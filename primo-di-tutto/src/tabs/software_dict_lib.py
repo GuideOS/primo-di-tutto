@@ -917,6 +917,17 @@ class SoftwareGuideOSTools:
                     "Uninstall": "pkexec apt remove guideos-conky -y",
                     "Path": "guideos-conky",
                 },
+                "guideos_12": {
+                    "Name": "Snap-Installer",
+                    "Package": AppPackage.DEB,
+                    "Description": "Fügt die Möglichkeit hinzu Snap-Paket über den Software-Store zu installieren.",
+                    "Icon": f"{application_path}/images/apps/guideos-snap-installer-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/guideos-snap-installer-thumb.png",
+                    "Install": "pkexec apt install guideos-snap-installer -y",
+                    "Uninstall": "pkexec apt remove guideos-snap-installer -y",
+                    "Path": "guideos-snap-installer",
+                },
+
                 
             }.items(),
             key=lambda item: item[1]["Name"],
