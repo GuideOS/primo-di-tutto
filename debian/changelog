@@ -1,3 +1,13 @@
+primo-di-tutto (1.0) unstable; urgency=medium
+
+  * Raised to 1.0
+  * Added: GuideOS Tools
+  * Improved: Looks
+  * Fixed: Links
+  * Reduced startip time
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Tue, 02 Dec 2025 10:47:06 +0100
+
 primo-di-tutto (0.8.0.2) unstable; urgency=medium
 
   * Major Release: Enhanced System Management & GPU Detection
