@@ -13,6 +13,7 @@ from tabs.welcome_tab import WelcomeTab
 from tabs.dash_tab import DashTab
 from tabs.update_tab import UpdateTab
 from tabs.system_tab import SystemTab
+from tabs.devices_tab import DevicesTab
 from tabs.look_tab import LookTab
 from tabs.software_tab import *
 from tabs.contrib_tab import ContribTab
@@ -94,6 +95,7 @@ class MainApplication(tk.Tk):
         self.update_tab = UpdateTab(self.notebook)
         self.software_tab = SoftwareTab(self.notebook)
         self.system_tab = SystemTab(self.notebook)
+        self.devices_tab = DevicesTab(self.notebook)
         self.expert_tools_tab = ExpertTab(self.notebook)
         self.look_tab = LookTab(self.notebook)
         self.large_folders = LargeFoldersTab(self.notebook)
@@ -109,6 +111,7 @@ class MainApplication(tk.Tk):
             self.software_tab, compound=LEFT, text="Software-\nEmpfehlungen"
         )
         self.notebook.add(self.system_tab, compound=LEFT, text="Werkzeuge")
+        self.notebook.add(self.devices_tab, compound=LEFT, text="Geräte")
         self.notebook.add(
             self.expert_tools_tab, compound=LEFT, text="Admin"
         )
