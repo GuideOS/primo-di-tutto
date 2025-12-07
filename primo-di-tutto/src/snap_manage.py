@@ -21,6 +21,7 @@ def count_installed_snap_packages():
 # Lazy init
 snap_package_count = None
 
+
 def get_snap_package_count():
     global snap_package_count
     if snap_package_count is None:

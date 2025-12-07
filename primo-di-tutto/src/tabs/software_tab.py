@@ -281,7 +281,6 @@ class SoftwareTab(ttk.Frame):
         )
         desktop_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
-        
         # Terminal Panel
         term_apps = []
         for i, (key, info) in enumerate(SoftwareTerminalTools.term_dict.items()):
@@ -302,7 +301,6 @@ class SoftwareTab(ttk.Frame):
         )
         terminal_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
-        
         # GuideOS Tools Panel
         guideos_apps = []
         for i, (key, info) in enumerate(SoftwareGuideOSTools.guideos_dict.items()):

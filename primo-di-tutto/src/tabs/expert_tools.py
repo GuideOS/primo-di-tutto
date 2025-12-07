@@ -32,12 +32,9 @@ class ExpertTab(ttk.Frame):
         admin_frame = ttk.Frame(self.inst_notebook)
         apt_tools_frame = ttk.Frame(self.inst_notebook)
 
-
         source_frame.pack(fill="both", expand=True)
         admin_frame.pack(fill="both", expand=True)
         apt_tools_frame.pack(fill="both", expand=True)
-
-
 
         self.inst_notebook.add(source_frame, compound=LEFT, text="Quellen")
         self.inst_notebook.add(admin_frame, compound=LEFT, text="Werkzeuge")
@@ -139,6 +136,7 @@ class AdminPanel(tk.Frame):
     # Funktion für das Verlassen des Buttons
     def on_leave(self, event):
         self.sys_info_label.configure(text="")
+
 
 class AptToolsFrame(tk.Frame):
     def __init__(self, master=None, **kwargs):
@@ -487,7 +485,6 @@ class AptToolsFrame(tk.Frame):
         self.flatpak_clean_button.bind(
             "<Leave>", lambda event: self.update_info_label.configure(text="")
         )
-
 
 
 class SourcePanel(tk.Frame):

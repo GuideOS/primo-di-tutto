@@ -78,15 +78,16 @@ Flat_remote_dict = {}
 flat_counted = "-"
 _flatpak_initialized = False
 
+
 def init_flatpak_data():
     """Initialize flatpak data lazily or in background thread"""
     global Flat_remote_dict, flat_counted, _flatpak_initialized
-    
+
     if _flatpak_initialized:
         return
-    
+
     _flatpak_initialized = True
-    
+
     if flatpak_path:
         logger.info("Flatpak is installed. List will be added")
 
@@ -97,7 +98,9 @@ def init_flatpak_data():
         if is_internet_available():
             try:
                 command = f"flatpak remote-ls --columns=name --columns=application --app --arch={platform.machine()}"
-                output = subprocess.check_output(command, shell=True, text=True, timeout=5)
+                output = subprocess.check_output(
+                    command, shell=True, text=True, timeout=5
+                )
 
                 lines = output.strip().split("\n")
                 flat_remote_data = {}
@@ -140,5 +143,6 @@ def init_flatpak_data():
         logger.info("Flatpak is not installed")
         Flat_remote_dict = {}
         flat_counted = "-"
+
 
 # print(Flat_remote_dict)

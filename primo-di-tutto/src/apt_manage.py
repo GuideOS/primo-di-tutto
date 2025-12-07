@@ -10,6 +10,7 @@ logger = setup_logger(__name__)
 # Counts installed .DEBs - lazy loaded
 deb_counted = None
 
+
 def get_deb_count():
     global deb_counted
     if deb_counted is None:

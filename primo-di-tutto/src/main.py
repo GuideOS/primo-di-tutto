@@ -27,25 +27,24 @@ import threading
 logger = setup_logger(__name__)
 
 
-
 def check_single_instance():
     """Check if another instance of the application is already running"""
     lock_file = "/tmp/primo-di-tutto.lock"
-    
+
     try:
         # Try to open the lock file
-        lock_fd = open(lock_file, 'w')
-        
+        lock_fd = open(lock_file, "w")
+
         # Try to acquire an exclusive lock
         fcntl.flock(lock_fd.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-        
+
         # Write the current PID to the lock file
         lock_fd.write(str(os.getpid()))
         lock_fd.flush()
-        
+
         # Return the file descriptor to keep it open
         return lock_fd
-        
+
     except (IOError, OSError):
         # Another instance is already running
         print("Another instance of Primo is already running.")
@@ -57,9 +56,9 @@ class MainApplication(tk.Tk):
         super().__init__(className="Primo")
         self.title("Primo | GuideOS Einstellungen")
         self.resizable(False, False)
-        #dpi = self.winfo_fpixels('1i')
-        #print("DPI:", dpi)
-        #self.tk.call('tk', 'scaling',1.0)
+        # dpi = self.winfo_fpixels('1i')
+        # print("DPI:", dpi)
+        # self.tk.call('tk', 'scaling',1.0)
 
         self.tk.call("source", TCL_THEME_FILE_PATH)
         app_width = 1200
@@ -112,9 +111,7 @@ class MainApplication(tk.Tk):
         )
         self.notebook.add(self.system_tab, compound=LEFT, text="Werkzeuge")
         self.notebook.add(self.devices_tab, compound=LEFT, text="Geräte")
-        self.notebook.add(
-            self.expert_tools_tab, compound=LEFT, text="Admin"
-        )
+        self.notebook.add(self.expert_tools_tab, compound=LEFT, text="Admin")
         self.notebook.add(self.look_tab, compound=LEFT, text="Erscheinungsbild")
         self.notebook.add(self.large_folders, compound=LEFT, text="Speicherfresser")
         self.notebook.add(self.links_tab, compound=LEFT, text="Links")
@@ -143,30 +140,34 @@ class MainApplication(tk.Tk):
             noteStyler.configure("Accent2.TButton", justify="center", anchor="center")
 
         notebook_styler()
-        
+
         # Start background initialization after GUI is ready
         self.after(100, self._init_background_tasks)
-    
+
     def _init_background_tasks(self):
         """Initialize heavy operations in background threads"""
+
         def background_init():
             try:
                 # Initialize flatpak data
                 from flatpak_manage import init_flatpak_data
+
                 init_flatpak_data()
-                
+
                 # Initialize snap count
                 from snap_manage import get_snap_package_count
+
                 get_snap_package_count()
-                
+
                 # Initialize deb count
                 from apt_manage import get_deb_count
+
                 get_deb_count()
-                
+
                 logger.info("Background initialization completed")
             except Exception as e:
                 logger.error(f"Background initialization failed: {e}")
-        
+
         # Start in daemon thread so it doesn't block app closing
         thread = threading.Thread(target=background_init, daemon=True)
         thread.start()
@@ -175,7 +176,7 @@ class MainApplication(tk.Tk):
 if __name__ == "__main__":
     # Check for single instance before creating the application
     lock_fd = check_single_instance()
-    
+
     try:
         app = MainApplication()
         app.mainloop()

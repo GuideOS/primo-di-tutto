@@ -817,11 +817,11 @@ class SoftwareTerminalTools:
                     "Uninstall": "pkexec apt remove fastfetch -y",
                     "Path": "fastfetch",
                 },
-                
             }.items(),
             key=lambda item: item[1]["Name"],
         )
     )
+
 
 class SoftwareGuideOSTools:
     guideos_dict = dict(
@@ -927,8 +927,6 @@ class SoftwareGuideOSTools:
                     "Uninstall": "pkexec apt remove guideos-snap-installer -y",
                     "Path": "guideos-snap-installer",
                 },
-
-                
             }.items(),
             key=lambda item: item[1]["Name"],
         )

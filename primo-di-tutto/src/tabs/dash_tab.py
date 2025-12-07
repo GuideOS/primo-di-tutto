@@ -456,25 +456,25 @@ class DashTab(ttk.Frame):
             p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True, text=True)
             timer = threading.Timer(timeout, self.killProcess, [p])
             timer.start()
-            
+
             while True:
                 line = p.stdout.readline()
                 if not line:
                     break
-                if line != '':
+                if line != "":
                     lines.append(line.strip())
-            
+
             timer.cancel()
             p.wait()
-            
+
         except Exception as e:
             logger.error(f"Error in getProcessOut: {e}")
-            
+
         return lines
 
     def shorten_gpu_name(self, gpu_name):
         """Shortens GPU names for better display."""
-        
+
         # Remove common unnecessary terms at the beginning
         replacements_start = [
             ("Advanced Micro Devices, Inc. [AMD/ATI] ", "AMD "),
@@ -482,78 +482,90 @@ class DashTab(ttk.Frame):
             ("Intel Corporation ", "Intel "),
             ("ATI Technologies Inc ", "AMD "),
         ]
-        
+
         shortened = gpu_name
         for old, new in replacements_start:
             if shortened.startswith(old):
                 shortened = shortened.replace(old, new, 1)
                 break
-        
+
         # Remove unnecessary terms
         remove_terms = [
             "Corporation",
             "Technologies Inc",
-            "Limited", 
+            "Limited",
             "Ltd",
             "Inc.",
             ", Inc",
         ]
-        
+
         for term in remove_terms:
             shortened = shortened.replace(term, "")
-        
+
         # Special handling for AMD Radeon
         if "AMD" in shortened and "Radeon" in shortened:
             # Extract the important part: "AMD Radeon RX 6700 XT" etc.
             import re
-            match = re.search(r'AMD.*(Radeon.*?)(?:\s*\[|$)', shortened)
+
+            match = re.search(r"AMD.*(Radeon.*?)(?:\s*\[|$)", shortened)
             if match:
                 shortened = f"AMD {match.group(1)}"
-        
+
         # Special handling for NVIDIA GeForce
-        elif "NVIDIA" in shortened and ("GeForce" in shortened or "GTX" in shortened or "RTX" in shortened):
+        elif "NVIDIA" in shortened and (
+            "GeForce" in shortened or "GTX" in shortened or "RTX" in shortened
+        ):
             import re
-            match = re.search(r'NVIDIA.*(GeForce.*?|GTX.*?|RTX.*?)(?:\s*\[|$)', shortened)
+
+            match = re.search(
+                r"NVIDIA.*(GeForce.*?|GTX.*?|RTX.*?)(?:\s*\[|$)", shortened
+            )
             if match:
                 shortened = f"NVIDIA {match.group(1)}"
-        
+
         # Special handling for Intel
         elif "Intel" in shortened:
             import re
-            match = re.search(r'Intel.*(HD.*?|UHD.*?|Iris.*?)(?:\s*\[|$)', shortened)
+
+            match = re.search(r"Intel.*(HD.*?|UHD.*?|Iris.*?)(?:\s*\[|$)", shortened)
             if match:
                 shortened = f"Intel {match.group(1)}"
-        
+
         # Remove square brackets and everything after
         if "[" in shortened:
             shortened = shortened.split("[")[0].strip()
-        
+
         # Remove remaining special characters
         import re
-        shortened = re.sub(r'[^\w\s\-\.]', '', shortened)
-        
+
+        shortened = re.sub(r"[^\w\s\-\.]", "", shortened)
+
         # Remove multiple spaces
         shortened = " ".join(shortened.split())
-        
+
         # Remove spaces at beginning/end
         shortened = shortened.strip()
-        
+
         # Shorten only if really too long (50 characters)
         if len(shortened) > 50:
             shortened = shortened[:47] + "..."
-            
+
         return shortened
 
     # Very robust function to read the graphics card model
-    def get_gpu_model(self): 
+    def get_gpu_model(self):
         cards = {}
         count = 0
         envpath = os.environ["PATH"]
         os.environ["PATH"] = envpath + ":/usr/local/sbin:/usr/sbin:/sbin"
-        
+
         try:
             for card in self.getProcessOut("lspci"):
-                for prefix in ["VGA compatible controller:", "3D controller:", "Display controller:"]:
+                for prefix in [
+                    "VGA compatible controller:",
+                    "3D controller:",
+                    "Display controller:",
+                ]:
                     if prefix in card:
                         cardName = card.split(prefix)[1].split("(rev")[0].strip()
                         # Shorten GPU names for better display
@@ -563,100 +575,124 @@ class DashTab(ttk.Frame):
         except Exception as e:
             logger.error(f"Error getting GPU model: {e}")
             cards[0] = "N/A"
-        
+
         os.environ["PATH"] = envpath
-        
+
         # Return the first GPU or "N/A" if none found
         gpu_model = cards.get(0, "N/A")
-        #print(f"GPU Model detected: {gpu_model}")
+        # print(f"GPU Model detected: {gpu_model}")
         return gpu_model
 
     def get_gpu_memory(self):
         """Very robust method for detecting GPU memory for all GPU types."""
-        
+
         # Method 1: nvidia-smi for NVIDIA GPUs (primary method)
         try:
             output = subprocess.check_output(
-                "nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
+                "nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits",
+                shell=True,
+                universal_newlines=True,
+                stderr=subprocess.DEVNULL,
             ).strip()
-            if output and output.replace('.', '').isdigit():
+            if output and output.replace(".", "").isdigit():
                 return f"{output} MB"
         except (subprocess.CalledProcessError, FileNotFoundError):
             pass
-        
+
         # Method 2: nvidia-smi alternative for NVIDIA
         try:
             output = subprocess.check_output(
-                "nvidia-smi -q -d MEMORY | grep 'Total.*MiB' | head -1", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
+                "nvidia-smi -q -d MEMORY | grep 'Total.*MiB' | head -1",
+                shell=True,
+                universal_newlines=True,
+                stderr=subprocess.DEVNULL,
             ).strip()
             if "MiB" in output:
                 import re
-                match = re.search(r'(\d+)\s*MiB', output)
+
+                match = re.search(r"(\d+)\s*MiB", output)
                 if match:
                     return f"{match.group(1)} MB"
         except (subprocess.CalledProcessError, FileNotFoundError):
             pass
-        
+
         # Method 3: glxinfo for all OpenGL-compatible GPUs (AMD, Intel, NVIDIA)
         try:
             output = subprocess.check_output(
-                "glxinfo | grep -E 'Video memory|Dedicated video memory'", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
+                "glxinfo | grep -E 'Video memory|Dedicated video memory'",
+                shell=True,
+                universal_newlines=True,
+                stderr=subprocess.DEVNULL,
             ).strip()
             if output:
                 import re
+
                 # Search for various formats
-                match = re.search(r'(\d+)\s*MB', output)
+                match = re.search(r"(\d+)\s*MB", output)
                 if match:
                     return f"{match.group(1)}MB"
-                match = re.search(r':\s*(\d+MB)', output)
+                match = re.search(r":\s*(\d+MB)", output)
                 if match:
                     return match.group(1)
         except (subprocess.CalledProcessError, FileNotFoundError):
             pass
-        
+
         # Method 4: AMD-specific rocm-smi
         try:
             output = subprocess.check_output(
-                "rocm-smi --showmeminfo vram --csv", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
+                "rocm-smi --showmeminfo vram --csv",
+                shell=True,
+                universal_newlines=True,
+                stderr=subprocess.DEVNULL,
             ).strip()
             if output and "vram" in output.lower():
-                lines = output.split('\n')
+                lines = output.split("\n")
                 for line in lines[1:]:  # Skip header
                     if line.strip():
-                        parts = line.split(',')
+                        parts = line.split(",")
                         if len(parts) > 1:
                             mem_str = parts[1].strip()
                             import re
-                            match = re.search(r'(\d+)', mem_str)
+
+                            match = re.search(r"(\d+)", mem_str)
                             if match:
                                 return f"{match.group(1)} MB"
         except (subprocess.CalledProcessError, FileNotFoundError):
             pass
-        
+
         # Method 5: /sys/class/drm for modern Linux systems
         try:
             import glob
-            for card_path in glob.glob('/sys/class/drm/card*/device/mem_info_vram_total'):
-                with open(card_path, 'r') as f:
+
+            for card_path in glob.glob(
+                "/sys/class/drm/card*/device/mem_info_vram_total"
+            ):
+                with open(card_path, "r") as f:
                     vram_bytes = int(f.read().strip())
                     vram_mb = vram_bytes // (1024 * 1024)
                     if vram_mb > 0:
                         return f"{vram_mb} MB"
         except (FileNotFoundError, ValueError, PermissionError):
             pass
-        
+
         # Method 6: lspci + /proc/meminfo for integrated GPUs
         try:
             output = subprocess.check_output(
-                "lspci | grep -i 'vga\\|display'", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
+                "lspci | grep -i 'vga\\|display'",
+                shell=True,
+                universal_newlines=True,
+                stderr=subprocess.DEVNULL,
             )
             # Only estimate for clearly integrated GPUs
-            if any(term in output.lower() for term in ['intel.*hd', 'intel.*uhd', 'intel.*iris', 'amd.*vega.*[0-9]']):
+            if any(
+                term in output.lower()
+                for term in [
+                    "intel.*hd",
+                    "intel.*uhd",
+                    "intel.*iris",
+                    "amd.*vega.*[0-9]",
+                ]
+            ):
                 with open("/proc/meminfo", "r") as f:
                     for line in f:
                         if "MemTotal" in line:
@@ -666,35 +702,41 @@ class DashTab(ttk.Frame):
                             return f"~{estimated_gpu_mem} MB (geschätzt)"
         except Exception:
             pass
-        
+
         # Method 7: dmesg for boot-time GPU information
         try:
             output = subprocess.check_output(
-                "dmesg | grep -iE '(vram|memory).*[0-9]+.*mb' | grep -i gpu | tail -1", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
+                "dmesg | grep -iE '(vram|memory).*[0-9]+.*mb' | grep -i gpu | tail -1",
+                shell=True,
+                universal_newlines=True,
+                stderr=subprocess.DEVNULL,
             ).strip()
             if output:
                 import re
-                match = re.search(r'(\d+)\s*mb', output.lower())
+
+                match = re.search(r"(\d+)\s*mb", output.lower())
                 if match:
                     return f"{match.group(1)} MB"
         except Exception:
             pass
-        
+
         # Method 8: Fallback via lshw (if installed)
         try:
             output = subprocess.check_output(
-                "lshw -C display 2>/dev/null | grep -i 'size.*mb'", 
-                shell=True, universal_newlines=True, stderr=subprocess.DEVNULL
+                "lshw -C display 2>/dev/null | grep -i 'size.*mb'",
+                shell=True,
+                universal_newlines=True,
+                stderr=subprocess.DEVNULL,
             ).strip()
             if output:
                 import re
-                match = re.search(r'(\d+)\s*mb', output.lower())
+
+                match = re.search(r"(\d+)\s*mb", output.lower())
                 if match:
                     return f"{match.group(1)} MB"
         except Exception:
             pass
-        
+
         return "N/A"
 
     def get_guideo_version(self):
@@ -727,22 +769,14 @@ class DashTab(ttk.Frame):
     def update_memory_labels(self, svmem, swap):
         """Update memory-related labels."""
         self.ram_percent["text"] = f"{svmem.percent}%"
-        self.ram_total_label.configure(
-            text=f"RAM Total: {self.get_size(svmem.total)}"
-        )
+        self.ram_total_label.configure(text=f"RAM Total: {self.get_size(svmem.total)}")
         self.ram_available_label.configure(
             text=f"RAM Frei: {self.get_size(svmem.available)}"
         )
-        self.ram_used_label.configure(
-            text=f"RAM Genutzt: {self.get_size(svmem.used)}"
-        )
-        self.swap_total_label.configure(
-            text=f"Swap Total: {self.get_size(swap.total)}"
-        )
+        self.ram_used_label.configure(text=f"RAM Genutzt: {self.get_size(svmem.used)}")
+        self.swap_total_label.configure(text=f"Swap Total: {self.get_size(swap.total)}")
         self.swap_free_label.configure(text=f"Swap Frei: {self.get_size(swap.free)}")
-        self.swap_used_label.configure(
-            text=f"Swap Genutzt: {self.get_size(swap.used)}"
-        )
+        self.swap_used_label.configure(text=f"Swap Genutzt: {self.get_size(swap.used)}")
 
     def update_disk_labels(self):
         """Update disk-related labels."""
@@ -780,7 +814,9 @@ class DashTab(ttk.Frame):
         self.architecture_label.configure(text=f"Architektur: {os_arch_output}")
         self.kernel_label.configure(text=f"Kernel: {my_system.release}")
         self.shell_label.configure(text=f"Shell: {os.environ['SHELL']}")
-        self.desktop_label.configure(text=f"Desktop: {get_desktop_environment()} {get_cinnamon_version()}")
+        self.desktop_label.configure(
+            text=f"Desktop: {get_desktop_environment()} {get_cinnamon_version()}"
+        )
         self.window_manager_label.configure(
             text=f"Window Manager: {self.get_window_manager()}"
         )
@@ -794,7 +830,7 @@ class DashTab(ttk.Frame):
         """Update package-related information."""
         from apt_manage import get_deb_count
         from snap_manage import get_snap_package_count
-        
+
         self.debian_label.configure(text=f"Debian: {get_deb_count()}")
         self.flatpak_label.configure(text=f"Flatpak: {count_flatpaks()}")
         self.snap_label.configure(text=f"Snap: {get_snap_package_count()}")
