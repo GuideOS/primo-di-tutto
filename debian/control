@@ -8,7 +8,21 @@ Homepage: https://guideos.de
 
 Package: primo-di-tutto
 Architecture: all
-Depends: ${misc:Depends}, python3, plank, synaptic, python3-dev, python3-psutil, python3-distro, python3-bs4, python3-requests, python3-pil, python3-pil.imagetk, xterm, mpg123, lolcat, wmctrl, gdebi, mousepad, appstream, pkexec | policykit-1, nala, guideos-azure-ttk, lightpad, alacarte, guideos-firewall-spice, dconf-cli
-Description: A system control tool for Linux Guide OS
- Primo Di Tutto is a system configuration tool inspired by openSUSE's YaST
- but designed with the user-friendliness of Linux Mint in mind.
+Depends: ${misc:Depends}, python3, plank, synaptic, python3-dev, python3-psutil, python3-distro, python3-bs4, python3-requests, python3-pil, python3-pil.imagetk, mpg123, lolcat, wmctrl, gdebi, mousepad, appstream, pkexec | policykit-1, nala, guideos-azure-ttk, lightpad, alacarte, guideos-firewall-spice, dconf-cli, guideos-layout-sicherung
+Description: Comprehensive system control center for Guide OS
+ Primo Di Tutto is an all-in-one system management and configuration tool
+ that brings powerful administration features to your fingertips.
+ .
+ Key Features:
+  * System Information: Hardware detection (CPU, GPU, RAM), kernel info
+  * Device Management: USB and PCI device monitoring with detailed information
+  * Software Management: Install/remove packages, manage repositories
+  * Desktop Customization: Pre-configured layouts, themes, icons, cursors
+  * System Tools: Process monitor, log viewer, service management
+  * Network Configuration: Connection settings and diagnostics
+  * User Management: Account administration and permissions
+  * Layout Backup: Save and restore your desktop configurations
+ .
+ Inspired by openSUSE's YaST but designed with the user-friendliness and
+ elegance of Linux Mint, Primo Di Tutto makes system administration
+ accessible to both beginners and advanced users.
