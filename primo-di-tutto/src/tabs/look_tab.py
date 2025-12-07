@@ -11,8 +11,7 @@ import json
 import shutil
 from logger_config import setup_logger
 from tabs.pop_ups import Done_
-from back_my_cinnamon import *
-from restore_my_cinnamon import *
+
 
 logger = setup_logger(__name__)
 
@@ -540,25 +539,22 @@ class LookTab(ttk.Frame):
         else:
             layout_icon_conf_light()
 
-        save_layout = ttk.Button(
-            self.desktop_layout_set,
-            text="Mein Layout speichern",
-            style="Custom.TButton",
-            compound="left",
-            command=backup_cinnamon_settings,
-        )
-        save_layout.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky="nesw")
+        def start_restore_my_cinnamon():
+            # Start the layout backup/restore tool
+            try:
+                subprocess.Popen(["guideos-layout-sicherung"])
+                logger.info("guideos-layout-sicherung wurde gestartet.")
+            except Exception as e:
+                logger.error(f"Fehler beim Starten von guideos-layout-sicherung: {e}")
 
         load_layout = ttk.Button(
             self.desktop_layout_set,
-            text="Mein Layout laden",
+            text="Mein Layout sichern/laden",
             style="Custom.TButton",
             compound="left",
-            command=restore_cinnamon_settings,
+            command=start_restore_my_cinnamon,
         )
-        load_layout.grid(row=3, column=2, columnspan=2, padx=5, pady=5, sticky="nesw")
-
-
+        load_layout.grid(row=3, column=0, columnspan=4, padx=5, pady=5, sticky="nesw")
 
         def done_message_0():
             d_mass = Done_(self)
@@ -622,16 +618,25 @@ class LookTab(ttk.Frame):
                 ]
 
                 theme_combobox["values"] = themes
-                
+
                 # Aktuelles Theme ermitteln und anzeigen
                 try:
-                    current_theme = subprocess.run(
-                        ["gsettings", "get", "org.cinnamon.desktop.interface", "gtk-theme"],
-                        capture_output=True,
-                        text=True,
-                        check=True
-                    ).stdout.strip().strip("'\"")
-                    
+                    current_theme = (
+                        subprocess.run(
+                            [
+                                "gsettings",
+                                "get",
+                                "org.cinnamon.desktop.interface",
+                                "gtk-theme",
+                            ],
+                            capture_output=True,
+                            text=True,
+                            check=True,
+                        )
+                        .stdout.strip()
+                        .strip("'\"")
+                    )
+
                     if current_theme in themes:
                         theme_combobox.set(current_theme)
                     else:
@@ -670,16 +675,25 @@ class LookTab(ttk.Frame):
                     ]
                 ]
                 icon_combobox["values"] = icons
-                
+
                 # Aktuelles Icon-Theme ermitteln und anzeigen
                 try:
-                    current_icon = subprocess.run(
-                        ["gsettings", "get", "org.cinnamon.desktop.interface", "icon-theme"],
-                        capture_output=True,
-                        text=True,
-                        check=True
-                    ).stdout.strip().strip("'\"")
-                    
+                    current_icon = (
+                        subprocess.run(
+                            [
+                                "gsettings",
+                                "get",
+                                "org.cinnamon.desktop.interface",
+                                "icon-theme",
+                            ],
+                            capture_output=True,
+                            text=True,
+                            check=True,
+                        )
+                        .stdout.strip()
+                        .strip("'\"")
+                    )
+
                     if current_icon in icons:
                         icon_combobox.set(current_icon)
                     else:
@@ -705,16 +719,25 @@ class LookTab(ttk.Frame):
                 ]
 
                 cursor_combobox["values"] = cursor_themes
-                
+
                 # Aktuelles Cursor-Theme ermitteln und anzeigen
                 try:
-                    current_cursor = subprocess.run(
-                        ["gsettings", "get", "org.cinnamon.desktop.interface", "cursor-theme"],
-                        capture_output=True,
-                        text=True,
-                        check=True
-                    ).stdout.strip().strip("'\"")
-                    
+                    current_cursor = (
+                        subprocess.run(
+                            [
+                                "gsettings",
+                                "get",
+                                "org.cinnamon.desktop.interface",
+                                "cursor-theme",
+                            ],
+                            capture_output=True,
+                            text=True,
+                            check=True,
+                        )
+                        .stdout.strip()
+                        .strip("'\"")
+                    )
+
                     if current_cursor in cursor_themes:
                         cursor_combobox.set(current_cursor)
                     else:
@@ -723,16 +746,21 @@ class LookTab(ttk.Frame):
                     cursor_combobox.set("Cursor wählen")
             except Exception as e:
                 cursor_combobox.set("Error: " + str(e))
-                
+
             # Aktuelle Cursor-Größe ermitteln und anzeigen
             try:
                 current_cursor_size = subprocess.run(
-                    ["gsettings", "get", "org.cinnamon.desktop.interface", "cursor-size"],
+                    [
+                        "gsettings",
+                        "get",
+                        "org.cinnamon.desktop.interface",
+                        "cursor-size",
+                    ],
                     capture_output=True,
                     text=True,
-                    check=True
+                    check=True,
                 ).stdout.strip()
-                
+
                 if current_cursor_size in cursor_sizes:
                     cursor_size_combobox.set(current_cursor_size)
                 else:
@@ -762,8 +790,13 @@ class LookTab(ttk.Frame):
                     if "dark" in value or "Dark" in value:
                         # /org/gnome/desktop/interface/color-scheme
                         subprocess.run(
-                            ["dconf", "write", "/org/gnome/desktop/interface/color-scheme", "'prefer-dark'"],
-                            check=True
+                            [
+                                "dconf",
+                                "write",
+                                "/org/gnome/desktop/interface/color-scheme",
+                                "'prefer-dark'",
+                            ],
+                            check=True,
                         )
                         self.tk.call("set_theme", "dark")
                         notebook_styler()
@@ -771,8 +804,13 @@ class LookTab(ttk.Frame):
 
                     else:
                         subprocess.run(
-                            ["dconf", "write", "/org/gnome/desktop/interface/color-scheme", "'prefer-light'"],
-                            check=True
+                            [
+                                "dconf",
+                                "write",
+                                "/org/gnome/desktop/interface/color-scheme",
+                                "'prefer-light'",
+                            ],
+                            check=True,
                         )
                         # os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'")
                         self.tk.call("set_theme", "light")
@@ -859,7 +897,6 @@ class LookTab(ttk.Frame):
         self.theme_set.columnconfigure(0, weight=1)
         self.theme_set.rowconfigure(0, weight=1)
 
-
         theme_combobox = ttk.Combobox(self.theme_set, state="readonly")
         theme_combobox.grid(
             row=1, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
@@ -932,7 +969,6 @@ class LookTab(ttk.Frame):
         )
         cursor_size_combobox.set("Cursor-Größe wählen")
 
-
         cursor_button = ttk.Button(
             self.cursor_set,
             text="Cursor anwenden",
@@ -960,12 +996,7 @@ class LookTab(ttk.Frame):
             width=20,
             style="Custom.TButton",
         )
-        theme_refresh_button.pack(pady=10, padx=40, fill="x"
-        )
-
-
-
-
+        theme_refresh_button.pack(pady=10, padx=40, fill="x")
 
         cursor_folder_button = ttk.Button(
             self.cursor_set,
