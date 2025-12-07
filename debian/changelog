@@ -1,3 +1,18 @@
+primo-di-tutto (1.0.1) unstable; urgency=medium
+
+  * Added: Devices Tab with hierarchical USB and PCI device listing
+  * Added: USB device detection with Bus/Device hierarchy
+  * Added: PCI device detection with Slot and Type information
+  * Added: USB speed display in Mbps format (e.g., "480 Mbps", "5000 Mbps")
+  * Added: Individual scrollbars for USB and PCI device lists
+  * Added: Single refresh button for both USB and PCI devices
+  * Added: Layout backup/restore functionality (guideos-layout-sicherung)
+  * Improved: Device Tab layout using grid system without canvas wrapper
+  * Fixed: USB scrollbar not displaying correctly
+  * Fixed: USB device name parsing from lsusb output
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sun, 08 Dec 2025 15:30:00 +0100
+
 primo-di-tutto (1.0) unstable; urgency=medium
 
   * Raised to 1.0
