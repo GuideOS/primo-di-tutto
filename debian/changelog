@@ -1,3 +1,11 @@
+primo-di-tutto (1.0.2) unstable; urgency=medium
+
+  * Fixed: Software installation/uninstallation status not updating immediately
+  * Fixed: Package cache not being cleared after install/uninstall operations
+  * Improved: Software tab now shows correct installation status without restart
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Tue, 10 Dec 2025 16:00:00 +0100
+
 primo-di-tutto (1.0.1) unstable; urgency=medium
 
   * Added: Devices Tab with hierarchical USB and PCI device listing

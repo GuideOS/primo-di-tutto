@@ -197,7 +197,7 @@ class SoftwareTab(ttk.Frame):
             gaming_apps.append(app)
 
         gaming_note_frame = AppCollectionPanel(
-            category_title="Gaming", apps=gaming_apps, master=gaming_frame
+            category_title="Native Games", apps=gaming_apps, master=gaming_frame
         )
         gaming_note_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -217,7 +217,7 @@ class SoftwareTab(ttk.Frame):
             gaming_tools_apps.append(app)
 
         gaming_tool_note_frame = AppCollectionPanel(
-            category_title="Gaming", apps=gaming_tools_apps, master=gaming_tools_frame
+            category_title="Gaming Tools", apps=gaming_tools_apps, master=gaming_tools_frame
         )
         gaming_tool_note_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -236,10 +236,10 @@ class SoftwareTab(ttk.Frame):
             )
             bak_apps.append(app)
 
-        gaming_tool_note_frame = AppCollectionPanel(
-            category_title="Gaming", apps=bak_apps, master=backup_frame
+        backup_note_frame = AppCollectionPanel(
+            category_title="Backup", apps=bak_apps, master=backup_frame
         )
-        gaming_tool_note_frame.pack(fill=tk.BOTH, expand=True)
+        backup_note_frame.pack(fill=tk.BOTH, expand=True)
 
         # Safty Panel
         saf_apps = []
@@ -256,10 +256,10 @@ class SoftwareTab(ttk.Frame):
             )
             saf_apps.append(app)
 
-        gaming_tool_note_frame = AppCollectionPanel(
-            category_title="Gaming", apps=saf_apps, master=safty_frame
+        safty_note_frame = AppCollectionPanel(
+            category_title="Sicherheit", apps=saf_apps, master=safty_frame
         )
-        gaming_tool_note_frame.pack(fill=tk.BOTH, expand=True)
+        safty_note_frame.pack(fill=tk.BOTH, expand=True)
 
         # Desktop Panel
         desk_apps = []
@@ -360,6 +360,12 @@ class AppCollectionPanel(tk.Frame):
                 primo_skript_task, app.get_name(), app.get_install_command()
             )
             self.master.wait_window(custom_installer)
+            
+            # Clear cache to refresh installation status
+            from cache import Cache
+            Cache.delete("installed_apt_pkgs")
+            Cache.delete("flatpak_installs")
+            
             self.detail_inst.config(text="Deinstallieren")
 
             refresh_status(app)
@@ -371,6 +377,12 @@ class AppCollectionPanel(tk.Frame):
                 primo_skript_task, app.get_name(), app.get_uninstall_command()
             )
             self.master.wait_window(custom_installer)
+            
+            # Clear cache to refresh installation status
+            from cache import Cache
+            Cache.delete("installed_apt_pkgs")
+            Cache.delete("flatpak_installs")
+            
             self.detail_inst.config(text="Installieren")
 
             refresh_status(app)
