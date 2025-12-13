@@ -950,7 +950,7 @@ class LookTab(ttk.Frame):
         )
         icon_folder_button.grid(row=2, column=4, padx=10, pady=5, sticky="ew")
 
-        self.cursor_set = ttk.LabelFrame(self, text="Symbole", padding=10)
+        self.cursor_set = ttk.LabelFrame(self, text="Cursor", padding=10)
         self.cursor_set.pack(padx=40, fill="x", anchor="n")
         self.cursor_set.columnconfigure(0, weight=1)
         self.cursor_set.rowconfigure(0, weight=1)
