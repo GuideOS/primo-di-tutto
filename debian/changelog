@@ -1,3 +1,10 @@
+primo-di-tutto (1.0.3) unstable; urgency=medium
+
+  * Added: 0 A.D. game (Flatpak) to game collection
+  * Added: SuperTuxKart game (Flatpak) to game collection
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Fri, 13 Dec 2025 10:00:00 +0100
+
 primo-di-tutto (1.0.2) unstable; urgency=medium
 
   * Fixed: Software installation/uninstallation status not updating immediately
