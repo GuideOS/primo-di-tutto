@@ -160,11 +160,11 @@
     },
     "custom-menu-width":{
         "type":"generic",
-        "default":800
+        "default":832
     },
     "custom-menu-height":{
         "type":"generic",
-        "default":530
+        "default":616
     },
     "recent-apps":{
         "type":"generic",
@@ -335,7 +335,7 @@
     },
     "enable-autoscroll":{
         "type":"checkbox",
-        "default":true,
+        "default":false,
         "description":"Enable autoscrolling",
         "tooltip":"Autoscroll the application list on mouse hover"
     },
@@ -355,7 +355,7 @@
     },
     "web-search-option":{
         "type":"combobox",
-        "default":1,
+        "default":6,
         "description":"Web search option",
         "options":{
             "None":0,
@@ -490,7 +490,7 @@
 
     "menu-icon-custom":{
         "type":"checkbox",
-        "default":false,
+        "default":true,
         "description":"Use a custom icon",
         "tooltip":"Use a custom icon in the panel"
     },
@@ -595,7 +595,7 @@
     },
     "apps-grid-icon-size":{
         "type":"spinbutton",
-        "default":64,
+        "default":48,
         "min":0,
         "max":256,
         "step":1,
