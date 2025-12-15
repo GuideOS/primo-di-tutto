@@ -140,9 +140,23 @@
         }
     },
 
-    "categories":{
-        "type":"generic",
-        "default":[]
+    "categories": {
+        "type": "generic",
+        "default": [],
+        "value": [
+            "all",
+            "Office",
+            "Development",
+            "Graphics",
+            "GuideOS",
+            "Internet",
+            "Multimedia",
+            "Accessories",
+            "Preferences",
+            "Administration",
+            "places",
+            "favorite_apps"
+        ]
     },
     "custom-menu-width":{
         "type":"generic",
