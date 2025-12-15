@@ -567,7 +567,7 @@
     },
     "menu-label":{
         "type":"entry",
-        "default":"Menu",
+        "default":"",
         "description":"Panel text",
         "tooltip":"Text to show beside the panel icon"
     },
