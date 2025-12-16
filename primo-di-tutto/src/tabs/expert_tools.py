@@ -384,7 +384,7 @@ class AptToolsFrame(tk.Frame):
         self.update_info_label = ttk.Label(
             self.update_info_frame, text="", justify="left", wraplength=900
         )
-        self.update_info_label.pack(anchor="nw", fill="x", padx=10, pady=5)
+        self.update_info_label.pack(anchor="w", fill="x", padx=10, pady=5)
 
         self.all_up_button.bind(
             "<Enter>",
