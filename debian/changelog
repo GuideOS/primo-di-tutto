@@ -1,3 +1,30 @@
+primo-di-tutto (1.0.5) unstable; urgency=medium
+
+  * Fixed Steam install
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 20 Dec 2025 13:22:49 +0100
+
+primo-di-tutto (1.0.5) unstable; urgency=medium
+
+  * Fixed Steam install
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 20 Dec 2025 13:22:19 +0100
+
+primo-di-tutto (1.0.5) unstable; urgency=medium
+
+  * Fixed Steam install
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 20 Dec 2025 13:21:40 +0100
+
+primo-di-tutto (1.0.4) unstable; urgency=medium
+
+  * Neu: Boot Mate Autostart-Manager als Desktop-Tool hinzugefügt
+  * Änderung: Flatpak-Installationen/Entfernungen erfolgen jetzt immer mit pkexec (bessere Rechteverwaltung)
+  * Diverse Flatpak-Kommandos in allen Kategorien vereinheitlicht
+  * Kleinere Korrekturen und Verbesserungen
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Wed, 17 Dec 2025 10:00:00 +0100
+
 primo-di-tutto (1.0.3) unstable; urgency=medium
 
   * Added: 0 A.D. game (Flatpak) to game collection
