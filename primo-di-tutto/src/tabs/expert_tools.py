@@ -245,7 +245,7 @@ class AptToolsFrame(tk.Frame):
             width=20,
             command=all_up_action,
         )
-        self.all_up_button.pack(fill="x")
+        #self.all_up_button.pack(fill="x")
 
         self.apt_option_frame = ttk.LabelFrame(
             self.update_button_frame,

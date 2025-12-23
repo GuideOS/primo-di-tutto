@@ -91,7 +91,7 @@ class MainApplication(tk.Tk):
 
         self.willkommen_tab = WelcomeTab(self.notebook)
         self.dash_tab = DashTab(self.notebook)
-        self.update_tab = UpdateTab(self.notebook)
+        #self.update_tab = UpdateTab(self.notebook)
         self.software_tab = SoftwareTab(self.notebook)
         self.system_tab = SystemTab(self.notebook)
         self.devices_tab = DevicesTab(self.notebook)
@@ -105,7 +105,7 @@ class MainApplication(tk.Tk):
             self.notebook.add(self.willkommen_tab, compound=LEFT, text="Willkommen")
 
         self.notebook.add(self.dash_tab, compound=LEFT, text="Übersicht")
-        self.notebook.add(self.update_tab, compound=LEFT, text="Aktualisierungen")
+        #self.notebook.add(self.update_tab, compound=LEFT, text="Aktualisierungen")
         self.notebook.add(
             self.software_tab, compound=LEFT, text="Software-\nEmpfehlungen"
         )
