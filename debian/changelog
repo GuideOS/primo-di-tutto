@@ -1,8 +1,9 @@
-primo-di-tutto (1.0.6) unstable; urgency=medium
+primo-di-tutto (1.0.7) unstable; urgency=medium
 
   * Fixed Steam install
   * Added plank-settings
   * Removed Update Func
+  * Fixed Heroic install
 
  -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 20 Dec 2025 13:22:49 +0100
 
