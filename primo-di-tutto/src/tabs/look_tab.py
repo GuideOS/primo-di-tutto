@@ -11,8 +11,7 @@ import json
 import shutil
 from logger_config import setup_logger
 from tabs.pop_ups import Done_
-from back_my_cinnamon import *
-from restore_my_cinnamon import *
+
 
 logger = setup_logger(__name__)
 
@@ -534,33 +533,28 @@ class LookTab(ttk.Frame):
         )
         devil_label.grid(row=2, column=3, padx=5, pady=5, sticky="nsew")
 
-        if "dark" in theme_name or "Dark" in theme_name:
+        theme_name_val = get_theme_cached()
+        if "dark" in theme_name_val or "Dark" in theme_name_val:
             layout_icon_conf_dark()
         else:
             layout_icon_conf_light()
 
-        save_layout = ttk.Button(
-            self.desktop_layout_set,
-            text="Mein Layout speichern",
-            style="Custom.TButton",
-            compound="left",
-            command=backup_cinnamon_settings,
-        )
-        save_layout.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky="nesw")
+        def start_restore_my_cinnamon():
+            # Start the layout backup/restore tool
+            try:
+                subprocess.Popen(["guideos-layout-sicherung"])
+                logger.info("guideos-layout-sicherung wurde gestartet.")
+            except Exception as e:
+                logger.error(f"Fehler beim Starten von guideos-layout-sicherung: {e}")
 
         load_layout = ttk.Button(
             self.desktop_layout_set,
-            text="Mein Layout laden",
+            text="Mein Layout sichern/laden",
             style="Custom.TButton",
             compound="left",
-            command=restore_cinnamon_settings,
+            command=start_restore_my_cinnamon,
         )
-        load_layout.grid(row=3, column=2, columnspan=2, padx=5, pady=5, sticky="nesw")
-
-        self.pixel_set = ttk.LabelFrame(self, text="Farben und Formen", padding=10)
-        self.pixel_set.pack(pady=20, padx=40, fill="x", anchor="n")
-        self.pixel_set.columnconfigure(0, weight=1)
-        self.pixel_set.rowconfigure(0, weight=1)
+        load_layout.grid(row=3, column=0, columnspan=4, padx=5, pady=5, sticky="nesw")
 
         def done_message_0():
             d_mass = Done_(self)
@@ -624,7 +618,31 @@ class LookTab(ttk.Frame):
                 ]
 
                 theme_combobox["values"] = themes
-                theme_combobox.set("Theme wählen")
+
+                # Aktuelles Theme ermitteln und anzeigen
+                try:
+                    current_theme = (
+                        subprocess.run(
+                            [
+                                "gsettings",
+                                "get",
+                                "org.cinnamon.desktop.interface",
+                                "gtk-theme",
+                            ],
+                            capture_output=True,
+                            text=True,
+                            check=True,
+                        )
+                        .stdout.strip()
+                        .strip("'\"")
+                    )
+
+                    if current_theme in themes:
+                        theme_combobox.set(current_theme)
+                    else:
+                        theme_combobox.set("Theme wählen")
+                except Exception:
+                    theme_combobox.set("Theme wählen")
             except Exception as e:
                 theme_combobox.set("Error: " + str(e))
 
@@ -657,7 +675,31 @@ class LookTab(ttk.Frame):
                     ]
                 ]
                 icon_combobox["values"] = icons
-                icon_combobox.set("Symbole wählen")
+
+                # Aktuelles Icon-Theme ermitteln und anzeigen
+                try:
+                    current_icon = (
+                        subprocess.run(
+                            [
+                                "gsettings",
+                                "get",
+                                "org.cinnamon.desktop.interface",
+                                "icon-theme",
+                            ],
+                            capture_output=True,
+                            text=True,
+                            check=True,
+                        )
+                        .stdout.strip()
+                        .strip("'\"")
+                    )
+
+                    if current_icon in icons:
+                        icon_combobox.set(current_icon)
+                    else:
+                        icon_combobox.set("Symbole wählen")
+                except Exception:
+                    icon_combobox.set("Symbole wählen")
             except Exception as e:
                 icon_combobox.set("Error: " + str(e))
 
@@ -677,9 +719,54 @@ class LookTab(ttk.Frame):
                 ]
 
                 cursor_combobox["values"] = cursor_themes
-                cursor_combobox.set("Cursor wählen")
+
+                # Aktuelles Cursor-Theme ermitteln und anzeigen
+                try:
+                    current_cursor = (
+                        subprocess.run(
+                            [
+                                "gsettings",
+                                "get",
+                                "org.cinnamon.desktop.interface",
+                                "cursor-theme",
+                            ],
+                            capture_output=True,
+                            text=True,
+                            check=True,
+                        )
+                        .stdout.strip()
+                        .strip("'\"")
+                    )
+
+                    if current_cursor in cursor_themes:
+                        cursor_combobox.set(current_cursor)
+                    else:
+                        cursor_combobox.set("Cursor wählen")
+                except Exception:
+                    cursor_combobox.set("Cursor wählen")
             except Exception as e:
                 cursor_combobox.set("Error: " + str(e))
+
+            # Aktuelle Cursor-Größe ermitteln und anzeigen
+            try:
+                current_cursor_size = subprocess.run(
+                    [
+                        "gsettings",
+                        "get",
+                        "org.cinnamon.desktop.interface",
+                        "cursor-size",
+                    ],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                ).stdout.strip()
+
+                if current_cursor_size in cursor_sizes:
+                    cursor_size_combobox.set(current_cursor_size)
+                else:
+                    cursor_size_combobox.set("Cursor-Größe wählen")
+            except Exception:
+                cursor_size_combobox.set("Cursor-Größe wählen")
 
         def set_theme():
             # Set the selected theme in GSettings and update the UI accordingly
@@ -703,8 +790,13 @@ class LookTab(ttk.Frame):
                     if "dark" in value or "Dark" in value:
                         # /org/gnome/desktop/interface/color-scheme
                         subprocess.run(
-                            ["dconf", "write", "/org/gnome/desktop/interface/color-scheme", "'prefer-dark'"],
-                            check=True
+                            [
+                                "dconf",
+                                "write",
+                                "/org/gnome/desktop/interface/color-scheme",
+                                "'prefer-dark'",
+                            ],
+                            check=True,
                         )
                         self.tk.call("set_theme", "dark")
                         notebook_styler()
@@ -712,8 +804,13 @@ class LookTab(ttk.Frame):
 
                     else:
                         subprocess.run(
-                            ["dconf", "write", "/org/gnome/desktop/interface/color-scheme", "'prefer-light'"],
-                            check=True
+                            [
+                                "dconf",
+                                "write",
+                                "/org/gnome/desktop/interface/color-scheme",
+                                "'prefer-light'",
+                            ],
+                            check=True,
                         )
                         # os.system("gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'")
                         self.tk.call("set_theme", "light")
@@ -795,34 +892,19 @@ class LookTab(ttk.Frame):
             except subprocess.CalledProcessError:
                 print("Fehler beim Setzen der Cursorgröße.")
 
-        theme_combobox = ttk.Combobox(self.pixel_set, state="readonly")
+        self.theme_set = ttk.LabelFrame(self, text="Desktop-Theme", padding=10)
+        self.theme_set.pack(padx=40, fill="x", anchor="n")
+        self.theme_set.columnconfigure(0, weight=1)
+        self.theme_set.rowconfigure(0, weight=1)
+
+        theme_combobox = ttk.Combobox(self.theme_set, state="readonly")
         theme_combobox.grid(
             row=1, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
         )
         theme_combobox.set("Bitte aktualisieren")
 
-        icon_combobox = ttk.Combobox(self.pixel_set, state="readonly")
-        icon_combobox.grid(
-            row=2, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
-        )
-        icon_combobox.set("Bitte aktualisieren")
-
-        cursor_combobox = ttk.Combobox(self.pixel_set, state="readonly")
-        cursor_combobox.grid(
-            row=3, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
-        )
-        cursor_combobox.set("Bitte aktualisieren")
-
-        cursor_sizes = ["16", "24", "32", "48", "64", "96", "128"]
-        cursor_size_combobox = ttk.Combobox(self.pixel_set, state="readonly")
-        cursor_size_combobox["values"] = cursor_sizes
-        cursor_size_combobox.grid(
-            row=4, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
-        )
-        cursor_size_combobox.set("Cursor-Größe wählen")
-
         theme_button = ttk.Button(
-            self.pixel_set,
+            self.theme_set,
             text="Theme anwenden",
             compound="left",
             command=set_theme,
@@ -830,8 +912,28 @@ class LookTab(ttk.Frame):
         )
         theme_button.grid(row=1, column=3, padx=10, pady=5, sticky="ew")
 
+        theme_folder_button = ttk.Button(
+            self.theme_set,
+            text="Theme-Ordner",
+            compound="left",
+            command=open_theme_folder,
+            width=20,
+        )
+        theme_folder_button.grid(row=1, column=4, padx=10, pady=5, sticky="ew")
+
+        self.icon_set = ttk.LabelFrame(self, text="Symbole", padding=10)
+        self.icon_set.pack(padx=40, fill="x", anchor="n")
+        self.icon_set.columnconfigure(0, weight=1)
+        self.icon_set.rowconfigure(0, weight=1)
+
+        icon_combobox = ttk.Combobox(self.icon_set, state="readonly")
+        icon_combobox.grid(
+            row=2, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
+        )
+        icon_combobox.set("Bitte aktualisieren")
+
         icon_button = ttk.Button(
-            self.pixel_set,
+            self.icon_set,
             text="Symbole anwenden",
             compound="left",
             command=set_icon,
@@ -839,8 +941,36 @@ class LookTab(ttk.Frame):
         )
         icon_button.grid(row=2, column=3, padx=10, pady=5, sticky="ew")
 
+        icon_folder_button = ttk.Button(
+            self.icon_set,
+            text="Symbol-Ordner",
+            compound="left",
+            command=open_icon_folder,
+            width=20,
+        )
+        icon_folder_button.grid(row=2, column=4, padx=10, pady=5, sticky="ew")
+
+        self.cursor_set = ttk.LabelFrame(self, text="Cursor", padding=10)
+        self.cursor_set.pack(padx=40, fill="x", anchor="n")
+        self.cursor_set.columnconfigure(0, weight=1)
+        self.cursor_set.rowconfigure(0, weight=1)
+
+        cursor_combobox = ttk.Combobox(self.cursor_set, state="readonly")
+        cursor_combobox.grid(
+            row=3, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
+        )
+        cursor_combobox.set("Bitte aktualisieren")
+
+        cursor_sizes = ["16", "24", "32", "48", "64", "96", "128"]
+        cursor_size_combobox = ttk.Combobox(self.cursor_set, state="readonly")
+        cursor_size_combobox["values"] = cursor_sizes
+        cursor_size_combobox.grid(
+            row=4, column=0, columnspan=2, padx=10, pady=5, sticky="ewsn"
+        )
+        cursor_size_combobox.set("Cursor-Größe wählen")
+
         cursor_button = ttk.Button(
-            self.pixel_set,
+            self.cursor_set,
             text="Cursor anwenden",
             compound="left",
             command=set_cursor,
@@ -849,7 +979,7 @@ class LookTab(ttk.Frame):
         cursor_button.grid(row=3, column=3, padx=10, pady=5, sticky="ew")
 
         cursor_size_button = ttk.Button(
-            self.pixel_set,
+            self.cursor_set,
             compound="left",
             text="Cursorgröße anwenden",
             command=apply_cursor_size,
@@ -859,37 +989,17 @@ class LookTab(ttk.Frame):
         )
 
         theme_refresh_button = ttk.Button(
-            self.pixel_set,
-            text="Aktualisieren",
+            self,
+            text="Index aktualisieren",
             compound="left",
             command=update_theme_combobox,
             width=20,
             style="Custom.TButton",
         )
-        theme_refresh_button.grid(
-            row=5, column=0, columnspan=5, padx=10, pady=5, sticky="ew"
-        )
-
-        theme_folder_button = ttk.Button(
-            self.pixel_set,
-            text="Theme-Ordner",
-            compound="left",
-            command=open_theme_folder,
-            width=20,
-        )
-        theme_folder_button.grid(row=1, column=4, padx=10, pady=5, sticky="ew")
-
-        icon_folder_button = ttk.Button(
-            self.pixel_set,
-            text="Symbol-Ordner",
-            compound="left",
-            command=open_icon_folder,
-            width=20,
-        )
-        icon_folder_button.grid(row=2, column=4, padx=10, pady=5, sticky="ew")
+        theme_refresh_button.pack(pady=10, padx=40, fill="x")
 
         cursor_folder_button = ttk.Button(
-            self.pixel_set,
+            self.cursor_set,
             text="Cursor-Ordner",
             compound="left",
             command=open_icon_folder,

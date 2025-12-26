@@ -32,12 +32,9 @@ class ExpertTab(ttk.Frame):
         admin_frame = ttk.Frame(self.inst_notebook)
         apt_tools_frame = ttk.Frame(self.inst_notebook)
 
-
         source_frame.pack(fill="both", expand=True)
         admin_frame.pack(fill="both", expand=True)
         apt_tools_frame.pack(fill="both", expand=True)
-
-
 
         self.inst_notebook.add(source_frame, compound=LEFT, text="Quellen")
         self.inst_notebook.add(admin_frame, compound=LEFT, text="Werkzeuge")
@@ -139,6 +136,7 @@ class AdminPanel(tk.Frame):
     # Funktion für das Verlassen des Buttons
     def on_leave(self, event):
         self.sys_info_label.configure(text="")
+
 
 class AptToolsFrame(tk.Frame):
     def __init__(self, master=None, **kwargs):
@@ -247,7 +245,7 @@ class AptToolsFrame(tk.Frame):
             width=20,
             command=all_up_action,
         )
-        self.all_up_button.pack(fill="x")
+        #self.all_up_button.pack(fill="x")
 
         self.apt_option_frame = ttk.LabelFrame(
             self.update_button_frame,
@@ -386,7 +384,7 @@ class AptToolsFrame(tk.Frame):
         self.update_info_label = ttk.Label(
             self.update_info_frame, text="", justify="left", wraplength=900
         )
-        self.update_info_label.pack(anchor="nw", fill="x", padx=10, pady=5)
+        self.update_info_label.pack(anchor="w", fill="x", padx=10, pady=5)
 
         self.all_up_button.bind(
             "<Enter>",
@@ -489,7 +487,6 @@ class AptToolsFrame(tk.Frame):
         )
 
 
-
 class SourcePanel(tk.Frame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
@@ -519,11 +516,11 @@ class SourcePanel(tk.Frame):
         self.add_sources_to_treeview()
 
         def open_source_f_d():
-            popen(f"software-properties-gtk")
+            popen(f"pkexec nemo /etc/apt/sources.list.d")
 
         self.open_source_folder = ttk.Button(
             self.added_repositories,
-            text="Quellen bearbeiten",
+            text="Quellen bearbeiten (Nur für erfahrene Nutzer!)",
             command=open_source_f_d,
             style="Custom.TButton",
         )

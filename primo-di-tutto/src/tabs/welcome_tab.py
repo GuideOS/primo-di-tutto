@@ -18,7 +18,7 @@ lang = gettext.translation(
 lang.install()
 _ = lang.gettext
 
-#user = "live"
+# user = "live"
 
 
 class WelcomeTab(ttk.Frame):
@@ -44,8 +44,8 @@ class WelcomeTab(ttk.Frame):
         # Custom logic for 'live' or 'linux' user
         if user.lower() in ["live", "linux"]:
             welcome_message = "Hallo!"
-            welcome_text_message = "Schön, dass du dir GuideOS anschaust. Du befindest dich im Live-Modus. Guck' dich in Ruhe um und wenn du möchste komme hierher zurück, um GuideOS zu installieren.Wir wünschen dir viele Spaß."
-            
+            welcome_text_message = "Schön, dass du dir GuideOS anschaust. Du befindest dich im Live-Modus. Guck dich in Ruhe um und wenn du möchtest, komm hierher zurück, um GuideOS zu installieren. Wir wünschen dir viel Spaß."
+
             show_autostart = False
         else:
             welcome_message = _("""Welcome""") + f" {user.upper()} " + "!"
@@ -81,11 +81,12 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
                 self,
                 text=_("GuideOS installieren"),
                 # subproces thats starts calamares-install-guideos
-                command=lambda: subprocess.Popen(["/usr/bin/calamares-install-guideos"]),
-                style="Accent.TButton"
+                command=lambda: subprocess.Popen(
+                    ["/usr/bin/calamares-install-guideos"]
+                ),
+                style="Accent.TButton",
             )
             self.install_guideos.pack(pady=10)
-
 
         # Only show autostart frame if show_autostart is True
         if show_autostart:
@@ -131,7 +132,13 @@ GuideOS richtet sich nicht nur an Anfänger und Umsteiger, sondern lädt alle In
                 # Function to start the NVIDIA manager
                 def open_nvidia_manager():
                     try:
-                        subprocess.Popen(["x-terminal-emulator", "-e", "pkexec /usr/bin/debian-nvidia-installer"])
+                        subprocess.Popen(
+                            [
+                                "x-terminal-emulator",
+                                "-e",
+                                "pkexec /usr/bin/debian-nvidia-installer",
+                            ]
+                        )
                     except Exception as e:
                         logger.error(f"Error starting NVIDIA Manager: {e}")
 

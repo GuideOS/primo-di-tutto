@@ -51,7 +51,7 @@ class ContribTab(ttk.Frame):
             webbrowser.open("https://github.com/GuideOS")
 
         def open_obs():
-            webbrowser.open("https://build.opensuse.org/project/show/home:guideos")
+            webbrowser.open("https://guideos.eu/repo/")
 
         def open_ticket():
             popen("guideos-ticket-tool")
@@ -68,7 +68,7 @@ class ContribTab(ttk.Frame):
         # Button to open the Open Build Service page
         go_obs = ttk.Button(
             self.take_part_frame,
-            text="GuideOS auf Open Build Service",
+            text="GuideOS.eu Repository",
             style="Custom.TButton",
             command=open_obs,
         )
@@ -108,7 +108,7 @@ class ContribTab(ttk.Frame):
         # Insert text into the text box
         text_box.insert(
             tk.END,
-            "@Bulvai @DenalB @evilware666 @Fhyrst @Gamma @GF-S15 @Gonzo-3004 @Hammer20l @harihegen @kim88 @KTT73 @maik3531 @Mastertac @Nightworker @Perval @PinguinTV @Ritchy @Stardenver @Stephan @StephanR @stryvyr @dantechgamegeek @Toadie @vizh",
+            "@Actionschnitzel @Bulvai @DenalB @evilware666 @Fhyrst @Gamma @GF-S15 @Gonzo-3004 @Hammer20l @harihegen @kim88 @KTT73 @maik3531 @Mastertac @MyLibertard @Nightworker @Perval @PinguinTV @Ritchy @Stardenver @Stephan @StephanR @stryvyr @dantechgamegeek @Toadie @vizh",
         )
 
         # Make the text box read-only

@@ -17,7 +17,7 @@ logger = setup_logger(__name__)
 
 def ping_github():
     try:
-        response = requests.get("https://api.github.com", timeout=5)
+        response = requests.get("https://api.github.com", timeout=1)
 
         if response.status_code == 200:
             return True
@@ -27,7 +27,6 @@ def ping_github():
         return False
 
 
-ping_github()
 user = os.environ["USER"]
 
 
@@ -95,8 +94,16 @@ def get_first_run():
 
 distro_get = distro.id()
 
-nice_name = popen("egrep '^(PRETTY_NAME)=' /etc/os-release")
-nice_name = nice_name.read()
+nice_name = None  # Lazy loaded
+
+
+def get_nice_name():
+    global nice_name
+    if nice_name is None:
+        p = popen("egrep '^(PRETTY_NAME)=' /etc/os-release")
+        nice_name = p.read()
+    return nice_name
+
 
 machiene_arch = platform.machine()
 logger.info(platform.machine())
@@ -167,13 +174,20 @@ def get_theme():
         return "N/A"
 
 
-theme_name = get_theme()
-# logger.debug(f"Current theme: {theme_name}")
+theme_name = None  # Lazy loaded
+theme = None  # Lazy loaded
+
+
+def get_theme_cached():
+    global theme_name, theme
+    if theme_name is None:
+        theme_name = get_theme()
+        theme = theme_name.lower()
+    return theme_name
+
 
 # Define Permission Method
 permit = "pkexec"
-
-theme = get_theme().lower()
 
 
 def has_nvidia_gpu():
@@ -202,3 +216,21 @@ def has_nvidia_gpu():
                 return True  # NVIDIA found within the block
 
     return False
+
+
+def get_cinnamon_version():
+    """Einfache Funktion um die Cinnamon Version zu ermitteln."""
+    try:
+        result = (
+            popen("dpkg-query -W -f='${Version}' cinnamon").read().strip().strip("'\"")
+        )
+        return result if result else "N/A"
+    except:
+        return "N/A"
+
+
+def print_cinnamon_version():
+    """Gibt die Cinnamon Version direkt aus."""
+    version = get_cinnamon_version()
+    print(f"Cinnamon Version: {version}")
+    return version

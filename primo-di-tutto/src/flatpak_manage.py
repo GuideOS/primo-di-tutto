@@ -24,7 +24,7 @@ def count_flatpaks():
 def is_internet_available():
     try:
         host = socket.gethostbyname("www.github.com")
-        socket.create_connection((host, 80), 2)
+        socket.create_connection((host, 80), 0.5)
         return True
     except socket.error:
         pass
@@ -73,48 +73,76 @@ def load_flatpak_installs():
 flatpak_path = os.path.exists("/bin/flatpak")
 
 
-if flatpak_path:
-    logger.info("Flatpak is installed. List will be added")
+# Lazy init
+Flat_remote_dict = {}
+flat_counted = "-"
+_flatpak_initialized = False
 
-    home = os.path.expanduser("~")
-    json_file_path = f"{home}/.primo/flat_remote_data.json"
-    expanded_json_file_path = os.path.expanduser(json_file_path)
 
-    if is_internet_available():
-        command = f"flatpak remote-ls --columns=name --columns=application --app --arch={platform.machine()}"
-        output = subprocess.check_output(command, shell=True, text=True)
+def init_flatpak_data():
+    """Initialize flatpak data lazily or in background thread"""
+    global Flat_remote_dict, flat_counted, _flatpak_initialized
 
-        lines = output.strip().split("\n")
-        flat_remote_data = {}
+    if _flatpak_initialized:
+        return
 
-        for line in lines[1:]:
-            name, application = line.split("\t")
-            flat_remote_data[name] = application
+    _flatpak_initialized = True
 
-        if os.path.exists(expanded_json_file_path):
-            with open(expanded_json_file_path, "r") as json_file:
-                flat_remote_dict = json.load(json_file)
+    if flatpak_path:
+        logger.info("Flatpak is installed. List will be added")
+
+        home = os.path.expanduser("~")
+        json_file_path = f"{home}/.primo/flat_remote_data.json"
+        expanded_json_file_path = os.path.expanduser(json_file_path)
+
+        if is_internet_available():
+            try:
+                command = f"flatpak remote-ls --columns=name --columns=application --app --arch={platform.machine()}"
+                output = subprocess.check_output(
+                    command, shell=True, text=True, timeout=5
+                )
+
+                lines = output.strip().split("\n")
+                flat_remote_data = {}
+
+                for line in lines[1:]:
+                    if "\t" in line:
+                        name, application = line.split("\t")
+                        flat_remote_data[name] = application
+
+                if os.path.exists(expanded_json_file_path):
+                    with open(expanded_json_file_path, "r") as json_file:
+                        flat_remote_dict = json.load(json_file)
+                else:
+                    flat_remote_dict = {}
+
+                flat_remote_dict.update(flat_remote_data)
+
+                with open(expanded_json_file_path, "w") as json_file:
+                    json.dump(flat_remote_dict, json_file, indent=2)
+
+                Flat_remote_dict = flat_remote_dict
+                logger.info(f"Added Flatpak cache.")
+            except Exception as e:
+                logger.warning(f"Failed to fetch flatpak remote list: {e}")
+                if os.path.exists(expanded_json_file_path):
+                    with open(expanded_json_file_path, "r") as json_file:
+                        Flat_remote_dict = json.load(json_file)
         else:
-            flat_remote_dict = {}
+            if os.path.exists(expanded_json_file_path):
+                with open(expanded_json_file_path, "r") as json_file:
+                    Flat_remote_dict = json.load(json_file)
+            else:
+                Flat_remote_dict = {}
 
-        flat_remote_dict.update(flat_remote_data)
-
-        with open(expanded_json_file_path, "w") as json_file:
-            json.dump(flat_remote_dict, json_file, indent=2)
-
-        Flat_remote_dict = flat_remote_dict
-        logger.info(f"Added Flatpak cache.")
+        try:
+            refresh_flatpak_installs()
+        except Exception as e:
+            logger.warning(f"Failed to refresh flatpak installs: {e}")
     else:
-        if os.path.exists(expanded_json_file_path):
-            with open(expanded_json_file_path, "r") as json_file:
-                Flat_remote_dict = json.load(json_file)
-        else:
-            Flat_remote_dict = {}
+        logger.info("Flatpak is not installed")
+        Flat_remote_dict = {}
+        flat_counted = "-"
 
-    refresh_flatpak_installs()
-else:
-    logger.info("Flatpak is not installed")
-    Flat_remote_dict = {}
-    flat_counted = "-"
 
 # print(Flat_remote_dict)

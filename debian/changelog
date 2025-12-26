@@ -1,3 +1,72 @@
+primo-di-tutto (1.0.6) unstable; urgency=medium
+
+  * Fixed Steam install
+  * Added plank-settings
+  * Removed Update Func
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 20 Dec 2025 13:22:49 +0100
+
+primo-di-tutto (1.0.5) unstable; urgency=medium
+
+  * Fixed Steam install
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 20 Dec 2025 13:22:19 +0100
+
+primo-di-tutto (1.0.5) unstable; urgency=medium
+
+  * Fixed Steam install
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 20 Dec 2025 13:21:40 +0100
+
+primo-di-tutto (1.0.4) unstable; urgency=medium
+
+  * Neu: Boot Mate Autostart-Manager als Desktop-Tool hinzugefügt
+  * Änderung: Flatpak-Installationen/Entfernungen erfolgen jetzt immer mit pkexec (bessere Rechteverwaltung)
+  * Diverse Flatpak-Kommandos in allen Kategorien vereinheitlicht
+  * Kleinere Korrekturen und Verbesserungen
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Wed, 17 Dec 2025 10:00:00 +0100
+
+primo-di-tutto (1.0.3) unstable; urgency=medium
+
+  * Added: 0 A.D. game (Flatpak) to game collection
+  * Added: SuperTuxKart game (Flatpak) to game collection
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Fri, 13 Dec 2025 10:00:00 +0100
+
+primo-di-tutto (1.0.2) unstable; urgency=medium
+
+  * Fixed: Software installation/uninstallation status not updating immediately
+  * Fixed: Package cache not being cleared after install/uninstall operations
+  * Improved: Software tab now shows correct installation status without restart
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Tue, 10 Dec 2025 16:00:00 +0100
+
+primo-di-tutto (1.0.1) unstable; urgency=medium
+
+  * Added: Devices Tab with hierarchical USB and PCI device listing
+  * Added: USB device detection with Bus/Device hierarchy
+  * Added: PCI device detection with Slot and Type information
+  * Added: USB speed display in Mbps format (e.g., "480 Mbps", "5000 Mbps")
+  * Added: Individual scrollbars for USB and PCI device lists
+  * Added: Single refresh button for both USB and PCI devices
+  * Added: Layout backup/restore functionality (guideos-layout-sicherung)
+  * Improved: Device Tab layout using grid system without canvas wrapper
+  * Fixed: USB scrollbar not displaying correctly
+  * Fixed: USB device name parsing from lsusb output
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sun, 08 Dec 2025 15:30:00 +0100
+
+primo-di-tutto (1.0) unstable; urgency=medium
+
+  * Raised to 1.0
+  * Added: GuideOS Tools
+  * Improved: Looks
+  * Fixed: Links
+  * Reduced startip time
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Tue, 02 Dec 2025 10:47:06 +0100
+
 primo-di-tutto (0.8.0.2) unstable; urgency=medium
 
   * Major Release: Enhanced System Management & GPU Detection

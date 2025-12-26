@@ -80,7 +80,6 @@ class UpdateTab(ttk.Frame):
             allup = f"{permit} {application_path}/scripts/all_up"
             execute_command(allup)
 
-
         self.update_button_frame = ttk.Frame(self, padding=20)
         self.update_button_frame.pack(side="top", fill="x")
 
@@ -97,16 +96,17 @@ class UpdateTab(ttk.Frame):
             self.update_button_frame,
             # Der text für anfänger angemessen erklären was all_up macht
             text="Hier kannst Du alle verfügbaren Aktualisierungen für Dein System installieren. Dies umfasst Updates für das Betriebssystem, installierte Software und Anwendungen aus verschiedenen Quellen wie APT und Flatpak. Klicke einfach auf 'Alles Aktualisieren', um den Prozess zu starten. Während der Aktualisierung werden alle Schritte in einem Terminalfenster angezeigt, damit Du den Fortschritt verfolgen kannst.",
-            justify="left", 
+            justify="left",
             # Der zeilenumbruch soll eine gute lesbarkeit haben
-            wraplength=950
+            wraplength=950,
         )
-        self.update_info_label.pack(anchor="nw", fill="x", pady=5)        
-
+        self.update_info_label.pack(anchor="nw", fill="x", pady=5)
 
         self.update_term_frame = ttk.LabelFrame(self, text=_("Prozess"))
-        self.update_term_frame.pack(side="top", fill="both", expand=True, padx=20, pady=20)
-        
+        self.update_term_frame.pack(
+            side="top", fill="both", expand=True, padx=20, pady=20
+        )
+
         # Configure grid weights for proper resizing
         self.update_term_frame.grid_rowconfigure(0, weight=1)
         self.update_term_frame.grid_columnconfigure(0, weight=1)
@@ -115,8 +115,8 @@ class UpdateTab(ttk.Frame):
             self.update_term_frame,
             image=self.term_logo,
         )
-        
-        #self.term_logo_label soll zentriert sein
+
+        # self.term_logo_label soll zentriert sein
         self.term_logo_label.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
         self.terminal = tk.Text(
             self.update_term_frame, height=20, borderwidth=0, highlightthickness=0
@@ -132,8 +132,3 @@ class UpdateTab(ttk.Frame):
             style="Accent.TButton",
             command=kill_term,
         )
-
-
-
-
-

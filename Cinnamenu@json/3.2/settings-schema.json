@@ -159,7 +159,7 @@
     "indent": true,
     "dependency": "show-application-icons",
     "type": "spinbutton",
-    "default": 48,
+    "default": 64,
     "min": 16,
     "max": 256,
     "step": 1,
