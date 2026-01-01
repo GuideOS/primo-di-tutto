@@ -1,0 +1,7 @@
+.sidebar-custom {
+    background-color: #f3f4f7;
+    border-right: 1.5px solid #bfc4cc;
+    min-width: 180px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}

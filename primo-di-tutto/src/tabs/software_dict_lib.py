@@ -186,7 +186,7 @@ class SoftwareGame:
                 "game_2": {
                     "Name": "OpenRA",
                     "Package": AppPackage.FLATPAK,
-                    "Description": "OpenRA ist ein Projekt, das die klassischen Command-&-Conquer-Echtzeit-Strategiespiele neu erschafft und modernisiert.",
+                    "Description": "OpenRA ist ein Projekt, das die klassischen Command-&amp;-Conquer-Echtzeit-Strategiespiele neu erschafft und modernisiert.",
                     "Icon": f"{application_path}/images/apps/net.openra.OpenRA-icon.png",
                     "Thumbnail": f"{application_path}/images/apps/net.openra.OpenRA-thumb.png",
                     "Install": "pkexec flatpak install flathub net.openra.OpenRA -y",
@@ -206,7 +206,7 @@ class SoftwareGame:
                     "AppStream": "org.xonotic.Xonotic",
                 },
                 "game_4": {
-                    "Name": "Frogatto & Friends",
+                    "Name": "Frogatto &amp; Friends",
                     "Package": AppPackage.FLATPAK,
                     "Description": "Ein Old-School-2D-Plattformspiel mit einem gewissen eigenwilligen Frosch in der Hauptrolle. *Frogatto* bietet wunderschöne, hochwertige Pixelgrafik, mitreißende Arcade-Soundtracks und das ganze Spielgefühl eines klassischen Konsolentitels. Renne und springe über Abgründe und Gegner. Greife Feinde mit deiner Zunge, verschlucke sie und spucke sie dann als Projektile auf andere Gegner!",
                     "Icon": f"{application_path}/images/apps/com.frogatto.Frogatto-icon.png",
@@ -870,7 +870,7 @@ class SoftwareGuideOSTools:
                     "Path": "guideos-adblocker-tool",
                 },
                 "guideos_02": {
-                    "Name": "Browser & Mail\nBackup",
+                    "Name": "Browser &amp; Mail\nBackup",
                     "Package": AppPackage.DEB,
                     "Description": "Ein einfaches Tool zum Sichern beliebter Browser und E-Mail-Clients.",
                     "Icon": f"{application_path}/images/apps/guideos-browser-mail-backup-icon.png",
