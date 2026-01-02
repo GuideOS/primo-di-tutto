@@ -75,6 +75,6 @@ class ContribTab(Gtk.Box):
         textview.set_cursor_visible(False)
         textview.set_wrap_mode(Gtk.WrapMode.WORD)
         textview.get_buffer().set_text(
-            "@Actionschnitzel @Bulvai @DenalB @evilware666 @Fhyrst @Gamma @GF-S15 @Gonzo-3004 @Hammer20l @harihegen @kim88 @KTT73 @maik3531 @Mastertac @MyLibertard @Nightworker @Perval @PinguinTV @Ritchy @Stardenver @Stephan @StephanR @stryvyr @dantechgamegeek @Toadie @vizh"
+            "@Actionschnitzel @Bulvai @DenalB @evilware666 @Fhyrst @Freydis @Gamma @GF-S15 @Gonzo-3004 @Hammer20l @harihegen @kim88 @KTT73 @maik3531 @Mastertac @MyLibertard @Nightworker @Perval @PinguinTV @Ritchy @Stardenver @Stephan @StephanR @stryvyr @dantechgamegeek @Toadie @vizh"
         )
         scrolled.set_child(textview)

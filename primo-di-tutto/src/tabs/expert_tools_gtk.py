@@ -1,7 +1,10 @@
 import gi
 import os
 import subprocess
+from datetime import datetime
+gi.require_version("Adap", "1")
 from gi.repository import Gtk, GLib
+from gi.repository import Adap as Adw
 from resorcess import application_path
 
 class ExpertToolsTab(Gtk.Box):
@@ -22,7 +25,7 @@ class ExpertToolsTab(Gtk.Box):
 
         # APT-Werkzeuge-Tab
         self.apt_panel = AptToolsPanel()
-        self.notebook.append_page(self.apt_panel, Gtk.Label(label="APT-Werkzeuge"))
+        self.notebook.append_page(self.apt_panel, Gtk.Label(label="APT/Flatpak-Werkzeuge"))
 
 
 class SourcePanel(Gtk.Box):
@@ -222,7 +225,8 @@ class AptToolsPanel(Gtk.Box):
 
         # Beenden-Button
         self.quit_btn = Gtk.Button(label="Beenden")
-        self.quit_btn.connect("clicked", self._on_quit_clicked)
+        self.quit_btn.connect("clicked", self._show_quit_dialog)
+        self.quit_btn.set_visible(False)  # Initial ausgeblendet
         term_vbox.append(self.quit_btn)
 
         # Button-Definitionen (Label, Shell-Command)
@@ -238,10 +242,15 @@ class AptToolsPanel(Gtk.Box):
             ("flatpak update", f"{application_path}/scripts/flatpak_update_wrap"),
             ("flatpak uninstall --unused", f"{application_path}/scripts/flatpak_clean_wrap"),
         ]
+        self.command_buttons = []  # Liste zum Speichern aller Command-Buttons
         for label, cmd in commands:
-            btn = Gtk.Button(label=label)
+            btn_label = Gtk.Label(label=label)
+            btn_label.set_xalign(0)  # Links ausrichten
+            btn = Gtk.Button()
+            btn.set_child(btn_label)
             btn.connect("clicked", self._on_command_clicked, cmd)
             btn_box.append(btn)
+            self.command_buttons.append(btn)  # Button zur Liste hinzufügen
 
         self.proc = None
 
@@ -250,6 +259,9 @@ class AptToolsPanel(Gtk.Box):
             self.textbuffer.set_text("Bitte zuerst laufenden Prozess beenden!")
             return
         self.textbuffer.set_text("")
+        # Alle Command-Buttons deaktivieren
+        for btn in self.command_buttons:
+            btn.set_sensitive(False)
         import threading
         def run():
             self.proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
@@ -257,14 +269,63 @@ class AptToolsPanel(Gtk.Box):
                 GLib.idle_add(self._append_text, line)
             self.proc.wait()
             self.proc = None
+            # Button anzeigen nachdem Prozess beendet ist
+            GLib.idle_add(self.quit_btn.set_visible, True)
         threading.Thread(target=run, daemon=True).start()
 
     def _append_text(self, text):
         end_iter = self.textbuffer.get_end_iter()
         self.textbuffer.insert(end_iter, text)
 
-    def _on_quit_clicked(self, button):
+    def _show_quit_dialog(self, button):
+        dialog = Adw.AlertDialog.new("Verlauf", "Möchtest du den Verlauf speichern?\nDu findest das Protokoll anschließend im Ordner 'Dokumente'.")
+        dialog.add_response("cancel", "Abbrechen")
+        dialog.add_response("discard", "Verwerfen")
+        dialog.add_response("save", "Speichern")
+        dialog.set_response_appearance("discard", Adw.ResponseAppearance.DESTRUCTIVE)
+        dialog.set_response_appearance("save", Adw.ResponseAppearance.SUGGESTED)
+        dialog.set_default_response("save")
+        dialog.set_close_response("cancel")
+        dialog.connect("response", self._on_dialog_response)
+        dialog.present(self.get_root())
+    
+    def _on_dialog_response(self, dialog, response):
+        if response == "save":
+            self._save_history()
+            self._clear_output()
+        elif response == "discard":
+            self._clear_output()
+        # Bei "cancel" passiert nichts
+    
+    def _save_history(self):
+        # Verlauf als TXT speichern
+        start_iter = self.textbuffer.get_start_iter()
+        end_iter = self.textbuffer.get_end_iter()
+        text = self.textbuffer.get_text(start_iter, end_iter, False)
+        
+        # Zeitstempel im Format YYYY-MM-DD-HH-MM-SS
+        timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        
+        # Pfad zu ~/Dokumente
+        docs_path = os.path.expanduser("~/Dokumente")
+        os.makedirs(docs_path, exist_ok=True)
+        
+        filename = f"primo-verlauf-{timestamp}.txt"
+        filepath = os.path.join(docs_path, filename)
+        
+        try:
+            with open(filepath, "w") as f:
+                f.write(text)
+            print(f"Verlauf gespeichert: {filepath}")
+        except Exception as e:
+            print(f"Fehler beim Speichern: {e}")
+    
+    def _clear_output(self):
         if self.proc:
             self.proc.terminate()
             self.proc = None
         self.textbuffer.set_text("")
+        self.quit_btn.set_visible(False)
+        # Alle Command-Buttons wieder aktivieren
+        for btn in self.command_buttons:
+            btn.set_sensitive(True)

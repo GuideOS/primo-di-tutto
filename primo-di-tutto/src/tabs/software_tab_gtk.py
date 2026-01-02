@@ -354,8 +354,12 @@ class SoftwareTab(Gtk.Box):
                 self.progressbar.set_fraction(1.0)
                 self.progressbar.set_text("Fertig!")
                 GLib.timeout_add(1000, lambda: self.progressbar.set_visible(False))
-            if hasattr(self, '_progress_pulse_id'):
-                GLib.source_remove(self._progress_pulse_id)
+            if hasattr(self, '_progress_pulse_id') and self._progress_pulse_id:
+                try:
+                    GLib.source_remove(self._progress_pulse_id)
+                    self._progress_pulse_id = None
+                except:
+                    pass  # Source wurde bereits entfernt
             # App-Objekt neu erzeugen, damit is_installed() den aktuellen Status liefert
             from tabs import software_dict_lib
             info = None

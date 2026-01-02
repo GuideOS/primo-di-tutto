@@ -25,17 +25,46 @@ from pathlib import Path
 import os
 import subprocess
 
-
-
-class ExpertTab(Gtk.Box):
-    def __init__(self):
-        super().__init__(orientation=Gtk.Orientation.VERTICAL)
-        self.append(Gtk.Label(label="Admin"))
-
-
 class PrimoGTK(Adw.Application):
     def __init__(self):
-        super().__init__(application_id="Primo")
+        super().__init__(application_id="io.github.guideos.primo")
+
+    def check_firstrun(self):
+        """Prüft ob firstrun=yes in der Config-Datei steht und erstellt Autostart-Datei."""
+        config_file = Path(os.path.expanduser("~/.primo/primo.conf"))
+        is_firstrun = True
+        
+        if config_file.exists():
+            with open(config_file, "r") as f:
+                for line in f:
+                    if line.startswith("firstrun="):
+                        is_firstrun = line.strip() == "firstrun=yes"
+                        break
+        
+        # Wenn firstrun=yes, erstelle Autostart-Datei mit enabled=true
+        if is_firstrun:
+            self.create_autostart_file(enabled=True)
+        
+        return is_firstrun
+    
+    def create_autostart_file(self, enabled=True):
+        """Erstellt oder aktualisiert die Autostart-Desktop-Datei."""
+        autostart_file = Path(os.path.expanduser("~/.config/autostart/primo-di-tutto.desktop"))
+        autostart_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        content = (
+            "[Desktop Entry]\n"
+            "Type=Application\n"
+            "Exec=python3 /opt/primo-di-tutto/src/main.py\n"
+            f"X-GNOME-Autostart-enabled={'true' if enabled else 'false'}\n"
+            "NoDisplay=false\n"
+            "Hidden=false\n"
+            "Name[de_DE]=primo-di-tutto.desktop\n"
+            "Comment[de_DE]=Keine Beschreibung\n"
+            "X-GNOME-Autostart-Delay=0\n"
+        )
+        with open(autostart_file, "w") as f:
+            f.write(content)
 
     def do_activate(self):
         window = Adw.ApplicationWindow(application=self)
@@ -58,13 +87,18 @@ class PrimoGTK(Adw.Application):
         stack.set_transition_duration(300)
         stack.set_vexpand(True)
         stack.set_hexpand(True)
+        
+        # Welcome Tab nur anzeigen wenn firstrun=yes oder Config nicht existiert
+        show_welcome = self.check_firstrun()
+        
         # Tabs hinzufügen
-        stack.add_titled(WelcomeTab(), "willkommen", "Willkommen")
+        if show_welcome:
+            stack.add_titled(WelcomeTab(), "willkommen", "Willkommen")
         stack.add_titled(DashTab(), "dash", "Übersicht")
-        stack.add_titled(SoftwareTab(), "software", "Software-\nEmpfehlungen")
         stack.add_titled(SystemTab(), "system", "Werkzeuge")
         stack.add_titled(DevicesTab(), "devices", "Geräte")
         stack.add_titled(ExpertToolsTab(), "admin", "Admin")
+        stack.add_titled(SoftwareTab(), "software", "Software-Empfehlungen")
         stack.add_titled(LookTab(), "look", "Erscheinungsbild")
         stack.add_titled(LargeFoldersTab(), "largefolders", "Speicherfresser")
         stack.add_titled(LinksTab(), "links", "Links")

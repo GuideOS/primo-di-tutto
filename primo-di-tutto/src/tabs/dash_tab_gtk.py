@@ -172,7 +172,69 @@ class DashTab(Gtk.Box):
         theme_box.append(self.desktop_theme_label)
         theme_box.append(self.icon_theme_label)
         theme_box.append(self.cursor_theme_label)
-        grid.attach(theme_frame, 0, 3, 3, 1)
+        grid.attach(theme_frame, 0, 3, 1, 1)
+
+        # RAM Frame
+        ram_frame = Gtk.Frame()
+        label_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        label_box.set_margin_start(8)
+        icon = Gtk.Image.new_from_icon_name("memory")
+        icon.set_pixel_size(24)
+        label_box.append(icon)
+        label = Gtk.Label(label="Arbeitsspeicher")
+        label_box.append(label)
+        ram_frame.set_label_widget(label_box)
+        ram_frame.set_margin_top(8)
+        ram_frame.set_margin_bottom(8)
+        ram_frame.set_margin_start(8)
+        ram_frame.set_margin_end(8)
+        ram_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        ram_box.set_margin_top(12)
+        ram_box.set_margin_bottom(12)
+        ram_box.set_margin_start(12)
+        ram_box.set_margin_end(12)
+        ram_frame.set_child(ram_box)
+        self.ram_total_label = Gtk.Label(label="RAM Total: ...")
+        self.ram_total_label.set_xalign(0)
+        self.ram_available_label = Gtk.Label(label="RAM Frei: ...")
+        self.ram_available_label.set_xalign(0)
+        self.ram_used_label = Gtk.Label(label="RAM Genutzt: ...")
+        self.ram_used_label.set_xalign(0)
+        ram_box.append(self.ram_total_label)
+        ram_box.append(self.ram_available_label)
+        ram_box.append(self.ram_used_label)
+        grid.attach(ram_frame, 1, 3, 1, 1)
+
+        # Swap Frame
+        swap_frame = Gtk.Frame()
+        label_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        label_box.set_margin_start(8)
+        icon = Gtk.Image.new_from_icon_name("drive-harddisk")
+        icon.set_pixel_size(24)
+        label_box.append(icon)
+        label = Gtk.Label(label="Swap")
+        label_box.append(label)
+        swap_frame.set_label_widget(label_box)
+        swap_frame.set_margin_top(8)
+        swap_frame.set_margin_bottom(8)
+        swap_frame.set_margin_start(8)
+        swap_frame.set_margin_end(8)
+        swap_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        swap_box.set_margin_top(12)
+        swap_box.set_margin_bottom(12)
+        swap_box.set_margin_start(12)
+        swap_box.set_margin_end(12)
+        swap_frame.set_child(swap_box)
+        self.swap_total_label = Gtk.Label(label="Swap Total: ...")
+        self.swap_total_label.set_xalign(0)
+        self.swap_free_label = Gtk.Label(label="Swap Frei: ...")
+        self.swap_free_label.set_xalign(0)
+        self.swap_used_label = Gtk.Label(label="Swap Genutzt: ...")
+        self.swap_used_label.set_xalign(0)
+        swap_box.append(self.swap_total_label)
+        swap_box.append(self.swap_free_label)
+        swap_box.append(self.swap_used_label)
+        grid.attach(swap_frame, 2, 3, 1, 1)
 
         # Rechte Spalte
         gpu_frame = Gtk.Frame()
@@ -337,6 +399,15 @@ class DashTab(Gtk.Box):
                     GLib.idle_add(self.cpu_min_label.set_text, f"Min: {cpufreq.min:.0f} MHz")
                 except Exception:
                     pass
+                # RAM & Swap
+                svmem = psutil.virtual_memory()
+                swap = psutil.swap_memory()
+                GLib.idle_add(self.ram_total_label.set_text, f"RAM Total: {self.get_size(svmem.total)}")
+                GLib.idle_add(self.ram_available_label.set_text, f"RAM Frei: {self.get_size(svmem.available)}")
+                GLib.idle_add(self.ram_used_label.set_text, f"RAM Genutzt: {self.get_size(svmem.used)}")
+                GLib.idle_add(self.swap_total_label.set_text, f"Swap Total: {self.get_size(swap.total)}")
+                GLib.idle_add(self.swap_free_label.set_text, f"Swap Frei: {self.get_size(swap.free)}")
+                GLib.idle_add(self.swap_used_label.set_text, f"Swap Genutzt: {self.get_size(swap.used)}")
                 # Netzwerk
                 lan_ip, down_rate, up_rate, web_state = self.get_network_info()
                 GLib.idle_add(self.web_label.set_text, f"Web: {web_state}")
@@ -344,6 +415,16 @@ class DashTab(Gtk.Box):
                 GLib.idle_add(self.up_label.set_text, f"Up: {up_rate} MB/s")
                 import time; time.sleep(3)
         threading.Thread(target=worker, daemon=True).start()
+
+    def get_size(self, bytes, suffix="B"):
+        """Scale bytes to its proper format."""
+        factor = 1024
+        for unit in ["", "K", "M", "G", "T", "P"]:
+            if bytes < factor:
+                return f"{bytes:.2f}{unit}{suffix}"
+            bytes /= factor
+        return f"{bytes:.2f}P{suffix}"
+
     def get_cpu_model_name(self):
         command = "lscpu | grep -E 'Model name|Modellname' | awk -F ': ' '{gsub(/^[ \t]+|[ \t]+$/, \"\", $2); print $2}'"
         try:
@@ -437,7 +518,7 @@ class DashTab(Gtk.Box):
 
     def get_snap_count(self):
         try:
-            output = subprocess.check_output("snap list | wc -l", shell=True, universal_newlines=True)
+            output = subprocess.check_output("snap list | wc -l", shell=True, universal_newlines=True, stderr=subprocess.DEVNULL)
             return output.strip()
         except Exception:
             return "N/A"

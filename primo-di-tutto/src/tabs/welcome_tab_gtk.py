@@ -16,17 +16,14 @@ class WelcomeTab(Gtk.Box):
         #user = "live"
         # Logo oben (zentriert)
         logo_path = os.path.join(application_path, "images/icons/guideo_font_logo_dark.png")
-        print(f"[DEBUG] WelcomeTab: logo_path={logo_path} exists={os.path.exists(logo_path)}")
-        if os.path.exists(logo_path):
-            logo_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-            logo_box.set_halign(Gtk.Align.CENTER)
-            logo = Gtk.Picture.new_for_filename(logo_path)
-            logo.set_content_fit(Gtk.ContentFit.CONTAIN)
-            logo.set_size_request(120, 120)
-            logo_box.append(logo)
-            self.append(logo_box)
-        else:
-            print(f"[DEBUG] WelcomeTab: Logo file not found at {logo_path}")
+        logo_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        logo_box.set_halign(Gtk.Align.CENTER)
+        logo = Gtk.Picture.new_for_filename(logo_path)
+        logo.set_content_fit(Gtk.ContentFit.CONTAIN)
+        logo.set_size_request(120, 120)
+        logo_box.append(logo)
+        self.append(logo_box)
+
 
         # Begrüßungstext
         if user.lower() in ["live", "linux"]:
@@ -105,7 +102,8 @@ class WelcomeTab(Gtk.Box):
             autostart_label.set_size_request(600, -1)
             autostart_box.append(autostart_label)
             self.autostart_switch = Gtk.Switch()
-            self.autostart_switch.set_active(self.check_autostart_status())
+            # Switch ist AN wenn Autostart aktiv ist (wird von main_gtk.py erstellt)
+            self.autostart_switch.set_active(True)
             self.autostart_switch.connect("state-set", self.on_autostart_toggled)
             autostart_box.append(self.autostart_switch)
             frame.set_child(autostart_box)
@@ -143,11 +141,51 @@ class WelcomeTab(Gtk.Box):
         return False
 
     def on_autostart_toggled(self, switch, state):
-        self.update_autostart_file(state)
+        """Wird aufgerufen wenn der Switch umgeschaltet wird - deaktiviert den Autostart."""
+        # Nur reagieren wenn Switch ausgeschaltet wird
+        if not state:
+            # 1. firstrun=no in Config setzen
+            config_file_path = Path(os.path.expanduser("~/.primo/primo.conf"))
+            self.update_config_file(config_file_path)
+            
+            # 2. X-GNOME-Autostart-enabled=false in Autostart-Datei setzen
+            autostart_file_path = Path(os.path.expanduser("~/.config/autostart/primo-di-tutto.desktop"))
+            self.update_autostart_file(False, autostart_file_path)
+            
+            # Switch deaktivieren damit er nicht mehr geändert werden kann
+            self.autostart_switch.set_sensitive(False)
         return False
 
-    def update_autostart_file(self, enabled):
-        autostart_file = Path(os.path.expanduser("~/.config/autostart/primo-di-tutto.desktop"))
+    def update_config_file(self, config_file_path):
+        """Aktualisiert die Konfigurationsdatei, um den Autostart zu deaktivieren."""
+        if config_file_path.exists():
+            with open(config_file_path, "r") as config_file:
+                config_lines = config_file.readlines()
+        else:
+            config_lines = []
+            # Verzeichnis erstellen, falls es nicht existiert
+            config_file_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(config_file_path, "w") as config_file:
+            firstrun_set = False
+            for line in config_lines:
+                if line.startswith("firstrun="):
+                    config_file.write("firstrun=no\n")
+                    firstrun_set = True
+                else:
+                    config_file.write(line)
+
+            # Falls "firstrun=" nicht gefunden wurde, am Ende hinzufügen
+            if not firstrun_set:
+                config_file.write("firstrun=no\n")
+
+    def update_autostart_file(self, enabled, autostart_file=None):
+        """Aktualisiert die .desktop-Datei für den Autostart basierend auf dem Switch-Status."""
+        if autostart_file is None:
+            autostart_file = Path(os.path.expanduser("~/.config/autostart/primo-di-tutto.desktop"))
+        
+        # Verzeichnis erstellen, falls es nicht existiert
+        autostart_file.parent.mkdir(parents=True, exist_ok=True)
         content = (
             "[Desktop Entry]\n"
             "Type=Application\n"

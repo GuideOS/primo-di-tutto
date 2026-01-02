@@ -47,7 +47,7 @@ class LookTab(Gtk.Box):
         layout_box.append(grid)
 
         # Thumbnails (placeholder icons for now)
-        thumb_size = 64
+        thumb_size = 128
 
         # Layout-Buttons mit dynamischer Icon-Umschaltung
         self.layout_buttons = []
@@ -187,7 +187,7 @@ class LookTab(Gtk.Box):
         self.update_theme_combobox()
 
     def load_thumb(self, path):
-        thumb_size = 64
+        thumb_size = 200
         try:
             pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(path, thumb_size, thumb_size, True)
             return Gtk.Image.new_from_pixbuf(pixbuf)
@@ -205,7 +205,7 @@ class LookTab(Gtk.Box):
         is_dark = "dark" in theme.lower()
         variant = "dark" if is_dark else "light"
         for i, btn in enumerate(self.layout_buttons):
-            icon_file = f"{application_path}/images/icons/pigro_icons/{self.layout_icon_basenames[i]}_{variant}.png"
+            icon_file = f"{application_path}/images/icons/pigro_icons/{self.layout_icon_basenames[i]}_{variant}.svg"
             img = self.load_thumb(icon_file)
             btn.set_child(img)
 
