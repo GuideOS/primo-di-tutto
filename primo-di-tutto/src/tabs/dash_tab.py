@@ -359,7 +359,13 @@ class DashTab(ttk.Frame):
 
         # System hostname and IP
         self.hostname = socket.gethostname()
-        self.IPAddr = socket.gethostbyname(self.hostname)
+        try:
+            self.IPAddr = socket.gethostbyname(self.hostname)
+        except socket.gaierror:
+            # Hostname cannot be resolved, use localhost IP as fallback
+            self.IPAddr = "127.0.0.1"
+            logger.warning(f"Cannot resolve hostname '{self.hostname}'. Using 127.0.0.1 as fallback. "
+                         f"Consider updating /etc/hosts to include this hostname.")
         self.hostname_label.configure(text=f"Hostname: {self.hostname}")
         self.ip_label.configure(text=f"IP: {lan_ip}")
         self.web_label.configure(text=f"Web: {web_state}")
