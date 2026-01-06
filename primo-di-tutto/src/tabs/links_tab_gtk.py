@@ -12,6 +12,7 @@ class LinksTab(Gtk.Box):
         self.set_margin_end(30)
 
         linux_links = {
+            "Don't Break GuideOS - Was nicht tun sollte": "https://doku.guideos.de/index.php?title=Don%27t_break_GuideOS",
             "Rueegger-Blog - Tolle Artikel zu Linux-Themen": "https://www.rueegger.me/",
             "Holarse - Linux-Spiele-News": "https://holarse.de/",
             "ProtonDB - Prüfe die Kompatibilität deiner Spiele": "https://www.protondb.com/",

@@ -189,7 +189,7 @@ class WelcomeTab(Gtk.Box):
         content = (
             "[Desktop Entry]\n"
             "Type=Application\n"
-            "Exec=python3 /opt/primo-di-tutto/src/main.py\n"
+            "Exec=primo-di-tutto\n"
             f"X-GNOME-Autostart-enabled={'true' if enabled else 'false'}\n"
             "NoDisplay=false\n"
             "Hidden=false\n"

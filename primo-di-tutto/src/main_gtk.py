@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
+import os
+import subprocess
+from pathlib import Path
+
 import gi
 gi.require_version("Adap", "1")
 gi.require_version("Gtk", "4.0")
 gi.require_version("Gdk", "4.0")
-# from gi.repository import Adw, Gtk, Gio, Gdk
 from gi.repository import Adap as Adw, Gtk, Gio, Gdk
+
+from resorcess import application_path
 from tabs.software_tab_gtk import SoftwareTab
 from tabs.contrib_tab_gtk import ContribTab
 from tabs.links_tab_gtk import LinksTab
@@ -13,21 +18,16 @@ from tabs.system_tab_gtk import SystemTab
 from tabs.large_folders_tab_gtk import LargeFoldersTab
 from tabs.dash_tab_gtk import DashTab
 from tabs.welcome_tab_gtk import WelcomeTab
-
 from tabs.expert_tools_gtk import ExpertToolsTab
 from tabs.look_tab_gtk import LookTab
 
 
-# Dummy Tab Widgets (Platzhalter für spätere Portierung)
-
-
-from pathlib import Path
-import os
-import subprocess
-
 class PrimoGTK(Adw.Application):
     def __init__(self):
-        super().__init__(application_id="io.github.guideos.primo")
+        super().__init__(
+            application_id="io.github.guideos.primo",
+            flags=Gio.ApplicationFlags.FLAGS_NONE
+        )
 
     def check_firstrun(self):
         """Prüft ob firstrun=yes in der Config-Datei steht und erstellt Autostart-Datei."""
@@ -55,7 +55,7 @@ class PrimoGTK(Adw.Application):
         content = (
             "[Desktop Entry]\n"
             "Type=Application\n"
-            "Exec=python3 /opt/primo-di-tutto/src/main.py\n"
+            "Exec=primo-di-tutto\n"
             f"X-GNOME-Autostart-enabled={'true' if enabled else 'false'}\n"
             "NoDisplay=false\n"
             "Hidden=false\n"
@@ -68,6 +68,7 @@ class PrimoGTK(Adw.Application):
 
     def do_activate(self):
         window = Adw.ApplicationWindow(application=self)
+        window.set_icon_name("primo-di-tutto-logo")
        # window.set_title("Primo | GuideOS Einstellungen (Adw)")
         window.set_default_size(1200, 750)
         window.set_size_request(1200, 750)  # Mindestgröße für das ganze Fenster
@@ -108,6 +109,14 @@ class PrimoGTK(Adw.Application):
         sidebar_toolbar = Adw.ToolbarView()
         sidebar_header = Adw.HeaderBar()
         sidebar_header.set_title_widget(Gtk.Label(label="Primo"))
+        
+        # Über-Button in der Sidebar-HeaderBar
+        about_btn = Gtk.Button()
+        about_btn.set_icon_name("help-about")
+        about_btn.set_tooltip_text("Über Primo")
+        about_btn.connect("clicked", self.show_about_dialog)
+        sidebar_header.pack_end(about_btn)
+        
         sidebar_toolbar.add_top_bar(sidebar_header)
         sidebar_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         sidebar_box.append(sidebar)
@@ -129,6 +138,30 @@ class PrimoGTK(Adw.Application):
         # Kein eigenes CSS für Sidebar
         window.set_content(split_view)
         window.present()
+
+    def show_about_dialog(self, button):
+        about = Adw.AboutDialog.new()
+        about.set_application_name("Primo Di Tutto")
+        #about.set_version("1.0.0")
+        about.set_developer_name("actionschnitzel@guideos.de")
+        about.set_copyright("© 2024-2026 GuideOS")
+        about.set_license_type(Gtk.License.GPL_3_0)
+        about.set_website("https://guideos.de")
+        about.set_issue_url("https://github.com/guideos/primo-di-tutto/issues")
+        
+        about.set_comments(
+            "Dein einfacher Einstieg in die Welt von Linux.\n\n"
+            "GuideOS ist eine Linux-Distribution, die von Mitgliedern des "
+            "Linux Guides Forums ins Leben gerufen wurde."
+        )
+        
+        about.set_developers([
+            "GuideOS Community\nGuideOS Core Team"
+            
+        ])
+        
+        about.set_application_icon("primo-di-tutto-logo")
+        about.present(self.get_active_window())
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ import os
 import threading
 import subprocess
 from resorcess import application_path
+from hwinfo import gpu_info
 
 class DashTab(Gtk.Box):
     def __init__(self):
@@ -371,7 +372,8 @@ class DashTab(Gtk.Box):
                 GLib.idle_add(self.ram_value_label.set_markup, f'<span size="20000" weight="bold">{ram}%</span>')
                 GLib.idle_add(self.hdd_value_label.set_markup, f'<span size="20000" weight="bold">{hdd}%</span>')
                 uname = platform.uname()
-                GLib.idle_add(self.distro_label.set_text, f"Distro: {uname.system}")
+                distro_name = self.get_distro_name()
+                GLib.idle_add(self.distro_label.set_text, f"Distro: {distro_name}")
                 GLib.idle_add(self.kernel_label.set_text, f"Kernel: {uname.release}")
                 GLib.idle_add(self.user_label.set_text, f"User: {os.environ.get('USER', '')}")
                 GLib.idle_add(self.resolution_label.set_text, f"Resolution: {self.get_resolution()}")
@@ -379,13 +381,14 @@ class DashTab(Gtk.Box):
                 GLib.idle_add(self.desktop_label.set_text, f"Desktop: {self.get_desktop_environment()}")
                 GLib.idle_add(self.window_manager_label.set_text, f"Window Manager: {self.get_window_manager()}")
                 hostname = socket.gethostname()
-                ip = socket.gethostbyname(hostname)
+                ip = self.get_local_ip()
                 GLib.idle_add(self.hostname_label.set_text, f"Hostname: {hostname}")
                 GLib.idle_add(self.ip_label.set_text, f"IP: {ip}")
                 GLib.idle_add(self.desktop_theme_label.set_text, f"Theme: {self.get_theme()}")
                 GLib.idle_add(self.icon_theme_label.set_text, f"Icons: {self.get_icon_theme()}")
                 GLib.idle_add(self.cursor_theme_label.set_text, f"Cursor: {self.get_cursor_theme()}")
-                GLib.idle_add(self.gpu_name_label.set_text, f"Modell: {self.get_gpu_model()}")
+                gpu_name = gpu_info().replace("GPU ", "").replace("\n", ", ")
+                GLib.idle_add(self.gpu_name_label.set_text, f"Modell: {gpu_name}")
                 GLib.idle_add(self.gpu_memory_label.set_text, f"Speicher: {self.get_gpu_memory()}")
                 GLib.idle_add(self.debian_label.set_text, f"Debian: {self.get_debian_package_count()}")
                 GLib.idle_add(self.flatpak_label.set_text, f"Flatpak: {self.get_flatpak_count()}")
@@ -440,6 +443,7 @@ class DashTab(Gtk.Box):
             local_ip = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             local_ip.connect(("8.8.8.8", 80))
             lan_ip = local_ip.getsockname()[0]
+            local_ip.close()
             net_io_counters = psutil.net_io_counters()
             down_rate = round(net_io_counters.bytes_recv / 1024 / 1024, 2)
             up_rate = round(net_io_counters.bytes_sent / 1024 / 1024, 2)
@@ -450,6 +454,17 @@ class DashTab(Gtk.Box):
             up_rate = "-"
             web_state = "Nicht verbunden"
         return lan_ip, down_rate, up_rate, web_state
+    
+    def get_local_ip(self):
+        """Ermittelt die lokale IP-Adresse des PCs."""
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))
+            ip = s.getsockname()[0]
+            s.close()
+            return ip
+        except Exception:
+            return "N/A"
     def get_theme(self):
         try:
             output = subprocess.check_output(
@@ -546,3 +561,12 @@ class DashTab(Gtk.Box):
             return f"{screen.width_in_pixels}x{screen.height_in_pixels}"
         except Exception:
             return "?"
+    
+    def get_distro_name(self):
+        """Liest die Distro-Version aus /etc/guideos-version aus."""
+        try:
+            with open("/etc/guideos-version", "r") as f:
+                return f.read().strip()
+        except Exception:
+            # Fallback auf platform.uname() wenn die Datei nicht existiert
+            return platform.uname().system

@@ -1,4 +1,12 @@
-primo-di-tutto (1.0.7) unstable; urgency=medium
+primo-di-tutto (1.1.3) unstable; urgency=medium
+
+  * Automatische Migration der Autostart-Desktop-Datei
+  * Exec-Pfad wird automatisch von /opt/primo-di-tutto zu /usr/lib/guideos/primo-di-tutto aktualisiert
+  * Migration to GTK4
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 04 Jan 2026 12:00:00 +0100
+
+primo-di-tutto (1.1.0) unstable; urgency=medium
 
   * Fixed Steam install
   * Added plank-settings

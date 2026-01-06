@@ -67,6 +67,28 @@ else:
     logger.info(f"{autostart_dir_path} already exists")
 
 
+# Update primo-di-tutto.desktop if it exists
+autostart_desktop_file = f"{autostart_dir_path}primo-di-tutto.desktop"
+if os.path.exists(autostart_desktop_file):
+    try:
+        with open(autostart_desktop_file, "r") as f:
+            content = f.read()
+        
+        # Replace old Exec path with new one
+        old_exec = "Exec=python3 /opt/primo-di-tutto/src/main.py"
+        new_exec = "Exec=python3 /usr/lib/guideos/primo-di-tutto/src/main_gtk.py"
+        
+        if old_exec in content:
+            content = content.replace(old_exec, new_exec)
+            with open(autostart_desktop_file, "w") as f:
+                f.write(content)
+            logger.info(f"Updated Exec path in {autostart_desktop_file}")
+        else:
+            logger.info(f"Exec path already up to date in {autostart_desktop_file}")
+    except Exception as e:
+        logger.error(f"Failed to update {autostart_desktop_file}: {e}")
+
+
 primo_config_dir = f"{home}/.primo"
 primo_config_file = f"{primo_config_dir}/primo.conf"
 

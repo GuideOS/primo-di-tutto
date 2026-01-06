@@ -14,7 +14,7 @@ override_dh_install:
 	mkdir -p debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)
 	mkdir -p debian/$(PACKAGE)/usr/share/applications/autostart
 	mkdir -p debian/$(PACKAGE)/usr/share/cinnamon/applets
-	mkdir -p debian/$(PACKAGE)/opt/primo-di-tutto
+	mkdir -p debian/$(PACKAGE)/usr/lib/guideos/primo-di-tutto
 	mkdir -p debian/$(PACKAGE)/usr/bin
 	mkdir -p debian/$(PACKAGE)/etc/xdg/autostart
 	mkdir -p debian/$(PACKAGE)/usr/share/locale/de/LC_MESSAGES/
@@ -30,20 +30,18 @@ override_dh_install:
 	cp Cinnamenu@json/po/Cinnamenu@json.mo debian/$(PACKAGE)/usr/share/locale/de/LC_MESSAGES/Cinnamenu@json.mo
 
 	# Kopieren der notwendigen Dateien
-	rsync -av --exclude='start.sh' --exclude='.vscode' --exclude='src/__pycache__' --exclude='src/tabs/__pycache__' primo-di-tutto/* debian/$(PACKAGE)/opt/primo-di-tutto/
+	rsync -av --exclude='start.sh' --exclude='.vscode' --exclude='src/__pycache__' --exclude='src/tabs/__pycache__' primo-di-tutto/* debian/$(PACKAGE)/usr/lib/guideos/primo-di-tutto/
 
 	# Erstellen der .desktop-Datei
 	./create_desktop_files.sh
 
 	# Setzen der Berechtigungen
-	chmod +x debian/$(PACKAGE)/opt/primo-di-tutto/src/main.py
+	chmod +x debian/$(PACKAGE)/usr/lib/guideos/primo-di-tutto/src/main_gtk.py
 
 	# Sicherstellen, dass alle Skripte ausführbar sind
-	find debian/$(PACKAGE)/opt/primo-di-tutto/scripts/ -type f -iname "*.sh" -exec chmod +x {} \;
+	find debian/$(PACKAGE)/usr/lib/guideos/primo-di-tutto/scripts/ -type f -iname "*.sh" -exec chmod +x {} \;
 
-	# Erstellen der /bin/primo-di-tutto Datei
-	echo "#!/bin/bash" > debian/$(PACKAGE)/usr/bin/primo-di-tutto
-	echo '/opt/primo-di-tutto/src/main.py "$@"' >> debian/$(PACKAGE)/usr/bin/primo-di-tutto
-	chmod +x debian/$(PACKAGE)/usr/bin/primo-di-tutto
+	# Erstellen eines Symlinks in /usr/bin
+	ln -s /usr/lib/guideos/primo-di-tutto/src/main_gtk.py debian/$(PACKAGE)/usr/bin/primo-di-tutto
 
 	dh_install

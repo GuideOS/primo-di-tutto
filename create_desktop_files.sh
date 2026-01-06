@@ -13,11 +13,11 @@ Name=GuideOS Einstellungen (Primo)
 GenericName=GuideOS-Einstellungen
 Encoding=UTF-8
 Terminal=false
-StartupWMClass=io.github.guideos.primo
+StartupWMClass=Primo
 Type=Application
 Categories=GuideOS;
 Icon=primo-di-tutto-logo
-Path=/opt/primo-di-tutto/
+Path=/usr/lib/guideos/primo-di-tutto/
 EOL
 
 # Erstellen der ersten .desktop-Datei
@@ -41,7 +41,7 @@ cat > debian/primo-di-tutto/etc/xdg/autostart/primo-di-tutto.desktop <<EOL
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Type=Application
-Exec=python3 /opt/primo-di-tutto/src/main.py
+Exec=python3 /usr/lib/guideos/primo-di-tutto/src/main_gtk.py
 X-GNOME-Autostart-enabled=true
 NoDisplay=false
 Hidden=false
