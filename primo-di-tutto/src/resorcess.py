@@ -89,6 +89,23 @@ if os.path.exists(autostart_desktop_file):
         logger.error(f"Failed to update {autostart_desktop_file}: {e}")
 
 
+# Remove old desktop files from ~/.local/share/applications/ if they exist
+local_apps_dir = f"{home}/.local/share/applications/"
+old_desktop_files = [
+    "autostart-primo-di-tutto-autostart.desktop",
+    "primo-di-tutto.desktop"
+]
+
+for desktop_file in old_desktop_files:
+    file_path = os.path.join(local_apps_dir, desktop_file)
+    if os.path.exists(file_path):
+        try:
+            os.remove(file_path)
+            logger.info(f"Removed old desktop file: {file_path}")
+        except Exception as e:
+            logger.error(f"Failed to remove {file_path}: {e}")
+
+
 primo_config_dir = f"{home}/.primo"
 primo_config_file = f"{primo_config_dir}/primo.conf"
 

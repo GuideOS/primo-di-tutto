@@ -1,7 +1,7 @@
 import gi
-gi.require_version("Adap", "1")
+gi.require_version("Adw", "1")
 from gi.repository import Gtk
-from gi.repository import Adap as Adw
+from gi.repository import Adw
 
 class AboutTab(Gtk.Box):
     def __init__(self):

@@ -4,10 +4,10 @@ import subprocess
 from pathlib import Path
 
 import gi
-gi.require_version("Adap", "1")
+gi.require_version("Adw", "1")
 gi.require_version("Gtk", "4.0")
 gi.require_version("Gdk", "4.0")
-from gi.repository import Adap as Adw, Gtk, Gio, Gdk
+from gi.repository import Adw, Gtk, Gio, Gdk
 
 from resorcess import application_path
 from tabs.software_tab_gtk import SoftwareTab

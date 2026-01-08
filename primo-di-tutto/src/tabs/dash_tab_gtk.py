@@ -9,7 +9,7 @@ import os
 import threading
 import subprocess
 from resorcess import application_path
-from hwinfo import gpu_info
+from hwinfo import gpu_info, gpu_memory, gpu_driver
 
 class DashTab(Gtk.Box):
     def __init__(self):
@@ -261,8 +261,11 @@ class DashTab(Gtk.Box):
         self.gpu_name_label.set_xalign(0)
         self.gpu_memory_label = Gtk.Label(label="Speicher: ...")
         self.gpu_memory_label.set_xalign(0)
+        self.gpu_driver_label = Gtk.Label(label="Treiber: ...")
+        self.gpu_driver_label.set_xalign(0)
         gpu_box.append(self.gpu_name_label)
         gpu_box.append(self.gpu_memory_label)
+        gpu_box.append(self.gpu_driver_label)
         grid.attach(gpu_frame, 1, 1, 1, 1)
 
         package_frame = Gtk.Frame()
@@ -389,7 +392,10 @@ class DashTab(Gtk.Box):
                 GLib.idle_add(self.cursor_theme_label.set_text, f"Cursor: {self.get_cursor_theme()}")
                 gpu_name = gpu_info().replace("GPU ", "").replace("\n", ", ")
                 GLib.idle_add(self.gpu_name_label.set_text, f"Modell: {gpu_name}")
-                GLib.idle_add(self.gpu_memory_label.set_text, f"Speicher: {self.get_gpu_memory()}")
+                gpu_mem = gpu_memory().replace("GPU-Memory", "").strip()
+                GLib.idle_add(self.gpu_memory_label.set_text, f"Speicher: {gpu_mem}")
+                gpu_drv = gpu_driver().replace("GPU driver ", "").replace("GPU-Treiber ", "").replace("\n", ", ")
+                GLib.idle_add(self.gpu_driver_label.set_text, f"Treiber: {gpu_drv}")
                 GLib.idle_add(self.debian_label.set_text, f"Debian: {self.get_debian_package_count()}")
                 GLib.idle_add(self.flatpak_label.set_text, f"Flatpak: {self.get_flatpak_count()}")
                 GLib.idle_add(self.snap_label.set_text, f"Snap: {self.get_snap_count()}")
@@ -498,24 +504,6 @@ class DashTab(Gtk.Box):
         except Exception:
             return "N/A"
 
-    def get_gpu_model(self):
-        try:
-            output = subprocess.check_output(
-                "glxinfo | grep 'Device'", shell=True, universal_newlines=True
-            )
-            model = output.split(":", 1)[1].strip().split(" (")[0]
-            return model
-        except Exception:
-            return "N/A"
-
-    def get_gpu_memory(self):
-        try:
-            output = subprocess.check_output(
-                "glxinfo | grep 'Video memory'", shell=True, universal_newlines=True
-            )
-            return output.split(":", 1)[1].strip()
-        except Exception:
-            return "N/A"
 
     def get_debian_package_count(self):
         try:

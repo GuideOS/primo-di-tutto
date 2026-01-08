@@ -1,3 +1,17 @@
+primo-di-tutto (1.1.6) unstable; urgency=medium
+
+  * Expert-Tools: Vollständige Repository-Verwaltung implementiert
+  * Unterstützung für traditionelle .list und DEB822 .sources Dateien
+  * Aktivieren/Deaktivieren von APT-Quellen direkt in der Oberfläche
+  * Entfernen von Quellen mit Warnhinweis-Dialog
+  * Bearbeiten von .list-Dateien über Dialog
+  * Korrekte Behandlung von APT-Optionen (z.B. [arch=amd64])
+  * Dashboard: GPU-Informationen erweitert (Name, Speicher, Treiber)
+  * Dashboard: Korrekte IP-Adresse und Distro-Version Anzeige
+  * Alte Desktop-Dateien werden automatisch bereinigt
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Tue, 07 Jan 2026 15:00:00 +0100
+
 primo-di-tutto (1.1.3) unstable; urgency=medium
 
   * Automatische Migration der Autostart-Desktop-Datei

@@ -2,9 +2,9 @@ import gi
 import os
 import subprocess
 import json
-gi.require_version("Adap", "1")
+gi.require_version("Adw", "1")
 from gi.repository import Gtk, GdkPixbuf, GLib
-from gi.repository import Adap as Adw
+from gi.repository import Adw
 from resorcess import application_path
 
 class LookTab(Gtk.Box):
