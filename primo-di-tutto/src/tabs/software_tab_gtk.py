@@ -32,6 +32,10 @@ CATEGORIES = [
 class SoftwareTab(Gtk.Box):
 
     def _refresh_current_category(self):
+        # Lösche Installationsstatus-Cache ZUERST, damit neue Prüfungen aktuell sind
+        Cache.delete("installed_apt_pkgs")
+        Cache.delete("flatpak_installs")
+        
         # Aktuelles Tab neu bauen
         page_num = self.notebook.get_current_page()
         if page_num < 0:
@@ -41,9 +45,6 @@ class SoftwareTab(Gtk.Box):
         self.notebook.remove_page(page_num)
         self.notebook.insert_page(new_page, Gtk.Label(label=cat_title), page_num)
         self.notebook.set_current_page(page_num)
-        # Lösche Installationsstatus-Cache wie im Original
-        Cache.delete("installed_apt_pkgs")
-        Cache.delete("flatpak_installs")
 
     def __init__(self):
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=0)
@@ -360,6 +361,11 @@ class SoftwareTab(Gtk.Box):
                     self._progress_pulse_id = None
                 except:
                     pass  # Source wurde bereits entfernt
+            
+            # Cache SOFORT löschen, damit neue App-Objekte den korrekten Status haben
+            Cache.delete("installed_apt_pkgs")
+            Cache.delete("flatpak_installs")
+            
             # App-Objekt neu erzeugen, damit is_installed() den aktuellen Status liefert
             from tabs import software_dict_lib
             info = None
@@ -383,15 +389,21 @@ class SoftwareTab(Gtk.Box):
                     install_command=info["Install"],
                     uninstall_command=info["Uninstall"],
                 )
-                # Button im Detailbereich explizit aktualisieren wie im Original
+                # Button im Detailbereich explizit aktualisieren
                 if hasattr(self, 'detail_btn'):
                     self._update_button(self.detail_btn, new_app)
-                    # Signal neu setzen, damit die Aktion stimmt
+                    # Alle alten Signal-Handler entfernen
                     for handler_id in getattr(self, '_detail_btn_handler_ids', []):
-                        self.detail_btn.disconnect(handler_id)
+                        try:
+                            self.detail_btn.disconnect(handler_id)
+                        except:
+                            pass
+                    # Neues Signal mit aktualisierter App-Instanz setzen
                     self._detail_btn_handler_ids = [
                         self.detail_btn.connect("clicked", self._on_install_clicked_with_progress, new_app, self.detail_btn)
                     ]
+                # Speichere die neue App-Instanz für zukünftige Referenzen
+                self._current_detail_app = new_app
             self._refresh_current_category()
         if app.is_installed():
             self._run_command(app.get_uninstall_command(), on_done)
