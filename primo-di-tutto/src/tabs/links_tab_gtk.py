@@ -6,10 +6,10 @@ import webbrowser
 class LinksTab(Gtk.Box):
     def __init__(self):
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=16)
-        self.set_margin_top(30)
-        self.set_margin_bottom(30)
-        self.set_margin_start(30)
-        self.set_margin_end(30)
+        self.set_margin_top(20)
+        self.set_margin_bottom(20)
+        self.set_margin_start(20)
+        self.set_margin_end(20)
 
         linux_links = {
             "Don't Break GuideOS - Was nicht tun sollte": "https://doku.guideos.de/index.php?title=Don%27t_break_GuideOS",

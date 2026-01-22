@@ -1,4 +1,4 @@
-primo-di-tutto (1.1.6) unstable; urgency=medium
+primo-di-tutto (1.1.7) unstable; urgency=medium
 
   * Expert-Tools: Vollständige Repository-Verwaltung implementiert
   * Unterstützung für traditionelle .list und DEB822 .sources Dateien

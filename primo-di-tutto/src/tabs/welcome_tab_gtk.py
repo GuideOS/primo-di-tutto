@@ -8,10 +8,10 @@ from resorcess import application_path, user
 class WelcomeTab(Gtk.Box):
     def __init__(self):
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=18)
-        self.set_margin_top(32)
-        self.set_margin_bottom(32)
-        self.set_margin_start(32)
-        self.set_margin_end(32)
+        self.set_margin_top(20)
+        self.set_margin_bottom(20)
+        self.set_margin_start(20)
+        self.set_margin_end(20)
 
         #user = "live"
         # Logo oben (zentriert)
@@ -64,7 +64,6 @@ class WelcomeTab(Gtk.Box):
             welcome_text_label.set_xalign(0)
             welcome_text_label.set_justify(Gtk.Justification.LEFT)
         welcome_text_label.set_valign(Gtk.Align.CENTER)
-        welcome_text_label.set_size_request(800, -1)  # Maximalbreite 800px
         text_box.append(welcome_text_label)
         self.append(text_box)
 
@@ -99,7 +98,6 @@ class WelcomeTab(Gtk.Box):
             autostart_label = Gtk.Label(label="Hier kannst Du den Autostart dieses Programms deaktivieren. Nach dem nächsten Start wird der Willkommensbildschirm entfernt und Primo wird zu einem Systemtool.")
             autostart_label.set_wrap(True)
             autostart_label.set_xalign(0)
-            autostart_label.set_size_request(600, -1)
             autostart_box.append(autostart_label)
             self.autostart_switch = Gtk.Switch()
             # Switch ist AN wenn Autostart aktiv ist (wird von main_gtk.py erstellt)
@@ -130,6 +128,13 @@ class WelcomeTab(Gtk.Box):
 
     def on_install_clicked(self, button):
         subprocess.Popen(["/usr/bin/calamares-install-guideos"])
+
+    def on_nvidia_clicked(self, button):
+        """Öffnet den NVIDIA-Manager."""
+        try:
+            subprocess.Popen(["pkexec", "debian-nvidia-installer"])
+        except Exception as e:
+            print(f"Fehler beim Öffnen des NVIDIA-Managers: {e}")
 
     def check_autostart_status(self):
         autostart_file = Path(os.path.expanduser("~/.config/autostart/primo-di-tutto.desktop"))

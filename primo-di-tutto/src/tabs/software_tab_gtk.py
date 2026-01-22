@@ -48,34 +48,15 @@ class SoftwareTab(Gtk.Box):
 
     def __init__(self):
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        self.set_margin_top(10)
-        self.set_margin_bottom(10)
-        self.set_margin_start(10)
-        self.set_margin_end(10)
-
-        # Info-Box für Beschreibung (global für alle Kategorien)
-        self.info_frame = Gtk.Frame()
-        self.info_frame.set_margin_top(8)
-        self.info_frame.set_margin_bottom(8)
-        self.info_frame.set_margin_start(8)
-        self.info_frame.set_margin_end(8)
-        self.info_frame.set_hexpand(True)
-        self.info_frame.set_vexpand(False)
-        # Feste Höhe für die Info-Box (z.B. 80px)
-        self.info_frame.set_size_request(-1, 80)
-        self.info_label = Gtk.Label(label="", xalign=0)
-        self.info_label.set_wrap(True)
-        self.info_label.set_max_width_chars(80)
-        self.info_label.set_margin_top(8)
-        self.info_label.set_margin_bottom(8)
-        self.info_label.set_margin_start(12)
-        self.info_label.set_margin_end(12)
-        self.info_frame.set_child(self.info_label)
+        self.set_margin_top(20)
+        self.set_margin_bottom(20)
+        self.set_margin_start(20)
+        self.set_margin_end(20)
 
         self.notebook = Gtk.Notebook()
         self.notebook.set_tab_pos(Gtk.PositionType.TOP)
+        self.notebook.set_scrollable(True)  # Scroll-Buttons bei vielen Tabs
         self.append(self.notebook)
-        self.append(self.info_frame)
 
         # Detailansicht vorbereiten (zunächst versteckt)
         self.detail_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
@@ -86,7 +67,6 @@ class SoftwareTab(Gtk.Box):
         self.detail_box.set_hexpand(True)
         self.detail_box.set_vexpand(True)
         self.detail_box.set_visible(False)
-        self.detail_box.set_size_request(900, -1)  # Mindestbreite für Detailansicht
         self.append(self.detail_box)
 
         # Zurück-Button
@@ -103,20 +83,24 @@ class SoftwareTab(Gtk.Box):
     def _create_category_page(self, cat_dict, cat_title):
         scrolled = Gtk.ScrolledWindow()
         scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
-        vbox.set_margin_top(10)
-        vbox.set_margin_bottom(10)
-        vbox.set_margin_start(10)
-        vbox.set_margin_end(10)
-        scrolled.set_child(vbox)
+        
+        # FlowBox statt vertikaler Box für flexibles Grid-Layout
+        flowbox = Gtk.FlowBox()
+        flowbox.set_valign(Gtk.Align.START)
+        flowbox.set_max_children_per_line(30)
+        flowbox.set_min_children_per_line(1)
+        flowbox.set_selection_mode(Gtk.SelectionMode.NONE)
+        flowbox.set_homogeneous(False)
+        flowbox.set_column_spacing(8)
+        flowbox.set_row_spacing(8)
+        flowbox.set_margin_top(10)
+        flowbox.set_margin_bottom(10)
+        flowbox.set_margin_start(10)
+        flowbox.set_margin_end(10)
+        
+        scrolled.set_child(flowbox)
         scrolled.set_hexpand(True)
         scrolled.set_vexpand(True)
-
-        def on_tile_hover(app, enter):
-            if enter:
-                self.info_label.set_text(app.get_description())
-            else:
-                self.info_label.set_text("")
 
         for key, info in cat_dict.items():
             app = InstallableAppFactory.create(
@@ -129,94 +113,118 @@ class SoftwareTab(Gtk.Box):
                 install_command=info["Install"],
                 uninstall_command=info["Uninstall"],
             )
-            tile = self._create_app_frame(app, lambda a=app: on_tile_hover(a, True), lambda a=app: on_tile_hover(a, False))
-            vbox.append(tile)
+            short_text = info.get("Short", "")
+            tile = self._create_app_frame(app, short_text)
+            flowbox.append(tile)
         return scrolled
 
-    def _create_app_frame(self, app, on_enter, on_leave):
+    def _create_app_frame(self, app, short_text):
         frame = Gtk.Frame()
-        frame.set_hexpand(True)
+        frame.set_size_request(180, -1)
         frame.set_margin_top(2)
         frame.set_margin_bottom(2)
         frame.set_margin_start(2)
         frame.set_margin_end(2)
-        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-        hbox.set_margin_top(6)
-        hbox.set_margin_bottom(6)
-        hbox.set_margin_start(8)
-        hbox.set_margin_end(8)
+        
+        # Vertikale Box für alle Elemente
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        vbox.set_margin_top(12)
+        vbox.set_margin_bottom(12)
+        vbox.set_margin_start(12)
+        vbox.set_margin_end(12)
+        vbox.set_halign(Gtk.Align.CENTER)
 
-        # Linke Seite: Icon und Name
+        # Icon
         try:
-            base_pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(app.get_icon(), 48, 48)
+            base_pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(app.get_icon(), 64, 64)
             icon = Gtk.Picture.new_for_pixbuf(base_pixbuf)
             icon.set_keep_aspect_ratio(True)
             icon.set_content_fit(Gtk.ContentFit.CONTAIN)
             icon.set_halign(Gtk.Align.CENTER)
             icon.set_valign(Gtk.Align.CENTER)
-            hbox.append(icon)
+            vbox.append(icon)
         except Exception as e:
             print(f"[DEBUG] Fehler beim Erstellen des App-Icons: {e}")
-            hbox.append(Gtk.Picture())
+            placeholder = Gtk.Picture()
+            placeholder.set_size_request(64, 64)
+            vbox.append(placeholder)
 
+        # Name
         name = Gtk.Label(label=app.get_name())
         name.set_markup(f'<b>{app.get_name()}</b>')
-        name.set_halign(Gtk.Align.START)
+        name.set_halign(Gtk.Align.CENTER)
         name.set_valign(Gtk.Align.CENTER)
-        name.set_max_width_chars(18)
-        name.set_ellipsize(3)
-        hbox.append(name)
+        name.set_wrap(True)
+        name.set_max_width_chars(15)
+        name.set_justify(Gtk.Justification.CENTER)
+        vbox.append(name)
 
-        # Expander für rechtsbündige Ausrichtung
-        expander = Gtk.Box()
-        expander.set_hexpand(True)
-        hbox.append(expander)
+        # Short-Text
+        if short_text:
+            short_label = Gtk.Label(label=short_text)
+            short_label.set_markup(f'<small>{short_text}</small>')
+            short_label.set_halign(Gtk.Align.CENTER)
+            short_label.set_valign(Gtk.Align.CENTER)
+            short_label.set_wrap(True)
+            short_label.set_max_width_chars(15)
+            short_label.set_justify(Gtk.Justification.CENTER)
+            short_label.get_style_context().add_class("dim-label")
+            vbox.append(short_label)
 
-        # Rechte Seite: Status, Info-Button, Haken
-        right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        right_box.set_halign(Gtk.Align.END)
-        right_box.set_valign(Gtk.Align.CENTER)
-
-        status_label = Gtk.Label()
-        if app.is_installed():
-            status_label.set_text("Installiert")
-            status_label.set_halign(Gtk.Align.END)
-            status_label.set_valign(Gtk.Align.CENTER)
-            status_label.get_style_context().add_class("success")
-        else:
-            status_label.set_text("Nicht installiert")
-            status_label.set_halign(Gtk.Align.END)
-            status_label.set_valign(Gtk.Align.CENTER)
-            status_label.get_style_context().add_class("warning")
-        right_box.append(status_label)
-
-        info_btn = Gtk.Button(label="Mehr")
-        info_btn.set_size_request(60, 32)
-        info_btn.set_halign(Gtk.Align.END)
-        info_btn.set_valign(Gtk.Align.CENTER)
-        info_btn.connect("clicked", lambda *_: self._show_app_details(app))
-        right_box.append(info_btn)
-
+        # Status mit Haken
+        status_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
+        status_box.set_halign(Gtk.Align.CENTER)
+        status_box.set_valign(Gtk.Align.CENTER)
+        
         if app.is_installed():
             try:
                 check_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../images/icons/pigro_icons/ok_16x16.png"))
                 if os.path.exists(check_path):
-                    check_pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(check_path, 20, 20)
+                    check_pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(check_path, 16, 16)
                     check_icon = Gtk.Picture.new_for_pixbuf(check_pixbuf)
-                    check_icon.set_halign(Gtk.Align.END)
+                    check_icon.set_halign(Gtk.Align.CENTER)
                     check_icon.set_valign(Gtk.Align.CENTER)
-                    right_box.append(check_icon)
+                    status_box.append(check_icon)
             except Exception as e:
                 print(f"[DEBUG] Fehler beim Haken-Icon: {e}")
+            
+            status_label = Gtk.Label(label="Installiert")
+            status_label.set_markup('<small>Installiert</small>')
+            status_label.get_style_context().add_class("success")
+        else:
+            status_label = Gtk.Label(label="Nicht installiert")
+            status_label.set_markup('<small>Nicht installiert</small>')
+            status_label.get_style_context().add_class("warning")
+        
+        status_label.set_halign(Gtk.Align.CENTER)
+        status_label.set_valign(Gtk.Align.CENTER)
+        status_box.append(status_label)
+        vbox.append(status_box)
 
-        hbox.append(right_box)
+        frame.set_child(vbox)
 
-        # Hover-Events für Beschreibung
+        # CSS-Provider für Hover-Effekt
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_data(b"frame { background-color: transparent; }")
+        frame.get_style_context().add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
+        # Hover-Events für helleren Hintergrund
+        def on_hover_enter(ctrl, x, y):
+            css_provider.load_from_data(b"frame { background-color: rgba(255, 255, 255, 0.05); }")
+        
+        def on_hover_leave(ctrl):
+            css_provider.load_from_data(b"frame { background-color: transparent; }")
+        
         enter_ctrl = Gtk.EventControllerMotion()
-        enter_ctrl.connect("enter", lambda *_: on_enter(app))
-        enter_ctrl.connect("leave", lambda *_: on_leave(app))
+        enter_ctrl.connect("enter", on_hover_enter)
+        enter_ctrl.connect("leave", on_hover_leave)
         frame.add_controller(enter_ctrl)
-        frame.set_child(hbox)
+        
+        # Click-Event für die gesamte Kachel
+        click_ctrl = Gtk.GestureClick()
+        click_ctrl.connect("released", lambda *_: self._show_app_details(app))
+        frame.add_controller(click_ctrl)
+        
         return frame
 
     def _make_click_controller(self, callback):
@@ -227,7 +235,6 @@ class SoftwareTab(Gtk.Box):
     def _show_app_details(self, app):
         # Detailansicht im Hauptfenster anzeigen
         self.notebook.set_visible(False)
-        self.info_frame.set_visible(False)
         self.detail_box.set_visible(True)
 
         # Vorherige Detail-Widgets entfernen (außer Zurück-Button)
@@ -413,7 +420,6 @@ class SoftwareTab(Gtk.Box):
     def _on_back_clicked(self, button):
         self.detail_box.set_visible(False)
         self.notebook.set_visible(True)
-        self.info_frame.set_visible(True)
 
     def _create_app_row(self, app):
         row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)

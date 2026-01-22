@@ -240,7 +240,7 @@ def gpu_info():
             if len(models) == 1:
                 lines_out.append(f"{pad}{models[0]}")
             else:
-                first = f"{pad}{models[0]}"
+                first = f"\n{pad}{models[0]}"
                 indent = " " * len(pad)
                 rest = [f"{indent}{m}" for m in models[1:]]
                 lines_out.append(first)

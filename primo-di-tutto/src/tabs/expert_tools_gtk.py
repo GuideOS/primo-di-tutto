@@ -2,9 +2,9 @@ import gi
 import os
 import subprocess
 from datetime import datetime
-gi.require_version("Adw", "1")
+gi.require_version('Adap', '1')
 from gi.repository import Gtk, GLib, GObject
-from gi.repository import Adw
+from gi.repository import Adap as Adw
 from resorcess import application_path
 
 class ExpertToolsTab(Gtk.Box):
@@ -13,6 +13,10 @@ class ExpertToolsTab(Gtk.Box):
 
         self.notebook = Gtk.Notebook()
         self.notebook.set_tab_pos(Gtk.PositionType.TOP)
+        self.notebook.set_margin_top(12)
+        self.notebook.set_margin_bottom(12)
+        self.notebook.set_margin_start(12)
+        self.notebook.set_margin_end(12)
         self.append(self.notebook)
 
         # Quellen-Tab
@@ -119,6 +123,11 @@ class SourcePanel(Gtk.Box):
         self.remove_btn.set_sensitive(False)
         self.remove_btn.connect("clicked", self._on_remove_clicked)
         right_vbox.append(self.remove_btn)
+
+        # Debian-Spiegelserver-Button
+        self.mirror_btn = Gtk.Button(label="Debian-Spiegelserver")
+        self.mirror_btn.connect("clicked", self._on_mirror_clicked)
+        right_vbox.append(self.mirror_btn)
 
         # Spacer
         spacer = Gtk.Box()
@@ -332,6 +341,11 @@ class SourcePanel(Gtk.Box):
             self.edit_btn.set_sensitive(False)
         
         self.remove_btn.set_sensitive(has_selection)
+    
+    def _on_mirror_clicked(self, button):
+        """Öffnet das Fenster zur Auswahl des Debian-Spiegelservers"""
+        window = MirrorSelectorWindow(self.get_root())
+        window.present()
 
     def _on_edit_clicked(self, button):
         """Zeigt Dialog zum Bearbeiten einer Quelle"""
@@ -740,6 +754,599 @@ class EditSourceDialog(Adw.Dialog):
         comps = self.comp_entry.get_text().strip()
         
         return f"{prefix}{type_str} {uri} {dist} {comps}"
+
+
+class MirrorSelectorWindow(Adw.Window):
+    """Fenster zur Auswahl des besten Debian-Spiegelservers"""
+    
+    # Liste deutscher Debian-Spiegelserver von https://www.debian.org/mirror/list
+    DEBIAN_MIRRORS = [
+        ("deb.debian.org", "https://deb.debian.org/debian/", "Offizieller Debian CDN"),
+        ("ftp.de.debian.org", "http://ftp.de.debian.org/debian/", "Deutschland (offiziell)"),
+        ("ftp2.de.debian.org", "http://ftp2.de.debian.org/debian/", "Deutschland (offiziell 2)"),
+        ("debian.charite.de", "http://debian.charite.de/debian/", "Charité Berlin"),
+        ("debian.inf.tu-dresden.de", "http://debian.inf.tu-dresden.de/debian/", "TU Dresden"),
+        ("debian.intergenia.de", "http://debian.intergenia.de/debian/", "InterGenia"),
+        ("debian.mirror.iphh.net", "http://debian.mirror.iphh.net/debian/", "IP Hamburg"),
+        ("debian.mirror.lrz.de", "http://debian.mirror.lrz.de/debian/", "LRZ München"),
+        ("debian.netcologne.de", "http://debian.netcologne.de/debian/", "NetCologne"),
+        ("debian.tu-bs.de", "http://debian.tu-bs.de/debian/", "TU Braunschweig"),
+        ("ftp.fau.de", "http://ftp.fau.de/debian/", "Uni Erlangen-Nürnberg"),
+        ("ftp.gwdg.de", "http://ftp.gwdg.de/debian/", "GWDG Göttingen"),
+        ("ftp.halifax.rwth-aachen.de", "http://ftp.halifax.rwth-aachen.de/debian/", "RWTH Aachen"),
+        ("ftp.hosteurope.de", "http://ftp.hosteurope.de/mirror/ftp.debian.org/debian/", "HostEurope"),
+        ("ftp-stud.hs-esslingen.de", "http://ftp-stud.hs-esslingen.de/debian/", "HS Esslingen"),
+        ("ftp.stw-bonn.de", "http://ftp.stw-bonn.de/debian/", "Uni Bonn"),
+        ("ftp.tu-chemnitz.de", "http://ftp.tu-chemnitz.de/debian/", "TU Chemnitz"),
+        ("ftp.uni-hannover.de", "http://ftp.uni-hannover.de/debian/debian/", "Uni Hannover"),
+        ("ftp.uni-kl.de", "http://ftp.uni-kl.de/debian/", "Uni Kaiserslautern"),
+        ("ftp.uni-mainz.de", "http://ftp.uni-mainz.de/debian/", "Uni Mainz"),
+        ("ftp.uni-stuttgart.de", "http://ftp.uni-stuttgart.de/debian/", "Uni Stuttgart"),
+        ("ftp.wrz.de", "http://ftp.wrz.de/debian/", "WRZ"),
+        ("mirror.23m.com", "http://mirror.23m.com/debian/", "23M"),
+        ("mirror.creoline.net", "http://mirror.creoline.net/debian/", "Creoline"),
+        ("mirror.de.leaseweb.net", "http://mirror.de.leaseweb.net/debian/", "Leaseweb Deutschland"),
+        ("mirror.dogado.de", "http://mirror.dogado.de/debian/", "Dogado"),
+        ("mirror.eu.oneandone.net", "http://mirror.eu.oneandone.net/debian/", "1&1 / IONOS"),
+        ("mirror.informatik.tu-freiberg.de", "http://mirror.informatik.tu-freiberg.de/debian/", "TU Freiberg"),
+        ("mirror.ipb.de", "http://mirror.ipb.de/debian/", "IPB"),
+        ("mirror.netzwerge.de", "http://mirror.netzwerge.de/debian/", "Netzwerge"),
+        ("mirror.plusline.net", "http://mirror.plusline.net/debian/", "Plusline"),
+        ("mirrors.xtom.de", "http://mirrors.xtom.de/debian/", "xTom Deutschland"),
+        ("mirror.united-gameserver.de", "http://mirror.united-gameserver.de/debian/", "United Gameserver"),
+        ("mirror.wtnet.de", "http://mirror.wtnet.de/debian/", "WTnet"),
+        ("pubmirror.plutex.de", "http://pubmirror.plutex.de/debian/", "Plutex"),
+    ]
+    
+    def __init__(self, parent):
+        super().__init__()
+        self.set_transient_for(parent)
+        self.set_modal(True)
+        self.set_default_size(800, 550)
+        
+        # Header Bar
+        header = Adw.HeaderBar()
+        header.set_title_widget(Gtk.Label(label="Debian-Spiegelserver auswählen"))
+        
+        # ToolbarView für besseres Libadwaita-Layout
+        toolbar_view = Adw.ToolbarView()
+        toolbar_view.add_top_bar(header)
+        self.set_content(toolbar_view)
+        
+        # Hauptlayout
+        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        main_box.set_margin_top(12)
+        main_box.set_margin_bottom(12)
+        main_box.set_margin_start(12)
+        main_box.set_margin_end(12)
+        toolbar_view.set_content(main_box)
+        
+        # Info-Label
+        info_label = Gtk.Label()
+        info_label.set_markup("<b>Wähle einen Debian-Spiegelserver</b>\n"
+                              "Die Spiegelserver werden nach Verbindungsgeschwindigkeit getestet...")
+        info_label.set_xalign(0)
+        main_box.append(info_label)
+        
+        # Progress-Bar
+        self.progress_bar = Gtk.ProgressBar()
+        self.progress_bar.set_show_text(True)
+        self.progress_bar.set_text("Teste Verbindungen...")
+        main_box.append(self.progress_bar)
+        
+        # TreeView für Spiegelserver-Liste
+        self.store = Gtk.ListStore(str, str, str, str, str)  # Status, Name, URL, Location, Response Time
+        self.treeview = Gtk.TreeView(model=self.store)
+        self.treeview.set_headers_visible(True)
+        
+        # Spalte: Status-Icon
+        renderer_text = Gtk.CellRendererText()
+        column_status = Gtk.TreeViewColumn("Status", renderer_text, text=0)
+        column_status.set_resizable(False)
+        column_status.set_fixed_width(70)
+        self.treeview.append_column(column_status)
+        
+        # Spalte: Name
+        renderer_name = Gtk.CellRendererText()
+        column_name = Gtk.TreeViewColumn("Server", renderer_name, text=1)
+        column_name.set_resizable(True)
+        column_name.set_min_width(180)
+        self.treeview.append_column(column_name)
+        
+        # Spalte: Location
+        renderer_loc = Gtk.CellRendererText()
+        column_loc = Gtk.TreeViewColumn("Standort", renderer_loc, text=3)
+        column_loc.set_resizable(True)
+        column_loc.set_min_width(150)
+        self.treeview.append_column(column_loc)
+        
+        # Spalte: Response Time
+        renderer_time = Gtk.CellRendererText()
+        column_time = Gtk.TreeViewColumn("Antwortzeit", renderer_time, text=4)
+        column_time.set_resizable(True)
+        column_time.set_min_width(100)
+        self.treeview.append_column(column_time)
+        
+        # Spalte: URL (hidden)
+        renderer_url = Gtk.CellRendererText()
+        column_url = Gtk.TreeViewColumn("URL", renderer_url, text=2)
+        column_url.set_visible(False)
+        self.treeview.append_column(column_url)
+        
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_child(self.treeview)
+        scrolled.set_vexpand(True)
+        scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        main_box.append(scrolled)
+        
+        # Button-Box
+        button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        button_box.set_halign(Gtk.Align.END)
+        main_box.append(button_box)
+        
+        # Neu testen Button
+        self.retest_btn = Gtk.Button(label="Neu testen")
+        self.retest_btn.connect("clicked", self._on_retest_clicked)
+        button_box.append(self.retest_btn)
+        
+        # Auswählen Button
+        self.select_btn = Gtk.Button(label="Auswählen")
+        self.select_btn.set_sensitive(False)
+        self.select_btn.connect("clicked", self._on_select_clicked)
+        button_box.append(self.select_btn)
+        
+        # Abbrechen Button
+        cancel_btn = Gtk.Button(label="Abbrechen")
+        cancel_btn.connect("clicked", lambda b: self.close())
+        button_box.append(cancel_btn)
+        
+        # Selection Handler
+        selection = self.treeview.get_selection()
+        selection.connect("changed", self._on_selection_changed)
+        
+        # Starte automatisch den Test
+        self.testing = False
+        self.current_test_index = 0
+        GLib.idle_add(self._start_testing)
+    
+    def _start_testing(self):
+        """Startet das Testen der Spiegelserver"""
+        if self.testing:
+            return False
+        
+        self.testing = True
+        self.store.clear()
+        self.current_test_index = 0
+        self.progress_bar.set_fraction(0.0)
+        self.retest_btn.set_sensitive(False)
+        
+        # Füge alle Mirror zur Liste hinzu
+        for name, url, location in self.DEBIAN_MIRRORS:
+            self.store.append(["⏳", name, url, location, "Warte..."])
+        
+        # Starte den Test für den ersten Mirror
+        GLib.timeout_add(100, self._test_next_mirror)
+        return False
+    
+    def _test_next_mirror(self):
+        """Testet den nächsten Spiegelserver"""
+        if self.current_test_index >= len(self.DEBIAN_MIRRORS):
+            # Alle Tests abgeschlossen
+            self.testing = False
+            self.progress_bar.set_text("Tests abgeschlossen")
+            self.retest_btn.set_sensitive(True)
+            self._sort_by_response_time()
+            return False
+        
+        name, url, location = self.DEBIAN_MIRRORS[self.current_test_index]
+        iter = self.store.get_iter(self.current_test_index)
+        
+        # Update Progress
+        progress = (self.current_test_index + 1) / len(self.DEBIAN_MIRRORS)
+        self.progress_bar.set_fraction(progress)
+        self.progress_bar.set_text(f"Teste {name}... ({self.current_test_index + 1}/{len(self.DEBIAN_MIRRORS)})")
+        
+        # Teste Verbindung
+        self.store[iter][0] = "🔄"
+        self.store[iter][4] = "Teste..."
+        
+        # Asynchroner Test
+        GLib.timeout_add(10, lambda: self._do_test_mirror(iter, name, url, location))
+        
+        return False
+    
+    def _do_test_mirror(self, iter, name, url, location):
+        """Führt den eigentlichen Test durch"""
+        try:
+            import time
+            import urllib.request
+            import ssl
+            
+            # Teste den Mirror durch HEAD-Request
+            test_url = url + "dists/stable/Release"
+            
+            # SSL-Kontext für HTTPS
+            context = ssl.create_default_context()
+            context.check_hostname = False
+            context.verify_mode = ssl.CERT_NONE
+            
+            start_time = time.time()
+            
+            # Erstelle Request mit Timeout
+            request = urllib.request.Request(test_url, method='HEAD')
+            request.add_header('User-Agent', 'PrimoDiTutto/1.0')
+            
+            try:
+                with urllib.request.urlopen(request, timeout=5, context=context) as response:
+                    response_time = time.time() - start_time
+                    status_code = response.getcode()
+                    
+                    if status_code == 200:
+                        self.store[iter][0] = "✓"
+                        self.store[iter][4] = f"{response_time * 1000:.0f} ms"
+                    else:
+                        self.store[iter][0] = "✗"
+                        self.store[iter][4] = f"Fehler {status_code}"
+            except Exception as e:
+                self.store[iter][0] = "✗"
+                self.store[iter][4] = "Timeout/Fehler"
+        
+        except Exception as e:
+            self.store[iter][0] = "✗"
+            self.store[iter][4] = str(e)[:20]
+        
+        # Weiter zum nächsten Mirror
+        self.current_test_index += 1
+        GLib.timeout_add(100, self._test_next_mirror)
+        
+        return False
+    
+    def _sort_by_response_time(self):
+        """Sortiert die Liste nach Antwortzeit"""
+        # Extrahiere alle Einträge
+        entries = []
+        iter = self.store.get_iter_first()
+        while iter:
+            row = []
+            for i in range(5):
+                row.append(self.store[iter][i])
+            entries.append(row)
+            iter = self.store.iter_next(iter)
+        
+        # Sortiere nach Antwortzeit (erfolgreich zuerst, dann nach ms)
+        def sort_key(entry):
+            status = entry[0]
+            time_str = entry[4]
+            
+            if status == "✓" and "ms" in time_str:
+                try:
+                    ms = float(time_str.replace(" ms", ""))
+                    return (0, ms)  # Erfolgreich, sortiere nach Zeit
+                except:
+                    return (1, 999999)  # Fehler beim Parsen
+            else:
+                return (2, 999999)  # Fehlgeschlagen
+        
+        entries.sort(key=sort_key)
+        
+        # Lösche Store und füge sortiert wieder ein
+        self.store.clear()
+        for entry in entries:
+            self.store.append(entry)
+    
+    def _on_retest_clicked(self, button):
+        """Testet alle Server erneut"""
+        self._start_testing()
+    
+    def _on_selection_changed(self, selection):
+        """Aktiviert/Deaktiviert den Auswählen-Button"""
+        model, iter = selection.get_selected()
+        if iter:
+            status = model[iter][0]
+            self.select_btn.set_sensitive(status == "✓")
+        else:
+            self.select_btn.set_sensitive(False)
+    
+    def _on_select_clicked(self, button):
+        """Wendet den ausgewählten Spiegelserver an"""
+        selection = self.treeview.get_selection()
+        model, iter = selection.get_selected()
+        
+        if not iter:
+            return
+        
+        mirror_url = model[iter][2]
+        mirror_name = model[iter][1]
+        
+        # Zeige Bestätigungs-Dialog
+        dialog = Adw.MessageDialog.new(self)
+        dialog.set_heading("Spiegelserver ändern?")
+        dialog.set_body(
+            f"Möchtest du den Debian-Spiegelserver auf '{mirror_name}' ändern?\n\n"
+            f"URL: {mirror_url}\n\n"
+            "Dies wird die Sources-Datei aktualisieren."
+        )
+        dialog.add_response("cancel", "Schließen")
+        dialog.add_response("confirm", "Ändern")
+        dialog.set_response_appearance("confirm", Adw.ResponseAppearance.SUGGESTED)
+        dialog.set_close_response("cancel")
+        
+        dialog.connect("response", lambda d, r: self._on_confirm_response(d, r, mirror_url, mirror_name))
+        dialog.present()
+    
+    def _on_confirm_response(self, dialog, response, mirror_url, mirror_name):
+        """Verarbeitet die Bestätigung"""
+        if response == "confirm":
+            self._apply_mirror(mirror_url, mirror_name)
+    
+    def _apply_mirror(self, mirror_url, mirror_name):
+        """Wendet den ausgewählten Spiegelserver an"""
+        try:
+            import time
+            import glob
+            
+            # Liste bekannter Debian-Mirror-Domains (erweitert um alle deutschen Mirrors)
+            DEBIAN_MIRROR_PATTERNS = [
+                "deb.debian.org",
+                "ftp.debian.org",
+                "ftp.de.debian.org",
+                "ftp2.de.debian.org",
+                "debian.charite.de",
+                "debian.inf.tu-dresden.de",
+                "debian.intergenia.de",
+                "debian.mirror.iphh.net",
+                "debian.mirror.lrz.de",
+                "debian.netcologne.de",
+                "debian.tu-bs.de",
+                "ftp.fau.de",
+                "ftp.gwdg.de",
+                "ftp.halifax.rwth-aachen.de",
+                "ftp.hosteurope.de",
+                "ftp-stud.hs-esslingen.de",
+                "ftp.stw-bonn.de",
+                "ftp.tu-chemnitz.de",
+                "ftp.uni-hannover.de",
+                "ftp.uni-kl.de",
+                "ftp.uni-mainz.de",
+                "ftp.uni-stuttgart.de",
+                "ftp.wrz.de",
+                "mirror.23m.com",
+                "mirror.creoline.net",
+                "mirror.de.leaseweb.net",
+                "mirror.dogado.de",
+                "mirror.eu.oneandone.net",
+                "mirror.informatik.tu-freiberg.de",
+                "mirror.ipb.de",
+                "mirror.netzwerge.de",
+                "mirror.plusline.net",
+                "mirrors.xtom.de",
+                "mirror.united-gameserver.de",
+                "mirror.wtnet.de",
+                "pubmirror.plutex.de",
+                "/debian",  # Generisches Pattern für Debian-Pfad
+            ]
+            
+            def is_debian_mirror_url(url):
+                """Prüft ob URL ein Debian-Mirror ist (aber NICHT security.debian.org)"""
+                url_lower = url.lower()
+                
+                # Security-Repositories NICHT ändern
+                if "security.debian.org" in url_lower or "security-cdn.debian.org" in url_lower:
+                    return False
+                
+                # Prüfe ob URL mit /debian endet oder enthält (typisch für Debian-Mirrors)
+                if "/debian" in url_lower:
+                    return True
+                
+                # Prüfe ob es ein bekannter Debian-Mirror ist
+                for pattern in DEBIAN_MIRROR_PATTERNS:
+                    if pattern in url_lower:
+                        return True
+                
+                return False
+            
+            # Sammle nur Dateien die tatsächlich Debian-Repositories enthalten
+            files_to_update = []
+            
+            # 1. /etc/apt/sources.list (traditionelles Format)
+            sources_file = "/etc/apt/sources.list"
+            if os.path.exists(sources_file):
+                try:
+                    with open(sources_file, "r") as f:
+                        content = f.read()
+                    # Prüfe ob Debian-Mirrors enthalten sind
+                    if any(pattern in content.lower() for pattern in DEBIAN_MIRROR_PATTERNS):
+                        files_to_update.append((sources_file, "traditional"))
+                except:
+                    pass
+            
+            # 2. /etc/apt/sources.list.d/*.list (traditionelles Format)
+            for list_file in glob.glob("/etc/apt/sources.list.d/*.list"):
+                try:
+                    with open(list_file, "r") as f:
+                        content = f.read()
+                    # Nur Dateien mit Debian-Mirrors
+                    if any(pattern in content.lower() for pattern in DEBIAN_MIRROR_PATTERNS):
+                        files_to_update.append((list_file, "traditional"))
+                except:
+                    pass
+            
+            # 3. /etc/apt/sources.list.d/*.sources (DEB822 Format)
+            for sources_file in glob.glob("/etc/apt/sources.list.d/*.sources"):
+                try:
+                    with open(sources_file, "r") as f:
+                        content = f.read()
+                    # Nur Dateien mit Debian-Mirrors
+                    if any(pattern in content.lower() for pattern in DEBIAN_MIRROR_PATTERNS):
+                        files_to_update.append((sources_file, "deb822"))
+                except:
+                    pass
+            
+            if not files_to_update:
+                # Keine Debian-Repositories gefunden
+                info_dialog = Adw.MessageDialog.new(self)
+                info_dialog.set_heading("Keine Debian-Repositories gefunden")
+                info_dialog.set_body("Es wurden keine Debian-Mirror-URLs gefunden, die geändert werden können.")
+                info_dialog.add_response("ok", "OK")
+                info_dialog.set_default_response("ok")
+                info_dialog.present()
+                return
+            
+            # Erstelle Backup und aktualisiere jede Datei
+            backup_commands = []
+            update_commands = []
+            
+            for filepath, format_type in files_to_update:
+                # Backup erstellen (nur Dateiname, nicht im sources.list.d Verzeichnis)
+                timestamp = int(time.time())
+                if filepath == "/etc/apt/sources.list":
+                    backup_file = f"{filepath}.backup-{timestamp}"
+                else:
+                    # Backup außerhalb von sources.list.d
+                    backup_file = f"/var/backups/apt/sources/{os.path.basename(filepath)}.backup-{timestamp}"
+                    backup_commands.append(f"mkdir -p /var/backups/apt/sources")
+                
+                backup_commands.append(f"cp '{filepath}' '{backup_file}'")
+                
+                # Lese Datei
+                try:
+                    with open(filepath, "r") as f:
+                        content = f.read()
+                except:
+                    continue
+                
+                has_changes = False
+                
+                if format_type == "traditional":
+                    # Traditionelles Format (.list Dateien)
+                    new_lines = []
+                    for line in content.split('\n'):
+                        original_line = line
+                        if line.strip().startswith("deb") and not line.strip().startswith("#"):
+                            # Parse die Zeile
+                            parts = line.split()
+                            if len(parts) >= 3:
+                                # Prüfe ob URL-Teil existiert
+                                url_idx = 1
+                                # Überspringe Optionen in eckigen Klammern
+                                while url_idx < len(parts) and parts[url_idx].startswith('['):
+                                    while url_idx < len(parts) and not parts[url_idx].endswith(']'):
+                                        url_idx += 1
+                                    url_idx += 1
+                                
+                                if url_idx < len(parts):
+                                    old_url = parts[url_idx]
+                                    # NUR Debian-Mirror-URLs ändern (nicht security!)
+                                    if is_debian_mirror_url(old_url):
+                                        parts[url_idx] = mirror_url.rstrip("/")
+                                        line = " ".join(parts)
+                                        has_changes = True
+                        
+                        new_lines.append(line)
+                    
+                    new_content = '\n'.join(new_lines)
+                
+                elif format_type == "deb822":
+                    # DEB822 Format (.sources Dateien)
+                    new_lines = []
+                    
+                    for line in content.split('\n'):
+                        original_line = line
+                        # Prüfe ob es eine URIs-Zeile ist
+                        if line.strip().startswith("URIs:"):
+                            # Ersetze die URL
+                            parts = line.split(":", 1)
+                            if len(parts) == 2:
+                                urls = parts[1].strip().split()
+                                new_urls = []
+                                for url in urls:
+                                    # NUR Debian-Mirror-URLs ändern (nicht security!)
+                                    if is_debian_mirror_url(url):
+                                        new_urls.append(mirror_url.rstrip("/"))
+                                        has_changes = True
+                                    else:
+                                        new_urls.append(url)
+                                line = f"URIs: {' '.join(new_urls)}"
+                        
+                        new_lines.append(line)
+                    
+                    new_content = '\n'.join(new_lines)
+                
+                # Nur aktualisieren wenn es Änderungen gibt
+                if has_changes:
+                    # Escape für bash heredoc
+                    escaped_content = new_content.replace("'", "'\\''")
+                    
+                    # Füge Update-Command hinzu
+                    update_commands.append(f"cat > '{filepath}' << 'EOF'\n{escaped_content}\nEOF")
+            
+            if not update_commands:
+                # Keine Änderungen notwendig
+                info_dialog = Adw.MessageDialog.new(self)
+                info_dialog.set_heading("Keine Änderungen notwendig")
+                info_dialog.set_body("Alle Debian-Repositories verwenden bereits passende URLs.")
+                info_dialog.add_response("ok", "OK")
+                info_dialog.set_default_response("ok")
+                info_dialog.present()
+                return
+            
+            # Erstelle das finale Bash-Script
+            script = "#!/bin/bash\nset -e\n\n"
+            script += "# Erstelle Backups\n"
+            script += "\n".join(backup_commands) + "\n\n"
+            script += "# Aktualisiere Dateien\n"
+            script += "\n".join(update_commands) + "\n\n"
+            script += "# Aktualisiere Paketliste\n"
+            script += "apt-get update\n"
+            
+            # Führe mit pkexec aus
+            import tempfile
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.sh', delete=False) as tmp:
+                tmp.write(script)
+                tmp_path = tmp.name
+            
+            os.chmod(tmp_path, 0o755)
+            
+            result = subprocess.run(
+                ["pkexec", "bash", tmp_path],
+                capture_output=True,
+                text=True
+            )
+            
+            os.unlink(tmp_path)
+            
+            if result.returncode == 0:
+                # Erfolg
+                success_dialog = Adw.MessageDialog.new(self)
+                success_dialog.set_heading("Spiegelserver erfolgreich geändert")
+                success_dialog.set_body(
+                    f"Der Debian-Spiegelserver wurde auf '{mirror_name}' geändert.\n"
+                    f"Die Paketliste wurde aktualisiert."
+                )
+                success_dialog.add_response("ok", "OK")
+                success_dialog.set_default_response("ok")
+                success_dialog.present()
+                
+                self.close()
+            else:
+                # Fehler
+                error_dialog = Adw.MessageDialog.new(self)
+                error_dialog.set_heading("Fehler beim Ändern des Spiegelservers")
+                error_dialog.set_body(f"Es gab einen Fehler beim Ändern des Spiegelservers:\n{result.stderr}")
+                error_dialog.add_response("ok", "OK")
+                error_dialog.set_default_response("ok")
+                error_dialog.set_response_appearance("ok", Adw.ResponseAppearance.DESTRUCTIVE)
+                error_dialog.present()
+        
+        except Exception as e:
+            # Fehler
+            error_dialog = Adw.MessageDialog.new(self)
+            error_dialog.set_heading("Fehler")
+            error_dialog.set_body(f"Ein Fehler ist aufgetreten: {str(e)}")
+            error_dialog.add_response("ok", "OK")
+            error_dialog.set_default_response("ok")
+            error_dialog.set_response_appearance("ok", Adw.ResponseAppearance.DESTRUCTIVE)
+            error_dialog.present()
 
 
 class AdminPanel(Gtk.Box):

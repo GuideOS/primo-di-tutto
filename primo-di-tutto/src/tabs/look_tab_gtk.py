@@ -2,21 +2,50 @@ import gi
 import os
 import subprocess
 import json
-gi.require_version("Adw", "1")
+gi.require_version('Adap', '1')
 from gi.repository import Gtk, GdkPixbuf, GLib
-from gi.repository import Adw
+from gi.repository import Adap as Adw
 from resorcess import application_path
 
 class LookTab(Gtk.Box):
     def __init__(self):
-        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.set_hexpand(True)
         self.set_vexpand(True)
-        self.set_margin_top(20)
-        self.set_margin_bottom(20)
-        self.set_margin_start(20)
-        self.set_margin_end(20)
+        
+        # Liste für Akzentfarben-Buttons
+        self.accent_buttons = []
 
+        # Notebook erstellen
+        notebook = Gtk.Notebook()
+        notebook.set_hexpand(True)
+        notebook.set_vexpand(True)
+        #notebook.set_margin_top(0)
+        notebook.set_margin_bottom(20)
+        notebook.set_margin_start(20)
+        notebook.set_margin_end(20)
+        self.append(notebook)
+
+        # Tab 1: Look & Feel
+        lookfeel_page = self.create_lookfeel_page()
+        lookfeel_label = Gtk.Label(label="Look & Feel")
+        notebook.append_page(lookfeel_page, lookfeel_label)
+
+        # Tab 2: Erweitert (aktueller Inhalt)
+        advanced_page = self.create_advanced_page()
+        advanced_label = Gtk.Label(label="Erweitert")
+        notebook.append_page(advanced_page, advanced_label)
+
+        self.update_theme_combobox()
+
+    def create_lookfeel_page(self):
+        """Erstellt die Look & Feel Seite mit Layout-Vorlagen"""
+        page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        page.set_margin_top(20)
+        page.set_margin_bottom(20)
+        page.set_margin_start(20)
+        page.set_margin_end(20)
+        
         # Layout-Vorlagen
         layout_frame = Gtk.Frame()
         label_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
@@ -28,7 +57,7 @@ class LookTab(Gtk.Box):
         label_box.append(label)
         layout_frame.set_label_widget(label_box)
         layout_frame.set_margin_bottom(4)
-        self.append(layout_frame)
+        page.append(layout_frame)
         layout_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         layout_box.set_margin_top(12)
         layout_box.set_margin_bottom(12)
@@ -71,6 +100,168 @@ class LookTab(Gtk.Box):
         backup_btn.set_margin_top(8)
         backup_btn.connect("clicked", self.start_restore_my_cinnamon)
         layout_box.append(backup_btn)
+        
+        # Akzentfarbe Frame
+        accent_frame = Gtk.Frame()
+        accent_label_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        accent_label_box.set_margin_start(8)
+        accent_icon = Gtk.Image.new_from_icon_name("preferences-desktop-theme")
+        accent_icon.set_pixel_size(24)
+        accent_label_box.append(accent_icon)
+        accent_label = Gtk.Label(label="Akzentfarbe")
+        accent_label_box.append(accent_label)
+        accent_frame.set_label_widget(accent_label_box)
+        accent_frame.set_margin_top(4)
+        page.append(accent_frame)
+        
+        accent_vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        accent_vbox.set_margin_top(12)
+        accent_vbox.set_margin_bottom(12)
+        accent_vbox.set_margin_start(12)
+        accent_vbox.set_margin_end(12)
+        accent_frame.set_child(accent_vbox)
+        
+        #accent_desc = Gtk.Label(label="Wähle eine Akzentfarbe für das System:")
+        #accent_desc.set_xalign(0)
+        #accent_vbox.append(accent_desc)
+        
+        # Grid für Theme-Buttons
+        accent_grid = Gtk.Grid()
+        accent_grid.set_column_spacing(8)
+        accent_grid.set_row_spacing(8)
+        accent_grid.set_column_homogeneous(True)
+        accent_vbox.append(accent_grid)
+        
+        # Dark Themes (Erste Reihe)
+        dark_themes = [
+            ("WhiteSur-Dark-solid-blue", "Blau"),
+            ("WhiteSur-Dark-solid-green", "Grün"),
+            ("WhiteSur-Dark-solid-grey", "Grau"),
+            ("WhiteSur-Dark-solid-orange", "Orange"),
+            ("WhiteSur-Dark-solid-pink", "Pink"),
+            ("WhiteSur-Dark-solid-purple", "Lila"),
+            ("WhiteSur-Dark-solid-red", "Rot"),
+            ("WhiteSur-Dark-solid-yellow", "Gelb"),
+        ]
+        
+        # Light Themes (Zweite Reihe)
+        light_themes = [
+            ("WhiteSur-Light-solid-blue", "Blau"),
+            ("WhiteSur-Light-solid-green", "Grün"),
+            ("WhiteSur-Light-solid-grey", "Grau"),
+            ("WhiteSur-Light-solid-orange", "Orange"),
+            ("WhiteSur-Light-solid-pink", "Pink"),
+            ("WhiteSur-Light-solid-purple", "Lila"),
+            ("WhiteSur-Light-solid-red", "Rot"),
+            ("WhiteSur-Light-solid-yellow", "Gelb"),
+        ]
+        
+        # Dark Themes Buttons (Reihe 0)
+        dark_icon_names = ["preset-dark-blue.svg", "preset-dark-green.svg", "preset-dark-grey.svg", 
+                           "preset-dark-orange.svg", "preset-dark-pink.svg", "preset-dark-purple.svg",
+                           "preset-dark-red.svg", "preset-dark-yellow.svg"]
+        for i, (theme_name, color_label) in enumerate(dark_themes):
+            btn = Gtk.Button()
+            btn.set_tooltip_text(theme_name)
+            btn.connect("clicked", self.apply_theme, theme_name)
+            btn.add_css_class("flat")
+            
+            # Icon für Dark Themes
+            icon_path = os.path.join(application_path, "images", "icons", "pigro_icons", dark_icon_names[i])
+            if os.path.exists(icon_path):
+                icon = Gtk.Image.new_from_file(icon_path)
+                icon.set_pixel_size(64)
+                btn.set_child(icon)
+            else:
+                btn.set_label(color_label)
+            
+            self.accent_buttons.append(btn)
+            accent_grid.attach(btn, i, 0, 1, 1)
+        
+        # Light Themes Buttons (Reihe 1)
+        light_icon_names = ["preset-light-blue.svg", "preset-light-green.svg", "preset-light-grey.svg", 
+                            "preset-light-orange.svg", "preset-light-pink.svg", "preset-light-purple.svg",
+                            "preset-light-red.svg", "preset-light-yellow.svg"]
+        for i, (theme_name, color_label) in enumerate(light_themes):
+            btn = Gtk.Button()
+            btn.set_tooltip_text(theme_name)
+            btn.connect("clicked", self.apply_theme, theme_name)
+            btn.add_css_class("flat")
+            
+            # Icon für Light Themes
+            icon_path = os.path.join(application_path, "images", "icons", "pigro_icons", light_icon_names[i])
+            if os.path.exists(icon_path):
+                icon = Gtk.Image.new_from_file(icon_path)
+                icon.set_pixel_size(64)
+                btn.set_child(icon)
+            else:
+                btn.set_label(color_label)
+            
+            self.accent_buttons.append(btn)
+            accent_grid.attach(btn, i, 1, 1, 1)
+        
+        # Ordnerfarbe Frame
+        folder_frame = Gtk.Frame()
+        folder_label_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        folder_label_box.set_margin_start(8)
+        folder_icon = Gtk.Image.new_from_icon_name("folder")
+        folder_icon.set_pixel_size(24)
+        folder_label_box.append(folder_icon)
+        folder_label = Gtk.Label(label="Ordnerfarbe")
+        folder_label_box.append(folder_label)
+        folder_frame.set_label_widget(folder_label_box)
+        folder_frame.set_margin_top(4)
+        page.append(folder_frame)
+        
+        folder_vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        folder_vbox.set_margin_top(12)
+        folder_vbox.set_margin_bottom(12)
+        folder_vbox.set_margin_start(12)
+        folder_vbox.set_margin_end(12)
+        folder_frame.set_child(folder_vbox)
+        
+        #folder_desc = Gtk.Label(label="Wähle eine Farbe für die Ordner-Icons im WhiteSur Theme:")
+        #folder_desc.set_xalign(0)
+        #folder_vbox.append(folder_desc)
+        
+        # Grid für Ordnerfarben-Buttons
+        folder_grid = Gtk.Grid()
+        folder_grid.set_column_spacing(8)
+        folder_grid.set_row_spacing(8)
+        folder_grid.set_column_homogeneous(True)
+        folder_vbox.append(folder_grid)
+        
+        # Ordnerfarben
+        folder_colors = [
+            ("blue", "Blau"),
+            ("green", "Grün"),
+            ("grey", "Grau"),
+            ("orange", "Orange"),
+            ("pink", "Pink"),
+            ("purple", "Lila"),
+            ("red", "Rot"),
+            ("yellow", "Gelb"),
+        ]
+        
+        # Ordnerfarben-Buttons
+        self.folder_buttons = []
+        for i, (color_name, color_label) in enumerate(folder_colors):
+            btn = Gtk.Button(label=color_label)
+            btn.set_tooltip_text(f"Ordnerfarbe: {color_label}")
+            btn.connect("clicked", self.apply_folder_color, color_name)
+            btn.add_css_class("flat")
+            self.folder_buttons.append(btn)
+            folder_grid.attach(btn, i, 0, 1, 1)
+        
+        return page
+
+    def create_advanced_page(self):
+        """Erstellt die Erweitert-Seite mit Theme, Icons und Cursor Einstellungen"""
+        page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        page.set_margin_top(20)
+        page.set_margin_bottom(20)
+        page.set_margin_start(20)
+        page.set_margin_end(20)
 
         # Theme selection
         theme_frame = Gtk.Frame()
@@ -83,7 +274,7 @@ class LookTab(Gtk.Box):
         label_box.append(theme_label)
         theme_frame.set_label_widget(label_box)
         theme_frame.set_margin_bottom(8)
-        self.append(theme_frame)
+        page.append(theme_frame)
         theme_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         theme_box.set_margin_top(16)
         theme_box.set_margin_bottom(16)
@@ -113,7 +304,7 @@ class LookTab(Gtk.Box):
         label_box.append(icon_label)
         icon_frame.set_label_widget(label_box)
         icon_frame.set_margin_bottom(8)
-        self.append(icon_frame)
+        page.append(icon_frame)
         icon_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         icon_box.set_margin_top(16)
         icon_box.set_margin_bottom(16)
@@ -142,7 +333,7 @@ class LookTab(Gtk.Box):
         cursor_label = Gtk.Label(label="Cursor")
         label_box.append(cursor_label)
         cursor_frame.set_label_widget(label_box)
-        self.append(cursor_frame)
+        page.append(cursor_frame)
         cursor_vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         cursor_vbox.set_margin_top(16)
         cursor_vbox.set_margin_bottom(16)
@@ -182,9 +373,9 @@ class LookTab(Gtk.Box):
         refresh_btn = Gtk.Button(label="Index aktualisieren")
         refresh_btn.set_margin_top(8)
         refresh_btn.connect("clicked", self.update_theme_combobox)
-        self.append(refresh_btn)
+        page.append(refresh_btn)
 
-        self.update_theme_combobox()
+        return page
 
     def load_thumb(self, path):
         thumb_size = 200
@@ -406,14 +597,20 @@ class LookTab(Gtk.Box):
         ]
         for schema, key in settings_keys:
             subprocess.run(["gsettings", "set", schema, key, selected_theme], check=True)
-        # Dark/Light detection
+        # Dark/Light detection und Icon-Theme setzen
         if "dark" in selected_theme.lower():
             subprocess.run(["dconf", "write", "/org/gnome/desktop/interface/color-scheme", "'prefer-dark'"], check=True)
+            icon_theme = "WhiteSur-dark"
         else:
             subprocess.run(["dconf", "write", "/org/gnome/desktop/interface/color-scheme", "'prefer-light'"], check=True)
+            icon_theme = "WhiteSur"
+        
+        # Icon-Theme automatisch anwenden
+        subprocess.run(["gsettings", "set", "org.cinnamon.desktop.interface", "icon-theme", icon_theme], check=True)
+        
         self.update_theme_combobox()
         self.update_layout_icons()
-        self.show_confirmation_dialog("Theme angewendet", f"Das Theme '{selected_theme}' wurde erfolgreich angewendet.")
+        self.show_confirmation_dialog("Theme angewendet", f"Das Theme '{selected_theme}' wurde erfolgreich angewendet.\nIcon-Theme: {icon_theme}")
 
     def set_icon(self, btn):
         selected_icon = self.icon_combo.get_active_text()
@@ -463,7 +660,36 @@ class LookTab(Gtk.Box):
             themes.sort()
             # Filter wie im Original
             blacklist = [
-                "BlackMATE", "BlueMenta", "Blue-Submarine", "Clearlooks", "ContrastHigh", "Crux", "Default", "Emacs", "GreenLaguna", "Green-Submarine", "HighContrast", "HighContrastInverse", "Industrial", "Menta", "Raleigh", "Redmond", "Shiny", "ThinIce", "TraditionalGreen", "TraditionalOk", "WhiteSur-Dark", "WhiteSur-Dark-hdpi", "WhiteSur-Dark-solid-hdpi", "WhiteSur-Dark-solid-xhdpi", "WhiteSur-Dark-xhdpi", "WhiteSur-Light", "WhiteSur-Light-hdpi", "WhiteSur-Light-solid-hdpi", "WhiteSur-Light-solid-xhdpi", "WhiteSur-Light-xhdpi", "YaruOk", "Yaru-xhdpi", "Yaru", "YaruGreen", "Yaru-dark-hdpi", "Yaru-dark-xhdpi", "Yaru-hdpi", "Yaru-xhdpi", "Mist"
+                "BlackMATE", "BlueMenta", "Blue-Submarine", "Clearlooks", "ContrastHigh", "Crux", "Default", "Emacs", "GreenLaguna", "Green-Submarine", "HighContrast", "HighContrastInverse", "Industrial", "Menta", "Raleigh", "Redmond", "Shiny", "ThinIce", "TraditionalGreen", "TraditionalOk", 
+                "WhiteSur-Dark", "WhiteSur-Dark-hdpi", "WhiteSur-Dark-solid-hdpi", "WhiteSur-Dark-solid-xhdpi", "WhiteSur-Dark-xhdpi", 
+                "WhiteSur-Light", "WhiteSur-Light-hdpi", "WhiteSur-Light-solid-hdpi", "WhiteSur-Light-solid-xhdpi", "WhiteSur-Light-xhdpi",
+                "WhiteSur-Dark-blue", "WhiteSur-Dark-blue-hdpi", "WhiteSur-Dark-blue-xhdpi", 
+                "WhiteSur-Dark-green", "WhiteSur-Dark-green-hdpi", "WhiteSur-Dark-green-xhdpi",
+                "WhiteSur-Dark-grey", "WhiteSur-Dark-grey-hdpi", "WhiteSur-Dark-grey-xhdpi", 
+                "WhiteSur-Dark-orange", "WhiteSur-Dark-orange-hdpi", "WhiteSur-Dark-orange-xhdpi",
+                "WhiteSur-Dark-pink", "WhiteSur-Dark-pink-hdpi", "WhiteSur-Dark-pink-xhdpi", 
+                "WhiteSur-Dark-purple", "WhiteSur-Dark-purple-hdpi", "WhiteSur-Dark-purple-xhdpi",
+                "WhiteSur-Dark-red", "WhiteSur-Dark-red-hdpi", "WhiteSur-Dark-red-xhdpi", 
+                "WhiteSur-Dark-solid-blue-hdpi", "WhiteSur-Dark-solid-blue-xhdpi",
+                "WhiteSur-Dark-solid-green-hdpi", "WhiteSur-Dark-solid-green-xhdpi", "WhiteSur-Dark-solid-grey-hdpi", "WhiteSur-Dark-solid-grey-xhdpi",
+                "WhiteSur-Dark-solid-orange-hdpi", "WhiteSur-Dark-solid-orange-xhdpi", "WhiteSur-Dark-solid-pink-hdpi", "WhiteSur-Dark-solid-pink-xhdpi",
+                "WhiteSur-Dark-solid-purple-hdpi", "WhiteSur-Dark-solid-purple-xhdpi", "WhiteSur-Dark-solid-red-hdpi", "WhiteSur-Dark-solid-red-xhdpi",
+                "WhiteSur-Dark-solid-yellow-hdpi", "WhiteSur-Dark-solid-yellow-xhdpi", 
+                "WhiteSur-Dark-yellow", "WhiteSur-Dark-yellow-hdpi", "WhiteSur-Dark-yellow-xhdpi",
+                "WhiteSur-Light-blue", "WhiteSur-Light-blue-hdpi", "WhiteSur-Light-blue-xhdpi", 
+                "WhiteSur-Light-green", "WhiteSur-Light-green-hdpi", "WhiteSur-Light-green-xhdpi",
+                "WhiteSur-Light-grey", "WhiteSur-Light-grey-hdpi", "WhiteSur-Light-grey-xhdpi", 
+                "WhiteSur-Light-orange", "WhiteSur-Light-orange-hdpi", "WhiteSur-Light-orange-xhdpi",
+                "WhiteSur-Light-pink", "WhiteSur-Light-pink-hdpi", "WhiteSur-Light-pink-xhdpi", 
+                "WhiteSur-Light-purple", "WhiteSur-Light-purple-hdpi", "WhiteSur-Light-purple-xhdpi",
+                "WhiteSur-Light-red", "WhiteSur-Light-red-hdpi", "WhiteSur-Light-red-xhdpi", 
+                "WhiteSur-Light-solid-blue-hdpi", "WhiteSur-Light-solid-blue-xhdpi",
+                "WhiteSur-Light-solid-green-hdpi", "WhiteSur-Light-solid-green-xhdpi", "WhiteSur-Light-solid-grey-hdpi", "WhiteSur-Light-solid-grey-xhdpi",
+                "WhiteSur-Light-solid-orange-hdpi", "WhiteSur-Light-solid-orange-xhdpi", "WhiteSur-Light-solid-pink-hdpi", "WhiteSur-Light-solid-pink-xhdpi",
+                "WhiteSur-Light-solid-purple-hdpi", "WhiteSur-Light-solid-purple-xhdpi", "WhiteSur-Light-solid-red-hdpi", "WhiteSur-Light-solid-red-xhdpi",
+                "WhiteSur-Light-solid-yellow-hdpi", "WhiteSur-Light-solid-yellow-xhdpi", 
+                "WhiteSur-Light-yellow", "WhiteSur-Light-yellow-hdpi", "WhiteSur-Light-yellow-xhdpi",
+                "YaruOk", "Yaru-xhdpi", "Yaru", "YaruGreen", "Yaru-dark-hdpi", "Yaru-dark-xhdpi", "Yaru-hdpi", "Yaru-xhdpi", "Mist"
             ]
             themes = [x for x in themes if x not in blacklist]
             for t in themes:
@@ -526,3 +752,197 @@ class LookTab(Gtk.Box):
                 self.cursor_size_combo.set_active(2)
         except Exception:
             self.cursor_size_combo.set_active(2)
+
+    def apply_folder_color(self, button, color_name):
+        """Wendet die ausgewählte Ordnerfarbe an"""
+        try:
+            # Prüfe ob aktuelles GTK Theme dark oder light ist
+            current_theme = subprocess.run(
+                ["gsettings", "get", "org.cinnamon.desktop.interface", "gtk-theme"],
+                capture_output=True,
+                text=True,
+                check=True
+            ).stdout.strip().strip("'\"")
+            
+            is_dark = "dark" in current_theme.lower()
+            
+            # Bestimme Icon-Theme Namen basierend auf Farbe und dark/light
+            # Für blue verwende WhiteSur-dark/light ohne Farbe im Namen
+            if color_name == "blue":
+                if is_dark:
+                    icon_theme = "WhiteSur-dark"
+                else:
+                    icon_theme = "WhiteSur-light"
+            else:
+                if is_dark:
+                    icon_theme = f"WhiteSur-{color_name}-dark"
+                else:
+                    icon_theme = f"WhiteSur-{color_name}-light"
+            
+            # Setze Icon-Theme über gsettings
+            subprocess.run(
+                ["gsettings", "set", "org.cinnamon.desktop.interface", "icon-theme", icon_theme],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            # Entferne flat und füge suggested-action zum geklickten Button hinzu
+            for btn in self.folder_buttons:
+                btn.remove_css_class("suggested-action")
+                btn.add_css_class("flat")
+            
+            button.remove_css_class("flat")
+            button.add_css_class("suggested-action")
+            
+            dialog = Adw.MessageDialog.new(self.get_root())
+            dialog.set_heading("Ordnerfarbe angewendet")
+            dialog.set_body(f"Die Ordnerfarbe '{color_name}' wurde erfolgreich angewendet.\nIcon-Theme: {icon_theme}")
+            dialog.add_response("ok", "OK")
+            dialog.set_default_response("ok")
+            dialog.present()
+        except subprocess.CalledProcessError as e:
+            dialog = Adw.MessageDialog.new(self.get_root())
+            dialog.set_heading("Fehler beim Anwenden der Ordnerfarbe")
+            dialog.set_body(f"Fehler: {e.stderr if e.stderr else str(e)}")
+            dialog.add_response("ok", "OK")
+            dialog.set_default_response("ok")
+            dialog.present()
+        except Exception as e:
+            dialog = Adw.MessageDialog.new(self.get_root())
+            dialog.set_heading("Fehler beim Anwenden der Ordnerfarbe")
+            dialog.set_body(str(e))
+            dialog.add_response("ok", "OK")
+            dialog.set_default_response("ok")
+            dialog.present()
+
+    def apply_theme(self, button, theme_name):
+        """Wendet das ausgewählte Theme an"""
+        try:
+            # Setze alle Theme-Settings
+            subprocess.run(
+                [
+                    "gsettings",
+                    "set",
+                    "org.cinnamon.desktop.wm.preferences",
+                    "theme",
+                    theme_name,
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            
+            subprocess.run(
+                [
+                    "gsettings",
+                    "set",
+                    "org.cinnamon.desktop.interface",
+                    "gtk-theme",
+                    theme_name,
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            
+            subprocess.run(
+                [
+                    "gsettings",
+                    "set",
+                    "org.cinnamon.theme",
+                    "name",
+                    theme_name,
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            
+            # Dark/Light detection und color-scheme setzen
+            is_dark = "dark" in theme_name.lower()
+            if is_dark:
+                subprocess.run(["dconf", "write", "/org/gnome/desktop/interface/color-scheme", "'prefer-dark'"], check=True)
+            else:
+                subprocess.run(["dconf", "write", "/org/gnome/desktop/interface/color-scheme", "'prefer-light'"], check=True)
+            
+            # Icon-Theme basierend auf Theme und Farbe bestimmen
+            icon_theme = "WhiteSur"
+            if "whitesur" in theme_name.lower():
+                # Extrahiere die Farbe aus dem Theme-Namen
+                color_map = {
+                    "blue": "blue",
+                    "green": "green",
+                    "grey": "grey",
+                    "orange": "orange",
+                    "pink": "pink",
+                    "purple": "purple",
+                    "red": "red",
+                    "yellow": "yellow",
+                }
+                
+                folder_color = None
+                for color_key in color_map.keys():
+                    if color_key in theme_name.lower():
+                        folder_color = color_key
+                        break
+                
+                # Bestimme Icon-Theme Namen
+                if folder_color:
+                    # Für blue verwende WhiteSur-dark/light ohne Farbe im Namen
+                    if folder_color == "blue":
+                        if is_dark:
+                            icon_theme = "WhiteSur-dark"
+                        else:
+                            icon_theme = "WhiteSur-light"
+                    else:
+                        # Andere Farben - verwende farbiges Icon-Theme
+                        if is_dark:
+                            icon_theme = f"WhiteSur-{folder_color}-dark"
+                        else:
+                            icon_theme = f"WhiteSur-{folder_color}-light"
+                else:
+                    # Keine spezifische Farbe - verwende Standard WhiteSur
+                    if is_dark:
+                        icon_theme = "WhiteSur-dark"
+                    else:
+                        icon_theme = "WhiteSur-light"
+            
+            # Icon-Theme anwenden
+            subprocess.run(
+                [
+                    "gsettings",
+                    "set",
+                    "org.cinnamon.desktop.interface",
+                    "icon-theme",
+                    icon_theme,
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            
+            # Layout-Icons aktualisieren
+            self.update_layout_icons()
+            
+            # Entferne flat und füge suggested-action zum geklickten Button hinzu
+            for btn in self.accent_buttons:
+                btn.remove_css_class("suggested-action")
+                btn.add_css_class("flat")
+            
+            button.remove_css_class("flat")
+            button.add_css_class("suggested-action")
+            
+            dialog = Adw.MessageDialog.new(self.get_root())
+            dialog.set_heading("Theme angewendet")
+            dialog.set_body(f"Das Theme '{theme_name}' wurde erfolgreich angewendet.\nIcon-Theme: {icon_theme}")
+            dialog.add_response("ok", "OK")
+            dialog.set_default_response("ok")
+            dialog.present()
+        except Exception as e:
+            dialog = Adw.MessageDialog.new(self.get_root())
+            dialog.set_heading("Fehler beim Anwenden des Themes")
+            dialog.set_body(str(e))
+            dialog.add_response("ok", "OK")
+            dialog.set_default_response("ok")
+            dialog.present()
