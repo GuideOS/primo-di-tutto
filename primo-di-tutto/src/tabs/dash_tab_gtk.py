@@ -447,6 +447,7 @@ class DashTab(Gtk.Box):
     def get_network_info(self):
         try:
             local_ip = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            local_ip.settimeout(1)  # 1 Sekunde Timeout
             local_ip.connect(("8.8.8.8", 80))
             lan_ip = local_ip.getsockname()[0]
             local_ip.close()
@@ -454,7 +455,7 @@ class DashTab(Gtk.Box):
             down_rate = round(net_io_counters.bytes_recv / 1024 / 1024, 2)
             up_rate = round(net_io_counters.bytes_sent / 1024 / 1024, 2)
             web_state = "Verbunden"
-        except (socket.error, socket.gaierror):
+        except (socket.error, socket.gaierror, socket.timeout):
             lan_ip = None
             down_rate = "-"
             up_rate = "-"
@@ -465,6 +466,7 @@ class DashTab(Gtk.Box):
         """Ermittelt die lokale IP-Adresse des PCs."""
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.settimeout(1)  # 1 Sekunde Timeout
             s.connect(("8.8.8.8", 80))
             ip = s.getsockname()[0]
             s.close()
