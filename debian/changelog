@@ -1,21 +1,22 @@
-primo-di-tutto (1.1.7) unstable; urgency=medium
+primo-di-tutto (1.1.8) unstable; urgency=medium
 
-  * Expert-Tools: Vollständige Repository-Verwaltung implementiert
-  * Unterstützung für traditionelle .list und DEB822 .sources Dateien
-  * Aktivieren/Deaktivieren von APT-Quellen direkt in der Oberfläche
-  * Entfernen von Quellen mit Warnhinweis-Dialog
-  * Bearbeiten von .list-Dateien über Dialog
-  * Korrekte Behandlung von APT-Optionen (z.B. [arch=amd64])
-  * Dashboard: GPU-Informationen erweitert (Name, Speicher, Treiber)
-  * Dashboard: Korrekte IP-Adresse und Distro-Version Anzeige
-  * Alte Desktop-Dateien werden automatisch bereinigt
+  * Expert Tools: Implemented complete repository management
+  * Support for traditional .list and DEB822 .sources files
+  * Enable/disable APT sources directly in the interface
+  * Remove sources with warning dialog
+  * Edit .list files via dialog
+  * Correct handling of APT options (e.g. [arch=amd64])
+  * Dashboard: Expanded GPU information (name, memory, driver)
+  * Dashboard: Correct display of IP address and distro version
+  * Old desktop files are automatically cleaned up
+  * Added: Simple Theme
 
  -- Actionschnitzel <actionschnitzel@guideos.de>  Tue, 07 Jan 2026 15:00:00 +0100
 
 primo-di-tutto (1.1.3) unstable; urgency=medium
 
-  * Automatische Migration der Autostart-Desktop-Datei
-  * Exec-Pfad wird automatisch von /opt/primo-di-tutto zu /usr/lib/guideos/primo-di-tutto aktualisiert
+  * Automatic migration of the autostart desktop file
+  * Exec path is automatically updated from /opt/primo-di-tutto to /usr/lib/guideos/primo-di-tutto
   * Migration to GTK4
 
  -- Actionschnitzel <actionschnitzel@guideos.de>  Sat, 04 Jan 2026 12:00:00 +0100
