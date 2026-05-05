@@ -187,16 +187,16 @@ class SoftwareGame:
         sorted(
             {
                 "game_1": {
-                    "Name": "GZDoom",
+                    "Name": "UZDoom",
                     "Package": AppPackage.FLATPAK,
                     "Short": "Doom Engine Source-Port",
-                    "Description": "GZDoom ist ein moderner Source-Port, der aktuelle Hardware und Betriebssysteme unterstützt und eine Vielzahl an Einstellungsmöglichkeiten bietet. Neben Doom unterstützt GZDoom auch Heretic, Hexen, Strife, Chex Quest und von Fans erstellte Spiele wie Harmony und Hacx.",
-                    "Icon": f"{application_path}/images/apps/org.zdoom.GZDoom-icon.png",
-                    "Thumbnail": f"{application_path}/images/apps/org.zdoom.GZDoom-thumb.png",
-                    "Install": "pkexec flatpak install flathub org.zdoom.GZDoom -y",
-                    "Uninstall": "pkexec flatpak remove org.zdoom.GZDoom -y",
-                    "Path": "org.zdoom.GZDoom",
-                    "AppStream": "org.zdoom.GZDoom",
+                    "Description": "UZDoom ist ein moderner Source-Port, der aktuelle Hardware und Betriebssysteme unterstützt und eine Vielzahl an Einstellungsmöglichkeiten bietet. Neben Doom unterstützt UZDoom auch Heretic, Hexen, Strife, Chex Quest und von Fans erstellte Spiele wie Harmony und Hacx.",
+                    "Icon": f"{application_path}/images/apps/org.zdoom.UZDoom-icon.png",
+                    "Thumbnail": f"{application_path}/images/apps/org.zdoom.UZDoom-thumb.png",
+                    "Install": "pkexec flatpak install flathub org.zdoom.UZDoom -y",
+                    "Uninstall": "pkexec flatpak remove org.zdoom.UZDoom -y",
+                    "Path": "org.zdoom.UZDoom",
+                    "AppStream": "org.zdoom.UZDoom",
                 },
                 "game_2": {
                     "Name": "OpenRA",
