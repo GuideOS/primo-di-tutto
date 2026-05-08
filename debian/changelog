@@ -1,3 +1,10 @@
+primo-di-tutto (1.2.0) unstable; urgency=medium
+
+  * Replaced: UZDoom replaced by GZDoom in software library
+  * Fixed: Layout fix for Cinnamon desktop presets (classico, elf, spiegel, ubuntu)
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Fri, 08 May 2026 18:00:00 +0200
+
 primo-di-tutto (1.1.9) unstable; urgency=medium
 
   * Added: Simple Theme
