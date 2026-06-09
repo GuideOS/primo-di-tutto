@@ -1,3 +1,15 @@
+primo-di-tutto (1.2.2) unstable; urgency=medium
+
+  * Removed: Plank settings
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Mon, 09 Jun 2026 12:00:00 +0200
+
+primo-di-tutto (1.2.1) unstable; urgency=medium
+
+  * Fixed: Nvidia-Install not starting
+
+ -- Actionschnitzel <actionschnitzel@guideos.de>  Mon, 02 Jun 2026 12:00:00 +0200
+
 primo-di-tutto (1.2.0) unstable; urgency=medium
 
   * Replaced: UZDoom replaced by GZDoom in software library
