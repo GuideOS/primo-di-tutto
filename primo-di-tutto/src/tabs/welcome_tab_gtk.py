@@ -132,7 +132,7 @@ class WelcomeTab(Gtk.Box):
     def on_nvidia_clicked(self, button):
         """Öffnet den NVIDIA-Manager."""
         try:
-            subprocess.Popen(["pkexec", "debian-nvidia-installer"])
+            subprocess.Popen(["x-terminal-emulator", "-e", "pkexec /usr/bin/debian-nvidia-installer"])
         except Exception as e:
             print(f"Fehler beim Öffnen des NVIDIA-Managers: {e}")
 
