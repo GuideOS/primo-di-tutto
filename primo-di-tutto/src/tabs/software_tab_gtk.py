@@ -16,6 +16,7 @@ from cache import Cache
 
 # Mapping Kategorie -> (dict, Titel)
 CATEGORIES = [
+    (software_dict_lib.SoftwareGuideOSTools.guideos_dict, "GuideOS Tools"),
     (software_dict_lib.SoftwareCommunication.com_dict, "Web & Chat"),
     (software_dict_lib.SoftwareOffice.office_dict, "Büro"),
     (software_dict_lib.SoftwareAudioVideo.av_dict, "Audio & Video"),
@@ -26,7 +27,7 @@ CATEGORIES = [
     (software_dict_lib.SoftwareSafty.saf_dict, "Sicherheit"),
     (software_dict_lib.SoftwareDesktopTools.desk_dict, "Desktop Tools"),
     (software_dict_lib.SoftwareTerminalTools.term_dict, "Terminal Tools"),
-    (software_dict_lib.SoftwareGuideOSTools.guideos_dict, "GuideOS Tools"),
+    
 ]
 
 class SoftwareTab(Gtk.Box):
